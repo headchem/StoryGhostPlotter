@@ -9,7 +9,7 @@ function App() {
       //const text = 'testing123';
       console.log('text was: ' + text);
       console.log('React version: ' + React.version);
-      setData('testing...' + text);
+      setData('React version: ' + React.version + 'testing...' + text);
     })();
   });
 
