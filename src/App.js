@@ -5,8 +5,10 @@ function App() {
 
   useEffect(() => {
     (async function () {
-      const { text } = await( await fetch(`/api/HttpTrigger1`)).json();
+      const text = await( await fetch(`/api/MyWebservice`)).text();//.json();
+      //const text = 'testing123';
       console.log('text was: ' + text);
+      console.log('React version: ' + React.version);
       setData('testing...' + text);
     })();
   });
