@@ -1,94 +1,109 @@
-//import React, { useState, useEffect } from 'react'
 import React, { useState } from 'react'
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import ToDoHome from './components/todo/ToDoHome'
+import Main from './components/plotter/Main'
 import Header from './components/Header'
-import Tasks from './components/Tasks'
-import AddTask from './components/AddTask'
+import Footer from './components/Footer'
+import About from './components/About'
 
 function App() {
-  const [showAddTask, setShowAddTask] = useState(false)
 
-  // here we define the 'tasks' var as well as the function for modifying it
-  const [tasks, setTasks] = useState( // contents is the default value for this state
-    [
-      {
-        id: 1,
-        text: 'study',
-        day: 'Dec 18th at 2:30pm',
-        reminder: true
-      },
-      {
-        id: 2,
-        text: 'code',
-        day: 'Dec 19th at 2:30pm',
-        reminder: true
-      },
-      {
-        id: 3,
-        text: 'groceries',
-        day: 'Dec 20th at 2:30pm',
-        reminder: false
-      }
-    ]
-  )
-
-  // Add Task
-  const addTask = (task) => {
-    const newId = Math.floor(Math.random() * 100000) + 1
-
-    const newTask = { id: newId, ...task } // copy existing task, but add the new id field
-
-    setTasks([...tasks, newTask]) // set tasks to all the existing tasks, plus add the new one
-  }
-
-  // Delete Task
-  const deleteTask = (id) => {
-    console.log('delete: ', id)
-    setTasks(tasks.filter((task) => task.id !== id))
-  }
-
-  // Toggle Reminder
-  const toggleReminder = (id) => {
-    console.log('toggle reminder: ' + id)
-    setTasks(
-      tasks.map(
-        (task) => task.id === id ? { ...task, reminder: !task.reminder } : task
-      )
+    // here we define the 'tasks' var as well as the function for modifying it
+    const [logLine, setLogLine] = useState( // contents is the default value for this state
+        {
+            curFocusElName: '',
+            setting: '',
+            problemTemplate: '',
+            keywords: [],
+            heroArchetype: '',
+            enemyArchetype: '',
+            primalStakes: '',
+            dramaticQuestion: ''
+        }
     )
-  }
 
-  return (
-    <div className='container'>
-      <Header title="My Tasks" onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
-      { // shorthand for a boolean ternary where true shows the element, false outputs nothing
-        showAddTask && <AddTask onAdd={addTask} />
-      }
-      {
-        tasks.length > 0 ? (
-          <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
-        ) : <p>No Tasks to show</p>
-      }
+    const setFocus = (elName) => {
+        let newLogLine = {...logLine}
+        newLogLine.curFocusElName = elName
 
-    </div>
-  )
+        setLogLine(newLogLine)
+    }
+
+    // const setSetting = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
+    const setSetting = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.setting = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    const setProblemTemplate = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.problemTemplate = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    const setKeywords = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.keywords = inputValue.map(el => el.value)
+
+        setLogLine(newLogLine)
+    }
+
+    const setHeroArchetype = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.heroArchetype = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    const setEnemyArchetype = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.enemyArchetype = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    const setPrimalStakes = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.primalStakes = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    const setDramaticQuestion = (inputValue) => {
+        let newLogLine = { ...logLine }
+        newLogLine.dramaticQuestion = inputValue.value
+        setLogLine(newLogLine)
+    }
+
+    
+
+    return (
+        <Router>
+            <Header />
+
+            {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
+            <Routes>
+                <Route path="/" element={
+                    <Main
+                        logLine={logLine}
+                        onFocusChange={setFocus}
+                        onSettingChange={setSetting}
+                        onProblemTemplateChange={setProblemTemplate}
+                        onKeywordChange={setKeywords}
+                        onHeroArchetypeChange={setHeroArchetype}
+                        onEnemyArchetypeChange={setEnemyArchetype}
+                        onPrimalStakesChange={setPrimalStakes}
+                        onDramaticQuestionChange={setDramaticQuestion}
+                    />
+                } />
+                <Route path="/about" element={<About />} />
+                <Route path="/todo" element={<ToDoHome />} />
+            </Routes>
+
+            <Footer />
+        </Router>
+    )
+
 }
-
-// function App() {
-//   const [data, setData] = useState('');
-
-//   useEffect(() => {
-//     (async function () {
-//       const text = await( await fetch(`/api/MyWebservice`)).text();//.json();
-//       //const text = 'testing123';
-//       console.log('text was: ' + text);
-//       console.log('React version: ' + React.version);
-//       setData('React version: ' + React.version + 'testing...' + text);
-//     })();
-//   });
-
-//   return <div>
-//     <h1>Hello</h1>
-//     {data}
-//     </div>;
-// }
 
 export default App;

@@ -17,3 +17,6 @@ Each of the 16 pages lets the author first write their own "what happens next" O
 Hype/marketing - every time someone completes all 16 pages, update a global NoSQL container counter. This metric is more valuable than anything from Google Analytics for measuring success
 Put an arbitrary limit of the number of variations you're allowed to have for a page. For choice between, say, 2 variations to reduce paralysis of choice, and if you want more, you must delete another one (and all later descendents)
 After GPT-3 fills a page with an idea, now encourage the author to make tweaks like a co-author brainstorm. Human needs to be part of the process like an editor forging the ideas into something even better
+
+LEFT OFF: continue with tutorial video adding server-side interaction with my C# Function instead, and React Routing
+Slot machine interface? Any real world widgets that have several dropdown-like interactions?

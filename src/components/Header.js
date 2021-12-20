@@ -1,29 +1,24 @@
-import PropTypes from 'prop-types'
-import Button from './Button'
+import { Link } from "react-router-dom";
 
-//const Header = (props) => {
-const Header = ({ title, onAdd, showAdd }) => { // destructure props into named vars this way
-    
+const Header = () => {
     return (
         <header>
-            <h1 style={headingStyle}>{title}</h1>
-            <Button text={showAdd ? 'Close' : 'Add'} color={showAdd ? 'red' : 'green'} onClick={onAdd} />
+            <h1>Story Ghost</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/todo">ToDo</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">About</Link>
+                    </li>
+                </ul>
+            </nav>
         </header>
     )
-}
-
-Header.defaultProps = {
-    title: 'no title prop was specified'
-}
-
-Header.propTypes = {
-    //title: PropTypes.string // example of not required
-    title: PropTypes.string.isRequired
-}
-
-const headingStyle = {
-    color: 'Teal',
-    backgroundColor: 'LightSteelBlue'
 }
 
 export default Header
