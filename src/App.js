@@ -53,7 +53,6 @@ function App() {
             }
 
             if (url !== '') {
-                console.log('something changed, load url: ' + url);
                 setDescIsLoading(true)
 
                 fetch(url).then(function (response) {
@@ -62,8 +61,6 @@ function App() {
                     }
                     return Promise.reject(response);
                 }).then(function (data) {
-
-                    console.log('curFocusElName: ' + curFocusElName);
 
                     if (curFocusElName === 'genre') {
                         setGenreDescObj(data)
@@ -88,7 +85,6 @@ function App() {
 
         const loadLogLinePrompt = async () => {
             if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
-                console.log('input is missing');
                 return
             }
 
@@ -124,6 +120,8 @@ function App() {
 
         loadDescObj()
         loadLogLinePrompt()
+        // even though we use 'curFocusElName' in this method, we don't want to trigger reloading whenever it changes, hence the linter hint below to get this to build in prod...
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
 
