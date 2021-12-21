@@ -1,14 +1,14 @@
 
 
-const EnemyArchetypeDescription = ({ logLine }) => {
+const EnemyArchetypeDescription = ({ enemyArchetypeDescObj }) => {
 
     return (
         <div>
             {
-                logLine.enemyArchetypeDescObj && <>
+                enemyArchetypeDescObj && <>
                     Enemy Archetype desc obj goes here
-                    <p>name: {logLine.enemyArchetypeDescObj.name}</p>
-                    <p>desc: {logLine.enemyArchetypeDescObj.description}</p>
+                    <p>name: {enemyArchetypeDescObj.name}</p>
+                    <p>desc: {enemyArchetypeDescObj.description}</p>
                 </>
             }
         </div>

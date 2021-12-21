@@ -1,14 +1,14 @@
 
 
-const HeroArchetypeDescription = ({ logLine }) => {
+const HeroArchetypeDescription = ({ heroArchetypeDescObj }) => {
 
     return (
         <div>
             {
-                logLine.heroArchetypeDescObj && <>
+                heroArchetypeDescObj && <>
                     Hero Archetype desc obj goes here
-                    <p>name: {logLine.heroArchetypeDescObj.name}</p>
-                    <p>desc: {logLine.heroArchetypeDescObj.description}</p>
+                    <p>name: {heroArchetypeDescObj.name}</p>
+                    <p>desc: {heroArchetypeDescObj.description}</p>
                 </>
             }
         </div>

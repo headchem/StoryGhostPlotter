@@ -1,14 +1,14 @@
 
 
-const PrimalStakesDescription = ({ logLine }) => {
+const PrimalStakesDescription = ({ primalStakesDescObj }) => {
 
     return (
         <div>
             {
-                logLine.primalStakesDescObj && <>
+                primalStakesDescObj && <>
                     Primal Stakes desc obj goes here
-                    <p>name: {logLine.primalStakesDescObj.name}</p>
-                    <p>desc: {logLine.primalStakesDescObj.description}</p>
+                    <p>name: {primalStakesDescObj.name}</p>
+                    <p>desc: {primalStakesDescObj.description}</p>
                 </>
             }
         </div>

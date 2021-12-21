@@ -1,14 +1,14 @@
 
 
-const GenreDescription = ({ logLine }) => {
+const GenreDescription = ({ genreDescObj }) => {
 
     return (
         <div>
             {
-                logLine.genreDescObj && <>
+                genreDescObj && <>
                     Genre desc obj goes here
-                    <p>name: {logLine.genreDescObj.name}</p>
-                    <p>desc: {logLine.genreDescObj.description}</p>
+                    <p>name: {genreDescObj.name}</p>
+                    <p>desc: {genreDescObj.description}</p>
                 </>
             }
         </div>

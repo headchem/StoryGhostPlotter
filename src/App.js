@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -10,148 +10,149 @@ import About from './components/About'
 
 function App() {
 
-    // here we define the 'tasks' var as well as the function for modifying it
-    const [logLine, setLogLine] = useState( // contents is the default value for this state
-        {
-            curFocusElName: '',
-            genre: '',
-            problemTemplate: '',
-            keywords: [],
-            heroArchetype: '',
-            enemyArchetype: '',
-            primalStakes: '',
-            dramaticQuestion: '',
+    const [curFocusElName, setCurFocusElName] = useState('')
+    const [genre, setGenre] = useState('')
+    const [problemTemplate, setProblemTemplate] = useState('')
+    const [keywords, setKeywords] = useState([])
+    const [heroArchetype, setHeroArchetype] = useState('')
+    const [enemyArchetype, setEnemyArchetype] = useState('')
+    const [primalStakes, setPrimalStakes] = useState('')
+    const [dramaticQuestion, setDramaticQuestion] = useState('')
 
-            descIsLoading: false,
-            genreDescObj: null,
-            problemTemplateDescObj: null,
-            heroArchetypeDescObj: null,
-            enemyArchetypeDescObj: null,
-            primalStakesDescObj: null,
-            dramaticQuestionDescObj: null,
-        }
-    )
+    const [descIsLoading, setDescIsLoading] = useState(false)
+    const [genreDescObj, setGenreDescObj] = useState(null)
+    const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
+    const [heroArchetypeDescObj, setHeroArchetypeDescObj] = useState(null)
+    const [enemyArchetypeDescObj, setEnemyArchetypeDescObj] = useState(null)
+    const [primalStakesDescObj, setPrimalStakesDescObj] = useState(null)
+    const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
-    const setFocus = (elName) => {
-        let newLogLine = { ...logLine }
-        newLogLine.curFocusElName = elName
+    const [logLinePromptIsLoading, setLogLinePromptIsLoading] = useState(false)
+    const [logLinePrompt, setLogLinePrompt] = useState('')
 
-        setLogLine(newLogLine)
+    const onFocus = (elName) => {
+        setCurFocusElName(elName)
     }
 
+    useEffect(() => {
+        loadDescObj()
+        loadLogLinePrompt()
+    }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
-    const loadDescObj = async (propType, newPropVal) => {
-        if (newPropVal === '') return
-
-        let newLogLine = { ...logLine }
-
+    const loadDescObj = async () => {
         let url = ''
 
-        if (propType === 'genre') {
-            url = '/api/GenreDescription?genre=' + newPropVal
-        } else if (propType === 'problem template') {
-            url = '/api/ProblemTemplateDescription?problemTemplate=' + newPropVal
-        } else if (propType === 'hero archetype' || propType === 'enemy archetype') {
-            url = '/api/ArchetypeDescription?archetype=' + newPropVal
-        } else if (propType === 'primal stakes') {
-            url = '/api/PrimalStakesDescription?primalStakes=' + newPropVal
-        } else if (propType === 'dramatic question') {
-            url = '/api/DramaticQuestionDescription?dramaticQuestion=' + newPropVal
+        if (curFocusElName === 'genre' && genre !== '') {
+            url = '/api/GenreDescription?genre=' + genre
+        } else if (curFocusElName === 'problem template' && problemTemplate !== '') {
+            url = '/api/ProblemTemplateDescription?problemTemplate=' + problemTemplate
+        } else if (curFocusElName === 'hero archetype' && heroArchetype !== '') {
+            url = '/api/ArchetypeDescription?archetype=' + heroArchetype
+        } else if (curFocusElName === 'enemy archetype' && enemyArchetype !== '') {
+            url = '/api/ArchetypeDescription?archetype=' + enemyArchetype
+        } else if (curFocusElName === 'primal stakes' && primalStakes !== '') {
+            url = '/api/PrimalStakesDescription?primalStakes=' + primalStakes
+        } else if (curFocusElName === 'dramatic question' && dramaticQuestion !== '') {
+            url = '/api/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
         }
 
-        fetch(url).then(function (response) {
+        if (url !== '') {
+            console.log('something changed, load url: ' + url);
+            setDescIsLoading(true)
+
+            fetch(url).then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            }).then(function (data) {
+
+                console.log('curFocusElName: ' + curFocusElName);
+
+                if (curFocusElName === 'genre') {
+                    setGenreDescObj(data)
+                } else if (curFocusElName === 'problem template') {
+                    setProblemTemplateDescObj(data)
+                } else if (curFocusElName === 'hero archetype') {
+                    setHeroArchetypeDescObj(data)
+                } else if (curFocusElName === 'enemy archetype') {
+                    setEnemyArchetypeDescObj(data)
+                } else if (curFocusElName === 'primal stakes') {
+                    setPrimalStakesDescObj(data)
+                } else if (curFocusElName === 'dramatic question') {
+                    setDramaticQuestionDescObj(data)
+                }
+            }).catch(function (error) {
+                console.warn(error);
+            }).finally(function () {
+                setDescIsLoading(false)
+            });
+        }
+    }
+
+    // const setGenre = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
+    const onGenreChange = (inputValue) => {
+        setGenre(inputValue.value)
+    }
+
+    const onProblemTemplateChange = (inputValue) => {
+        setProblemTemplate(inputValue.value)
+    }
+
+    const onKeywordsChange = (inputValue) => {
+        setKeywords(inputValue.map(el => el.value))
+    }
+
+    const onHeroArchetypeChange = (inputValue) => {
+        setHeroArchetype(inputValue.value)
+    }
+
+    const onEnemyArchetypeChange = (inputValue) => {
+        setEnemyArchetype(inputValue.value)
+    }
+
+    const onPrimalStakesChange = (inputValue) => {
+        setPrimalStakes(inputValue.value)
+    }
+
+    const onDramaticQuestionChange = (inputValue) => {
+        setDramaticQuestion(inputValue.value)
+    }
+
+    const loadLogLinePrompt = async () => {
+        if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
+            console.log('input is missing');
+            return
+        }
+
+        setLogLinePromptIsLoading(true)
+
+        fetch('/api/GenerateLogLinePrompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'genre': genre,
+                'problemTemplate': problemTemplate,
+                'keywords': keywords,
+                'heroArchetype': heroArchetype,
+                'enemyArchetype': enemyArchetype,
+                'primalStakes': primalStakes,
+                'dramaticQuestion': dramaticQuestion
+            })
+        }).then(function (response) {
             if (response.ok) {
                 return response.json();
             }
             return Promise.reject(response);
         }).then(function (data) {
-            if (propType === 'genre') {
-                newLogLine.genreDescObj = data
-            } else if (propType === 'problem template') {
-                newLogLine.problemTemplateDescObj = data
-            } else if (propType === 'hero archetype') {
-                newLogLine.heroArchetypeDescObj = data
-            } else if (propType === 'enemy archetype') {
-                newLogLine.enemyArchetypeDescObj = data
-            } else if (propType === 'primal stakes') {
-                newLogLine.primalStakesDescObj = data
-            } else if (propType === 'dramatic question') {
-                newLogLine.dramaticQuestionDescObj = data
-            }
+            setLogLinePrompt(data['prompt'])
         }).catch(function (error) {
             console.warn(error);
         }).finally(function () {
-            newLogLine.descIsLoading = false
-            setLogLine(newLogLine)
+            setLogLinePromptIsLoading(false)
         });
-    }
-
-    // const setGenre = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
-    const setGenre = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.genre = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('genre', newLogLine.genre)
-    }
-
-    const setProblemTemplate = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.problemTemplate = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('problem template', newLogLine.problemTemplate)
-    }
-
-    const setKeywords = (inputValue) => {
-        let newLogLine = { ...logLine }
-        newLogLine.keywords = inputValue.map(el => el.value)
-
-        setLogLine(newLogLine)
-    }
-
-    const setHeroArchetype = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.heroArchetype = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('hero archetype', newLogLine.heroArchetype)
-    }
-
-    const setEnemyArchetype = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.enemyArchetype = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('enemy archetype', newLogLine.enemyArchetype)
-    }
-
-    const setPrimalStakes = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.primalStakes = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('primal stakes', newLogLine.primalStakes)
-    }
-
-    const setDramaticQuestion = (inputValue) => {
-        let newLogLine = { ...logLine }
-
-        newLogLine.descIsLoading = true
-        newLogLine.dramaticQuestion = inputValue.value
-
-        setLogLine(newLogLine)
-        loadDescObj('dramatic question', newLogLine.dramaticQuestion)
     }
 
 
@@ -164,15 +165,35 @@ function App() {
             <Routes>
                 <Route path="/" element={
                     <Main
-                        logLine={logLine}
-                        onFocusChange={setFocus}
-                        onGenreChange={setGenre}
-                        onProblemTemplateChange={setProblemTemplate}
-                        onKeywordChange={setKeywords}
-                        onHeroArchetypeChange={setHeroArchetype}
-                        onEnemyArchetypeChange={setEnemyArchetype}
-                        onPrimalStakesChange={setPrimalStakes}
-                        onDramaticQuestionChange={setDramaticQuestion}
+                        genre={genre}
+                        problemTemplate={problemTemplate}
+                        keywords={keywords}
+                        heroArchetype={heroArchetype}
+                        enemyArchetype={enemyArchetype}
+                        primalStakes={primalStakes}
+                        dramaticQuestion={dramaticQuestion}
+
+                        curFocusElName={curFocusElName}
+
+                        onFocusChange={onFocus}
+                        onGenreChange={onGenreChange}
+                        onProblemTemplateChange={onProblemTemplateChange}
+                        onKeywordChange={onKeywordsChange}
+                        onHeroArchetypeChange={onHeroArchetypeChange}
+                        onEnemyArchetypeChange={onEnemyArchetypeChange}
+                        onPrimalStakesChange={onPrimalStakesChange}
+                        onDramaticQuestionChange={onDramaticQuestionChange}
+
+                        descIsLoading={descIsLoading}
+                        genreDescObj={genreDescObj}
+                        problemTemplateDescObj={problemTemplateDescObj}
+                        heroArchetypeDescObj={heroArchetypeDescObj}
+                        enemyArchetypeDescObj={enemyArchetypeDescObj}
+                        primalStakesDescObj={primalStakesDescObj}
+                        dramaticQuestionDescObj={dramaticQuestionDescObj}
+
+                        logLinePromptIsLoading={logLinePromptIsLoading}
+                        logLinePrompt={logLinePrompt}
                     />
                 } />
                 <Route path="/about" element={<About />} />

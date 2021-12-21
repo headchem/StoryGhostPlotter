@@ -7,18 +7,19 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using StoryGhost.Models;
 
 namespace StoryGhost.Generate;
 
 public static class GenerateLogLinePrompt
 {
     [FunctionName("GenerateLogLinePrompt")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] GenerateLogLineProptRequest req, ILogger log)
     {
-        string setting = req.Query["setting"];
+        var result = new GenerateLogLinePromptResponse{
+            Prompt = $"this is the GPT-3 prompt with the following inputs: genre: {req.Genre}, problem template: {req.ProblemTemplate}, keywords: {string.Join("; ", req.Keywords)}, hero archetype: {req.HeroArchetype}, enemy archetype: {req.EnemyArchetype}, primal stakes: {req.PrimalStakes}, dramatic question: {req.DramaticQuestion}"
+        };
 
-        string responseMessage = $"this is the GPT-3 prompt with the following inputs: setting: {setting}";
-
-        return new OkObjectResult(responseMessage);
+        return new OkObjectResult(result);
     }
 }

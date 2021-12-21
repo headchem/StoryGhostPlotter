@@ -5,33 +5,50 @@ import EnemyArchetypeDescription from './EnemyArchetypeDescription'
 import PrimalStakesDescription from './PrimalStakesDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 
-const LogLineDescription = ({ logLine }) => {
+const LogLineDescription = (
+    {
+        curFocusElName,
+        descIsLoading,
+        genreDescObj,
+        problemTemplateDescObj,
+        heroArchetypeDescObj,
+        enemyArchetypeDescObj,
+        primalStakesDescObj,
+        dramaticQuestionDescObj
+    }
+) => {
 
     return (
         <div>
             {
-                logLine.descIsLoading === true && <p>loading...</p>
+                descIsLoading === true && <p>loading...</p>
             }
             {
-                logLine.descIsLoading === false && <>
-                    <h3>Show full description for current focus: {logLine.curFocusElName}</h3>
+                descIsLoading === false && <>
+                    <h3>Show full description for current focus: {curFocusElName}</h3>
                     {
-                        logLine.curFocusElName === 'genre' && <GenreDescription logLine={logLine} />
+                        curFocusElName === 'genre' && genreDescObj !== null && <GenreDescription genreDescObj={genreDescObj} />
                     }
                     {
-                        logLine.curFocusElName === 'problem template' && <ProblemTemplateDescription logLine={logLine} />
+                        curFocusElName === 'problem template' && problemTemplateDescObj && <ProblemTemplateDescription problemTemplateDescObj={problemTemplateDescObj} />
                     }
                     {
-                        logLine.curFocusElName === 'hero archetype' && <HeroArchetypeDescription logLine={logLine} />
+                        curFocusElName === 'hero archetype' && heroArchetypeDescObj && <HeroArchetypeDescription heroArchetypeDescObj={heroArchetypeDescObj} />
                     }
                     {
-                        logLine.curFocusElName === 'enemy archetype' && <EnemyArchetypeDescription logLine={logLine} />
+                        curFocusElName === 'enemy archetype' && enemyArchetypeDescObj && <EnemyArchetypeDescription enemyArchetypeDescObj={enemyArchetypeDescObj} />
                     }
                     {
-                        logLine.curFocusElName === 'primal stakes' && <PrimalStakesDescription logLine={logLine} />
+                        curFocusElName === 'primal stakes' && primalStakesDescObj && <PrimalStakesDescription primalStakesDescObj={primalStakesDescObj} />
                     }
                     {
-                        logLine.curFocusElName === 'dramatic question' && <DramaticQuestionDescription logLine={logLine} />
+                        curFocusElName === 'dramatic question' && dramaticQuestionDescObj && <DramaticQuestionDescription dramaticQuestionDescObj={dramaticQuestionDescObj} />
+                    }
+                    {
+                        curFocusElName === 'keywords' &&
+                        <>
+                            <p>Description about best types of keywords...</p>
+                        </>
                     }
                 </>
             }

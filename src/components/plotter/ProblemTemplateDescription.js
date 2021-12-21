@@ -1,14 +1,14 @@
 
 
-const ProblemTemplateDescription = ({ logLine }) => {
+const ProblemTemplateDescription = ({ problemTemplateDescObj }) => {
 
     return (
         <div>
             {
-                logLine.problemTemplateDescObj && <>
+                problemTemplateDescObj && <>
                     Problem Template desc obj goes here
-                    <p>name: {logLine.problemTemplateDescObj.name}</p>
-                    <p>desc: {logLine.problemTemplateDescObj.description}</p>
+                    <p>name: {problemTemplateDescObj.name}</p>
+                    <p>desc: {problemTemplateDescObj.description}</p>
                 </>
             }
         </div>

@@ -1,14 +1,14 @@
 
 
-const DramaticQuestionDescription = ({ logLine }) => {
+const DramaticQuestionDescription = ({ dramaticQuestionDescObj }) => {
 
     return (
         <div>
             {
-                logLine.dramaticQuestionDescObj && <>
+                dramaticQuestionDescObj && <>
                     Dramatic question desc obj goes here
-                    <p>name: {logLine.dramaticQuestionDescObj.name}</p>
-                    <p>desc: {logLine.dramaticQuestionDescObj.description}</p>
+                    <p>name: {dramaticQuestionDescObj.name}</p>
+                    <p>desc: {dramaticQuestionDescObj.description}</p>
                 </>
             }
         </div>
