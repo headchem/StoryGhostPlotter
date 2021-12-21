@@ -114,7 +114,7 @@ const Main = (
 
                         <LogLineSelect
                             placeholder='Genre'
-                            width='10em'
+                            width='15em'
                             isMultiSelect={false}
                             onFocusChange={() => onFocusChange('genre')}
                             options={genreOptions}
@@ -147,7 +147,7 @@ const Main = (
 
                         <LogLineSelect
                             placeholder='Hero Archetype'
-                            width='10em'
+                            width='15em'
                             isMultiSelect={false}
                             onFocusChange={() => onFocusChange('hero archetype')}
                             options={archetypeOptions}
@@ -171,7 +171,7 @@ const Main = (
 
                         <LogLineSelect
                             placeholder='Enemy Archetype'
-                            width='10em'
+                            width='15em'
                             isMultiSelect={false}
                             onFocusChange={() => onFocusChange('enemy archetype')}
                             options={archetypeOptions}
@@ -183,7 +183,7 @@ const Main = (
 
                         <LogLineSelect
                             placeholder='Dramatic Question'
-                            width='10em'
+                            width='15em'
                             isMultiSelect={false}
                             onFocusChange={() => onFocusChange('dramatic question')}
                             options={dramaticQuestionOptions}

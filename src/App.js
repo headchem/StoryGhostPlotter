@@ -35,60 +35,98 @@ function App() {
     }
 
     useEffect(() => {
-        loadDescObj()
-        loadLogLinePrompt()
-    }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+        const loadDescObj = async () => {
+            let url = ''
 
-    const loadDescObj = async () => {
-        let url = ''
+            if (curFocusElName === 'genre' && genre !== '') {
+                url = '/api/GenreDescription?genre=' + genre
+            } else if (curFocusElName === 'problem template' && problemTemplate !== '') {
+                url = '/api/ProblemTemplateDescription?problemTemplate=' + problemTemplate
+            } else if (curFocusElName === 'hero archetype' && heroArchetype !== '') {
+                url = '/api/ArchetypeDescription?archetype=' + heroArchetype
+            } else if (curFocusElName === 'enemy archetype' && enemyArchetype !== '') {
+                url = '/api/ArchetypeDescription?archetype=' + enemyArchetype
+            } else if (curFocusElName === 'primal stakes' && primalStakes !== '') {
+                url = '/api/PrimalStakesDescription?primalStakes=' + primalStakes
+            } else if (curFocusElName === 'dramatic question' && dramaticQuestion !== '') {
+                url = '/api/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
+            }
 
-        if (curFocusElName === 'genre' && genre !== '') {
-            url = '/api/GenreDescription?genre=' + genre
-        } else if (curFocusElName === 'problem template' && problemTemplate !== '') {
-            url = '/api/ProblemTemplateDescription?problemTemplate=' + problemTemplate
-        } else if (curFocusElName === 'hero archetype' && heroArchetype !== '') {
-            url = '/api/ArchetypeDescription?archetype=' + heroArchetype
-        } else if (curFocusElName === 'enemy archetype' && enemyArchetype !== '') {
-            url = '/api/ArchetypeDescription?archetype=' + enemyArchetype
-        } else if (curFocusElName === 'primal stakes' && primalStakes !== '') {
-            url = '/api/PrimalStakesDescription?primalStakes=' + primalStakes
-        } else if (curFocusElName === 'dramatic question' && dramaticQuestion !== '') {
-            url = '/api/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
+            if (url !== '') {
+                console.log('something changed, load url: ' + url);
+                setDescIsLoading(true)
+
+                fetch(url).then(function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(response);
+                }).then(function (data) {
+
+                    console.log('curFocusElName: ' + curFocusElName);
+
+                    if (curFocusElName === 'genre') {
+                        setGenreDescObj(data)
+                    } else if (curFocusElName === 'problem template') {
+                        setProblemTemplateDescObj(data)
+                    } else if (curFocusElName === 'hero archetype') {
+                        setHeroArchetypeDescObj(data)
+                    } else if (curFocusElName === 'enemy archetype') {
+                        setEnemyArchetypeDescObj(data)
+                    } else if (curFocusElName === 'primal stakes') {
+                        setPrimalStakesDescObj(data)
+                    } else if (curFocusElName === 'dramatic question') {
+                        setDramaticQuestionDescObj(data)
+                    }
+                }).catch(function (error) {
+                    console.warn(error);
+                }).finally(function () {
+                    setDescIsLoading(false)
+                });
+            }
         }
 
-        if (url !== '') {
-            console.log('something changed, load url: ' + url);
-            setDescIsLoading(true)
+        const loadLogLinePrompt = async () => {
+            if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
+                console.log('input is missing');
+                return
+            }
 
-            fetch(url).then(function (response) {
+            setLogLinePromptIsLoading(true)
+
+            fetch('/api/GenerateLogLinePrompt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'genre': genre,
+                    'problemTemplate': problemTemplate,
+                    'keywords': keywords,
+                    'heroArchetype': heroArchetype,
+                    'enemyArchetype': enemyArchetype,
+                    'primalStakes': primalStakes,
+                    'dramaticQuestion': dramaticQuestion
+                })
+            }).then(function (response) {
                 if (response.ok) {
                     return response.json();
                 }
                 return Promise.reject(response);
             }).then(function (data) {
-
-                console.log('curFocusElName: ' + curFocusElName);
-
-                if (curFocusElName === 'genre') {
-                    setGenreDescObj(data)
-                } else if (curFocusElName === 'problem template') {
-                    setProblemTemplateDescObj(data)
-                } else if (curFocusElName === 'hero archetype') {
-                    setHeroArchetypeDescObj(data)
-                } else if (curFocusElName === 'enemy archetype') {
-                    setEnemyArchetypeDescObj(data)
-                } else if (curFocusElName === 'primal stakes') {
-                    setPrimalStakesDescObj(data)
-                } else if (curFocusElName === 'dramatic question') {
-                    setDramaticQuestionDescObj(data)
-                }
+                setLogLinePrompt(data['prompt'])
             }).catch(function (error) {
                 console.warn(error);
             }).finally(function () {
-                setDescIsLoading(false)
+                setLogLinePromptIsLoading(false)
             });
         }
-    }
+
+        loadDescObj()
+        loadLogLinePrompt()
+    }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+
+
 
     // const setGenre = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
     const onGenreChange = (inputValue) => {
@@ -117,42 +155,6 @@ function App() {
 
     const onDramaticQuestionChange = (inputValue) => {
         setDramaticQuestion(inputValue.value)
-    }
-
-    const loadLogLinePrompt = async () => {
-        if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
-            console.log('input is missing');
-            return
-        }
-
-        setLogLinePromptIsLoading(true)
-
-        fetch('/api/GenerateLogLinePrompt', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'genre': genre,
-                'problemTemplate': problemTemplate,
-                'keywords': keywords,
-                'heroArchetype': heroArchetype,
-                'enemyArchetype': enemyArchetype,
-                'primalStakes': primalStakes,
-                'dramaticQuestion': dramaticQuestion
-            })
-        }).then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            return Promise.reject(response);
-        }).then(function (data) {
-            setLogLinePrompt(data['prompt'])
-        }).catch(function (error) {
-            console.warn(error);
-        }).finally(function () {
-            setLogLinePromptIsLoading(false)
-        });
     }
 
 
