@@ -1,0 +1,12 @@
+.logline > span, .logLineSelect {
+    float: left;
+    display: inline-block;
+    padding: .3em;
+    padding-top: 0em;
+    height: 3em;
+    vertical-align: middle;
+}
+
+.logline > span {
+    padding-top: .5em;
+}

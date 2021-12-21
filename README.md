@@ -18,5 +18,24 @@ Hype/marketing - every time someone completes all 16 pages, update a global NoSQ
 Put an arbitrary limit of the number of variations you're allowed to have for a page. For choice between, say, 2 variations to reduce paralysis of choice, and if you want more, you must delete another one (and all later descendents)
 After GPT-3 fills a page with an idea, now encourage the author to make tweaks like a co-author brainstorm. Human needs to be part of the process like an editor forging the ideas into something even better
 
-LEFT OFF: continue with tutorial video adding server-side interaction with my C# Function instead, and React Routing
 Slot machine interface? Any real world widgets that have several dropdown-like interactions?
+
+LEFT OFF: send Log Line inputs to webservice Function, add basic validation making all fields required. Ultimately, the response to the user will be the finished 16 Sequences.
+	In Function:
+		given Log Line inputs, craft GPT-3 Log Line prompt and get result
+		Log Line result becomes the starting context for the final Sequence prompt and result, which also merges in all structure language from Hero Stage and Sequence Type.
+		Each Sequence result is chained into the next prompt, which hopefully serves as GPT-3's memory to keep the story consistent.
+
+Need the following Function APIs:
+	GenreDescription
+	ProblemTemplateDescription
+	HeroArchetypeDescription
+	EnemyArchetypeDescription
+	PrimalStakesDescription
+	DramaticQuestionDescription
+
+	LogLinePrompt
+	GenerateLogLine
+
+LEFT OFF: create ArchetypeDescription (shared by Hero and Enemy), PrimalStakesDescription, DramaticQuestionDescription
+Then flesh out with actual values
