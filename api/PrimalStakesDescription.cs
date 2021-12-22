@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StoryGhost.Util;
 
-namespace StoryGhost.LogLineDescriptions;
+namespace StoryGhost.LogLine;
 public static class PrimalStakesDescription
 {
     [FunctionName("PrimalStakesDescription")]
@@ -17,7 +17,7 @@ public static class PrimalStakesDescription
     {
         string primalStakes = req.Query["primalStakes"];
 
-        var primalStakesObj = PrimalStakesDescriptions.GetPrimalStakesDescription(primalStakes);
+        var primalStakesObj = Factory.GetPrimalStake(primalStakes);
 
         return new OkObjectResult(primalStakesObj);
     }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using StoryGhost.Util;
 
-namespace StoryGhost.LogLineDescriptions;
+namespace StoryGhost.LogLine;
 public static class ArchetypeDescription
 {
     [FunctionName("ArchetypeDescription")]
@@ -13,7 +13,7 @@ public static class ArchetypeDescription
     {
         string archetype = req.Query["archetype"];
 
-        var archetypeObj = ArchetypeDescriptions.GetArchetypeDescription(archetype);
+        var archetypeObj = Factory.GetArchetype(archetype);
 
         return new OkObjectResult(archetypeObj);
     }

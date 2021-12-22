@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using StoryGhost.Util;
 
-namespace StoryGhost.LogLineDescriptions;
+namespace StoryGhost.LogLine;
 public static class DramaticQuestionDescription
 {
     [FunctionName("DramaticQuestionDescription")]
@@ -17,7 +17,7 @@ public static class DramaticQuestionDescription
     {
         string dramaticQuestion = req.Query["dramaticQuestion"];
 
-        var dramaticQuestionObj = DramaticQuestionDescriptions.GetDramaticQuestionDescription(dramaticQuestion);
+        var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
 
         return new OkObjectResult(dramaticQuestionObj);
     }

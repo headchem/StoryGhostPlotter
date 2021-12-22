@@ -26,16 +26,5 @@ LEFT OFF: send Log Line inputs to webservice Function, add basic validation maki
 		Log Line result becomes the starting context for the final Sequence prompt and result, which also merges in all structure language from Hero Stage and Sequence Type.
 		Each Sequence result is chained into the next prompt, which hopefully serves as GPT-3's memory to keep the story consistent.
 
-Need the following Function APIs:
-	GenreDescription
-	ProblemTemplateDescription
-	HeroArchetypeDescription
-	EnemyArchetypeDescription
-	PrimalStakesDescription
-	DramaticQuestionDescription
+LEFT OFF: copy over descriptive values into Functions for Genre, Problem Template, Archetypes, Primal Stakes, Dramatic Questions. Then update components for each to display nicely in the UI. Then move on to GenerateLogLinePrompt. Consider using an abstract grammar that gets populated by parameters, or maybe mad-libs style is good enough?
 
-	LogLinePrompt
-	GenerateLogLine
-
-LEFT OFF: create ArchetypeDescription (shared by Hero and Enemy), PrimalStakesDescription, DramaticQuestionDescription
-Then flesh out with actual values

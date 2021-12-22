@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using StoryGhost.Util;
 
-namespace StoryGhost.LogLineDescriptions;
+namespace StoryGhost.LogLine;
 public static class ProblemTemplateDescription
 {
     [FunctionName("ProblemTemplateDescription")]
@@ -13,7 +13,7 @@ public static class ProblemTemplateDescription
     {
         string problemTemplate = req.Query["problemTemplate"];
 
-        var problemTemplateObj = ProblemTemplateDescriptions.GetProblemTemplateDescription(problemTemplate);
+        var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
 
         return new OkObjectResult(problemTemplateObj);
     }

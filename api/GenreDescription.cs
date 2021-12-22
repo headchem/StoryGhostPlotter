@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using StoryGhost.Util;
 
-namespace StoryGhost.LogLineDescriptions;
+namespace StoryGhost.LogLine;
 public static class GenreDescription
 {
     [FunctionName("GenreDescription")]
@@ -13,7 +13,7 @@ public static class GenreDescription
     {
         string genre = req.Query["genre"];
 
-        var genreObj = GenreDescriptions.GetGenreDescription(genre);
+        var genreObj = Factory.GetGenre(genre);
 
         return new OkObjectResult(genreObj);
     }
