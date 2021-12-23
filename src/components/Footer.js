@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
-
 const Footer = () => {
     return (
-        <footer>
-            <p>footer goes here</p>
-            <Link to="/about">About</Link>
+        <footer className="footer mt-auto py-3 bg-light">
+            <div className="container">
+                <span className="text-muted">Contact me at <a href="mailto:contact@storyghost.ai">contact@storyghost.ai</a></span>
+            </div>
         </footer>
     )
 }

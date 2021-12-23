@@ -22,6 +22,8 @@ const Main = (
         enemyArchetypeDescObj,
         primalStakesDescObj,
         dramaticQuestionDescObj,
+
+        logLineIncomplete,
         logLinePromptIsLoading,
         logLinePrompt,
 
@@ -91,120 +93,118 @@ const Main = (
     }, []);
 
     return (
-        <main>
-            <div className='container'>
-                {
-                    optionsLoading === true && <p>loading...</p>
-                }
-                {
-                    optionsLoading === false &&
-                    <>
-                        <div className='row align-items-md-stretch'>
-                            <div className='col-md-6 logline fs-5'>
-                                <span>I want a </span>
+        <>
+            {
+                optionsLoading === true && <p>loading...</p>
+            }
+            {
+                optionsLoading === false &&
+                <>
+                    <div className='row align-items-md-stretch'>
+                        <div className='col-md-6 logline fs-5'>
+                            <span>I want a </span>
 
-                                <LogLineSelect
-                                    placeholder='Genre'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('genre')}
-                                    options={genreOptions}
-                                    value={genre}
-                                    onChange={onGenreChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Genre'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('genre')}
+                                options={genreOptions}
+                                value={genre}
+                                onChange={onGenreChange}
+                            />
 
-                                <LogLineSelect
-                                    placeholder='Problem Template'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('problem template')}
-                                    options={problemTemplateOptions}
-                                    value={problemTemplate}
-                                    onChange={onProblemTemplateChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Problem Template'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('problem template')}
+                                options={problemTemplateOptions}
+                                value={problemTemplate}
+                                onChange={onProblemTemplateChange}
+                            />
 
-                                <span>story involving</span>
+                            <span>story involving</span>
 
-                                <LogLineSelect
-                                    placeholder='Keywords'
-                                    width='20em'
-                                    isMultiSelect={true}
-                                    onFocusChange={() => onFocusChange('keywords')}
-                                    value={keywords}
-                                    onChange={onKeywordChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Keywords'
+                                width='20em'
+                                isMultiSelect={true}
+                                onFocusChange={() => onFocusChange('keywords')}
+                                value={keywords}
+                                onChange={onKeywordChange}
+                            />
 
-                                <span>. The </span>
+                            <span>. The </span>
 
-                                <LogLineSelect
-                                    placeholder='Hero Archetype'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('hero archetype')}
-                                    options={archetypeOptions}
-                                    value={heroArchetype}
-                                    onChange={onHeroArchetypeChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Hero Archetype'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('hero archetype')}
+                                options={archetypeOptions}
+                                value={heroArchetype}
+                                onChange={onHeroArchetypeChange}
+                            />
 
-                                <span> hero ultimately seeks to </span>
+                            <span> hero ultimately seeks to </span>
 
-                                <LogLineSelect
-                                    placeholder='Primal Stakes'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('primal stakes')}
-                                    options={primalStakesOptions}
-                                    value={primalStakes}
-                                    onChange={onPrimalStakesChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Primal Stakes'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('primal stakes')}
+                                options={primalStakesOptions}
+                                value={primalStakes}
+                                onChange={onPrimalStakesChange}
+                            />
 
-                                <span> while the </span>
+                            <span> while the </span>
 
-                                <LogLineSelect
-                                    placeholder='Enemy Archetype'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('enemy archetype')}
-                                    options={archetypeOptions}
-                                    value={enemyArchetype}
-                                    onChange={onEnemyArchetypeChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Enemy Archetype'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('enemy archetype')}
+                                options={archetypeOptions}
+                                value={enemyArchetype}
+                                onChange={onEnemyArchetypeChange}
+                            />
 
-                                <span> enemy attempts to thwart them. The theme of </span>
+                            <span> enemy attempts to thwart them. The theme of </span>
 
-                                <LogLineSelect
-                                    placeholder='Dramatic Question'
-                                    width='15em'
-                                    isMultiSelect={false}
-                                    onFocusChange={() => onFocusChange('dramatic question')}
-                                    options={dramaticQuestionOptions}
-                                    value={dramaticQuestion}
-                                    onChange={onDramaticQuestionChange}
-                                />
+                            <LogLineSelect
+                                placeholder='Dramatic Question'
+                                width='15em'
+                                isMultiSelect={false}
+                                onFocusChange={() => onFocusChange('dramatic question')}
+                                options={dramaticQuestionOptions}
+                                value={dramaticQuestion}
+                                onChange={onDramaticQuestionChange}
+                            />
 
-                                <span> occurs throughout.</span>
-                            </div>
-                            <div className='col-md-6'>
-                                <LogLineDescription
-                                    curFocusElName={curFocusElName}
-                                    descIsLoading={descIsLoading}
-
-                                    genreDescObj={genreDescObj}
-                                    problemTemplateDescObj={problemTemplateDescObj}
-                                    heroArchetypeDescObj={heroArchetypeDescObj}
-                                    enemyArchetypeDescObj={enemyArchetypeDescObj}
-                                    primalStakesDescObj={primalStakesDescObj}
-                                    dramaticQuestionDescObj={dramaticQuestionDescObj}
-                                />
-                            </div>
+                            <span> occurs throughout.</span>
                         </div>
-                        <div className='row'>
-                            <LogLinePrompt logLinePromptIsLoading={logLinePromptIsLoading} logLinePrompt={logLinePrompt} />
+                        <div className='col-md-6'>
+                            <LogLineDescription
+                                curFocusElName={curFocusElName}
+                                descIsLoading={descIsLoading}
+
+                                genreDescObj={genreDescObj}
+                                problemTemplateDescObj={problemTemplateDescObj}
+                                heroArchetypeDescObj={heroArchetypeDescObj}
+                                enemyArchetypeDescObj={enemyArchetypeDescObj}
+                                primalStakesDescObj={primalStakesDescObj}
+                                dramaticQuestionDescObj={dramaticQuestionDescObj}
+                            />
                         </div>
-                    </>
-                }
-            </div>
-        </main >
+                    </div>
+                    <div className='row'>
+                        <LogLinePrompt onFocusChange={() => onFocusChange('log line prompt')} logLineIncomplete={logLineIncomplete} logLinePromptIsLoading={logLinePromptIsLoading} logLinePrompt={logLinePrompt} />
+                    </div>
+                </>
+            }
+        </>
     )
 }
 

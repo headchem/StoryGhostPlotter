@@ -1,18 +1,30 @@
 
 
-const LogLinePrompt = ({ logLinePromptIsLoading, logLinePrompt }) => {
+const LogLinePrompt = ({ logLineIncomplete, logLinePromptIsLoading, logLinePrompt, onFocusChange }) => {
 
     return (
         <div>
             {
-                logLinePromptIsLoading === true && <>
-                    <p>Loading...</p>
+                logLineIncomplete === true &&
+                <>
+                    <p>Fill out all fields above to generate a Log Line prompt.</p>
                 </>
             }
             {
-                logLinePromptIsLoading === false && logLinePrompt !== '' && <>
-                    <p>Prompt we'll send to the AI:</p>
-                    <p>{logLinePrompt}</p>
+                logLineIncomplete === false &&
+                <>
+                    {
+                        logLinePromptIsLoading === true &&
+                        <>
+                            <p>Loading prompt...</p>
+                        </>
+                    }
+                    {
+                        logLinePromptIsLoading === false && logLinePrompt !== '' &&
+                        <div onClick={onFocusChange}>
+                            <p>{logLinePrompt}</p>
+                        </div>
+                    }
                 </>
             }
         </div>

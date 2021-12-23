@@ -3,7 +3,7 @@
 const ProblemTemplateDescription = ({ problemTemplateDescObj }) => {
 
     const keywordsList = problemTemplateDescObj.keywords.map((word) =>
-        <li>{word}</li>
+        <li key={word}>{word}</li>
     );
 
     return (

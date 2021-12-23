@@ -49,6 +49,10 @@ const LogLineDescription = (
                             <p>Description about best types of keywords...</p>
                         </>
                     }
+                    {
+                        curFocusElName === 'log line prompt' &&
+                        <></>
+                    }
                 </>
             }
         </div>

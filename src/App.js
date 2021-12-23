@@ -27,6 +27,7 @@ function App() {
     const [primalStakesDescObj, setPrimalStakesDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
+    const [logLineIncomplete, setLogLineIncomplete] = useState(true)
     const [logLinePromptIsLoading, setLogLinePromptIsLoading] = useState(false)
     const [logLinePrompt, setLogLinePrompt] = useState('')
 
@@ -85,9 +86,11 @@ function App() {
 
         const loadLogLinePrompt = async () => {
             if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
+                setLogLineIncomplete(true)
                 return
             }
 
+            setLogLineIncomplete(false)
             setLogLinePromptIsLoading(true)
 
             fetch('/api/GenerateLogLinePrompt', {
@@ -161,45 +164,49 @@ function App() {
         <Router>
             <Header />
 
-            {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
-            <Routes>
-                <Route path="/" element={
-                    <Main
-                        genre={genre}
-                        problemTemplate={problemTemplate}
-                        keywords={keywords}
-                        heroArchetype={heroArchetype}
-                        enemyArchetype={enemyArchetype}
-                        primalStakes={primalStakes}
-                        dramaticQuestion={dramaticQuestion}
+            <main className="flex-shrink-0 mt-5">
+                <div className="container mt-5">
+                    {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                    <Routes>
+                        <Route path="/" element={
+                            <Main
+                                genre={genre}
+                                problemTemplate={problemTemplate}
+                                keywords={keywords}
+                                heroArchetype={heroArchetype}
+                                enemyArchetype={enemyArchetype}
+                                primalStakes={primalStakes}
+                                dramaticQuestion={dramaticQuestion}
 
-                        curFocusElName={curFocusElName}
+                                curFocusElName={curFocusElName}
 
-                        onFocusChange={onFocus}
-                        onGenreChange={onGenreChange}
-                        onProblemTemplateChange={onProblemTemplateChange}
-                        onKeywordChange={onKeywordsChange}
-                        onHeroArchetypeChange={onHeroArchetypeChange}
-                        onEnemyArchetypeChange={onEnemyArchetypeChange}
-                        onPrimalStakesChange={onPrimalStakesChange}
-                        onDramaticQuestionChange={onDramaticQuestionChange}
+                                onFocusChange={onFocus}
+                                onGenreChange={onGenreChange}
+                                onProblemTemplateChange={onProblemTemplateChange}
+                                onKeywordChange={onKeywordsChange}
+                                onHeroArchetypeChange={onHeroArchetypeChange}
+                                onEnemyArchetypeChange={onEnemyArchetypeChange}
+                                onPrimalStakesChange={onPrimalStakesChange}
+                                onDramaticQuestionChange={onDramaticQuestionChange}
 
-                        descIsLoading={descIsLoading}
-                        genreDescObj={genreDescObj}
-                        problemTemplateDescObj={problemTemplateDescObj}
-                        heroArchetypeDescObj={heroArchetypeDescObj}
-                        enemyArchetypeDescObj={enemyArchetypeDescObj}
-                        primalStakesDescObj={primalStakesDescObj}
-                        dramaticQuestionDescObj={dramaticQuestionDescObj}
+                                descIsLoading={descIsLoading}
+                                genreDescObj={genreDescObj}
+                                problemTemplateDescObj={problemTemplateDescObj}
+                                heroArchetypeDescObj={heroArchetypeDescObj}
+                                enemyArchetypeDescObj={enemyArchetypeDescObj}
+                                primalStakesDescObj={primalStakesDescObj}
+                                dramaticQuestionDescObj={dramaticQuestionDescObj}
 
-                        logLinePromptIsLoading={logLinePromptIsLoading}
-                        logLinePrompt={logLinePrompt}
-                    />
-                } />
-                <Route path="/about" element={<About />} />
-                <Route path="/todo" element={<ToDoHome />} />
-            </Routes>
-
+                                logLineIncomplete={logLineIncomplete}
+                                logLinePromptIsLoading={logLinePromptIsLoading}
+                                logLinePrompt={logLinePrompt}
+                            />
+                        } />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/todo" element={<ToDoHome />} />
+                    </Routes>
+                </div>
+            </main>
             <Footer />
         </Router>
     )

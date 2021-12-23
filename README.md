@@ -2,6 +2,9 @@ In VSCode menu "Run and Debug"
 	Debug "Attach to .NET Functions"
 	Once it starts, then select "SWA: Run..." and Debug
 
+to build for prod and see if there are any linting error before deploying, run the following:
+npm run build
+
 convert plotter C# webservice into Function
 basic UI, same as left-most col in plotter, but other columns are hidden
 The data returned by the webservice is stored in 16-level tree

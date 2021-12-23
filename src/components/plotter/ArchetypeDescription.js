@@ -3,23 +3,23 @@
 const ArchetypeDescription = ({ archetypeDescObj }) => {
 
     const examplesList = archetypeDescObj.examples.map((example) =>
-        <li>{example}</li>
+        <li key={example}>{example}</li>
     );
 
     const talentsList = archetypeDescObj.talents.map((talent) =>
-        <li>{talent}</li>
+        <li key={talent}>{talent}</li>
     );
 
     const weaknessesList = archetypeDescObj.weaknesses.map((weakness) =>
-        <li>{weakness}</li>
+        <li key={weakness}>{weakness}</li>
     );
 
     const addictionsList = archetypeDescObj.addictions.map((addiction) =>
-        <li>{addiction}</li>
+        <li key={addiction}>{addiction}</li>
     );
 
     const greatestFearsList = archetypeDescObj.greatestFears.map((fear) =>
-        <li>{fear}</li>
+        <li key={fear}>{fear}</li>
     );
 
     return (
