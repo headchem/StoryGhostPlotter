@@ -2,13 +2,24 @@
 
 const ProblemTemplateDescription = ({ problemTemplateDescObj }) => {
 
+    const keywordsList = problemTemplateDescObj.keywords.map((word) =>
+        <li>{word}</li>
+    );
+
     return (
         <div>
             {
                 problemTemplateDescObj && <>
-                    Problem Template desc obj goes here
-                    <p>name: {problemTemplateDescObj.name}</p>
-                    <p>desc: {problemTemplateDescObj.description}</p>
+                    <h2>{problemTemplateDescObj.name}</h2>
+                    <p>{problemTemplateDescObj.description}</p>
+                    <figure className="list-to-comma-str">
+                        <figcaption>Keywords</figcaption>
+                        <ul>
+                            {
+                                keywordsList
+                            }
+                        </ul>
+                    </figure>
                 </>
             }
         </div>

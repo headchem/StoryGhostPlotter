@@ -61,7 +61,6 @@ const Main = (
             }).then(function (data) {
                 // convert list of string tuples from the webservice into the format expected by React-Select
                 const mapToSelectOptions = (arr) => {
-                    console.log(arr)
                     return arr.map(function (x) {
                         return { value: x['item1'], label: x['item2'] }
                     })
@@ -101,7 +100,7 @@ const Main = (
                     optionsLoading === false &&
                     <>
                         <div className='row align-items-md-stretch'>
-                            <div className='col-md-6 logline'>
+                            <div className='col-md-6 logline fs-5'>
                                 <span>I want a </span>
 
                                 <LogLineSelect

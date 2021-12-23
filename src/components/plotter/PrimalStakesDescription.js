@@ -5,10 +5,10 @@ const PrimalStakesDescription = ({ primalStakesDescObj }) => {
     return (
         <div>
             {
-                primalStakesDescObj && <>
-                    Primal Stakes desc obj goes here
-                    <p>name: {primalStakesDescObj.name}</p>
-                    <p>desc: {primalStakesDescObj.description}</p>
+                primalStakesDescObj &&
+                <>
+                    <h2>{primalStakesDescObj.name}</h2>
+                    <p>{primalStakesDescObj.description}</p>
                 </>
             }
         </div>

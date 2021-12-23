@@ -5,10 +5,10 @@ const GenreDescription = ({ genreDescObj }) => {
     return (
         <div>
             {
-                genreDescObj && <>
-                    Genre desc obj goes here
-                    <p>name: {genreDescObj.name}</p>
-                    <p>desc: {genreDescObj.description}</p>
+                genreDescObj &&
+                <>
+                    <h2>{genreDescObj.name}</h2>
+                    <p>{genreDescObj.description}</p>
                 </>
             }
         </div>

@@ -10,3 +10,26 @@
 .logline > span {
     padding-top: .5em;
 }
+
+.list-to-comma-str figcaption {
+    display: inline;
+    font-weight: bold;
+}
+
+.list-to-comma-str figcaption:after {
+    content: ": ";
+}
+
+.list-to-comma-str ul {
+    display: inline;
+    list-style: none;
+    padding-left: 0;
+}
+
+.list-to-comma-str li {
+    display: inline;
+}
+
+.list-to-comma-str li + li:before {
+    content: ", ";
+}

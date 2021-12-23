@@ -25,7 +25,6 @@ const LogLineDescription = (
             }
             {
                 descIsLoading === false && <>
-                    <h3>Show full description for current focus: {curFocusElName}</h3>
                     {
                         curFocusElName === 'genre' && genreDescObj !== null && <GenreDescription genreDescObj={genreDescObj} />
                     }
