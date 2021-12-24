@@ -19,7 +19,7 @@ public class FoolTriumphant : IProblemTemplate
         }
     }
 
-    public string GetLogLineContribution(IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return "Fool Triumphant LogLine prompt contribution...";
     }

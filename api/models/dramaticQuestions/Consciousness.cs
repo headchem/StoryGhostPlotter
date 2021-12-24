@@ -13,7 +13,7 @@ public class Consciousness : IDramaticQuestion
     public string Negation { get { return "Damnation"; } }
     public string Positive { get { return "Consciousness"; } }
 
-    public string GetLogLineContribution(IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return "Consciousness LogLine promp contribution...";
     }

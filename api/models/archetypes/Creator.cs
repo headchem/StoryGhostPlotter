@@ -44,7 +44,7 @@ public List<string> GreatestFears
         get
         {
             return new List<string>{
-        "work", "creativity"
+        "work", "novelty"
     };
         }
     }
@@ -60,11 +60,11 @@ public List<string> GreatestFears
     }
     public string Motto { get { return "If you can imagine it, it can be done."; } }
 
-    public string GetHeroLogLineContribution(IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return "Creator LogLine prompt contribution for Hero";
     }
-    public string GetEnemyLogLineContribution(IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return "Creator LogLine prompt contribution for Enemy";
     }

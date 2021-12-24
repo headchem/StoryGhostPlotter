@@ -23,11 +23,20 @@ After GPT-3 fills a page with an idea, now encourage the author to make tweaks l
 
 Slot machine interface? Any real world widgets that have several dropdown-like interactions?
 
-LEFT OFF: send Log Line inputs to webservice Function, add basic validation making all fields required. Ultimately, the response to the user will be the finished 16 Sequences.
+send Log Line inputs to webservice Function, add basic validation making all fields required. Ultimately, the response to the user will be the finished 16 Sequences.
 	In Function:
 		given Log Line inputs, craft GPT-3 Log Line prompt and get result
 		Log Line result becomes the starting context for the final Sequence prompt and result, which also merges in all structure language from Hero Stage and Sequence Type.
 		Each Sequence result is chained into the next prompt, which hopefully serves as GPT-3's memory to keep the story consistent.
 
-LEFT OFF: copy over descriptive values into Functions for Genre, Problem Template, Archetypes, Primal Stakes, Dramatic Questions. Then update components for each to display nicely in the UI. Then move on to GenerateLogLinePrompt. Consider using an abstract grammar that gets populated by parameters, or maybe mad-libs style is good enough?
+LEFT OFF:
+Research good descriptions and keywords for Primal Stakes and Genres (setting). Might as well fully flesh out primal stakes since there are only 5, and pick top 5ish Genres to have complete prompt data available for next step.
+Research GPT-3 prompt best practices, examples of finetuning (and cost?). Can I manually label the plot synopsis dataset with the Log Line params?
+Move on to GenerateLogLinePrompt. Consider using an abstract grammar that gets populated by parameters, or maybe mad-libs style is good enough?
+Once we are getting responses from GPT-3, set up KeyVault integration for OpenAI key and db connection strings, log GPT responses to a db. This db can be used to manually review and use to further finetune the model to improve future output. Same db can be used to manually label the movie synopsis dataset. Bool cols for IsGenerated and IsGoodForFinetuning (default false for generated text, once I manually review I can choose to flip it)
 
+GPT-3 prompt examples: https://beta.openai.com/examples
+	Summarize for a 2nd grader
+	Micro horror story creator
+	Essay outline
+	

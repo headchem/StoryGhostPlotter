@@ -99,6 +99,7 @@ function App() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    'seed': 123,
                     'genre': genre,
                     'problemTemplate': problemTemplate,
                     'keywords': keywords,

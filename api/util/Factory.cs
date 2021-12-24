@@ -16,8 +16,12 @@ public static class Factory
     public static List<IGenre> GetGenres()
     {
         return new List<IGenre> {
+            new Adventure(),
             new Fantasy(),
-            new Romance()
+            new Mystery(),
+            new Romance(),
+            new Scifi(),
+            new Sports(),
         };
     }
 
@@ -59,7 +63,10 @@ public static class Factory
     {
         return new List<IPrimalStakes> {
             new ExactRevenge(),
-            new FindMate()
+            new FindMate(),
+            new ProtectFamily(),
+            new ProtectPossession(),
+            new Survive()
         };
     }
 

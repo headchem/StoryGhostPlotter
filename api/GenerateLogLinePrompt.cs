@@ -24,17 +24,17 @@ public static class GenerateLogLinePrompt
         var primalStakes = Factory.GetPrimalStake(req.PrimalStakes);
         var dramaticQuestion = Factory.GetDramaticQuestion(req.DramaticQuestion);
 
-        var genreContribution = genre.GetLogLineContribution(problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var problemTemplateContribution = problemTemplate.GetLogLineContribution(genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var heroArchetypeContribution = heroArchetype.GetHeroLogLineContribution(genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
-        var enemyArchetypeContribution = enemyArchetype.GetEnemyLogLineContribution(genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var primalStakesContribution = primalStakes.GetLogLineContribution(genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
-        var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
+        var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+        var problemTemplateContribution = problemTemplate.GetLogLineContribution(req.Seed, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+        var heroArchetypeContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+        var enemyArchetypeContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
+        var primalStakesContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
+        var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
         var consolidatedContributions = $"{genreContribution}. {problemTemplateContribution}. {heroArchetypeContribution}. {enemyArchetypeContribution}. {primalStakesContribution}. {dramaticQuestionContribution}";
 
         var result = new GenerateLogLinePromptResponse{
-            Prompt = $"this is the GPT-3 prompt with the following inputs: genre: {req.Genre}, problem template: {req.ProblemTemplate}, keywords: {string.Join("; ", req.Keywords)}, hero archetype: {req.HeroArchetype}, enemy archetype: {req.EnemyArchetype}, primal stakes: {req.PrimalStakes}, dramatic question: {req.DramaticQuestion}. {consolidatedContributions}"
+            Prompt = $"this is the GPT-3 prompt with the following inputs: seed: {req.Seed}, genre: {req.Genre}, problem template: {req.ProblemTemplate}, keywords: {string.Join("; ", req.Keywords)}, hero archetype: {req.HeroArchetype}, enemy archetype: {req.EnemyArchetype}, primal stakes: {req.PrimalStakes}, dramatic question: {req.DramaticQuestion}. {consolidatedContributions}"
         };
 
         return new OkObjectResult(result);

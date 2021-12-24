@@ -12,4 +12,5 @@ public class GenerateLogLineProptRequest
     public string EnemyArchetype { get; set; }
     public string PrimalStakes { get; set; }
     public string DramaticQuestion { get; set; }
+    public int Seed { get; set; }
 }

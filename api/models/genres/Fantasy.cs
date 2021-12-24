@@ -8,18 +8,18 @@ public class Fantasy : IGenre
 {
     public string Id { get { return "fantasy"; } }
     public string Name { get { return "Fantasy"; } }
-    public string Description { get { return "Fantasy desc here"; } }
+    public string Description { get { return "Fantasy typically involves magical elements, is set in a vaguely medieval universe, and is inspired by fantastical folklore myths."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "magic"
+                "magic", "wildness", "politics", "creatures", "legends"
             };
         }
     }
 
-    public string GetLogLineContribution(IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return "Fantasy LogLine prompt contribution...";
     }

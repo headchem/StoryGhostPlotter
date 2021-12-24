@@ -4,24 +4,24 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.Genres;
 
-public class Romance : IGenre
+public class Sports : IGenre
 {
-    public string Id { get { return "romance"; } }
-    public string Name { get { return "Romance"; } }
-    public string Description { get { return "Romance focuses on the relationship and courtship between two people."; } }
+    public string Id { get { return "sports"; } }
+    public string Name { get { return "Sports"; } }
+    public string Description { get { return "The Sports genre focuses on a game that dominates the Hero's life. The game is a backdrop for the Hero's struggles to overcome adversity."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "love", "longing"
+                "game", "losing", "winning", "overcome", "skill"
             };
         }
     }
 
     public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Romance LogLine prompt contribution...";
+        return "Sports LogLine prompt contribution...";
     }
 
 }

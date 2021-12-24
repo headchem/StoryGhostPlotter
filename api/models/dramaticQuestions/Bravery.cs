@@ -13,7 +13,7 @@ public class Bravery : IDramaticQuestion
     public string Negation { get { return "Cowardice perceived as bravery"; } }
     public string Positive { get { return "Bravery"; } }
 
-    public string GetLogLineContribution(IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return "Bravery LogLine prompt contribution...";
     }
