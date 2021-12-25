@@ -60,13 +60,18 @@ public class Caregiver : IArchetype
     }
     public string Motto { get { return "Love your neighbour as yourself"; } }
 
+    public string OrphanDesires { get { return "Protect and care for others."; } }
+    public string WandererResponse { get { return "Stop the problem, or shield and care for those it harms."; } }
+    public string WarriorResponse { get { return "Help without maiming self or others."; } }
+
+
     public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Caregiver LogLine prompt contribution for Hero";
+        return $"HERO has a caregiver personality (for example: {string.Join(", ", Examples)}).";
     }
     public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Caregiver LogLine prompt contribution for Enemy";
+        return $"ENEMY has a caregiver personality (for example: {string.Join(", ", Examples)}).";
     }
 
 }

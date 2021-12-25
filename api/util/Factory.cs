@@ -17,6 +17,7 @@ public static class Factory
     {
         return new List<IGenre> {
             new Adventure(),
+            new Drama(),
             new Fantasy(),
             new Mystery(),
             new Romance(),

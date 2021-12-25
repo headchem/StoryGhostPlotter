@@ -60,12 +60,17 @@ public List<string> GreatestFears
     }
     public string Motto { get { return "If you can imagine it, it can be done."; } }
 
+    public string OrphanDesires { get { return "Enact their vision, proclaim their identity, create things of enduring value"; } }
+    public string WandererResponse { get { return "Claim problem as a personal failing."; } }
+    public string WarriorResponse { get { return "Develop artistic control and skill, create without needing validation, self-acceptance."; } }
+
+
     public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Creator LogLine prompt contribution for Hero";
+        return $"HERO has a creator personality (for example: {string.Join(", ", Examples)}).";
     }
     public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Creator LogLine prompt contribution for Enemy";
+        return $"ENEMY has a creator personality (for example: {string.Join(", ", Examples)}).";
     }
 }

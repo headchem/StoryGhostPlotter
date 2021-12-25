@@ -21,7 +21,7 @@ public class Fantasy : IGenre
 
     public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Fantasy LogLine prompt contribution...";
+        return $"The genre is {Name}, which involves {string.Join(", ", Keywords)}.";
     }
 
 }

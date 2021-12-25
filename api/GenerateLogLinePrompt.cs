@@ -31,10 +31,11 @@ public static class GenerateLogLinePrompt
         var primalStakesContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
         var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
-        var consolidatedContributions = $"{genreContribution}. {problemTemplateContribution}. {heroArchetypeContribution}. {enemyArchetypeContribution}. {primalStakesContribution}. {dramaticQuestionContribution}";
+        var consolidatedContributions = $"{genreContribution} {problemTemplateContribution} The following ideas are contained in this story: {string.Join(", ", req.Keywords)}. {heroArchetypeContribution} {enemyArchetypeContribution} {primalStakesContribution} {dramaticQuestionContribution}";
 
-        var result = new GenerateLogLinePromptResponse{
-            Prompt = $"this is the GPT-3 prompt with the following inputs: seed: {req.Seed}, genre: {req.Genre}, problem template: {req.ProblemTemplate}, keywords: {string.Join("; ", req.Keywords)}, hero archetype: {req.HeroArchetype}, enemy archetype: {req.EnemyArchetype}, primal stakes: {req.PrimalStakes}, dramatic question: {req.DramaticQuestion}. {consolidatedContributions}"
+        var result = new GenerateLogLinePromptResponse
+        {
+            Prompt = consolidatedContributions
         };
 
         return new OkObjectResult(result);

@@ -5,8 +5,6 @@ In VSCode menu "Run and Debug"
 to build for prod and see if there are any linting error before deploying, run the following:
 npm run build
 
-convert plotter C# webservice into Function
-basic UI, same as left-most col in plotter, but other columns are hidden
 The data returned by the webservice is stored in 16-level tree
 At the start, you must commit to the initial parameters, because changing them after fragments have been generated will not have any consistency
 With fixed initial preferences set, now UI goes one by one through each of the 16 "pages"
@@ -39,4 +37,38 @@ GPT-3 prompt examples: https://beta.openai.com/examples
 	Summarize for a 2nd grader
 	Micro horror story creator
 	Essay outline
-	
+
+Fine-tuning
+
+https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
+search for the heading "Conditional generation" and "Case study: Product description based on a technical list of properties"
+
+Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator
+
+1000 tokens = ~750 words
+2048 tokens = ~1500 words
+
+{"prompt": "<prompt text>", "completion": "<ideal generated text>"}
+
+OpenAI advises not to use the format of Param1=Value1. Instead convert it to natural short sentences like Param1 is a Value1. Param2 is a Value2.
+
+It is important that every log line input param have some presence in the completion log line summary text.
+
+I think it's safe to replace characters names and locations with [HERO] [ENEMY] [HERO LOVE INTEREST] [SIDE CHARACTER 1] [LOCATION 1] [LOCATION 2] etc...
+
+[PROMPT]
+Hero has a Creator personality (expand more with IArchetype.cs values?). Enemy has a Warrior personality. The genre is Scifi. The primal stakes are to survive. The dramatic question is "can faking bravery lead to true bravery?". Important concepts in this story are: kangaroo, basketball
+
+[COMPLETION]
+Summary of a story involving all log line inputs...
+
+-------
+
+[PROMPT]
+Hero has a Creator personality (expand more with IArchetype.cs values?). Enemy has a Warrior personality. The genre is Scifi. The primal stakes are to survive. The dramatic question is "can faking bravery lead to true bravery?". Important concepts in this story are: kangaroo, basketball
+Summary of a story involving all log line inputs...
+
+[COMPLETION]
+The 16-32 sentences...
+
+This method will generate all 16 sequences in one go. If I want the user to have choices at each sequence, I would need to modify the training data so I send it the history of previous sequences, and ask it to generate the next sequence. Maybe let's start with generating complete stories at first, and then with the same training data, we can split it into stairsteps. Or is it equivalent to train on the full 16 sequences, and then adjust the prompt to also include just Sequences 1-8? Training data should probably number each sequence to give GPT-3 a numerical order to learn.

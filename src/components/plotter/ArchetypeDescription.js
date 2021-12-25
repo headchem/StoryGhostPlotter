@@ -77,6 +77,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                             }
                         </ul>
                     </figure>
+                    <p><strong>Pre-problem desires: </strong>{archetypeDescObj.orphanDesires}</p>
+                    <p><strong>Initial (unsuccessful) response to problem: </strong>{archetypeDescObj.wandererResponse}</p>
+                    <p><strong>Mature (successful) response to problem: </strong>{archetypeDescObj.warriorResponse}</p>
                 </>
             }
         </div>

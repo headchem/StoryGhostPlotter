@@ -21,7 +21,7 @@ public class BuddyLove : IProblemTemplate
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return "Buddy Love LogLine prompt contribution...";
+        return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
     }
 
 }

@@ -15,7 +15,7 @@ public class Bravery : IDramaticQuestion
 
     public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
-        return "Bravery LogLine prompt contribution...";
+        return $"The theme of the story is {Name}, which asks the dramatic question of \"{Description}\"";
     }
 
 }

@@ -18,6 +18,9 @@ public interface IArchetype
     public string ShadowSide { get; }
     public List<string> Examples { get; }
     public string Motto { get; }
+    public string OrphanDesires { get; }
+    public string WandererResponse { get; }
+    public string WarriorResponse { get; }
 
     public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion);
     public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion);
