@@ -36,7 +36,15 @@ public static class Factory
     {
         return new List<IProblemTemplate> {
             new BuddyLove(),
-            new FoolTriumphant()
+            new FoolTriumphant(),
+            new GoldenFleece(),
+            new Institutionalized(),
+            new MonsterInTheHouse(),
+            new OutOfTheBottle(),
+            new RitesOfPassage(),
+            new Superhero(),
+            new UnexpectedProblem(),
+            new Whydunnit()
         };
     }
 

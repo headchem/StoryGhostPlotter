@@ -14,10 +14,28 @@ public class FoolTriumphant : IProblemTemplate
         get
         {
             return new List<string>{
-        "Fool", "Establishment", "Transmutation"
-    };
+                "Fool", "Establishment", "Transmutation"
+            };
         }
     }
+
+    public string OpeningImage { get { return ""; } }
+    public string ThemeStated { get { return ""; } }
+    public string Setup { get { return "The underdog Hero appears to be the Village Idiot, but there is a spark of wisdom within them."; } }
+    public string IncitingIncident { get { return "A bigger, more powerful, \"establishment\" Enemy is cruel to the Hero and discounts them due to the Hero\'s uniqueness."; } }
+    public string Debate { get { return ""; } }
+    public string BreakIntoTwo { get { return "The Hero decides they have had enough of society deeming them to be a loser because of their uniqueness."; } }
+    public string FunAndGames { get { return "The Hero has a friendly accomplice who watches in disbelief as the Hero takes on the Enemy."; } }
+    public string FirstPinchPoint { get { return ""; } }
+    public string Midpoint { get { return "The Hero suceeds at shaming the Enemy establishment that shunned them."; } }
+    public string BadGuysCloseIn { get { return "The Hero may have succeeded, but they did so by sacrificing or downplaying their uniqueness."; } }
+    public string SecondPinchPoint { get { return ""; } }
+    public string AllHopeIsLost { get { return ""; } }
+    public string DarkNightOfTheSoul { get { return "The Hero admits they have become no better than the Enemy establishment that shunned them in the first place."; } }
+    public string BreakIntoThree { get { return ""; } }
+    public string Climax { get { return "The Hero embraces their uniqueness and uses it to overcome the Problem."; } }
+    public string Cooldown { get { return ""; } }
+
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

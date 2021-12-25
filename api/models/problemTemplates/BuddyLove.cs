@@ -14,10 +14,27 @@ public class BuddyLove : IProblemTemplate
         get
         {
             return new List<string>{
-        "Deficient", "Counterpart", "Complication"
-    };
+                "Deficient", "Counterpart", "Complication"
+            };
         }
     }
+
+    public string OpeningImage { get { return ""; } }
+    public string ThemeStated { get { return "This is a love story in disguise."; } }
+    public string Setup { get { return "The Hero and their Buddy/Enemy don't get along."; } }
+    public string IncitingIncident { get { return "The permanent continuation of their relationship is threatened."; } }
+    public string Debate { get { return ""; } }
+    public string BreakIntoTwo { get { return ""; } }
+    public string FunAndGames { get { return "Hero and Buddy/Enemy grow closer, oblivious to the flaws in their relationship."; } }
+    public string FirstPinchPoint { get { return ""; } }
+    public string Midpoint { get { return ""; } }
+    public string BadGuysCloseIn { get { return ""; } }
+    public string SecondPinchPoint { get { return ""; } }
+    public string AllHopeIsLost { get { return "Hero and Buddy/Enemy have a big fight and declare the relationship is over."; } }
+    public string DarkNightOfTheSoul { get { return ""; } }
+    public string BreakIntoThree { get { return "Both Hero and Buddy/Enemy realize they are two halves of a whole, and they need to surrender their egos and repair the relationship."; } }
+    public string Climax { get { return "Hero and Buddy/Enemy transform each other and create an even better relationship than they had before."; } }
+    public string Cooldown { get { return ""; } }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
