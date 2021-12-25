@@ -50,7 +50,17 @@ public static class Factory
     {
         return new List<IArchetype> {
             new Caregiver(),
-            new Creator()
+            new Creator(),
+            new Explorer(),
+            new Innocent(),
+            new Jester(),
+            new Lover(),
+            new Magician(),
+            new Orphan(),
+            new Outlaw(),
+            new Ruler(),
+            new Sage(),
+            new Warrior()
         };
     }
 

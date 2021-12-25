@@ -1,0 +1,77 @@
+using System;
+using System.Collections.Generic;
+using StoryGhost.Interfaces;
+using StoryGhost.Enums;
+
+namespace StoryGhost.Models.Archetypes;
+
+public class Orphan : IArchetype
+{
+    public string Id { get { return "orphan"; } }
+    public string Name { get { return "Orphan"; } }
+    public string Description { get { return "The Orphan has metaphorically skipped childhood. They are unpretentious, street smart, and empathize with the struggle of others. They fear exploitation and being singled out from the crowd. They are prone to a victim mentality and must parent themselves."; } }
+    public string SourceOfMotivation { get { return SourceOfMotivationEnum.Themselves; } }
+    public string OrphanDesires { get { return "To belong, regain safety, connect with others."; } }
+    public string WandererResponse { get { return "Be victimized by it."; } }
+    public string WarriorResponse { get { return "Develop ordinary solid virtues, be down to earth, process and feel pain fully."; } }
+    public List<string> GreatestFears
+    {
+        get
+        {
+            return new List<string>{
+                "to be left out or to stand out from the crowd", "exploitation"
+            };
+        }
+    }
+    public List<string> Talents
+    {
+        get
+        {
+            return new List<string> {
+                "realism", "empathy", "lack of pretense", "interdependence", "resilience"
+            };
+        }
+    }
+    public List<string> Weaknesses
+    {
+        get
+        {
+            return new List<string> {
+                "suppressing true self to blend in or maintain superficial relationships", "cynicism", "tendency to be the victim", "chronic complaining"
+            };
+        }
+    }
+    public string AddictiveQuality { get { return "cynicism"; } }
+    public List<string> Addictions
+    {
+        get
+        {
+            return new List<string>{
+                "powerlessness", "worrying"
+            };
+        }
+    }
+    public string ShadowSide { get { return "The victim blames their predatory behavior and incompetence on others. They expect special treatment due to being fragile from past victimization. They attack people who are trying to help them, or collapse and become dysfunctional."; } }
+    public List<string> Examples
+    {
+        get
+        {
+            return new List<string>{
+                "Down-to-earth person", "realist", "diligent worker", "solid citizen", "good neighbor"
+            };
+        }
+    }
+    public string Motto { get { return "All people are created equal."; } }
+
+
+
+
+    public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    {
+        return $"HERO has a {Name} personality (for example: {string.Join(", ", Examples)}).";
+    }
+    public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    {
+        return $"ENEMY has a {Name} personality (for example: {string.Join(", ", Examples)}).";
+    }
+}

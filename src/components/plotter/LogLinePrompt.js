@@ -7,7 +7,7 @@ const LogLinePrompt = ({ logLineIncomplete, logLinePromptIsLoading, logLinePromp
             {
                 logLineIncomplete === true &&
                 <>
-                    <p>Fill out all fields above to generate a Log Line prompt.</p>
+                    <p>Fill out all fields above to generate a synopsis prompt.</p>
                 </>
             }
             {

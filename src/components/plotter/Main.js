@@ -101,7 +101,7 @@ const Main = (
                 optionsLoading === false &&
                 <>
                     <div className='row align-items-md-stretch'>
-                        <div className='col-md-6 logline fs-5'>
+                        <div className='col-md-7 logline fs-5'>
                             <span>I want a </span>
 
                             <LogLineSelect
@@ -185,7 +185,7 @@ const Main = (
 
                             <span> occurs throughout.</span>
                         </div>
-                        <div className='col-md-6'>
+                        <div className='col-md-5'>
                             <LogLineDescription
                                 curFocusElName={curFocusElName}
                                 descIsLoading={descIsLoading}
