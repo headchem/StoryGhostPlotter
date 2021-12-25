@@ -99,7 +99,19 @@ public static class Factory
     {
         return new List<IDramaticQuestion> {
             new Bravery(),
-            new Consciousness()
+            new Consciousness(),
+            new Liberty(),
+            new LoveFake(),
+            new LoveSelfHate(),
+            new Loyalty(),
+            new Maturity(),
+            new NaturalUnsanctioned(),
+            new SanctionedUnnatural(),
+            new OpenCommunication(),
+            new Success(),
+            new Truth(),
+            new Wealth(),
+            new Wisdom()
         };
     }
 

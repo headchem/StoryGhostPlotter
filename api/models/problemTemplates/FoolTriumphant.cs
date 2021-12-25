@@ -22,7 +22,7 @@ public class FoolTriumphant : IProblemTemplate
     public string OpeningImage { get { return ""; } }
     public string ThemeStated { get { return ""; } }
     public string Setup { get { return "The underdog Hero appears to be the Village Idiot, but there is a spark of wisdom within them."; } }
-    public string IncitingIncident { get { return "A bigger, more powerful, \"establishment\" Enemy is cruel to the Hero and discounts them due to the Hero\'s uniqueness."; } }
+    public string IncitingIncident { get { return "A bigger, more powerful, \"establishment\" Enemy is cruel to the Hero and discounts them due to the Hero's uniqueness."; } }
     public string Debate { get { return ""; } }
     public string BreakIntoTwo { get { return "The Hero decides they have had enough of society deeming them to be a loser because of their uniqueness."; } }
     public string FunAndGames { get { return "The Hero has a friendly accomplice who watches in disbelief as the Hero takes on the Enemy."; } }
