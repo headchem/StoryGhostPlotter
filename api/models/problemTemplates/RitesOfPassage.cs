@@ -36,6 +36,53 @@ public class RitesOfPassage : IProblemTemplate
     public string Climax { get { return "The Hero is victorious by accepting their own humanity, surrendering and being at peace with the invisible forces of life they can't control."; } }
     public string Cooldown { get { return ""; } }
 
+public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Troubled",
+                EnemyAdjective = "Doubtful"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Troubled",
+                EnemyAdjective = "Doubtful"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Successful",
+                EnemyAdjective = "Hopeful"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Successful",
+                EnemyAdjective = "Doubtful"
+            };
+        }
+    }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

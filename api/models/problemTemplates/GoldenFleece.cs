@@ -36,6 +36,53 @@ public class GoldenFleece : IProblemTemplate
     public string Climax { get { return ""; } }
     public string Cooldown { get { return ""; } }
 
+public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Driven",
+                EnemyAdjective = "Greedy"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Driven",
+                EnemyAdjective = "Greedy"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Yielding",
+                EnemyAdjective = "Generous"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Yielding",
+                EnemyAdjective = "Greedy"
+            };
+        }
+    }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

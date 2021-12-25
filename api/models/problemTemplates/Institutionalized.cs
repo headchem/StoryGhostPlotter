@@ -36,6 +36,53 @@ public class Institutionalized : IProblemTemplate
     public string Climax { get { return "The Hero finds a way to hold true to their own identity, while honoring and affecting positive change on the group."; } }
     public string Cooldown { get { return ""; } }
 
+public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Shunned",
+                EnemyAdjective = "Conforming"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Shunned",
+                EnemyAdjective = "Conforming"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Independent",
+                EnemyAdjective = "Accepting"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Independent",
+                EnemyAdjective = "Conforming"
+            };
+        }
+    }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

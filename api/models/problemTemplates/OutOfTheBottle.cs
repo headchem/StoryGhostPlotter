@@ -36,6 +36,53 @@ public class OutOfTheBottle : IProblemTemplate
     public string Climax { get { return ""; } }
     public string Cooldown { get { return ""; } }
 
+public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Covetous",
+                EnemyAdjective = "Trickster"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Covetous",
+                EnemyAdjective = "Trickster"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Generous",
+                EnemyAdjective = "Bored"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Generous",
+                EnemyAdjective = "Trickster"
+            };
+        }
+    }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

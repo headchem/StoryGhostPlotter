@@ -36,6 +36,53 @@ public class MonsterInTheHouse : IProblemTemplate
     public string Climax { get { return "The monster vanquishes those who have sinned, but spares those who have repented."; } }
     public string Cooldown { get { return ""; } }
 
+public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Blameworthy",
+                EnemyAdjective = "Rageful"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Blameworthy",
+                EnemyAdjective = "Rageful"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Responsible",
+                EnemyAdjective = "Fearful"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Responsible",
+                EnemyAdjective = "Rageful"
+            };
+        }
+    }
 
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

@@ -36,6 +36,54 @@ public class BuddyLove : IProblemTemplate
     public string Climax { get { return "Hero and Buddy/Enemy transform each other and create an even better relationship than they had before."; } }
     public string Cooldown { get { return ""; } }
 
+    public Adjectives OrphanAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Inadequate",
+                EnemyAdjective = "Capable"
+            };
+        }
+    }
+
+    public Adjectives WandererAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Inadequate",
+                EnemyAdjective = "Capable"
+            };
+        }
+    }
+
+    public Adjectives WarriorAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Confident",
+                EnemyAdjective = "Incapable"
+            };
+        }
+    }
+
+    public Adjectives MartyrAdjectives
+    {
+        get
+        {
+            return new Adjectives
+            {
+                HeroAdjective = "Confident",
+                EnemyAdjective = "Capable"
+            };
+        }
+    }
+
     public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";

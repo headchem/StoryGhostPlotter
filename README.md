@@ -72,3 +72,12 @@ Summary of a story involving all log line inputs...
 The 16-32 sentences...
 
 This method will generate all 16 sequences in one go. If I want the user to have choices at each sequence, I would need to modify the training data so I send it the history of previous sequences, and ask it to generate the next sequence. Maybe let's start with generating complete stories at first, and then with the same training data, we can split it into stairsteps. Or is it equivalent to train on the full 16 sequences, and then adjust the prompt to also include just Sequences 1-8? Training data should probably number each sequence to give GPT-3 a numerical order to learn.
+
+
+LEFT OFF: all of the Log Line inputs have been added. Continue adding plotline summaries to fine-tuning training spreadsheet. Once I've done one story for each problem template (10 total) then do a trial run of finetuning gpt-3 to generate the high-level synopsis. If this works, then move on to finetuning individual sequences - do I need to build up the training data like:
+
+LogLine Prompt + Prev Seq 1 completion = Seq 2
+LogLine Prompt + Prev Seq 1+2 completion = Seq 3
+LogLine Prompt + Prev Seq 1+2+3 completion = Seq 4...
+
+LEFT OFF: add problem template adjectives: https://github.com/headchem/InfiniteCampfire/blob/911cc5195a3a9bb99d1bd2416a60bb11f74c9734/Web/ClientApp/src/components/story/helpers/util.js#L1667

@@ -20,6 +20,9 @@ const ProblemTemplateDescription = ({ problemTemplateDescObj }) => {
                             }
                         </ul>
                     </figure>
+                    <p>Hero's initial attitude is <strong>{problemTemplateDescObj.wandererAdjectives.heroAdjective}</strong> while the enemy is <strong>{problemTemplateDescObj.wandererAdjectives.enemyAdjective}</strong>.</p>
+                    <p>Hero progresses to <strong>{problemTemplateDescObj.warriorAdjectives.heroAdjective}</strong> while the enemy becomes <strong>{problemTemplateDescObj.warriorAdjectives.enemyAdjective}</strong>.</p>
+                    <p>At the end, Hero is <strong>{problemTemplateDescObj.martyrAdjectives.heroAdjective}</strong> while the enemy reverts to <strong>{problemTemplateDescObj.martyrAdjectives.enemyAdjective}</strong>.</p>
                 </>
             }
         </div>
