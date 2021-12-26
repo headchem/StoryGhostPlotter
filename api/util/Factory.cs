@@ -100,6 +100,7 @@ public static class Factory
         return new List<IDramaticQuestion> {
             new Bravery(),
             new Consciousness(),
+            new Legacy(),
             new Liberty(),
             new LoveFake(),
             new LoveSelfHate(),
