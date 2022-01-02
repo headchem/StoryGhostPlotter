@@ -4,17 +4,17 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.PrimalStakes;
 
-public class FindMate : IPrimalStakes
+public class FindConnection : IPrimalStakes
 {
-    public string Id { get { return "findMate"; } }
-    public string Name { get { return "find a mate"; } }
-    public string Description { get { return "The Hero lacks a deep connection in life, but they are irresistably drawn to another entity that is seemingly incompatible. As the two learn more about each other, they develop a strong bond."; } }
+    public string Id { get { return "findConnection"; } }
+    public string Name { get { return "find connection"; } }
+    public string Description { get { return "The Hero lacks a deep connection in life, and they are irresistably drawn to another entity that is seemingly incompatible. As the two learn more about each other, they develop a strong bond."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "lonliness", "rescue", "connection", "passion"
+                "lonliness", "rescue", "connection", "passion", "belonging"
             };
         }
     }

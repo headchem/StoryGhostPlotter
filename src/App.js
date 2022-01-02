@@ -8,6 +8,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './components/About'
 
+import * as PromptArea from './util/PromptArea'
+
 function App() {
 
     const [curFocusElName, setCurFocusElName] = useState('')
@@ -28,13 +30,34 @@ function App() {
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
     const [logLineIncomplete, setLogLineIncomplete] = useState(true)
-    const [logLinePromptIsLoading, setLogLinePromptIsLoading] = useState(false)
-    const [logLinePrompt, setLogLinePrompt] = useState('')
+    //const [logLinePromptIsLoading, setLogLinePromptIsLoading] = useState(false)
+    //const [logLinePrompt, setLogLinePrompt] = useState('')
+
+    const [orphanSummaryStatus, setOrphanSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
+    const [orphanSummary, setOrphanSummary] = useState('')
+    const [orphanComplete, setOrphanComplete] = useState(false)
+    const [orphanFull, setOrphanFull] = useState('')
+
+    const [wandererSummaryStatus, setWandererSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
+    const [wandererSummary, setWandererSummary] = useState('')
+    const [wandererComplete, setWandererComplete] = useState(false)
+    const [wandererFull, setWandererFull] = useState('')
+
+    const [warriorSummaryStatus, setWarriorSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
+    const [warriorSummary, setWarriorSummary] = useState('')
+    const [warriorComplete, setWarriorComplete] = useState(false)
+    const [warriorFull, setWarriorFull] = useState('')
+
+    const [martyrSummaryStatus, setMartyrSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
+    const [martyrSummary, setMartyrSummary] = useState('')
+    const [martyrFull, setMartyrFull] = useState('')
+    
 
     const onFocus = (elName) => {
         setCurFocusElName(elName)
     }
 
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const loadDescObj = async () => {
             let url = ''
@@ -84,46 +107,48 @@ function App() {
             }
         }
 
-        const loadLogLinePrompt = async () => {
+        const checkLogLineIsComplete = async () => {
+            // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
             if (genre === '' || problemTemplate === '' || keywords.length === 0 || heroArchetype === '' || enemyArchetype === '' || primalStakes === '' || dramaticQuestion === '') {
                 setLogLineIncomplete(true)
                 return
             }
 
             setLogLineIncomplete(false)
-            setLogLinePromptIsLoading(true)
+            setOrphanSummaryStatus(PromptArea.Status.AVAILABLE)
+            // setLogLinePromptIsLoading(true)
 
-            fetch('/api/GenerateLogLinePrompt', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'seed': 123,
-                    'genre': genre,
-                    'problemTemplate': problemTemplate,
-                    'keywords': keywords,
-                    'heroArchetype': heroArchetype,
-                    'enemyArchetype': enemyArchetype,
-                    'primalStakes': primalStakes,
-                    'dramaticQuestion': dramaticQuestion
-                })
-            }).then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                }
-                return Promise.reject(response);
-            }).then(function (data) {
-                setLogLinePrompt(data['prompt'])
-            }).catch(function (error) {
-                console.warn(error);
-            }).finally(function () {
-                setLogLinePromptIsLoading(false)
-            });
+            // fetch('/api/GenerateLogLinePrompt', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         'seed': 123,
+            //         'genre': genre,
+            //         'problemTemplate': problemTemplate,
+            //         'keywords': keywords,
+            //         'heroArchetype': heroArchetype,
+            //         'enemyArchetype': enemyArchetype,
+            //         'primalStakes': primalStakes,
+            //         'dramaticQuestion': dramaticQuestion
+            //     })
+            // }).then(function (response) {
+            //     if (response.ok) {
+            //         return response.json();
+            //     }
+            //     return Promise.reject(response);
+            // }).then(function (data) {
+            //     setLogLinePrompt(data['prompt'])
+            // }).catch(function (error) {
+            //     console.warn(error);
+            // }).finally(function () {
+            //     setLogLinePromptIsLoading(false)
+            // });
         }
 
         loadDescObj()
-        loadLogLinePrompt()
+        checkLogLineIsComplete()
         // even though we use 'curFocusElName' in this method, we don't want to trigger reloading whenever it changes, hence the linter hint below to get this to build in prod...
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
@@ -199,8 +224,39 @@ function App() {
                                 dramaticQuestionDescObj={dramaticQuestionDescObj}
 
                                 logLineIncomplete={logLineIncomplete}
-                                logLinePromptIsLoading={logLinePromptIsLoading}
-                                logLinePrompt={logLinePrompt}
+
+                                orphanSummaryStatus={orphanSummaryStatus}
+                                orphanSummary={orphanSummary}
+                                setOrphanSummary={setOrphanSummary}
+                                orphanFull={orphanFull}
+                                setOrphanFull={setOrphanFull}
+
+                                wandererSummaryStatus={wandererSummaryStatus}
+                                setWandererSummaryStatus={setWandererSummaryStatus}
+                                wandererSummary={wandererSummary}
+                                setWandererSummary={setWandererSummary}
+                                wandererFull={wandererFull}
+                                setWandererFull={setWandererFull}
+                                orphanComplete={orphanComplete}
+                                setOrphanComplete={setOrphanComplete}
+
+                                warriorSummaryStatus={warriorSummaryStatus}
+                                setWarriorSummaryStatus={setWarriorSummaryStatus}
+                                warriorSummary={warriorSummary}
+                                setWarriorSummary={setWarriorSummary}
+                                warriorFull={warriorFull}
+                                setWarriorFull={setWarriorFull}
+                                wandererComplete={wandererComplete}
+                                setWandererComplete={setWandererComplete}
+
+                                martyrSummaryStatus={martyrSummaryStatus}
+                                setMartyrSummaryStatus={setMartyrSummaryStatus}
+                                martyrSummary={martyrSummary}
+                                setMartyrSummary={setMartyrSummary}
+                                martyrFull={martyrFull}
+                                setMartyrFull={setMartyrFull}
+                                warriorComplete={warriorComplete}
+                                setWarriorComplete={setWarriorComplete}
                             />
                         } />
                         <Route path="/about" element={<About />} />
