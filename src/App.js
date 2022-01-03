@@ -7,6 +7,7 @@ import Main from './components/plotter/Main'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './components/About'
+import Admin from './components/Admin'
 
 import * as PromptArea from './util/PromptArea'
 
@@ -30,8 +31,6 @@ function App() {
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
     const [logLineIncomplete, setLogLineIncomplete] = useState(true)
-    //const [logLinePromptIsLoading, setLogLinePromptIsLoading] = useState(false)
-    //const [logLinePrompt, setLogLinePrompt] = useState('')
 
     const [orphanSummaryStatus, setOrphanSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
     const [orphanSummary, setOrphanSummary] = useState('')
@@ -116,35 +115,6 @@ function App() {
 
             setLogLineIncomplete(false)
             setOrphanSummaryStatus(PromptArea.Status.AVAILABLE)
-            // setLogLinePromptIsLoading(true)
-
-            // fetch('/api/GenerateLogLinePrompt', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({
-            //         'seed': 123,
-            //         'genre': genre,
-            //         'problemTemplate': problemTemplate,
-            //         'keywords': keywords,
-            //         'heroArchetype': heroArchetype,
-            //         'enemyArchetype': enemyArchetype,
-            //         'primalStakes': primalStakes,
-            //         'dramaticQuestion': dramaticQuestion
-            //     })
-            // }).then(function (response) {
-            //     if (response.ok) {
-            //         return response.json();
-            //     }
-            //     return Promise.reject(response);
-            // }).then(function (data) {
-            //     setLogLinePrompt(data['prompt'])
-            // }).catch(function (error) {
-            //     console.warn(error);
-            // }).finally(function () {
-            //     setLogLinePromptIsLoading(false)
-            // });
         }
 
         loadDescObj()
@@ -261,6 +231,7 @@ function App() {
                         } />
                         <Route path="/about" element={<About />} />
                         <Route path="/todo" element={<ToDoHome />} />
+                        <Route path="/admin" element={<Admin />} />
                     </Routes>
                 </div>
             </main>
