@@ -15,7 +15,7 @@ namespace StoryGhost.Generate;
 public static class Generate
 {
     [FunctionName("Generate")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] GenerateRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Story req, ILogger log)
     {
         var prompt = Factory.GetPrompt(req);
         

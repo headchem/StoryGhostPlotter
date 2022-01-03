@@ -123,7 +123,7 @@ public static class Factory
         return GetDramaticQuestions().Where(d => d.Id == dramaticQuestion).First();
     }
 
-    public static string GetPrompt(GenerateRequest req)
+    public static string GetPrompt(Story req)
     {
         var problemTemplate = Factory.GetProblemTemplate(req.ProblemTemplate);
         var heroArchetype = Factory.GetArchetype(req.HeroArchetype);
@@ -147,7 +147,7 @@ public static class Factory
         return consolidatedContributions;
     }
 
-    private static string getPromptForCompletionType(GenerateRequest req)
+    private static string getPromptForCompletionType(Story req)
     {
         var separator = "\n\n";
 
@@ -165,7 +165,7 @@ public static class Factory
         };
     }
 
-    private static string getPromptWithPrefix(string completionType, GenerateRequest req)
+    private static string getPromptWithPrefix(string completionType, Story req)
     {
         return completionType switch
         {
