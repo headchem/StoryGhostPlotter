@@ -27,9 +27,19 @@ public static class Factory
         };
     }
 
+    /// <summary><c>genre</c> may be either Id or Name and is not case sensitive.</summary>
     public static IGenre GetGenre(string genre)
     {
-        return GetGenres().Where(g => g.Id == genre).First();
+        genre = genre.ToLower().Trim();
+
+        IGenre genreObj = GetGenres().Where(g => g.Id.ToLower() == genre || g.Id.ToLower() == genre.Replace(" ", "")).FirstOrDefault();
+
+        if (genreObj == null)
+        {
+            genreObj = GetGenres().Where(g => g.Name.ToLower() == genre).FirstOrDefault();
+        }
+
+        return genreObj;
     }
 
 
@@ -49,9 +59,19 @@ public static class Factory
         };
     }
 
+    /// <summary><c>problemTemplate</c> may be either Id or Name and is not case sensitive.</summary>
     public static IProblemTemplate GetProblemTemplate(string problemTemplate)
     {
-        return GetProblemTemplates().Where(p => p.Id == problemTemplate).First();
+        problemTemplate = problemTemplate.ToLower().Trim();
+
+        IProblemTemplate problemTemplateObj = GetProblemTemplates().Where(p => p.Id.ToLower() == problemTemplate || p.Id.ToLower() == problemTemplate.Replace(" ", "")).FirstOrDefault();
+
+        if (problemTemplateObj == null)
+        {
+            problemTemplateObj = GetProblemTemplates().Where(p => p.Name.ToLower() == problemTemplate).FirstOrDefault();
+        }
+
+        return problemTemplateObj;
     }
 
 
@@ -73,9 +93,19 @@ public static class Factory
         };
     }
 
+    /// <summary><c>archetype</c> may be either Id or Name and is not case sensitive.</summary>
     public static IArchetype GetArchetype(string archetype)
     {
-        return GetArchetypes().Where(a => a.Id == archetype).First();
+        archetype = archetype.ToLower().Trim();
+
+        IArchetype archetypeObj = GetArchetypes().Where(a => a.Id.ToLower() == archetype || a.Id.ToLower() == archetype.Replace(" ", "")).FirstOrDefault();
+
+        if (archetypeObj == null)
+        {
+            archetypeObj = GetArchetypes().Where(a => a.Name.ToLower() == archetype).FirstOrDefault();
+        }
+
+        return archetypeObj;
     }
 
 
@@ -90,9 +120,19 @@ public static class Factory
         };
     }
 
+    /// <summary><c>primalStakes</c> may be either Id or Name and is not case sensitive.</summary>
     public static IPrimalStakes GetPrimalStake(string primalStakes)
     {
-        return GetPrimalStakes().Where(p => p.Id == primalStakes).First();
+        primalStakes = primalStakes.ToLower().Trim();
+
+        IPrimalStakes primalStakesObj = GetPrimalStakes().Where(p => p.Id.ToLower() == primalStakes || p.Id.ToLower() == primalStakes.Replace(" ", "")).FirstOrDefault();
+
+        if (primalStakesObj == null)
+        {
+            primalStakesObj = GetPrimalStakes().Where(p => p.Name.ToLower() == primalStakes).FirstOrDefault();
+        }
+
+        return primalStakesObj;
     }
 
 
@@ -118,11 +158,22 @@ public static class Factory
         };
     }
 
+    /// <summary><c>dramaticQuestion</c> may be either Id or Name and is not case sensitive.</summary>
     public static IDramaticQuestion GetDramaticQuestion(string dramaticQuestion)
     {
-        return GetDramaticQuestions().Where(d => d.Id == dramaticQuestion).First();
+        dramaticQuestion = dramaticQuestion.ToLower().Trim();
+
+        IDramaticQuestion dramaticQuestionObj = GetDramaticQuestions().Where(d => d.Id.ToLower() == dramaticQuestion || d.Id.ToLower() == dramaticQuestion.Replace(" ", "")).FirstOrDefault();
+
+        if (dramaticQuestionObj == null)
+        {
+            dramaticQuestionObj = GetDramaticQuestions().Where(d => d.Name.ToLower() == dramaticQuestion).FirstOrDefault();
+        }
+
+        return dramaticQuestionObj;
     }
 
+    /// <summary>Given a <c>Story</c>, based off of the <c>CompletionType</c> property, will return the entire prompt for the given CompletionType</summary>
     public static string GetPrompt(Story req)
     {
         var problemTemplate = Factory.GetProblemTemplate(req.ProblemTemplate);
@@ -130,7 +181,6 @@ public static class Factory
         var enemyArchetype = Factory.GetArchetype(req.EnemyArchetype);
         var primalStakes = Factory.GetPrimalStake(req.PrimalStakes);
         var dramaticQuestion = Factory.GetDramaticQuestion(req.DramaticQuestion);
-
         var genre = Factory.GetGenre(req.Genre);
 
         var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
@@ -140,9 +190,11 @@ public static class Factory
         var primalStakesContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
         var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
-        var consolidatedContributions = $"{genreContribution} {problemTemplateContribution} The following ideas are contained in this story: {string.Join(", ", req.Keywords)}. {heroArchetypeContribution} {enemyArchetypeContribution} {primalStakesContribution} {dramaticQuestionContribution}";
+        var consolidatedContributions = $"Here is an overview of the elements of this award winning story: {genreContribution} {problemTemplateContribution} The following important topics take center stage in this story: {string.Join(", ", req.Keywords)}. {heroArchetypeContribution} {enemyArchetypeContribution} {primalStakesContribution} {dramaticQuestionContribution}";
 
-        consolidatedContributions += "\n\n" + getPromptForCompletionType(req);
+        consolidatedContributions += getPromptForCompletionType(req);
+
+        consolidatedContributions += "\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
         return consolidatedContributions;
     }
@@ -153,8 +205,8 @@ public static class Factory
 
         return req.CompletionType switch
         {
-            "orphanSummary" => "",
-            "orphanFull" => getPromptWithPrefix("orphanSummary", req),
+            "orphanSummary" => "", // there is no prompt for orphanSummary besides the global Log Line prompt, which is added before this method is called
+            "orphanFull" => separator + getPromptWithPrefix("orphanSummary", req),
             "wandererSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req),
             "wandererFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req),
             "warriorSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req),
@@ -169,14 +221,14 @@ public static class Factory
     {
         return completionType switch
         {
-            "orphanSummary" => "BEGINNING SUMMARY: " + req.OrphanSummary,
-            "orphanFull" => "BEGINNING FULL: " + req.OrphanFull,
-            "wandererSummary" => "EARLY MIDPOINT SUMMARY: " + req.WandererSummary,
-            "wandererFull" => "EARLY MIDPOINT FULL: " + req.WandererFull,
-            "warriorSummary" => "LATE MIDPOINT SUMMARY: " + req.WandererFull,
-            "warriorFull" => "LATE MIDPOINT SUMMARY: " + req.WarriorFull,
-            "martyrSummary" => "ENDING SUMMARY: " + req.MartyrSummary,
-            "martyrFull" => "ENDING FULL: " + req.MartyrFull,
+            "orphanSummary" => "Here is a high-level summary of the beginning of this award winning story:\n\n" + req.OrphanSummary,
+            "orphanFull" => "Here is a detailed summary of the beginning of this award winning story:\n\n" + req.OrphanFull,
+            "wandererSummary" => "Here is a high-level summary of how the main character's life is complicated:\n\n" + req.WandererSummary,
+            "wandererFull" => "Here is a detailed summary of how the main character's life is complicated:\n\n" + req.WandererFull,
+            "warriorSummary" => "Here is a high-level summary of how the main character is pushed to breaking point:\n\n" + req.WarriorSummary,
+            "warriorFull" => "Here is a detailed summary of how the main character is pushed to breaking point:\n\n" + req.WarriorFull,
+            "martyrSummary" => "Here is a high-level summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrSummary,
+            "martyrFull" => "Here is a detailed summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrFull,
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
         };
     }

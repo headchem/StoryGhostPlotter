@@ -25,17 +25,66 @@ public static class CreateFinetuningDataset
 
             var stories = await getStoryRows(file);
 
-            var result = new FinetuningDatasetResponse
-            {
-                Result = file.FileName + " - num rows: " + stories.Count + " - " + file.Length.ToString()
+            var results = new Dictionary<string, List<FinetuningRow>>();
+
+            var completionTypes = new List<string>{
+                "orphanSummary",
+                "orphanFull",
+                "wandererSummary",
+                "wandererFull",
+                "warriorSummary",
+                "warriorFull",
+                "martyrSummary",
+                "martyrFull"
             };
 
-            return new OkObjectResult(result);
+            foreach(var completionType in completionTypes) {
+                results[completionType] = getRows(completionType, stories);
+            }
+
+            return new OkObjectResult(results);
         }
         catch (Exception ex)
         {
             return new BadRequestObjectResult(ex);
         }
+    }
+
+    private static List<FinetuningRow> getRows(string completionType, List<Story> stories)
+    {
+        var results = new List<FinetuningRow>();
+
+        foreach (var story in stories)
+        {
+            var row = getPromptAndCompletion(completionType, story);
+            results.Add(row);
+        }
+
+        return results;
+    }
+
+    private static FinetuningRow getPromptAndCompletion(string completionType, Story story)
+    {
+        var row = new FinetuningRow();
+
+        story.CompletionType = completionType;
+        row.Prompt = Factory.GetPrompt(story);
+        row.Completion = completionType switch
+        {
+            "orphanSummary" => story.OrphanSummary,
+            "orphanFull" => story.OrphanFull,
+            "wandererSummary" => story.WandererSummary,
+            "wandererFull" => story.WandererFull,
+            "warriorSummary" => story.WarriorSummary,
+            "warriorFull" => story.WarriorFull,
+            "martyrSummary" => story.MartyrSummary,
+            "martyrFull" => story.MartyrFull,
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
+        };
+
+        row.Completion = " " + row.Completion + "###"; // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion."
+
+        return row;
     }
 
     private static async Task<List<Story>> getStoryRows(IFormFile file)
