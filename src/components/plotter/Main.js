@@ -241,7 +241,6 @@ const Main = (
                     {
                         orphanSummaryStatus === PromptArea.Status.AVAILABLE &&
                         <>
-                            <hr />
                             <CharacterStage
                                 stage='orphan'
                                 summary={orphanSummary}
