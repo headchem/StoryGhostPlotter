@@ -177,7 +177,16 @@ const CharacterStage = ({
                         </div>
                         {
                             summary !== '' &&
-                            <p>{summary}</p>
+                            <>
+                                {
+                                    summaryLocked === false &&
+                                    <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)}></textarea>
+                                }
+                                {
+                                    summaryLocked === true &&
+                                    <p>{summary}</p>
+                                }
+                            </>
                         }
                     </>
                 }
@@ -227,7 +236,16 @@ const CharacterStage = ({
                                 </div>
                                 {
                                     full !== '' &&
-                                    <p>{full}</p>
+                                    <>
+                                        {
+                                            fullLocked === false &&
+                                            <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)}></textarea>
+                                        }
+                                        {
+                                            fullLocked === true &&
+                                            <p>{full}</p>
+                                        }
+                                    </>
                                 }
                             </>
                         }
