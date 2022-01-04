@@ -14,7 +14,7 @@ public class GoldenFleece : IProblemTemplate
         get
         {
             return new List<string>{
-                "Road", "Team", "Prize"
+                "Journey", "Team", "Prize"
             };
         }
     }

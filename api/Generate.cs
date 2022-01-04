@@ -22,7 +22,7 @@ public static class Generate
         var result = new GenerateResponse
         {
             Prompt = prompt,
-            Completion = $"{req.CompletionType}_COMPLETION. "
+            Completion = $"{req.CompletionType}_COMPLETION."
         };
 
         return new OkObjectResult(result);

@@ -8,7 +8,7 @@ namespace StoryGhost.Models.Archetypes;
 public class Lover : IArchetype
 {
     public string Id { get { return "lover"; } }
-    public string Name { get { return "Love"; } }
+    public string Name { get { return "Lover"; } }
     public string Description { get { return "The Lover gushes emotional connection to others, needing reciprocation. They are passionate, loyal, and appreciate the bliss of sensual pleasures. They fear being unwanted and lonely, which can devolve into romance addictions and conquests, and loss of identity to preserve a relationship."; } }
     public string SourceOfMotivation { get { return SourceOfMotivationEnum.OthersAndWorld; } }
     public string OrphanDesires { get { return "Be in a relationship, be surrounded by a social environment, experience bliss and intimacy."; } }

@@ -38,7 +38,8 @@ public static class CreateFinetuningDataset
                 "martyrFull"
             };
 
-            foreach(var completionType in completionTypes) {
+            foreach (var completionType in completionTypes)
+            {
                 results[completionType] = getRows(completionType, stories);
             }
 
@@ -82,7 +83,7 @@ public static class CreateFinetuningDataset
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
         };
 
-        row.Completion = " " + row.Completion + "###"; // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion."
+        row.Completion = row.Completion + "###"; // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
 
         return row;
     }
@@ -120,6 +121,8 @@ public static class CreateFinetuningDataset
                 foreach (IXLCell cell in row.Cells())
                 {
                     var cellVal = cell.CachedValue.ToString();
+
+                    cellVal = clean(cellVal);
 
                     switch (i)
                     {
@@ -180,6 +183,21 @@ public static class CreateFinetuningDataset
         }
 
         return stories;
+    }
+
+    private static string clean(string input)
+    {
+        input = input
+            .Replace("“", "\"")
+            .Replace("”", "\"")
+            .Replace("’", "'")
+            .Replace("‘", "'")
+            .Replace("…", "...")
+            .Replace("–", "-")
+            .Replace("SET-UP:", "SETUP:")
+            .Replace("ALL IS LOST:", "ALL HOPE IS LOST:");
+
+        return input;
     }
 
 }
