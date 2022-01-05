@@ -9,7 +9,7 @@ public class Explorer : IArchetype
 {
     public string Id { get { return "explorer"; } }
     public string Name { get { return "Explorer"; } }
-    public string Description { get { return "The Explorer braves lonliness and hardship to discover the unknown. They shun the help of others, and view beaten paths with disdain. They want to improve their lives by searching for uniqueness and new perspectives, oblivious that what they seek is already within. They are ambitious, and always on the move toward the next goal."; } }
+    public string Description { get { return "The Explorer braves loneliness and hardship to discover the unknown. They shun the help of others, and view beaten paths with disdain. They want to improve their lives by searching for uniqueness and new perspectives, oblivious that what they seek is already within. They are ambitious, and always on the move toward the next goal."; } }
     public string SourceOfMotivation { get { return SourceOfMotivationEnum.OthersAndWorld; } }
     public string OrphanDesires { get { return "Self-discovery and fulfillment through authentic off-the-beaten-path experiences."; } }
     public string WandererResponse { get { return "Flee from the problem."; } }

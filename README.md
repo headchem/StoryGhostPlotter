@@ -81,3 +81,98 @@ LogLine Prompt + Prev Seq 1+2 completion = Seq 3
 LogLine Prompt + Prev Seq 1+2+3 completion = Seq 4...
 
 LEFT OFF: add problem template adjectives: https://github.com/headchem/InfiniteCampfire/blob/911cc5195a3a9bb99d1bd2416a60bb11f74c9734/Web/ClientApp/src/components/story/helpers/util.js#L1667
+
+-----------
+
+
+Out of the Bottle
+	Aladin
+Monster in the House
+	Whiplash
+Golden Fleece
+	StarWarsEp4
+Superhero
+	IronMan
+Rites of Passage
+	HowToTrainYourDragon
+	Float
+Fool Triumphant
+	Elf
+Buddy Love
+	MyOctopusTeacher
+Whydunnit
+	CaptainMarvel
+Institutionalized
+	Sicario
+Unexpected Problem
+	TheLegoMovie
+	Taken
+
+HERO
+Caregiver
+Creator
+	IronMan
+	HowToTrainYourDragon
+Explorer
+	Whiplash
+	MyOctopusTeacher
+Innocent
+	Elf
+	Sicario
+	TheLegoMovie
+Jester
+Lover
+Magician
+Orphan
+	Aladin
+Outlaw
+	CaptainMarvel
+	Taken
+Ruler
+Sage
+Warrior
+	StarWarsEp4
+
+ENEMY
+Caregiver
+	Float
+Creator
+Explorer
+Innocent
+Jester
+	Taken
+Lover
+Magician
+	Aladin
+Orphan
+	MyOctopusTeacher
+Outlaw
+	StarWarsEp4
+	Sicario
+Ruler
+	Whiplash
+	Elf
+	TheLegoMovie
+Sage
+	IronMan
+Warrior
+	HowToTrainYourDragon
+	CaptainMarvel
+
+Exact Revenge
+	CaptainMarvel
+	Sicario
+Find Connection
+	Aladin
+	Elf
+	Float
+Protect Family
+	StarWarsEp4
+	HowToTrainYourDragon
+	MyOctopusTeacher
+	Taken
+Protect Possession
+	IronMan
+Survive
+	Whiplash
+	TheLegoMovie

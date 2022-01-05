@@ -14,7 +14,7 @@ public class MonsterInTheHouse : IProblemTemplate
         get
         {
             return new List<string>{
-                "Monster", "Confined Space", "Sin"
+                "monster", "confined space", "sin"
             };
         }
     }

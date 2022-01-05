@@ -14,7 +14,7 @@ public class FindConnection : IPrimalStakes
         get
         {
             return new List<string>{
-                "lonliness", "rescue", "connection", "passion", "belonging"
+                "loneliness", "rescue", "connection", "passion", "belonging"
             };
         }
     }

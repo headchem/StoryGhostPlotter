@@ -14,7 +14,7 @@ public class UnexpectedProblem : IProblemTemplate
         get
         {
             return new List<string>{
-                "Innocence", "Surprise", "Survival"
+                "innocence", "surprise", "survival"
             };
         }
     }

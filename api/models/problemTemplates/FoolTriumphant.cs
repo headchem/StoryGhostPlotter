@@ -14,7 +14,7 @@ public class FoolTriumphant : IProblemTemplate
         get
         {
             return new List<string>{
-                "Fool", "Establishment", "Transmutation"
+                "fool", "establishment", "transmutation"
             };
         }
     }

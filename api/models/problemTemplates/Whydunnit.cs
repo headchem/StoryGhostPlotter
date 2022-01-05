@@ -14,7 +14,7 @@ public class Whydunnit : IProblemTemplate
         get
         {
             return new List<string>{
-                "Detective", "Secret", "Dark Turn"
+                "detective", "secret", "dark turn"
             };
         }
     }

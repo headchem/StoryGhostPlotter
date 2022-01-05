@@ -14,7 +14,7 @@ public class BuddyLove : IProblemTemplate
         get
         {
             return new List<string>{
-                "Deficient", "Counterpart", "Complication"
+                "deficient", "counterpart", "complication"
             };
         }
     }

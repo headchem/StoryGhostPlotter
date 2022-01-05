@@ -14,7 +14,7 @@ public class Superhero : IProblemTemplate
         get
         {
             return new List<string>{
-                "Special Power", "Nemesis", "Curse"
+                "special power", "nemesis", "curse"
             };
         }
     }

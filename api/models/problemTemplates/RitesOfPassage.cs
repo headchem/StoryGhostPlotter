@@ -14,7 +14,7 @@ public class RitesOfPassage : IProblemTemplate
         get
         {
             return new List<string>{
-                "Life Problem", "Wrong Way", "Acceptance"
+                "life problem", "wrong way", "acceptance"
             };
         }
     }

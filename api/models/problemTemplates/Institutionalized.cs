@@ -14,7 +14,7 @@ public class Institutionalized : IProblemTemplate
         get
         {
             return new List<string>{
-                "Group", "Choice", "Sacrifice"
+                "group", "choice", "sacrifice"
             };
         }
     }

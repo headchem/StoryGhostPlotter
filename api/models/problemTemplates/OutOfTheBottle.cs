@@ -14,7 +14,7 @@ public class OutOfTheBottle : IProblemTemplate
         get
         {
             return new List<string>{
-                "Wish", "Spell", "Lesson"
+                "wish", "spell", "lesson"
             };
         }
     }
