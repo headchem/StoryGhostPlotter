@@ -33,7 +33,7 @@ const Admin = () => {
                 setLongestWordCount(wordCount)
             }
 
-            return '{"prompt":"' + clean(row['prompt']) + '", "completion":"' + clean(row['completion']) + '"}'
+            return '{"prompt":"' + clean(row['prompt']) + '", "completion":" ' + clean(row['completion']) + '"}'
         })
 
         return strArr.join('\n')
