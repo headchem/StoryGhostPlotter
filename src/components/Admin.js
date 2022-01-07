@@ -21,7 +21,7 @@ const Admin = () => {
     };
 
     const clean = (str) => {
-        return str.replaceAll('\n', '\\n').replaceAll('"', '\"')
+        return str.replaceAll('\n', '\\n').replaceAll('"', '\\"')
     }
 
     // OpenAI has specific requirements for the format: https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
