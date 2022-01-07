@@ -189,7 +189,7 @@ public static class Factory
         var heroArchetypeContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
         var enemyArchetypeContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
         var primalStakesContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
-        var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
+        var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, req.CompletionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
         var consolidatedContributions = $"Here is an overview of the elements of this award winning story: {genreContribution} {problemTemplateContribution} The following important topics take center stage in this story: {string.Join(", ", req.Keywords)}. {heroArchetypeContribution} {enemyArchetypeContribution} {primalStakesContribution} {dramaticQuestionContribution}";
 
@@ -222,13 +222,13 @@ public static class Factory
     {
         return completionType switch
         {
-            "orphanSummary" => "Here is a high-level summary of the beginning of this award winning story:\n\n" + req.OrphanSummary,
+            "orphanSummary" => "Here is a single paragraph high-level summary of the beginning of this award winning story:\n\n" + req.OrphanSummary,
             "orphanFull" => "Here is a detailed summary of the beginning of this award winning story:\n\n" + req.OrphanFull,
-            "wandererSummary" => "Here is a high-level summary of how the main character's life is complicated:\n\n" + req.WandererSummary,
+            "wandererSummary" => "Here is a single paragraph high-level summary of how the main character's life is complicated by a problem:\n\n" + req.WandererSummary,
             "wandererFull" => "Here is a detailed summary of how the main character's life is complicated:\n\n" + req.WandererFull,
-            "warriorSummary" => "Here is a high-level summary of how the main character is pushed to breaking point:\n\n" + req.WarriorSummary,
+            "warriorSummary" => "Here is a single paragraph high-level summary of how the main character is pushed to breaking point:\n\n" + req.WarriorSummary,
             "warriorFull" => "Here is a detailed summary of how the main character is pushed to breaking point:\n\n" + req.WarriorFull,
-            "martyrSummary" => "Here is a high-level summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrSummary,
+            "martyrSummary" => "Here is a single paragraph high-level summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrSummary,
             "martyrFull" => "Here is a detailed summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrFull,
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
         };

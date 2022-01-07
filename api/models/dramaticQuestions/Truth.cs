@@ -14,9 +14,20 @@ public class Truth : IDramaticQuestion
     public string Negation { get { return "Self-deception"; } }
     public string Positive { get { return "Truth"; } }
 
-    public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
-        return $"The theme of the story is {Name}, which asks the dramatic question of \"{Description}\"";
+        var curAnswer = getCompletionTypeAnswer(CompletionType);
+        
+        return $"At this point in this griping tale, the main character answers the emotional question of \"{Description}\" with: {curAnswer}.";
+    }
+
+    public string getCompletionTypeAnswer(string completionType) {
+        if (completionType.Contains("orphan")) return Contrary;
+        if (completionType.Contains("wanderer")) return Contradiction;
+        if (completionType.Contains("warrior")) return Negation;
+        if (completionType.Contains("martyr")) return Positive;
+
+        throw new Exception($"CompletionType: {completionType} not found");
     }
 
 }
