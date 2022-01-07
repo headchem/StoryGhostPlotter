@@ -20,6 +20,10 @@ const Admin = () => {
         setFile(e.target.files[0]);
     };
 
+    const clean = (str) => {
+        return str.replaceAll('\n', '\\n').replaceAll('"', '\"')
+    }
+
     // OpenAI has specific requirements for the format: https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
     const objToString = (arr) => {
         var strArr = arr.map(function (row) {
@@ -29,7 +33,7 @@ const Admin = () => {
                 setLongestWordCount(wordCount)
             }
 
-            return '{"prompt":"' + row['prompt'].replaceAll('\n', '\\n') + '", "completion":"' + row['completion'].replaceAll('\n', '\\n') + '"}'
+            return '{"prompt":"' + clean(row['prompt']) + '", "completion":"' + clean(row['completion']) + '"}'
         })
 
         return strArr.join('\n')
