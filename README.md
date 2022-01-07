@@ -87,26 +87,35 @@ LEFT OFF: add problem template adjectives: https://github.com/headchem/InfiniteC
 
 Out of the Bottle
 	Aladin
+	LiarLiar
 Monster in the House
 	Whiplash
+	TheCraft
 Golden Fleece
 	StarWarsEp4
+	TheWizardOfOz
 Superhero
 	IronMan
+	KungFuPanda
 Rites of Passage
 	HowToTrainYourDragon
 	Float
 Fool Triumphant
 	Elf
+	Moneyball
 Buddy Love
 	MyOctopusTeacher
+	BeautyAndTheBeast
 Whydunnit
 	CaptainMarvel
+	TheBigLebowski
 Institutionalized
 	Sicario
+	DrStrangelove
 Unexpected Problem
 	TheLegoMovie
 	Taken
+
 
 HERO
 Caregiver
@@ -116,11 +125,18 @@ Creator
 Explorer
 	Whiplash
 	MyOctopusTeacher
+	BeautyAndTheBeast
 Innocent
 	Elf
 	Sicario
 	TheLegoMovie
+	TheCraft
+	TheWizardOfOz
+	KungFuPanda
+	TheBigLebowski
+	DrStrangelove
 Jester
+	LiarLiar
 Lover
 Magician
 Orphan
@@ -128,22 +144,29 @@ Orphan
 Outlaw
 	CaptainMarvel
 	Taken
+	Moneyball
 Ruler
 Sage
 Warrior
 	StarWarsEp4
 
+
 ENEMY
 Caregiver
 	Float
+	LiarLiar
 Creator
 Explorer
 Innocent
 Jester
 	Taken
+	DrStrangelove
 Lover
+	TheBigLebowski
 Magician
 	Aladin
+	TheCraft
+	TheWizardOfOz
 Orphan
 	MyOctopusTeacher
 Outlaw
@@ -153,19 +176,26 @@ Ruler
 	Whiplash
 	Elf
 	TheLegoMovie
+	Moneyball
+	BeautyAndTheBeast
 Sage
 	IronMan
 Warrior
 	HowToTrainYourDragon
 	CaptainMarvel
+	KungFuPanda
+
 
 Exact Revenge
 	CaptainMarvel
 	Sicario
+	TheCraft
 Find Connection
 	Aladin
 	Elf
 	Float
+	LiarLiar
+	BeautyAndTheBeast
 Protect Family
 	StarWarsEp4
 	HowToTrainYourDragon
@@ -173,6 +203,11 @@ Protect Family
 	Taken
 Protect Possession
 	IronMan
+	KungFuPanda
+	DrStrangelove
 Survive
 	Whiplash
 	TheLegoMovie
+	TheWizardOfOz
+	Moneyball
+	TheBigLebowski

@@ -141,6 +141,7 @@ public static class Factory
         return new List<IDramaticQuestion> {
             new Bravery(),
             new Consciousness(),
+            new EffortlessPeace(),
             new Identity(),
             new Legacy(),
             new Liberty(),
