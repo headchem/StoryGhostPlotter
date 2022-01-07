@@ -19,9 +19,6 @@ namespace StoryGhost.Generate;
 
 public static class Generate
 {
-    // good to reuse HttpClient according to: https://www.aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/
-    private static HttpClient httpClient = new HttpClient();
-
     [FunctionName("Generate")]
     public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Story req, ILogger log)
     {
@@ -52,6 +49,8 @@ public static class Generate
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+        using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
 
         using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
