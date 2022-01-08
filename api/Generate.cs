@@ -39,12 +39,11 @@ public static class Generate
         {
             Prompt = prompt,
             Model = models[req.CompletionType],
-            MaxTokens = 32,
-            Temperature = 0.8,
+            MaxTokens = 64,
+            Temperature = 0.9,
             Stop = "###"
         };
 
-        //using var httpClient = new HttpClient();
         var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 

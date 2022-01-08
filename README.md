@@ -1,3 +1,5 @@
+LOCALHOST
+
 In VSCode menu "Run and Debug"
 	Debug "Attach to .NET Functions"
 	Once it starts, then select "SWA: Run..." and Debug
@@ -5,84 +7,168 @@ In VSCode menu "Run and Debug"
 to build for prod and see if there are any linting error before deploying, run the following:
 npm run build
 
-The data returned by the webservice is stored in 16-level tree
-At the start, you must commit to the initial parameters, because changing them after fragments have been generated will not have any consistency
-With fixed initial preferences set, now UI goes one by one through each of the 16 "pages"
-On each page, send the prompt to GPT-3. if you don't like it, generate another alternative, but the previous ones still persist so you can go back to them. Each time you generate, it creates a new leaf node in the tree.
-When you find text you like, you then advance to the next "page" and repeat.
-As you advance pages, it just adds to what is visible in the UI, so you can always see the entire story that came before
-If you go back and change a page in the middle, it will clear out any future pages that were already generated, presenting "generate new" for each, but you can always reselect previously generated pages to rebuild the tree
-if there is only 1 child, then show it, otherwise, show the blank generate UI
-for now, create a wrapper Function to mock the GPT-3 call. Might want this permanently, so I can swap between GPT-3, EleutherAI GPT-J etc. Moat potential as I can hide the generated prompts behind server-side
-Each of the 16 pages lets the author first write their own "what happens next" Once an idea strikes, get out of the way and let them carry it forward, but the option is always there to write something custom, then ask GPT-3 to continue the idea. This means the default UI is always a blank page with a text area, click a button to have GPT-3 fill it in, paginate through different ideas that widen this level of the branching timeline tree
-Hype/marketing - every time someone completes all 16 pages, update a global NoSQL container counter. This metric is more valuable than anything from Google Analytics for measuring success
-Put an arbitrary limit of the number of variations you're allowed to have for a page. For choice between, say, 2 variations to reduce paralysis of choice, and if you want more, you must delete another one (and all later descendents)
-After GPT-3 fills a page with an idea, now encourage the author to make tweaks like a co-author brainstorm. Human needs to be part of the process like an editor forging the ideas into something even better
+FINETUNING
 
-Slot machine interface? Any real world widgets that have several dropdown-like interactions?
+ * Go to Google Sheets, save file as Excel
+ * Go to Admin page, upload Excel file
+ * For all 8 textareas, copy and paste into Notepad++ and save as <completionType>.jsonl
+ * export OPENAI_API_KEY="get the key from the OpenAI portal"
+ * Run this tool as a sanity check on data formatting
+ ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"
+ * To kick off a finetune job:
+ ** openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
+ *** you'll get a response like: Created fine-tune: ft-aySH26zbI46aMKvL5OxWQJ4h
+ *** if disconnected, run: openai api fine_tunes.follow -i ft-aySH26zbI46aMKvL5OxWQJ4h
+ * in the OpenAI portal, you'll see under "Fine-tune training" a model name like "davinci:ft-personal-2022-01-07-04-27-42" Plug this value into the dictionary in Generate.cs
+ * When calling via Postman at about 10 min after the finetune job reported success, I initially got an HTTP 429 response (Too Many Requests)
+ ** After 15 min, the request succeeded. So, the C# needs to check for HTTP 429, and implement a message back to the user to wait a bit and retry.
+* “A Curie fine-tuned on 100 examples may have similar results to a Babbage fine-tuned on 2,000 examples. The larger models can do remarkable things with very little data.” - https://bdtechtalks.com/2021/11/29/gpt-3-application-development-tips/
+ * The documentation also states for conditional generation: "aim for at least ~500 examples" and "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
+ * My prompts all start with "Here is a summary of an award winning story: " When fine tuning, is that style of prompt still useful to start every row of example data? ANSWER: with a small number of examples, the repeated prompt language is useful, but as I get closer to 100 examples, it may no longer be necessary
 
-send Log Line inputs to webservice Function, add basic validation making all fields required. Ultimately, the response to the user will be the finished 16 Sequences.
-	In Function:
-		given Log Line inputs, craft GPT-3 Log Line prompt and get result
-		Log Line result becomes the starting context for the final Sequence prompt and result, which also merges in all structure language from Hero Stage and Sequence Type.
-		Each Sequence result is chained into the next prompt, which hopefully serves as GPT-3's memory to keep the story consistent.
+IDEAS:
 
-LEFT OFF:
-Research good descriptions and keywords for Primal Stakes and Genres (setting). Might as well fully flesh out primal stakes since there are only 5, and pick top 5ish Genres to have complete prompt data available for next step.
-Research GPT-3 prompt best practices, examples of finetuning (and cost?). Can I manually label the plot synopsis dataset with the Log Line params?
-Move on to GenerateLogLinePrompt. Consider using an abstract grammar that gets populated by parameters, or maybe mad-libs style is good enough?
-Once we are getting responses from GPT-3, set up KeyVault integration for OpenAI key and db connection strings, log GPT responses to a db. This db can be used to manually review and use to further finetune the model to improve future output. Same db can be used to manually label the movie synopsis dataset. Bool cols for IsGenerated and IsGoodForFinetuning (default false for generated text, once I manually review I can choose to flip it)
-
-GPT-3 prompt examples: https://beta.openai.com/examples
-	Summarize for a 2nd grader
-	Micro horror story creator
-	Essay outline
-
-Fine-tuning
-
-https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
-search for the heading "Conditional generation" and "Case study: Product description based on a technical list of properties"
-
-Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator
-
-1000 tokens = ~750 words
-2048 tokens = ~1500 words
-
-{"prompt": "<prompt text>", "completion": "<ideal generated text>"}
-
-OpenAI advises not to use the format of Param1=Value1. Instead convert it to natural short sentences like Param1 is a Value1. Param2 is a Value2.
-
-It is important that every log line input param have some presence in the completion log line summary text.
-
-I think it's safe to replace characters names and locations with [HERO] [ENEMY] [HERO LOVE INTEREST] [SIDE CHARACTER 1] [LOCATION 1] [LOCATION 2] etc...
-
-[PROMPT]
-Hero has a Creator personality (expand more with IArchetype.cs values?). Enemy has a Warrior personality. The genre is Scifi. The primal stakes are to survive. The dramatic question is "can faking bravery lead to true bravery?". Important concepts in this story are: kangaroo, basketball
-
-[COMPLETION]
-Summary of a story involving all log line inputs...
-
--------
-
-[PROMPT]
-Hero has a Creator personality (expand more with IArchetype.cs values?). Enemy has a Warrior personality. The genre is Scifi. The primal stakes are to survive. The dramatic question is "can faking bravery lead to true bravery?". Important concepts in this story are: kangaroo, basketball
-Summary of a story involving all log line inputs...
-
-[COMPLETION]
-The 16-32 sentences...
-
-This method will generate all 16 sequences in one go. If I want the user to have choices at each sequence, I would need to modify the training data so I send it the history of previous sequences, and ask it to generate the next sequence. Maybe let's start with generating complete stories at first, and then with the same training data, we can split it into stairsteps. Or is it equivalent to train on the full 16 sequences, and then adjust the prompt to also include just Sequences 1-8? Training data should probably number each sequence to give GPT-3 a numerical order to learn.
+ * Hype/marketing - every time someone completes all 16 pages, update a global NoSQL container counter. This metric is more valuable than anything from Google Analytics for measuring success
+ * After GPT-3 fills a page with an idea, now encourage the author to make tweaks like a co-author brainstorm. Human needs to be part of the process like an editor forging the ideas into something even better. AI can still assist with this process, ex: "Prompt: Given the previous sequence of events, we see the following symbolism is present. " Encourage the author to layer in more theme/symbolism/nuance.
+ * We can use DaVinci (highest quality) to generate yet more unique training samples for later finetuning. Human curated from examples to pick out "good" stories.
+ * Larger models require less data for fine-tuning. https://thenextweb.com/news/building-apps-gpt-3-what-devs-need-know-cost-performance-syndication
+ ** “For many tasks, you can think of increasing base model size as a way to reduce how much data you’ll need to fine-tune a quality model,” Shumer said. “A Curie fine-tuned on 100 examples may have similar results to a Babbage fine-tuned on 2,000 examples. The larger models can do remarkable things with very little data.”
+ ** some tasks (i.e., multi-step generation) are too complex for a vanilla model, even Davinci, to complete with high accuracy,” Shumer said. “In cases like this, you have two options: 1) create a prompt chain that feeds outputs from one prompt into another prompt, or 2) fine-tune a model. I typically first try to create a prompt chain, and if that doesn’t work, I then move to fine-tuning.”
+ * Big picture direction of generative media: https://arr.am/2020/09/15/the-generative-age/
+ * at each completion, we can use the GPT-3 Intents model for additional stylistic editing, like "Prompt: <previous completion>. Write a more exciting and dramatic version of these events." OR "make this sequence of events more romantic/scifi/magical/humorous"
 
 
-LEFT OFF: all of the Log Line inputs have been added. Continue adding plotline summaries to fine-tuning training spreadsheet. Once I've done one story for each problem template (10 total) then do a trial run of finetuning gpt-3 to generate the high-level synopsis. If this works, then move on to finetuning individual sequences - do I need to build up the training data like:
+TODO:
+ * (ongoing) continue adding to finetuning dataset
+ * add text area input length limit to avoid malicious long inputs from using up all my prompt tokens
+ * Review keywords for all Log Line objects, maybe cut back on some examples to save on GPT-3 tokens
+ * spend time in playground refining prompts. Look for list of prompts online for inspiration.
+ * apply prompt lessons to "full" prompt, then finetune orphanFull to look for problems in practice
+ * Set up KeyVault integration for OpenAI key and db connection strings, log GPT responses to a db. This db can be used to manually review and use to further finetune the model to improve future output. Bool cols for IsGenerated and IsGoodForFinetuning (default false for generated text, once I manually review I can choose to flip it)
 
-LogLine Prompt + Prev Seq 1 completion = Seq 2
-LogLine Prompt + Prev Seq 1+2 completion = Seq 3
-LogLine Prompt + Prev Seq 1+2+3 completion = Seq 4...
+PROMPT DESIGN
 
-LEFT OFF: add problem template adjectives: https://github.com/headchem/InfiniteCampfire/blob/911cc5195a3a9bb99d1bd2416a60bb11f74c9734/Web/ClientApp/src/components/story/helpers/util.js#L1667
+ * GPT-3 prompt examples: https://beta.openai.com/examples
+ Summarize for a 2nd grader
+ ** Micro horror story creator
+ ** Essay outline
+ * Ensure that the prompt + completion doesn't exceed 2048 tokens, including the separator
+ * OpenAI advises not to use the format of Param1=Value1. Instead convert it to natural short sentences like Param1 is a Value1. Param2 is a Value2.
+ * It is important that every log line input param have some presence in the completion log line summary text to demonstrate a connection
+ * https://bmk.sh/2019/10/27/The-Difficulties-of-Text-Generation-with-Autoregressive-Language-Models/
+ ** "One major problem with maximum-likelihood training of autoregressive models is exposure bias (Ranzato et al., 2015). Autoregressive models are only trained and evaluated on samples drawn from the target language distribution, but at evaluation time are fed samples that are themselves generated by the model. This error compounds extremely quickly and it has been observed, though admittedly anecdotally, that GPT-2 exhibits a sharp drop-off in quality after a certain number of steps."
+ ** IDEA: does this mean I shouldn't directly feed completions back into the next prompt? Do some light manipulation first? Ideally, the author will introduce their own entropy into the system to modify each output before requesting the next completion
+ * https://www.gwern.net/GPT-3#quality
+ ** For fiction, I treat it as a curation problem: how many samples do I have to read to get one worth showing off? [...] A Markov chain text generator trained on a small corpus represents a huge leap over randomness: instead of having to generate countless quadrillions of samples, one might only have to generate millions of samples to get a few coherent pages; this can be improved to hundreds or tens of thousands by increasing the depth of the n of its n-grams. […] But for GPT-3, once the prompt is dialed in, the ratio appears to have dropped to closer to 1:5—maybe even as low as 1:3!
+
+
+PROMPT IDEAS
+
+Here’s a short story by Terry Pratchett.
+
+Barry
+By Terry Pratchett
+
+Death looked at the man and said ‘HELLO.’
+----------
+Here is an award winning short story:
+
+They Come From The Earth
+By John Vickersonik
+----------------
+Here is an award winning short story:
+----------------
+Here is a short story:
+
+ * quality of output degrades when you remove "award winning"
+
+---------------
+
+The following is an author's summary of a story involving [log line description]. The author's summary is concise and only covers the very beginning of the story.
+
+---------------
+
+[summary here]
+
+The following is how a skilled author would expand the above summary into more detailed story beats:
+
+--------------
+
+Here's a three-sentence summary of the plot so far:
+
+--------------
+
+[full summary here]
+
+Rephrase this to be more dramatic and emotionally gripping.
+
+--------------
+
+ * append emojis after every sentence to communicate emotion and other actions/nouns in that sentence. The emojis act a miniature summaries of each sentence to reinforce the underlying meaning of the words.
+* use Plutchik's wheel of emotions along with emojis to label sentences. Are there distinct emojis for each level? Maybe pair with a qualifier word like: (mild 😒, intense 😠)
+
+-------------
+
+ * use parenthesis to evoke internal monologue about the intent behind the output: (this is symbolic of jealousy)
+ * "Prompt: given everything that has happened to the main character, this is their internal monologue:"
+
+------------
+
+[summary]
+
+The following is a sequence of movie scenes (story beats) of an award winning plotline that expands upon the summary above. Each story beat is connected to the other scene either overtly or through symbolism.
+
+[full]
+
+------------
+
+ * when generating the full prompt, search for all caps sequence tags, like THEME STATED:, and inject the Sequence-specific advice to convert it into something like "THEME STATED: (demonstrates the main question or lesson the main character will face)"
+ * edge case is when encountering "(CONTINUED)". Need special language to indicate that it builds off the previous original instance of that sequence type.
+
+------------
+
+ * just for the orphanSummary, start the prompt with "Once upon a time"
+
+------------
+
+ * to explore GPT-3's capabilities, what if I start at the very lowest level, and ask it things like "list a sequence of events that logically depend on each other"
+ * if the completion makes sense like a dependency graph, then guide it more emotion/story language
+
+------------
+
+Write a short summary of a story for kids/teens/adults about keyword1, keyword2, and keyword3 (NOTE: we need to inject the "and" at the end of the keyword list)
 
 -----------
+
+ * https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias
+ * use to increase chances of user-entered keywords and logline words appearing. Could also add "hero name" to the UI, and crank up likelihood of that name appearing along with a prompt of "the main character's name is: John"
+
+-----------
+
+Express Rate Limit - OpenAI suggests a max of 6 requests per minute (per user?)
+
+
+
+
+
+
+LIMITATIONS AND RESTRICTIONS
+
+High-level guidelines... not requirements?
+
+We generally do not permit tools that generate a paragraph or more of natural language or many lines of code, unless the output is of a very specific structure that couldn't be re-purposed for general blog or article generation (e.g., a cover letter, a recipe, song lyrics).
+
+For more scoped use-cases, we tend to recommend an output of around 150 tokens (~6-8 sentences), but it will depend on the specific use-case.
+
+For generative use-cases where the user has considerable control in directing the output, you should generally use the OpenAI Content Filter to prevent 'Unsafe' (CF=2) content.
+
+Rate-limiting end-users’ access to your application is always recommended to prevent automated usage, and to control your costs; there will be more specific guidelines by use-case.
+
+
+FINETUNING
+
+ * YouTube video on fine-tuning "Bugout dev" suggests 100-200 example rows is sufficient for initial fine-tuning for generative use-cases
+ * "Right now, you can fine-tune up to 10 models per month and each dataset can be up to 2.5M tokens or 80-100MB in size"
 
 
 Out of the Bottle
