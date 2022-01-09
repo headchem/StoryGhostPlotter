@@ -22,50 +22,63 @@ public static class Generate
     [FunctionName("Generate")]
     public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Story req, ILogger log)
     {
-        var models = new Dictionary<string, string>(); // key=completion type, value=finetuned model name
-
-        models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("orphanFull", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("wandererSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("wandererFull", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("warriorSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("warriorFull", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("martyrSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("martyrFull", "davinci:ft-personal-2022-01-07-03-57-47");
-
         var prompt = Factory.GetPrompt(req);
 
-        var openAIRequest = new OpenAICompletionsRequest
+        // TEMP
+        return new OkObjectResult(new GenerateResponse
         {
             Prompt = prompt,
-            Model = models[req.CompletionType],
-            MaxTokens = 64,
-            Temperature = 0.9,
-            Stop = "###"
-        };
+            Completion = "completion for " + req.CompletionType
+        });
 
-        var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        // var models = getModels();
 
-        var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        // var openAIRequest = new OpenAICompletionsRequest
+        // {
+        //     Prompt = prompt,
+        //     Model = models[req.CompletionType],
+        //     MaxTokens = 64,
+        //     Temperature = 0.9,
+        //     Stop = "###"
+        // };
 
-        using var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+        // var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
+        // var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-        using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+        // var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        // using var httpClient = new HttpClient();
+        // httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
 
-        var result = new GenerateResponse
-        {
-            Prompt = prompt,
-            Completion = completion
-        };
+        // using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
+        // var apiResponse = await response.Content.ReadAsStringAsync();
+        // var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        return new OkObjectResult(result);
+        // var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        // var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
+        // var result = new GenerateResponse
+        // {
+        //     Prompt = prompt,
+        //     Completion = completion
+        // };
+
+        // return new OkObjectResult(result);
     }
+
+    // private static Dictionary<string, string> getModels() {
+    //     var models = new Dictionary<string, string>(); // key=completion type, value=finetuned model name
+
+    //     models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("orphanFull", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("wandererSummary", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("wandererFull", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("warriorSummary", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("warriorFull", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("martyrSummary", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("martyrFull", "davinci:ft-personal-2022-01-07-03-57-47");
+
+    //     return models;
+    // }
 
 }

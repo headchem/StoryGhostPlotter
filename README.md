@@ -28,7 +28,7 @@ FINETUNING
 
 IDEAS:
 
- * Hype/marketing - every time someone completes all 16 pages, update a global NoSQL container counter. This metric is more valuable than anything from Google Analytics for measuring success
+ * Hype/marketing - every time someone completes a full story, update a global NoSQL container counter. This metric is more valuable than anything from Google Analytics for measuring success
  * After GPT-3 fills a page with an idea, now encourage the author to make tweaks like a co-author brainstorm. Human needs to be part of the process like an editor forging the ideas into something even better. AI can still assist with this process, ex: "Prompt: Given the previous sequence of events, we see the following symbolism is present. " Encourage the author to layer in more theme/symbolism/nuance.
  * We can use DaVinci (highest quality) to generate yet more unique training samples for later finetuning. Human curated from examples to pick out "good" stories.
  * Larger models require less data for fine-tuning. https://thenextweb.com/news/building-apps-gpt-3-what-devs-need-know-cost-performance-syndication
@@ -60,9 +60,23 @@ PROMPT DESIGN
  ** IDEA: does this mean I shouldn't directly feed completions back into the next prompt? Do some light manipulation first? Ideally, the author will introduce their own entropy into the system to modify each output before requesting the next completion
  * https://www.gwern.net/GPT-3#quality
  ** For fiction, I treat it as a curation problem: how many samples do I have to read to get one worth showing off? [...] A Markov chain text generator trained on a small corpus represents a huge leap over randomness: instead of having to generate countless quadrillions of samples, one might only have to generate millions of samples to get a few coherent pages; this can be improved to hundreds or tens of thousands by increasing the depth of the n of its n-grams. […] But for GPT-3, once the prompt is dialed in, the ratio appears to have dropped to closer to 1:5—maybe even as low as 1:3!
+ * The OpenAI example for micro-horror: https://beta.openai.com/examples/default-micro-horror has hyper params Temperature=0.5 and Frequency Penalty=0.5
 
 
 PROMPT IDEAS
+
+ * from the forums: "keep it simple, less words is better, and give it a very good thorough example - just one really good one should do for what you want to to"
+ * which leads me back to experimenting with the prompts in Playground before I attempt any finetuning
+
+-------- (FROM OPENAI EXAMPLES)
+Topic: Breakfast
+Two-Sentence Horror Story: He always stops crying when I pour the milk on his cereal. I just have to remember not to let him see his face on the carton.
+###
+Topic: Wind
+Two-Sentence Horror Story:
+--------
+ * The above is a small version of what I'm after. Perhaps I should consider the style "Genre: scifi" instead of "The genre is Scifi"?
+--------
 
 Here’s a short story by Terry Pratchett.
 
@@ -96,6 +110,48 @@ The following is how a skilled author would expand the above summary into more d
 
 Here's a three-sentence summary of the plot so far:
 
+--------------
+
+Write a novel with the following description
+Genre: Epic science fiction space opera
+Style: Mythic, like Frank Herbert's Dune or Tolkien's Silmarillion
+Premise: An object, the Obelisk, has been found in deep space on a route between the Milky Way and Andromeda galaxies. The object is a giant diamond in shape, but of unknown material and origin. This story follows several perspectives as they wrangle with the truth of the Obelisk. Religious orders claim it, as to scientific and governmental agencies.
+
+The story so far: Beginning
+
+--------------
+ * I like the hint words in the prompt above of "Premise" and "The story so far: Beginning"
+--------------
+Continue writing a novel based on the summary and last chunk.
+
+Example 1:
+Summary: <<SUMMARY>>
+Last chunk: <<NOVEL>>
+Continuation: <<IDEAL COMPLETION>>
+
+Example 2:
+Summary: <<SUMMARY>>
+Last chunk: <<NOVEL>>
+Continuation: <<IDEAL COMPLETION>>
+--------------
+The following is a summary of a novel so far. Read the summary and continue the story.
+
+Summary:
+
+<<SUMMARY>>
+
+Last few lines:
+
+<<NOVEL>>
+
+Write a long continuation of the above story:
+--------------
+Write a concise summary of the following excerpt:
+<<CHUNK>>
+
+Concise summary:
+--------------
+ * I like the hint word of "except" and "concise"
 --------------
 
 [full summary here]
@@ -143,6 +199,14 @@ Write a short summary of a story for kids/teens/adults about keyword1, keyword2,
  * https://beta.openai.com/docs/api-reference/completions/create#completions/create-logit_bias
  * use to increase chances of user-entered keywords and logline words appearing. Could also add "hero name" to the UI, and crank up likelihood of that name appearing along with a prompt of "the main character's name is: John"
 
+-----------
+After reading the following sequence of events, write a summary of what happens next:
+
+[full]
+
+Now write a concise summary of what happens next.
+
+<<IDEAL COMPLETION>>
 -----------
 
 Express Rate Limit - OpenAI suggests a max of 6 requests per minute (per user?)

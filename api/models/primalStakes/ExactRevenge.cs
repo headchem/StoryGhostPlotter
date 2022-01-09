@@ -21,7 +21,7 @@ public class ExactRevenge : IPrimalStakes
 
     public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
     {
-        return $"The primal stakes are to {Name}, which involves {string.Join(", ", Keywords)}.";
+        return $"This story eventually ends with the main character exacting their revenge.";
     }
 
 }

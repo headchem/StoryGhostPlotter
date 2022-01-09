@@ -174,9 +174,27 @@ public static class Factory
         return dramaticQuestionObj;
     }
 
+    private static string getCharacterStage(string completionType)
+    {
+        return completionType switch
+        {
+            "orphanSummary" => "orphan",
+            "orphanFull" => "orphan",
+            "wandererSummary" => "wanderer",
+            "wandererFull" => "wanderer",
+            "warriorSummary" => "warrior",
+            "warriorFull" => "warrior",
+            "martyrSummary" => "martyr",
+            "martyrFull" => "martyr",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
+        };
+    }
+
     /// <summary>Given a <c>Story</c>, based off of the <c>CompletionType</c> property, will return the entire prompt for the given CompletionType</summary>
     public static string GetPrompt(Story req)
     {
+        var characterStage = getCharacterStage(req.CompletionType);
+
         var problemTemplate = Factory.GetProblemTemplate(req.ProblemTemplate);
         var heroArchetype = Factory.GetArchetype(req.HeroArchetype);
         var enemyArchetype = Factory.GetArchetype(req.EnemyArchetype);
@@ -185,51 +203,110 @@ public static class Factory
         var genre = Factory.GetGenre(req.Genre);
 
         var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var problemTemplateContribution = problemTemplate.GetLogLineContribution(req.Seed, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var heroArchetypeContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
-        var enemyArchetypeContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var primalStakesContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
-        var dramaticQuestionContribution = dramaticQuestion.GetLogLineContribution(req.Seed, req.CompletionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
+        var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+        var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
+        var primalStakesLogLineContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(req.Seed, req.CompletionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
-        var consolidatedContributions = $"Here is an overview of the elements of this award winning story: {genreContribution} {problemTemplateContribution} The following important topics take center stage in this story: {string.Join(", ", req.Keywords)}. {heroArchetypeContribution} {enemyArchetypeContribution} {primalStakesContribution} {dramaticQuestionContribution}";
+        var keywordsContribution = getKeywordsSentence(req.Keywords);
 
-        consolidatedContributions += getPromptForCompletionType(req);
+        var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+        var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+
+        var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {primalStakesLogLineContribution} {dramaticQuestionLogLineContribution}";
+
+        //consolidatedContributions += getPromptForCompletionType(req);
+
+        if (req.CompletionType != "orphanSummary")
+        {
+            var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(req.CompletionType, req);
+
+            consolidatedContributions += previousEvents;
+        }
+
+        consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution}";
+        consolidatedContributions += "\n\n" + getRequestToAI(req.CompletionType, req);
 
         consolidatedContributions += "\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
         return consolidatedContributions;
     }
 
-    private static string getPromptForCompletionType(Story req)
+    private static string getKeywordsSentence(List<string> keywords)
     {
-        var separator = "\n\n";
+        var prefix = "The story focuses on";
 
-        return req.CompletionType switch
+        if (keywords == null || keywords.Count == 0)
         {
-            "orphanSummary" => "", // there is no prompt for orphanSummary besides the global Log Line prompt, which is added before this method is called
-            "orphanFull" => separator + getPromptWithPrefix("orphanSummary", req),
-            "wandererSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req),
-            "wandererFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req),
-            "warriorSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req),
-            "warriorFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req),
-            "martyrSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req),
-            "martyrFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req) + separator + getPromptWithPrefix("martyrSummary", req),
+            return "";
+        }
+        else if (keywords.Count == 1)
+        {
+            return $"{prefix} {keywords[0]}.";
+        }
+        else if (keywords.Count == 2)
+        {
+            return $"{prefix} {keywords[0]} and {keywords[1]}.";
+        }
+
+        var joinedList = $"{prefix} ";
+
+        for (var i = 0; i < keywords.Count - 1; i++)
+        {
+            joinedList += $"{keywords[i]}, ";
+        }
+
+        joinedList += $"and {keywords[keywords.Count - 1]}.";
+
+        return joinedList;
+    }
+
+    private static string getPreviousEvents(string completionType, Story req)
+    {
+        return completionType switch
+        {
+            "orphanSummary" => "",
+            "orphanFull" => req.OrphanSummary,
+            "wandererSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull,
+            "wandererFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary,
+            "warriorSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull,
+            "warriorFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary,
+            "martyrSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull,
+            "martyrFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + req.MartyrSummary,
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
         };
     }
 
-    private static string getPromptWithPrefix(string completionType, Story req)
+    // private static string getPromptForCompletionType(Story req)
+    // {
+    //     var separator = "\n\n";
+
+    //     return req.CompletionType switch
+    //     {
+    //         "orphanSummary" => "", // there is no prompt for orphanSummary besides the global Log Line prompt, which is added before this method is called
+    //         "orphanFull" => separator + getPromptWithPrefix("orphanSummary", req),
+    //         "wandererSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req),
+    //         "wandererFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req),
+    //         "warriorSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req),
+    //         "warriorFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req),
+    //         "martyrSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req),
+    //         "martyrFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req) + separator + getPromptWithPrefix("martyrSummary", req),
+    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
+    //     };
+    // }
+
+    private static string getRequestToAI(string completionType, Story req)
     {
         return completionType switch
         {
-            "orphanSummary" => "Here is a single paragraph high-level summary of the beginning of this award winning story:\n\n" + req.OrphanSummary,
-            "orphanFull" => "Here is a detailed summary of the beginning of this award winning story:\n\n" + req.OrphanFull,
-            "wandererSummary" => "Here is a single paragraph high-level summary of how the main character's life is complicated by a problem:\n\n" + req.WandererSummary,
-            "wandererFull" => "Here is a detailed summary of how the main character's life is complicated:\n\n" + req.WandererFull,
-            "warriorSummary" => "Here is a single paragraph high-level summary of how the main character is pushed to breaking point:\n\n" + req.WarriorSummary,
-            "warriorFull" => "Here is a detailed summary of how the main character is pushed to breaking point:\n\n" + req.WarriorFull,
-            "martyrSummary" => "Here is a single paragraph high-level summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrSummary,
-            "martyrFull" => "Here is a detailed summary of how the main character digs deep to overcome the problem, but with a surprising twist:\n\n" + req.MartyrFull,
+            "orphanSummary" => "Write a concise single paragraph summarizing the status quo behaviors of the main character before they are fully confronted with the problem:",
+            "orphanFull" => "Based on the previous summary, write a more detailed list of story beats of the status quo behaviors of the main character before they are fully confronted with the problem:",
+            "wandererSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede:",
+            "wandererFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede:",
+            "warriorSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character discovers how to effectively tackle the problem, but they are held back from a lack of personal growth:",
+            "warriorFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character discovers how to effectively tackle the problem, but they are held back from a lack of personal growth:",
+            "martyrSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character is pushed to their breaking point, but they dig down deep to overcome the problem, with a surprising twist:",
+            "martyrFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character is pushed to their breaking point, but they dig down deep to overcome the problem, with a surprising twist:",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
         };
     }

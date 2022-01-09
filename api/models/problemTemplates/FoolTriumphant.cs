@@ -84,7 +84,7 @@ public Adjectives OrphanAdjectives
         }
     }
 
-    public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
     }

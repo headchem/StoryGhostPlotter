@@ -88,6 +88,7 @@ public static class CreateFinetuningDataset
         return row;
     }
 
+    /// <summary>Given an Excel file, return a fully populated <c>List<Story></c></summary>
     private static async Task<List<Story>> getStoryRows(IFormFile file)
     {
         using var stream = new MemoryStream();

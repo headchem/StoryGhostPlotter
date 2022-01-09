@@ -84,9 +84,16 @@ public Adjectives OrphanAdjectives
         }
     }
 
-    public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
+        return characterStage switch
+        {
+            "orphan" => "At this stage in the story, the main character is granted a supernatural blessing.",
+            "wanderer" => "At this stage in the story, the main character tests and confirms that the supernatural blessing is real.",
+            "warrior" => "At this stage in the story, the main character now feels entitled to the supernatural blessing, but it's not helping fix their problem.",
+            "martyr" => "At this stage in the story, the main character admits they don't need the supernatural blessing, which enables them to fix their problem without using it.",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
+        };
     }
 
 }

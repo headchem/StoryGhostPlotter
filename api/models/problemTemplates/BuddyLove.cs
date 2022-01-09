@@ -20,7 +20,7 @@ public class BuddyLove : IProblemTemplate
     }
 
     public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return "This is a love story in disguise."; } }
+    public string ThemeStated { get { return "This is a relationship story in disguise."; } }
     public string Setup { get { return "The Hero and their Buddy/Enemy don't get along."; } }
     public string IncitingIncident { get { return "The permanent continuation of their relationship is threatened."; } }
     public string Debate { get { return ""; } }
@@ -84,7 +84,7 @@ public class BuddyLove : IProblemTemplate
         }
     }
 
-    public string GetLogLineContribution(int seed, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
     }

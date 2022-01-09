@@ -156,7 +156,7 @@ const Main = (
                                 onChange={onProblemTemplateChange}
                             />
 
-                            <span>story involving</span>
+                            <span>story that focuses on </span>
 
                             <LogLineSelect
                                 placeholder='Keywords'
