@@ -79,10 +79,10 @@ public class Jester : IArchetype
     {
         return characterStage switch
         {
-            "orphan" => "",
-            "wanderer" => "",
-            "warrior" => "",
-            "martyr" => "",
+            "orphan" => $"The main character's only motivation is to have fun in the moment and lighten up the world, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}.",
+            "wanderer" => $"The main character attempts to play tricks and toy with the problem, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contradiction.ToLower()}.",
+            "warrior" => $"Despite the main character's attempts to play tricks and toy with the problem, the problem persists. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Negation.ToLower()}.",
+            "martyr" => $"Finally, the main character demonstrates {dramaticQuestion.Positive.ToLower()} and successfully handles the problem by being joyous while trusting in the process.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }

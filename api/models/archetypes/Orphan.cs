@@ -57,7 +57,7 @@ public class Orphan : IArchetype
         get
         {
             return new List<string>{
-                "Down-to-earth person", "realist", "diligent worker", "solid citizen", "good neighbor"
+                "down-to-earth person", "realist", "diligent worker", "solid citizen", "good neighbor"
             };
         }
     }
@@ -68,21 +68,21 @@ public class Orphan : IArchetype
 
     public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The main character's personality is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
+        return $"The main character's personality is that of an {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
     public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The antagonist's personality is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
+        return $"The antagonist's personality is that of an {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
 
     public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch
         {
-            "orphan" => "",
-            "wanderer" => "",
-            "warrior" => "",
-            "martyr" => "",
+            "orphan" => $"The main character's only motivation is to belong, be in safety, and connect with others, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}.",
+            "wanderer" => $"The main character allows themselves to be victimized by the problem, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contradiction.ToLower()}.",
+            "warrior" => $"While the main character is victimized by the problem, the problem continues to get worse. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Negation.ToLower()}.",
+            "martyr" => $"Finally, the main character demonstrates {dramaticQuestion.Positive.ToLower()} and successfully handles the problem by developing ordinary solid virtues, being down to earth, and processing pain fully.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }

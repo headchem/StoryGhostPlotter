@@ -86,7 +86,14 @@ public Adjectives OrphanAdjectives
 
     public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
+        return characterStage switch
+        {
+            "orphan" => "At this stage in the story, the main character is an ordinary person faced with a larger-than-life problem.",
+            "wanderer" => "At this stage in the story, the larger-than-life problem is forced to take notice of the ordinary main character.",
+            "warrior" => "At this stage in the story, the larger-than-life problem reminds the ordinary main character that they are powerless and should know their place.",
+            "martyr" => "At this stage in the story, the main character finds something within themselves - something every average person has - that allows them to overcome the problem.",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
+        };
     }
 
 }

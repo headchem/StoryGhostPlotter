@@ -21,7 +21,7 @@ public class Sports : IGenre
 
     public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The genre is {Name}, which involves {string.Join(", ", Keywords)}.";
+        return $"This is an award winning sports story where the main character's struggles are set against a backdrop of a sport that dominates their life.";
     }
 
 }

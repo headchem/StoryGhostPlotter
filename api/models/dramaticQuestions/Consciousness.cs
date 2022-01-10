@@ -15,18 +15,7 @@ public class Consciousness : IDramaticQuestion
 
     public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
-        var curAnswer = getCompletionTypeAnswer(CompletionType);
-        
-        return $"At this point in this griping tale, the main character answers the emotional question of \"{Description}\" with: {curAnswer}.";
-    }
-
-    public string getCompletionTypeAnswer(string completionType) {
-        if (completionType.Contains("orphan")) return Contrary;
-        if (completionType.Contains("wanderer")) return Contradiction;
-        if (completionType.Contains("warrior")) return Negation;
-        if (completionType.Contains("martyr")) return Positive;
-
-        throw new Exception($"CompletionType: {completionType} not found");
+        return $"The overarching theme of this story is asking if the risk of eternal damnation is worth existing in the first place.";
     }
 
 }

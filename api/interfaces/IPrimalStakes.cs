@@ -6,10 +6,11 @@ namespace StoryGhost.Interfaces;
 
 public interface IPrimalStakes
 {
-    public string Id {get;}
+    public string Id { get; }
     public string Name { get; }
     public string Description { get; }
     public List<string> Keywords { get; }
 
-    public string GetLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion);
+    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion);
+
 }

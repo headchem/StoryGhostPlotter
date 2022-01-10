@@ -21,7 +21,7 @@ public class Mystery : IGenre
 
     public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The genre is {Name}, which involves {string.Join(", ", Keywords)}.";
+        return $"This is an award winning mystery story where the main character investigates a shocking event, where a small cast of suspects each have a plausible motive.";
     }
 
 }

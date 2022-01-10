@@ -68,21 +68,21 @@ public class Innocent : IArchetype
 
     public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The main character's personality is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
+        return $"The main character's personality is that of an {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
     public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"The antagonist's personality is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
+        return $"The antagonist's personality is that of an {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
 
     public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch
         {
-            "orphan" => "",
-            "wanderer" => "",
-            "warrior" => "",
-            "martyr" => "",
+            "orphan" => $"The main character's only motivation is to be happy, remain in safety, and get to paradise, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}.",
+            "wanderer" => $"The main character attempts to deny the problem or seek rescue from it, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contradiction.ToLower()}.",
+            "warrior" => $"Despite the main character's attempts to deny the problem or be rescued from it, the problem persists. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Negation.ToLower()}.",
+            "martyr" => $"Finally, the main character demonstrates {dramaticQuestion.Positive.ToLower()} and successfully handles the problem by doing things the right way, loyally endangering themselves, and showing discernment.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }

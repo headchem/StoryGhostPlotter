@@ -79,10 +79,10 @@ public class Lover : IArchetype
     {
         return characterStage switch
         {
-            "orphan" => "",
-            "wanderer" => "",
-            "warrior" => "",
-            "martyr" => "",
+            "orphan" => $"The main character's only motivation is to be social and in a blissful and intimate relationship, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}.",
+            "wanderer" => $"The main character attempts to love the problem back, while they interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contradiction.ToLower()}.",
+            "warrior" => $"Despite the main character's attempts to love the problem back, the problem persists. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Negation.ToLower()}.",
+            "martyr" => $"Finally, the main character demonstrates {dramaticQuestion.Positive.ToLower()} and successfully handles the problem by focusing on themselves to become physically and emotionally attractive, and following their own bliss, allowing themselves deserved hedonism.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }

@@ -86,7 +86,14 @@ public class BuddyLove : IProblemTemplate
 
     public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
-        return $"This is a {Name} story about the ideas of: {string.Join(", ", Keywords)}.";
+        return characterStage switch
+        {
+            "orphan" => "At this stage in the story, the main character and their buddy/enemy don't get along but are forced to interact.",
+            "wanderer" => "At this stage in the story, the main character and their buddy/enemy grow closer, oblivious to the flaws in their relationship.",
+            "warrior" => "At this stage in the story, the relationship between the main character and their buddy/enemy breaks down and they declare the relationship is over.",
+            "martyr" => "At this stage in the story, the main character and their buddy/enemy realize they are two halves of a whole, and they need to surrender their egos and repair the relationship.",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
+        };
     }
 
 }

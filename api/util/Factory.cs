@@ -205,17 +205,15 @@ public static class Factory
         var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
         var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
         var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var primalStakesLogLineContribution = primalStakes.GetLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
         var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(req.Seed, req.CompletionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
         var keywordsContribution = getKeywordsSentence(req.Keywords);
 
+        var primalStakesCharacterStageContribution = primalStakes.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
         var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
         var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
 
-        var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {primalStakesLogLineContribution} {dramaticQuestionLogLineContribution}";
-
-        //consolidatedContributions += getPromptForCompletionType(req);
+        var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
 
         if (req.CompletionType != "orphanSummary")
         {
@@ -224,7 +222,7 @@ public static class Factory
             consolidatedContributions += previousEvents;
         }
 
-        consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution}";
+        consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
         consolidatedContributions += "\n\n" + getRequestToAI(req.CompletionType, req);
 
         consolidatedContributions += "\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
@@ -234,7 +232,7 @@ public static class Factory
 
     private static string getKeywordsSentence(List<string> keywords)
     {
-        var prefix = "The story focuses on";
+        var prefix = "The story focuses on the following concepts:";
 
         if (keywords == null || keywords.Count == 0)
         {
@@ -263,37 +261,21 @@ public static class Factory
 
     private static string getPreviousEvents(string completionType, Story req)
     {
+        var summaryPrefix = "SUMMARY OF WHAT HAPPENS NEXT: ";
+
         return completionType switch
         {
             "orphanSummary" => "",
-            "orphanFull" => req.OrphanSummary,
-            "wandererSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull,
-            "wandererFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary,
-            "warriorSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull,
-            "warriorFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary,
-            "martyrSummary" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull,
-            "martyrFull" => req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + req.MartyrSummary,
+            "orphanFull" => summaryPrefix + req.OrphanSummary,
+            "wandererSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull,
+            "wandererFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary,
+            "warriorSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull,
+            "warriorFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary,
+            "martyrSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary + "\n\n" + req.WarriorFull,
+            "martyrFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + summaryPrefix + req.MartyrSummary,
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
         };
     }
-
-    // private static string getPromptForCompletionType(Story req)
-    // {
-    //     var separator = "\n\n";
-
-    //     return req.CompletionType switch
-    //     {
-    //         "orphanSummary" => "", // there is no prompt for orphanSummary besides the global Log Line prompt, which is added before this method is called
-    //         "orphanFull" => separator + getPromptWithPrefix("orphanSummary", req),
-    //         "wandererSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req),
-    //         "wandererFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req),
-    //         "warriorSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req),
-    //         "warriorFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req),
-    //         "martyrSummary" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req),
-    //         "martyrFull" => getPromptWithPrefix("orphanSummary", req) + separator + getPromptWithPrefix("orphanFull", req) + separator + getPromptWithPrefix("wandererSummary", req) + separator + getPromptWithPrefix("wandererFull", req) + separator + getPromptWithPrefix("warriorSummary", req) + separator + getPromptWithPrefix("warriorFull", req) + separator + getPromptWithPrefix("martyrSummary", req),
-    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
-    //     };
-    // }
 
     private static string getRequestToAI(string completionType, Story req)
     {
