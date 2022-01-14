@@ -17,6 +17,9 @@ FINETUNING
  ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"
  * To kick off a finetune job:
  ** openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
+ *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
+ *** "Aim for at least ~500 examples"
+ *** default n_epochs=4, default learning_rate_multiplier=0.05
  *** you'll get a response like: Created fine-tune: ft-aySH26zbI46aMKvL5OxWQJ4h
  *** if disconnected, run: openai api fine_tunes.follow -i ft-aySH26zbI46aMKvL5OxWQJ4h
  * in the OpenAI portal, you'll see under "Fine-tune training" a model name like "davinci:ft-personal-2022-01-07-04-27-42" Plug this value into the dictionary in Generate.cs

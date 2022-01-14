@@ -194,7 +194,7 @@ const Main = (
                             <span> in relation to the </span>
 
                             <LogLineSelect
-                                placeholder='Enemy Archetype'
+                                placeholder='Secondary Character Archetype'
                                 width='15em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('enemy archetype')}
