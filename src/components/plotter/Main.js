@@ -179,7 +179,7 @@ const Main = (
                                 onChange={onHeroArchetypeChange}
                             />
 
-                            <span> hero ultimately seeks to </span>
+                            <span> main character ultimately seeks to </span>
 
                             <LogLineSelect
                                 placeholder='Primal Stakes'
@@ -191,7 +191,7 @@ const Main = (
                                 onChange={onPrimalStakesChange}
                             />
 
-                            <span> while the </span>
+                            <span> in relation to the </span>
 
                             <LogLineSelect
                                 placeholder='Enemy Archetype'
@@ -203,7 +203,7 @@ const Main = (
                                 onChange={onEnemyArchetypeChange}
                             />
 
-                            <span> enemy attempts to thwart them. The theme of </span>
+                            <span> secondary character. The theme of </span>
 
                             <LogLineSelect
                                 placeholder='Dramatic Question'

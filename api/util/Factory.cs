@@ -261,7 +261,7 @@ public static class Factory
 
     private static string getPreviousEvents(string completionType, Story req)
     {
-        var summaryPrefix = "SUMMARY OF WHAT HAPPENS NEXT: ";
+        var summaryPrefix = "SUMMARY: ";
 
         return completionType switch
         {
@@ -281,14 +281,14 @@ public static class Factory
     {
         return completionType switch
         {
-            "orphanSummary" => "Write a concise single paragraph summarizing the status quo behaviors of the main character before they are fully confronted with the problem:",
-            "orphanFull" => "Based on the previous summary, write a more detailed list of story beats of the status quo behaviors of the main character before they are fully confronted with the problem:",
-            "wandererSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede:",
-            "wandererFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede:",
-            "warriorSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character discovers how to effectively tackle the problem, but they are held back from a lack of personal growth:",
-            "warriorFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character discovers how to effectively tackle the problem, but they are held back from a lack of personal growth:",
-            "martyrSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character is pushed to their breaking point, but they dig down deep to overcome the problem, with a surprising twist:",
-            "martyrFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character is pushed to their breaking point, but they dig down deep to overcome the problem, with a surprising twist:",
+            "orphanSummary" => "Write a concise single paragraph summarizing the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
+            "orphanFull" => "Based on the previous summary, write a more detailed list of story beats of the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
+            "wandererSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
+            "wandererFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
+            "warriorSummary" => "Based on the previous events, write a concise single paragraph summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
+            "warriorFull" => "Based on the previous events, write a more detailed list of story beats summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
+            "martyrSummary" => "Based on the previous events, write a concise single paragraph summarizing a fortuitious revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
+            "martyrFull" => "Based on the previous events, write a more detailed list of story beats summarizing a fortuitious revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
         };
     }

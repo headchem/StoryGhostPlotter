@@ -151,7 +151,7 @@ Write a concise summary of the following excerpt:
 
 Concise summary:
 --------------
- * I like the hint word of "except" and "concise"
+ * I like the hint word of "excerpt" and "concise"
 --------------
 
 [full summary here]
@@ -238,44 +238,58 @@ FINETUNING
 Out of the Bottle
 	Aladin
 	LiarLiar
+	Fantasia
 Monster in the House
 	Whiplash
 	TheCraft
+	JurassicWorld
 Golden Fleece
 	StarWarsEp4
 	TheWizardOfOz
+	TheMitchellsVsTheMachines
 Superhero
 	IronMan
 	KungFuPanda
+	Ratatouille
 Rites of Passage
 	HowToTrainYourDragon
 	Float
+	ACharlieBrownThanksgiving
 Fool Triumphant
 	Elf
 	Moneyball
+	TheKingsSpeech
 Buddy Love
 	MyOctopusTeacher
 	BeautyAndTheBeast
+	ET
 Whydunnit
 	CaptainMarvel
 	TheBigLebowski
+	TheConversation
 Institutionalized
 	Sicario
 	DrStrangelove
+	FreeSolo
 Unexpected Problem
 	TheLegoMovie
 	Taken
+	DontLookUp
 
 
 HERO
 Caregiver
+	ET
 Creator
 	IronMan
 	HowToTrainYourDragon
+	TheMitchellsVsTheMachines
 Explorer
 	Whiplash
 	MyOctopusTeacher
 	BeautyAndTheBeast
+	Ratatouille
+	FreeSolo
 Innocent
 	Elf
 	Sicario
@@ -285,10 +299,12 @@ Innocent
 	KungFuPanda
 	TheBigLebowski
 	DrStrangelove
+	ACharlieBrownThanksgiving
 Jester
 	LiarLiar
 Lover
 Magician
+	Fantasia
 Orphan
 	Aladin
 Outlaw
@@ -296,7 +312,11 @@ Outlaw
 	Taken
 	Moneyball
 Ruler
+	JurassicWorld
+	TheKingsSpeech
 Sage
+	DontLookUp
+	TheConversation
 Warrior
 	StarWarsEp4
 
@@ -305,12 +325,15 @@ ENEMY
 Caregiver
 	Float
 	LiarLiar
+	FreeSolo
 Creator
 Explorer
 Innocent
+	ET
 Jester
 	Taken
 	DrStrangelove
+	TheKingsSpeech
 Lover
 	TheBigLebowski
 Magician
@@ -319,17 +342,24 @@ Magician
 	TheWizardOfOz
 Orphan
 	MyOctopusTeacher
+	TheConversation
 Outlaw
 	StarWarsEp4
 	Sicario
+	JurassicWorld
 Ruler
 	Whiplash
 	Elf
 	TheLegoMovie
 	Moneyball
 	BeautyAndTheBeast
+	DontLookUp
+	TheMitchellsVsTheMachines
+	Ratatouille
+	ACharlieBrownThanksgiving
 Sage
 	IronMan
+	Fantasia
 Warrior
 	HowToTrainYourDragon
 	CaptainMarvel
@@ -346,18 +376,30 @@ Find Connection
 	Float
 	LiarLiar
 	BeautyAndTheBeast
+	TheMitchellsVsTheMachines
+	ACharlieBrownThanksgiving
+	ET
 Protect Family
 	StarWarsEp4
 	HowToTrainYourDragon
 	MyOctopusTeacher
 	Taken
+	DontLookUp
 Protect Possession
 	IronMan
 	KungFuPanda
 	DrStrangelove
+	TheConversation
 Survive
 	Whiplash
 	TheLegoMovie
 	TheWizardOfOz
 	Moneyball
 	TheBigLebowski
+	Fantasia
+	JurassicWorld
+	Ratatouille
+	TheKingsSpeech
+	FreeSolo
+
+32854 words total after 30 stories
