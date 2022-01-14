@@ -20,6 +20,7 @@ FINETUNING
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05
+ *** experiment with values in the range 0.02 to 0.2 to see what produces the best results
  *** you'll get a response like: Created fine-tune: ft-aySH26zbI46aMKvL5OxWQJ4h
  *** if disconnected, run: openai api fine_tunes.follow -i ft-aySH26zbI46aMKvL5OxWQJ4h
  * in the OpenAI portal, you'll see under "Fine-tune training" a model name like "davinci:ft-personal-2022-01-07-04-27-42" Plug this value into the dictionary in Generate.cs

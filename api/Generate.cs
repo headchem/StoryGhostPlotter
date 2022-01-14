@@ -33,12 +33,24 @@ public static class Generate
 
         // var models = getModels();
 
+        // // set sensible defaults based on how long we expect average completions for summary and full
+        // var maxCompletionLength = 1;
+        // var temperature = 1.0;
+
+        // if (req.CompletionType.ToLower().Contains("summary")) {
+        //     maxCompletionLength = 256;
+        //     temperature = 0.9;
+        // } else if (req.CompletionType.ToLower().Contains("full")) {
+        //     maxCompletionLength = 512;
+        //     temperature = 0.8;
+        // }
+
         // var openAIRequest = new OpenAICompletionsRequest
         // {
         //     Prompt = prompt,
         //     Model = models[req.CompletionType],
-        //     MaxTokens = 64,
-        //     Temperature = 0.9,
+        //     MaxTokens = maxCompletionLength,
+        //     Temperature = temperature,
         //     Stop = "###"
         // };
 
@@ -69,8 +81,9 @@ public static class Generate
     // private static Dictionary<string, string> getModels() {
     //     var models = new Dictionary<string, string>(); // key=completion type, value=finetuned model name
 
-    //     models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-    //     models.Add("orphanFull", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     //OLD request delete! models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47");
+    //     models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-07-09-45"); // file: file-Ume90SHsl7fZrKi3CUZYpWvv
+    //     models.Add("orphanFull", "davinci:ft-personal-2022-01-14-07-33-38"); // file: file-WInOrbv1OUtTjPxVJhLXM52E
     //     models.Add("wandererSummary", "davinci:ft-personal-2022-01-07-03-57-47");
     //     models.Add("wandererFull", "davinci:ft-personal-2022-01-07-03-57-47");
     //     models.Add("warriorSummary", "davinci:ft-personal-2022-01-07-03-57-47");
