@@ -32,6 +32,8 @@ public static class Generate
             Completion = "completion for " + req.CompletionType
         });
 
+        
+
         var models = getModels();
 
         // set sensible defaults based on how long we expect average completions for summary and full
@@ -88,12 +90,12 @@ public static class Generate
         //models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-20-10-28"); // file: file-y0DyC2OllYkIac7IVlWWPreg
         models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-20-37-11"); // file: file-dgqvXcXRPGozYDRw51QOUgjG
         models.Add("orphanFull", "davinci:ft-personal-2022-01-14-19-46-56"); // file: file-qdh65y1NlmZcfTtRuY1aFw5y
-        models.Add("wandererSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("wandererFull", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("warriorSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("warriorFull", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("martyrSummary", "davinci:ft-personal-2022-01-07-03-57-47");
-        models.Add("martyrFull", "davinci:ft-personal-2022-01-07-03-57-47");
+        models.Add("wandererSummary", "davinci:ft-personal-2022-01-17-05-54-33"); // file: file-NsboEGXUSkMnnOU3i1Gl9Ena
+        models.Add("wandererFull", "davinci:ft-personal-2022-01-17-06-30-49"); // file: file-tyog5wRUgFdWkgWZoPueNPI2
+        models.Add("warriorSummary", "");
+        models.Add("warriorFull", "");
+        models.Add("martyrSummary", "");
+        models.Add("martyrFull", "");
 
         return models;
     }

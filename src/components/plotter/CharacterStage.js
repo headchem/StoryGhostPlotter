@@ -239,7 +239,7 @@ const CharacterStage = ({
                                 }
                                 {
                                     fullLocked === true &&
-                                    <p>{full}</p>
+                                    <p style={{whiteSpace: "pre-wrap"}}>{full}</p>
                                 }
 
                             </>

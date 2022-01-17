@@ -408,3 +408,55 @@ Survive
 	FreeSolo
 
 32854 words total after 30 stories
+
+
+
+=================
+
+scifi
+out of the bottle
+baseball, kangaroos
+Hero: Explorer
+Find Connection
+Enemy: Jester
+Dramatic Question: Identity
+
+===========
+
+Seventeen-year-old James Harvey, the only white ballplayer on his team, is the hardest-hitting player in Australia. When a civil war erupts, white ballplayers are drafted to go fight and James convinces his coach to let his team go with him. They are captured by the Kranolta, a tribe who have taken advantage of the war to hunt down and kill all outsiders. After the Kranolta find out he's the only white ballplayer, they plan to hold him hostage to negotiate an exchange for the freedom of their captured tribesman.
+
+===========
+
+OPENING IMAGE: We meet James Harvey, the only white player on his team. He is not only the best player, but he is also the hardest hitter, which is why his coach sticks with him and refuses to demote him even though he clearly is not part of the team.
+
+THEME STATED: "I never thought I'd have to kill to prove I'm a man," James says.
+
+SETUP: A civil war has broken out in Australia. We meet James' coach, who is taking his team to the front lines, along with a dozen other teams, to compete in a tournament for the war's duration.
+
+CATALYST: His team is captured by the Kranolta, a tribe with a warrior culture and a grudge against all outsiders.
+
+DEBATE: James has to decide whether or not to escape from his captors.
+
+BREAK INTO TWO: James is captured by the Kranolta and learns their world has taken advantage of the war to hunt down and kill all outsiders. He meets another captive, a scientist "savage" named Angela, and the two bond.
+
+B STORY: The B story follows a group of American soldiers, who have been sent to Australia to help fight the same war James' team has been caught in the middle of. The Americans must work with a squad of Australian soldiers under the command of General Richards.
+
+===========
+
+After the Kranolta find out that he's the only white ballplayer, they plan to use him as a hostage. James convinces the tribe to let him play in a game of baseball to try to save their lives. He ends up winning the game, but the tribal leader realizes he has a supernatural ability and keeps him prisoner.
+
+==========
+
+FUN AND GAMES: James convinces his captors that he has a unique ability with some help from the tribe's witch doctor. He ends up playing in a game of baseball and ends up winning the game. He is kidnapped by the tribal leader, and he realizes James has a supernatural talent. The tribal leader also realizes that James is the white ballplayer the Kranolta had been looking for and realizes he is not just a teen; he is a pawn in their war against the enemy.
+
+MIDPOINT: James' new friend, Angela, tells him that one of the soldiers he had been fighting against has defected and surrendered to the Kranolta. James realizes his captors have plans to use him against the enemy. James is released, but is kept prisoner.
+
+---- ALTERNATE ----
+
+FUN AND GAMES: The Kranolta decide to use James as a hostage to barter with the Australians to exchange their "savage" tribesman for James. His team mates make the decision to sacrifice their own lives to save James, but now the Kranolta are going to use James in a game of baseball to win their freedom.
+
+MIDPOINT: James, making no attempt to escape, agrees to play a game with the Kranolta. He wins by hitting the ball into the stands.
+
+==========
+
+
