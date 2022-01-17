@@ -138,7 +138,7 @@ const Main = (
 
                             <LogLineSelect
                                 placeholder='Genre'
-                                width='15em'
+                                width='8em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('genre')}
                                 options={genreOptions}
@@ -148,7 +148,7 @@ const Main = (
 
                             <LogLineSelect
                                 placeholder='Problem Template'
-                                width='15em'
+                                width='14em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('problem template')}
                                 options={problemTemplateOptions}
@@ -171,7 +171,7 @@ const Main = (
 
                             <LogLineSelect
                                 placeholder='Personality'
-                                width='15em'
+                                width='9em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('hero archetype')}
                                 options={archetypeOptions}
@@ -183,7 +183,7 @@ const Main = (
 
                             <LogLineSelect
                                 placeholder='Primal Stakes'
-                                width='15em'
+                                width='13em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('primal stakes')}
                                 options={primalStakesOptions}
@@ -195,7 +195,7 @@ const Main = (
 
                             <LogLineSelect
                                 placeholder='Personality'
-                                width='15em'
+                                width='9em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('enemy archetype')}
                                 options={archetypeOptions}
