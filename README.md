@@ -16,7 +16,8 @@ FINETUNING
  * Run this tool as a sanity check on data formatting
  ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"
  * To kick off a finetune job:
- ** openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
+ ** SUMMARY: openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
+ ** FULL: openai api fine_tunes.create -t "sg_finetune\orphanFull.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05

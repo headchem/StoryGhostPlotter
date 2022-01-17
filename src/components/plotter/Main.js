@@ -170,7 +170,7 @@ const Main = (
                             <span>. The </span>
 
                             <LogLineSelect
-                                placeholder='Hero Archetype'
+                                placeholder='Personality'
                                 width='15em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('hero archetype')}
@@ -194,7 +194,7 @@ const Main = (
                             <span> in relation to the </span>
 
                             <LogLineSelect
-                                placeholder='Secondary Character Archetype'
+                                placeholder='Personality'
                                 width='15em'
                                 isMultiSelect={false}
                                 onFocusChange={() => onFocusChange('enemy archetype')}
@@ -249,8 +249,6 @@ const Main = (
                                 setFull={setOrphanFull}
                                 setNextAvailable={() => {
                                     setWandererSummaryStatus(PromptArea.Status.AVAILABLE)
-                                    setWandererSummary('') // clear out any previous values in case we are reverting changes
-                                    setWandererFull('')
                                 }}
                                 setNextUnavailable={() => setWandererSummaryStatus(PromptArea.Status.UNAVAILABLE)}
                                 // do nothing on prev complete/incomplete
@@ -288,8 +286,6 @@ const Main = (
                             setFull={setWandererFull}
                             setNextAvailable={() => {
                                 setWarriorSummaryStatus(PromptArea.Status.AVAILABLE)
-                                setWarriorSummary('') // clear out any previous values in case we are reverting changes
-                                setWarriorFull('')
                             }}
                             setNextUnavailable={() => setWarriorSummaryStatus(PromptArea.Status.UNAVAILABLE)}
                             isComplete={wandererComplete}
@@ -325,8 +321,6 @@ const Main = (
                             setFull={setWarriorFull}
                             setNextAvailable={() => {
                                 setMartyrSummaryStatus(PromptArea.Status.AVAILABLE)
-                                setMartyrSummary('') // clear out any previous values in case we are reverting changes
-                                setMartyrFull('')
                             }}
                             setNextUnavailable={() => setMartyrSummaryStatus(PromptArea.Status.UNAVAILABLE)}
                             isComplete={warriorComplete}

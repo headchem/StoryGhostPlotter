@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaLock, FaLockOpen, FaPencilAlt, FaCaretRight } from 'react-icons/fa'
+import { FaLock, FaLockOpen, FaCaretRight, FaGhost } from 'react-icons/fa'
 
 const CharacterStage = ({
     stage,
@@ -94,7 +94,6 @@ const CharacterStage = ({
 
     const onGenerateSummary = async () => {
         setIsSummaryLoading(true)
-        setFull('')
         fetchCompletion(stage + 'Summary')
     }
 
@@ -132,62 +131,60 @@ const CharacterStage = ({
     }
 
     return (
-        <div className='row stage' onClick={onFocusChange}>
+        <div className='row border-top' onClick={onFocusChange}>
             <div className='col-4'>
                 {
                     isSummaryLoading === false &&
                     <>
-                        <div className='gen-controls'>
+                        <div className='gen-controls bg-light'>
                             {
                                 isComplete === false &&
                                 <>
                                     {
                                         summaryGenerateVisible === true && summaryLocked === false &&
-                                        <button onClick={onGenerateSummary} className='btn btn-primary generate m-3'><FaPencilAlt /> Generate</button>
-                                    }
-                                </>
-                            }
-                            {
-                                summary !== '' &&
-                                <>
-                                    {
-                                        isComplete === false &&
                                         <>
-                                            {
-                                                summaryLockVisible === true &&
-                                                <button onClick={onToggleSummaryLock} className='btn btn-secondary lock m-3'>
-                                                    {
-                                                        summaryLocked === true &&
-                                                        <>
-                                                            <FaLock /> Unlock
-                                                        </>
-                                                    }
-                                                    {
-                                                        summaryLocked === false &&
-                                                        <>
-                                                            <FaLockOpen /> Lock
-                                                        </>
-                                                    }
-                                                </button>
-                                            }
+                                            <button onClick={onGenerateSummary} type="button" className="btn btn-primary m-3" >
+                                                <FaGhost /> Generate with AI
+                                            </button>
                                         </>
                                     }
                                 </>
                             }
+                            {
+
+                                isComplete === false &&
+                                <>
+                                    {
+                                        summaryLockVisible === true &&
+                                        <button onClick={onToggleSummaryLock} className='btn btn-secondary lock m-3'>
+                                            {
+                                                summaryLocked === true &&
+                                                <>
+                                                    <FaLock /> Unlock
+                                                </>
+                                            }
+                                            {
+                                                summaryLocked === false &&
+                                                <>
+                                                    <FaLockOpen /> Lock
+                                                </>
+                                            }
+                                        </button>
+                                    }
+                                </>
+
+                            }
                         </div>
+
                         {
-                            summary !== '' &&
-                            <>
-                                {
-                                    summaryLocked === false &&
-                                    <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)}></textarea>
-                                }
-                                {
-                                    summaryLocked === true &&
-                                    <p>{summary}</p>
-                                }
-                            </>
+                            summaryLocked === false &&
+                            <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)} rows={5}></textarea>
                         }
+                        {
+                            summaryLocked === true &&
+                            <p>{summary}</p>
+                        }
+
                     </>
                 }
 
@@ -197,7 +194,7 @@ const CharacterStage = ({
                 }
             </div>
             <div className='col-1'>
-                <FaCaretRight className='gen-text-arrow' />
+                <FaCaretRight className='gen-text-arrow text-muted' />
             </div>
             <div className='col-7'>
                 {
@@ -206,47 +203,45 @@ const CharacterStage = ({
                         {
                             summaryLocked === true &&
                             <>
-                                <div className='gen-controls'>
+                                <div className='gen-controls bg-light'>
                                     {
                                         fullLocked === false && isComplete === false &&
-                                        <button onClick={onGenerateFull} className='btn btn-primary generate m-3'><FaPencilAlt /> Generate</button>
-                                    }
-                                    {
-                                        full !== '' &&
                                         <>
-                                            {
-                                                isComplete === false &&
-                                                <button onClick={onToggleFullLock} className='btn btn-secondary lock m-3' >
-                                                    {
-                                                        fullLocked === true &&
-                                                        <>
-                                                            <FaLock /> Unlock
-                                                        </>
-                                                    }
-                                                    {
-                                                        fullLocked === false &&
-                                                        <>
-                                                            <FaLockOpen /> Lock
-                                                        </>
-                                                    }
-                                                </button>
-                                            }
+                                            <button type="button" className="btn btn-primary m-3" onClick={onGenerateFull}>
+                                                <FaGhost /> Generate with AI
+                                            </button>
                                         </>
                                     }
+
+                                    {
+                                        isComplete === false &&
+                                        <button onClick={onToggleFullLock} className='btn btn-secondary lock m-3' >
+                                            {
+                                                fullLocked === true &&
+                                                <>
+                                                    <FaLock /> Unlock
+                                                </>
+                                            }
+                                            {
+                                                fullLocked === false &&
+                                                <>
+                                                    <FaLockOpen /> Lock
+                                                </>
+                                            }
+                                        </button>
+                                    }
+
                                 </div>
+
                                 {
-                                    full !== '' &&
-                                    <>
-                                        {
-                                            fullLocked === false &&
-                                            <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)}></textarea>
-                                        }
-                                        {
-                                            fullLocked === true &&
-                                            <p>{full}</p>
-                                        }
-                                    </>
+                                    fullLocked === false &&
+                                    <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)} rows={10}></textarea>
                                 }
+                                {
+                                    fullLocked === true &&
+                                    <p>{full}</p>
+                                }
+
                             </>
                         }
                     </>
