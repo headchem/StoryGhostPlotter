@@ -26,11 +26,11 @@ public static class Generate
         var prompt = Factory.GetPrompt(req);
 
         // TEMP
-        return new OkObjectResult(new GenerateResponse
-        {
-            Prompt = prompt,
-            Completion = "completion for " + req.CompletionType
-        });
+        // return new OkObjectResult(new GenerateResponse
+        // {
+        //     Prompt = prompt,
+        //     Completion = "completion for " + req.CompletionType
+        // });
 
         
 
@@ -42,10 +42,10 @@ public static class Generate
 
         if (req.CompletionType.ToLower().Contains("summary")) {
             maxCompletionLength = 192;
-            temperature = 0.9;
+            temperature = 0.85;
         } else if (req.CompletionType.ToLower().Contains("full")) {
             maxCompletionLength = 512;
-            temperature = 0.8;
+            temperature = 0.9;
         }
 
         var openAIRequest = new OpenAICompletionsRequest
@@ -92,10 +92,10 @@ public static class Generate
         models.Add("orphanFull", "davinci:ft-personal-2022-01-14-19-46-56"); // file: file-qdh65y1NlmZcfTtRuY1aFw5y
         models.Add("wandererSummary", "davinci:ft-personal-2022-01-17-05-54-33"); // file: file-NsboEGXUSkMnnOU3i1Gl9Ena
         models.Add("wandererFull", "davinci:ft-personal-2022-01-17-06-30-49"); // file: file-tyog5wRUgFdWkgWZoPueNPI2
-        models.Add("warriorSummary", "");
-        models.Add("warriorFull", "");
-        models.Add("martyrSummary", "");
-        models.Add("martyrFull", "");
+        models.Add("warriorSummary", "davinci:ft-personal-2022-01-18-04-17-36"); // file: file-0O2o8DDY7Lh55WAxTu1le26g
+        models.Add("warriorFull", "davinci:ft-personal-2022-01-18-04-24-32"); // file: file-ACTIYBCFNHuiflu1SXNKIE2F
+        models.Add("martyrSummary", "davinci:ft-personal-2022-01-18-04-45-55"); // file: file-et3zf0arSUtAhI55yPcH3RTI
+        models.Add("martyrFull", "davinci:ft-personal-2022-01-18-04-58-53");// $4.74 to finetune with 30 examples on davinci, file: file-iv17D0PBMkBpvpteUVHhNuKy
 
         return models;
     }

@@ -7,6 +7,9 @@ In VSCode menu "Run and Debug"
 to build for prod and see if there are any linting error before deploying, run the following:
 npm run build
 
+TODO:
+	find/replace "successsfully" check for other mispellings, but correcting them will break all finetuned models... so wait until I have doubled the example file
+
 FINETUNING
 
  * Go to Google Sheets, save file as Excel
@@ -459,4 +462,60 @@ MIDPOINT: James, making no attempt to escape, agrees to play a game with the Kra
 
 ==========
 
+The Kranolta force James to play a game with his team mates, who are still alive. James hits the ball so hard that it miraculously destroys the entire Kranolta village. The village is destroyed, but James is left behind.
 
+---- ALTERNATE ----
+
+At the end of the game, James feels confident that he is going to be let free in exchange for his heroic performance, but it turns out that the Kranolta have no intention of stopping hunting down and killing white outsiders. His team mates that sacrificed their lives for him are killed by the Kranolta in the aftermath of the game. The tribal leader decides he's going to keep James prisoner to use as a sympathetic conduit for the capture of the other white players. ###
+
+==========
+
+BAD GUYS CLOSE IN: The Kranolta celebrate James' spectacular homerun and plan to use him as a portal to capture the rest of the team, using him as a hostage.
+
+ALL HOPE IS LOST: General Richards and the Australian soldiers are too far away to help. James decides to go to bed.
+
+DARK NIGHT OF THE SOUL: The general arrives with the rest of the team and fights the Kranolta in an attempt to save James. James wants to get away, but is too late. He teams with Angela to break away.
+
+---- ALTERNATE ----
+
+BAD GUYS CLOSE IN: James wants to escape, but General Richards and his troops are approaching, and James is convinced that if he can hold on, the Australians will rescue him. The Kranolta don't share this belief and plan to keep James as a prisoner. James promises the Kranolta a second game if they will give him one hour of freedom to find the other ballplayers and bring them back, which the leader agrees to. He sees the time as an opportunity to kill the remaining players. The other Australians have tried to save their own lives by giving their protector dog biscuits coated with poison that will kill the dogs, who are used to track them down and kill them all. James uncovers the plan and warns Angela and the team, but the team tries to kill him.
+
+ALL HOPE IS LOST: The Kranolta seize him after the second game and push him into a cage, revealing that the second game was all a ruse to capture him. The team is furious and James is the one who gets beaten up for it.
+
+DARK NIGHT OF THE SOUL: James has lost all hope, but the other players kidnap him. One of them explains that they are going to escape from the Hounds, not by dying, but by challenging the leader to another game, a game James is now a part of. They chain James to Angela and the two form a bond. They realize that if he can win this challenge, then maybe he can also win in saving them all.
+
+---- ALTERNATE ----
+
+BAD GUYS CLOSE IN: The Kranolta make it very clear that they have no intention of ever letting James free. They kill his team mates in the confrontation that follows. James feels grief for the first time in his young life, but the tribal leader takes James prisoner.
+
+ALL HOPE IS LOST: James refuses at first, but then is forced to accept his newfound role as an ambassador between the Kranolta and the Australian Army. "I can talk to the others," James tells the tribal leader.
+
+DARK NIGHT OF THE SOUL: James gives up and decides to give in to his savior, the star of a ridiculous game, in order to save his own life. His identity crisis is complete, now all that's left is the confrontation between "good" and "evil."
+
+=========
+
+SPIRAL TOWARD ACTION: James uses his surprise appearance and mysterious ability to become a star of the same game they were being forced to play. He uses his star power to recruit Aboriginal prisoners as a team, who eventually free James and Angela.
+
+=========
+
+BREAK INTO THREE: James is released from his imprisonment and flees with Angela to help other white prisoners escape. They must use their combined star power as two "missions," with help from athletic mercenaries from Australia, to both escape from the Kranolta while simultaneously defeating the tribe in battle.
+
+FINALE: The now large group of prisoners fight with the aid of the Aboriginal team James helped organize, ending the war by freeing all captives.
+
+FINAL IMAGE:
+
+---- ALTERNATE ----
+
+BREAK INTO THREE: James enlists the Australian Aborigines, who are being held as prisoners. He is able to convince them to play in a game against the Kranolta. The game reaches a point where the Kranolta are losing and are about to concede, but more bad guys enter the situation: mercenaries. James and the Aborigines manage to hold off the mercenaries long enough to win the game.
+
+FINALE: James and Angela escape, while the Kranolta chase them. The Kranolta are angry, boasting of their capacity to hunt the couple down, but James remains confident. They're able to hold off their pursuers.
+
+FINAL IMAGE: The couple travel down the river in a boat, thinking of the long journey that lies ahead. The story concludes as James is asked how he was able to win the game, to which he replies, "I don't know. It was something I learned in Australia."
+
+---- ALTERNATE ----
+
+BREAK INTO THREE: The Kranolta tell James to imagine someone helping him who can play better than the local team. He does and out of thin air the native prisoners appear wearing their tribal clothes.
+
+FINALE: In the end, James finds out the prisoners have learned the game of baseball from the cow field and played it in the desert. They free James and Angela and the Australian Army comes to the rescue. The Kranolta are never heard from again and James is free to play ball, with the help of his newfound biological family.
+
+FINAL IMAGE: We see James, now an adult, playing in the All-Star game in Sydney. He's a star who'll never have to play for another team again.
