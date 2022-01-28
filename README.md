@@ -1,3 +1,9 @@
+You can only install one version of Azure Function Runtime per computer, so may have to switch back to v4 here:
+	https://github.com/Azure/azure-functions-core-tools/releases (download the x64 .msi)
+
+Unclear if below is needed... To fix Functions version mismatch with 3 is installed, run the following:
+	npm i -g azure-functions-core-tools@4 --unsafe-perm true
+
 LOCALHOST
 
 In VSCode menu "Run and Debug"

@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using StoryGhost.Models;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
+using Polly;
 
 namespace StoryGhost.Generate;
 
@@ -32,7 +33,7 @@ public static class Generate
         //     Completion = "completion for " + req.CompletionType
         // });
 
-        
+
 
         var models = getModels();
 
@@ -40,10 +41,13 @@ public static class Generate
         var maxCompletionLength = 1;
         var temperature = 1.0;
 
-        if (req.CompletionType.ToLower().Contains("summary")) {
+        if (req.CompletionType.ToLower().Contains("summary"))
+        {
             maxCompletionLength = 192;
             temperature = 0.85;
-        } else if (req.CompletionType.ToLower().Contains("full")) {
+        }
+        else if (req.CompletionType.ToLower().Contains("full"))
+        {
             maxCompletionLength = 512;
             temperature = 0.9;
         }
@@ -65,23 +69,40 @@ public static class Generate
         using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
 
-        using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+        // exponential backoff up to 5 attempts - TODO: log error if exceeding attempts, handle gracefully in UI
+        var retryPolicy = Policy
+            .Handle<HttpRequestException>()
+            .WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(8),
+                TimeSpan.FromSeconds(15),
+                TimeSpan.FromSeconds(30),
+                TimeSpan.FromSeconds(60),
+                TimeSpan.FromSeconds(90),
+            });
 
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        var result = new GenerateResponse();
 
-        var result = new GenerateResponse
+        await retryPolicy.ExecuteAsync(async () =>
         {
-            Prompt = prompt,
-            Completion = completion
-        };
+            using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
+            response.EnsureSuccessStatusCode();
+
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+
+            var completionObj = resultDeserialized.Choices.FirstOrDefault();
+            var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
+            result.Prompt = prompt;
+            result.Completion = completion;
+        });
 
         return new OkObjectResult(result);
     }
 
-    private static Dictionary<string, string> getModels() {
+    private static Dictionary<string, string> getModels()
+    {
         var models = new Dictionary<string, string>(); // key=completion type, value=finetuned model name
 
         //OLD request delete! models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47"); // file: ???
