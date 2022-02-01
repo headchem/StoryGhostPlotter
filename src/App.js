@@ -50,7 +50,7 @@ function App() {
     const [martyrSummaryStatus, setMartyrSummaryStatus] = useState(PromptArea.Status.UNAVAILABLE)
     const [martyrSummary, setMartyrSummary] = useState('')
     const [martyrFull, setMartyrFull] = useState('')
-    
+
 
     const onFocus = (elName) => {
         setCurFocusElName(elName)
@@ -58,6 +58,7 @@ function App() {
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
+        
         const loadDescObj = async () => {
             let url = ''
 
@@ -78,7 +79,8 @@ function App() {
             if (url !== '') {
                 setDescIsLoading(true)
 
-                fetch(url).then(function (response) {
+                fetch(url)
+                .then(function (response) {
                     if (response.ok) {
                         return response.json();
                     }

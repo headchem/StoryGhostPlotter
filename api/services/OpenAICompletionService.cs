@@ -1,39 +1,49 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
-using System.IO;
-using System.Linq;
-using System.Text;
+using Microsoft.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
+
+using StoryGhost.Interfaces;
 using StoryGhost.Models;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
-using Polly;
 
-namespace StoryGhost.Generate;
+namespace StoryGhost.Services;
 
-public static class Generate
+public class OpenAICompletionService : ICompletionService
 {
-    [FunctionName("Generate")]
-    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Story req, ILogger log)
+    private readonly HttpClient _httpClient;
+
+    public OpenAICompletionService(HttpClient httpClient)
     {
-        var prompt = Factory.GetPrompt(req);
+        _httpClient = httpClient;
 
-        // TEMP
-        // return new OkObjectResult(new GenerateResponse
-        // {
-        //     Prompt = prompt,
-        //     Completion = "completion for " + req.CompletionType
-        // });
+        _httpClient.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
+
+        _httpClient.BaseAddress = new Uri("https://api.openai.com/");
+        //_httpClient.BaseAddress = new Uri("https://dasdf83jasdfhasd2jh3jhasdf.com/");
 
 
+        var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+        // using Microsoft.Net.Http.Headers;
+        // The GitHub API requires two headers.
+        _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/vnd.github.v3+json");
+        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.UserAgent, "HttpRequestsSample");
+    }
+
+    // public async Task<IEnumerable<GitHubBranch>?> GetAspNetCoreDocsBranchesAsync() =>
+    //     await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
+    //         "repos/dotnet/AspNetCore.Docs/branches");
+
+    public async Task<GenerateResponse> GetCompletion(Story story)
+    {
+        var prompt = Factory.GetPrompt(story);
 
         var models = getModels();
 
@@ -41,12 +51,12 @@ public static class Generate
         var maxCompletionLength = 1;
         var temperature = 1.0;
 
-        if (req.CompletionType.ToLower().Contains("summary"))
+        if (story.CompletionType.ToLower().Contains("summary"))
         {
             maxCompletionLength = 192;
             temperature = 0.85;
         }
-        else if (req.CompletionType.ToLower().Contains("full"))
+        else if (story.CompletionType.ToLower().Contains("full"))
         {
             maxCompletionLength = 512;
             temperature = 0.9;
@@ -55,7 +65,7 @@ public static class Generate
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = models[req.CompletionType],
+            Model = models[story.CompletionType],
             MaxTokens = maxCompletionLength,
             Temperature = temperature,
             Stop = CreateFinetuningDataset.StopSequence // IMPORTANT: this must match exactly what we used during finetuning
@@ -64,41 +74,23 @@ public static class Generate
         var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-        var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        //var apiResponse = await _httpClient.GetFromJsonAsync<OpenAICompletionsResponse>("repos/dotnet/AspNetCore.Docs/branches");
 
-        using var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+        using var response = await _httpClient.PostAsync("v1/completions", content);
+        response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
 
-        // exponential backoff up to 5 attempts - TODO: log error if exceeding attempts, handle gracefully in UI
-        var retryPolicy = Policy
-            .Handle<HttpRequestException>()
-            .WaitAndRetryAsync(new[]
-            {
-                TimeSpan.FromSeconds(8),
-                TimeSpan.FromSeconds(15),
-                TimeSpan.FromSeconds(30),
-                TimeSpan.FromSeconds(60),
-                TimeSpan.FromSeconds(90),
-            });
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
         var result = new GenerateResponse();
 
-        await retryPolicy.ExecuteAsync(async () =>
-        {
-            using var response = await httpClient.PostAsync("https://api.openai.com/v1/completions", content);
-            response.EnsureSuccessStatusCode();
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-            var apiResponse = await response.Content.ReadAsStringAsync();
-            var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+        result.Prompt = prompt;
+        result.Completion = completion;
 
-            var completionObj = resultDeserialized.Choices.FirstOrDefault();
-            var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
-            result.Prompt = prompt;
-            result.Completion = completion;
-        });
-
-        return new OkObjectResult(result);
+        return result;
     }
 
     private static Dictionary<string, string> getModels()
@@ -120,5 +112,4 @@ public static class Generate
 
         return models;
     }
-
 }

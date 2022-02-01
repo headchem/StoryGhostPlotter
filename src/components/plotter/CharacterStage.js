@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FaLock, FaLockOpen, FaCaretRight, FaGhost } from 'react-icons/fa'
+import { fetchWithTimeout } from '../../util/FetchUtil'
 
 const CharacterStage = ({
     stage,
@@ -42,7 +43,8 @@ const CharacterStage = ({
 
     const fetchCompletion = async (completionType) => {
 
-        fetch('/api/Generate', {
+        fetchWithTimeout('/api/Generate', {
+            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -81,6 +83,7 @@ const CharacterStage = ({
 
         }).catch(function (error) {
             console.warn(error);
+            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
         }).finally(function () {
             if (completionType.indexOf('Summary') > -1) {
                 setIsSummaryLoading(false)
