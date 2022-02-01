@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const LimitedTextArea = ({ rows, cols, value, limit, className, setValue }) => {
-    //const [content, setContent] = React.useState(value.slice(0, limit));
 
     const setTruncatedContent = React.useCallback(
         text => {
             const truncatedVal = text.slice(0, limit)
-            //setContent(truncatedVal)
             setValue(truncatedVal)
         },
         [limit, setValue]
