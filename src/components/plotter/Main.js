@@ -7,6 +7,7 @@ import * as PromptArea from '../../util/PromptArea'
 
 const Main = (
     {
+        userInfo,
         curFocusElName,
         genre,
         problemTemplate,
@@ -87,7 +88,9 @@ const Main = (
 
         const loadOptions = async () => {
 
-            fetch('/api/LogLineOptions').then(function (response) {
+            fetch('/api/LogLine/LogLineOptions', {
+                credentials: 'same-origin'
+            }).then(function (response) {
                 if (response.ok) {
                     return response.json();
                 }
@@ -233,153 +236,168 @@ const Main = (
                     </div>
 
                     {
-                        logLineIncomplete === true &&
+                        userInfo && userInfo.userRoles.includes('customer') === false &&
+                        <div className='row'>
+                            <p>You must be a customer to use the Generate feature.</p>
+                        </div>
+                    }
+
+                    {
+                        userInfo && userInfo.userRoles.includes('customer') === true && logLineIncomplete === true &&
                         <div className='row'>
                             <p>All fields above must be completed.</p>
                         </div>
                     }
+
                     {
-                        orphanSummaryStatus === PromptArea.Status.AVAILABLE &&
+                        userInfo && userInfo.userRoles.includes('customer') &&
                         <>
-                            <CharacterStage
-                                stage='orphan'
-                                summary={orphanSummary}
-                                setSummary={setOrphanSummary}
-                                full={orphanFull}
-                                setFull={setOrphanFull}
-                                setNextAvailable={() => {
-                                    setWandererSummaryStatus(PromptArea.Status.AVAILABLE)
-                                }}
-                                setNextUnavailable={() => setWandererSummaryStatus(PromptArea.Status.UNAVAILABLE)}
-                                // do nothing on prev complete/incomplete
-                                setPrevComplete={() => { return false }}
-                                setPrevIncomplete={() => { return false }}
-                                isComplete={orphanComplete}
-                                onFocusChange={() => onFocusChange('orphan')}
+                            {
+                                orphanSummaryStatus === PromptArea.Status.AVAILABLE &&
+                                <>
+                                    <CharacterStage
+                                        stage='orphan'
+                                        summary={orphanSummary}
+                                        setSummary={setOrphanSummary}
+                                        full={orphanFull}
+                                        setFull={setOrphanFull}
+                                        setNextAvailable={() => {
+                                            setWandererSummaryStatus(PromptArea.Status.AVAILABLE)
+                                        }}
+                                        setNextUnavailable={() => setWandererSummaryStatus(PromptArea.Status.UNAVAILABLE)}
+                                        // do nothing on prev complete/incomplete
+                                        setPrevComplete={() => { return false }}
+                                        setPrevIncomplete={() => { return false }}
+                                        isComplete={orphanComplete}
+                                        onFocusChange={() => onFocusChange('orphan')}
 
-                                genre={genre}
-                                problemTemplate={problemTemplate}
-                                keywords={keywords}
-                                heroArchetype={heroArchetype}
-                                enemyArchetype={enemyArchetype}
-                                primalStakes={primalStakes}
-                                dramaticQuestion={dramaticQuestion}
+                                        genre={genre}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        heroArchetype={heroArchetype}
+                                        enemyArchetype={enemyArchetype}
+                                        primalStakes={primalStakes}
+                                        dramaticQuestion={dramaticQuestion}
 
-                                orphanSummary={orphanSummary}
-                                orphanFull={orphanFull}
-                                wandererSummary={wandererSummary}
-                                wandererFull={wandererFull}
-                                warriorSummary={warriorSummary}
-                                warriorFull={warriorFull}
-                                martyrSummary={martyrSummary}
-                                martyrFull={martyrFull}
-                            />
+                                        orphanSummary={orphanSummary}
+                                        orphanFull={orphanFull}
+                                        wandererSummary={wandererSummary}
+                                        wandererFull={wandererFull}
+                                        warriorSummary={warriorSummary}
+                                        warriorFull={warriorFull}
+                                        martyrSummary={martyrSummary}
+                                        martyrFull={martyrFull}
+                                    />
+                                </>
+                            }
+                            {
+                                wandererSummaryStatus === PromptArea.Status.AVAILABLE &&
+                                <CharacterStage
+                                    stage='wanderer'
+                                    summary={wandererSummary}
+                                    setSummary={setWandererSummary}
+                                    full={wandererFull}
+                                    setFull={setWandererFull}
+                                    setNextAvailable={() => {
+                                        setWarriorSummaryStatus(PromptArea.Status.AVAILABLE)
+                                    }}
+                                    setNextUnavailable={() => setWarriorSummaryStatus(PromptArea.Status.UNAVAILABLE)}
+                                    isComplete={wandererComplete}
+                                    setPrevComplete={() => setOrphanComplete(true)}
+                                    setPrevIncomplete={() => setOrphanComplete(false)}
+                                    onFocusChange={() => onFocusChange('wanderer')}
+
+                                    genre={genre}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    heroArchetype={heroArchetype}
+                                    enemyArchetype={enemyArchetype}
+                                    primalStakes={primalStakes}
+                                    dramaticQuestion={dramaticQuestion}
+
+                                    orphanSummary={orphanSummary}
+                                    orphanFull={orphanFull}
+                                    wandererSummary={wandererSummary}
+                                    wandererFull={wandererFull}
+                                    warriorSummary={warriorSummary}
+                                    warriorFull={warriorFull}
+                                    martyrSummary={martyrSummary}
+                                    martyrFull={martyrFull}
+                                />
+                            }
+                            {
+                                warriorSummaryStatus === PromptArea.Status.AVAILABLE &&
+                                <CharacterStage
+                                    stage='warrior'
+                                    summary={warriorSummary}
+                                    setSummary={setWarriorSummary}
+                                    full={warriorFull}
+                                    setFull={setWarriorFull}
+                                    setNextAvailable={() => {
+                                        setMartyrSummaryStatus(PromptArea.Status.AVAILABLE)
+                                    }}
+                                    setNextUnavailable={() => setMartyrSummaryStatus(PromptArea.Status.UNAVAILABLE)}
+                                    isComplete={warriorComplete}
+                                    setPrevComplete={() => setWandererComplete(true)}
+                                    setPrevIncomplete={() => setWandererComplete(false)}
+                                    onFocusChange={() => onFocusChange('warrior')}
+
+                                    genre={genre}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    heroArchetype={heroArchetype}
+                                    enemyArchetype={enemyArchetype}
+                                    primalStakes={primalStakes}
+                                    dramaticQuestion={dramaticQuestion}
+
+                                    orphanSummary={orphanSummary}
+                                    orphanFull={orphanFull}
+                                    wandererSummary={wandererSummary}
+                                    wandererFull={wandererFull}
+                                    warriorSummary={warriorSummary}
+                                    warriorFull={warriorFull}
+                                    martyrSummary={martyrSummary}
+                                    martyrFull={martyrFull}
+                                />
+                            }
+                            {
+                                martyrSummaryStatus === PromptArea.Status.AVAILABLE &&
+                                <CharacterStage
+                                    stage='martyr'
+                                    summary={martyrSummary}
+                                    setSummary={setMartyrSummary}
+                                    full={martyrFull}
+                                    setFull={setMartyrFull}
+                                    // do nothing on setNextAvailable/setNextUnavailable
+                                    setNextAvailable={() => { return false }}
+                                    setNextUnavailable={() => { return false }}
+                                    isComplete={false} // hardcoded to false because nothing comes after Martyr to force it to complete
+                                    setPrevComplete={() => setWarriorComplete(true)}
+                                    setPrevIncomplete={() => setWarriorComplete(false)}
+                                    onFocusChange={() => onFocusChange('martyr')}
+
+                                    genre={genre}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    heroArchetype={heroArchetype}
+                                    enemyArchetype={enemyArchetype}
+                                    primalStakes={primalStakes}
+                                    dramaticQuestion={dramaticQuestion}
+
+                                    orphanSummary={orphanSummary}
+                                    orphanFull={orphanFull}
+                                    wandererSummary={wandererSummary}
+                                    wandererFull={wandererFull}
+                                    warriorSummary={warriorSummary}
+                                    warriorFull={warriorFull}
+                                    martyrSummary={martyrSummary}
+                                    martyrFull={martyrFull}
+                                />
+                            }
                         </>
                     }
-                    {
-                        wandererSummaryStatus === PromptArea.Status.AVAILABLE &&
-                        <CharacterStage
-                            stage='wanderer'
-                            summary={wandererSummary}
-                            setSummary={setWandererSummary}
-                            full={wandererFull}
-                            setFull={setWandererFull}
-                            setNextAvailable={() => {
-                                setWarriorSummaryStatus(PromptArea.Status.AVAILABLE)
-                            }}
-                            setNextUnavailable={() => setWarriorSummaryStatus(PromptArea.Status.UNAVAILABLE)}
-                            isComplete={wandererComplete}
-                            setPrevComplete={() => setOrphanComplete(true)}
-                            setPrevIncomplete={() => setOrphanComplete(false)}
-                            onFocusChange={() => onFocusChange('wanderer')}
 
-                            genre={genre}
-                            problemTemplate={problemTemplate}
-                            keywords={keywords}
-                            heroArchetype={heroArchetype}
-                            enemyArchetype={enemyArchetype}
-                            primalStakes={primalStakes}
-                            dramaticQuestion={dramaticQuestion}
 
-                            orphanSummary={orphanSummary}
-                            orphanFull={orphanFull}
-                            wandererSummary={wandererSummary}
-                            wandererFull={wandererFull}
-                            warriorSummary={warriorSummary}
-                            warriorFull={warriorFull}
-                            martyrSummary={martyrSummary}
-                            martyrFull={martyrFull}
-                        />
-                    }
-                    {
-                        warriorSummaryStatus === PromptArea.Status.AVAILABLE &&
-                        <CharacterStage
-                            stage='warrior'
-                            summary={warriorSummary}
-                            setSummary={setWarriorSummary}
-                            full={warriorFull}
-                            setFull={setWarriorFull}
-                            setNextAvailable={() => {
-                                setMartyrSummaryStatus(PromptArea.Status.AVAILABLE)
-                            }}
-                            setNextUnavailable={() => setMartyrSummaryStatus(PromptArea.Status.UNAVAILABLE)}
-                            isComplete={warriorComplete}
-                            setPrevComplete={() => setWandererComplete(true)}
-                            setPrevIncomplete={() => setWandererComplete(false)}
-                            onFocusChange={() => onFocusChange('warrior')}
-
-                            genre={genre}
-                            problemTemplate={problemTemplate}
-                            keywords={keywords}
-                            heroArchetype={heroArchetype}
-                            enemyArchetype={enemyArchetype}
-                            primalStakes={primalStakes}
-                            dramaticQuestion={dramaticQuestion}
-
-                            orphanSummary={orphanSummary}
-                            orphanFull={orphanFull}
-                            wandererSummary={wandererSummary}
-                            wandererFull={wandererFull}
-                            warriorSummary={warriorSummary}
-                            warriorFull={warriorFull}
-                            martyrSummary={martyrSummary}
-                            martyrFull={martyrFull}
-                        />
-                    }
-                    {
-                        martyrSummaryStatus === PromptArea.Status.AVAILABLE &&
-                        <CharacterStage
-                            stage='martyr'
-                            summary={martyrSummary}
-                            setSummary={setMartyrSummary}
-                            full={martyrFull}
-                            setFull={setMartyrFull}
-                            // do nothing on setNextAvailable/setNextUnavailable
-                            setNextAvailable={() => { return false }}
-                            setNextUnavailable={() => { return false }}
-                            isComplete={false} // hardcoded to false because nothing comes after Martyr to force it to complete
-                            setPrevComplete={() => setWarriorComplete(true)}
-                            setPrevIncomplete={() => setWarriorComplete(false)}
-                            onFocusChange={() => onFocusChange('martyr')}
-
-                            genre={genre}
-                            problemTemplate={problemTemplate}
-                            keywords={keywords}
-                            heroArchetype={heroArchetype}
-                            enemyArchetype={enemyArchetype}
-                            primalStakes={primalStakes}
-                            dramaticQuestion={dramaticQuestion}
-
-                            orphanSummary={orphanSummary}
-                            orphanFull={orphanFull}
-                            wandererSummary={wandererSummary}
-                            wandererFull={wandererFull}
-                            warriorSummary={warriorSummary}
-                            warriorFull={warriorFull}
-                            martyrSummary={martyrSummary}
-                            martyrFull={martyrFull}
-                        />
-                    }
                 </>
             }
         </>

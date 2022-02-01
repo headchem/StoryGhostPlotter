@@ -13,7 +13,7 @@ namespace StoryGhost.LogLine;
 public static class DramaticQuestionDescription
 {
     [FunctionName("DramaticQuestionDescription")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/DramaticQuestionDescription")] HttpRequest req, ILogger log)
     {
         string dramaticQuestion = req.Query["dramaticQuestion"];
 

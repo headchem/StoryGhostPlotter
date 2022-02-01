@@ -16,7 +16,7 @@ namespace StoryGhost.LogLine;
 public static class CreateFinetuningDataset
 {
     [FunctionName("CreateFinetuningDataset")]
-    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Admin/CreateFinetuningDataset")] HttpRequest req, ILogger log)
     {
         try
         {

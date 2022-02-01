@@ -9,7 +9,7 @@ namespace StoryGhost.LogLine;
 public static class ProblemTemplateDescription
 {
     [FunctionName("ProblemTemplateDescription")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/ProblemTemplateDescription")] HttpRequest req, ILogger log)
     {
         string problemTemplate = req.Query["problemTemplate"];
 

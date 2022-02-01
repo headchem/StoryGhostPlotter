@@ -43,7 +43,7 @@ const Admin = () => {
         const formData = new FormData()
         formData.append('myFile', file)
 
-        fetch('/api/CreateFinetuningDataset', {
+        fetch('/api/Admin/CreateFinetuningDataset', {
             method: 'POST',
             body: formData
         })
@@ -75,42 +75,42 @@ const Admin = () => {
 
             <div className="form-group mt-4">
                 <label htmlFor="orphanSummary" className="fs-3">Orphan Summary</label>
-                <textarea className="form-control" id="orphanSummary" rows="3" value={orphanSummary}></textarea>
+                <textarea className="form-control" id="orphanSummary" rows="3" defaultValue={orphanSummary}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="orphanFull" className="fs-3">Orphan Full</label>
-                <textarea className="form-control" id="orphanFull" rows="3" value={orphanFull}></textarea>
+                <textarea className="form-control" id="orphanFull" rows="3" defaultValue={orphanFull}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="wandererSummary" className="fs-3">Wanderer Summary</label>
-                <textarea className="form-control" id="wandererSummary" rows="3" value={wandererSummary}></textarea>
+                <textarea className="form-control" id="wandererSummary" rows="3" defaultValue={wandererSummary}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="wandererFull" className="fs-3">Wanderer Full</label>
-                <textarea className="form-control" id="wandererFull" rows="3" value={wandererFull}></textarea>
+                <textarea className="form-control" id="wandererFull" rows="3" defaultValue={wandererFull}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="warriorSummary" className="fs-3">Warrior Summary</label>
-                <textarea className="form-control" id="warriorSummary" rows="3" value={warriorSummary}></textarea>
+                <textarea className="form-control" id="warriorSummary" rows="3" defaultValue={warriorSummary}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="warriorFull" className="fs-3">Warrior Full</label>
-                <textarea className="form-control" id="warriorFull" rows="3" value={warriorFull}></textarea>
+                <textarea className="form-control" id="warriorFull" rows="3" defaultValue={warriorFull}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="martyrSummary" className="fs-3">Martyr Summary</label>
-                <textarea className="form-control" id="martyrSummary" rows="3" value={martyrSummary}></textarea>
+                <textarea className="form-control" id="martyrSummary" rows="3" defaultValue={martyrSummary}></textarea>
             </div>
 
             <div className="form-group mt-4">
                 <label htmlFor="martyrFull" className="fs-3">Martyr Full</label>
-                <textarea className="form-control" id="martyrFull" rows="3" value={martyrFull}></textarea>
+                <textarea className="form-control" id="martyrFull" rows="3" defaultValue={martyrFull}></textarea>
                 <p><strong>Longest row word count: {longestWordCount}</strong></p>
             </div>
 

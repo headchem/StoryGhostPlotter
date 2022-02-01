@@ -15,7 +15,7 @@ namespace StoryGhost.LogLine;
 public static class LogLineOptions
 {
     [FunctionName("LogLineOptions")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/LogLineOptions")] HttpRequest req, ILogger log)
     {
         // key=dropdown type (like "genres", or "archetypes")
         // value=tuple of strings where ("id", "display name")

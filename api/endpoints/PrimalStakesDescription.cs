@@ -13,7 +13,7 @@ namespace StoryGhost.LogLine;
 public static class PrimalStakesDescription
 {
     [FunctionName("PrimalStakesDescription")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/PrimalStakesDescription")] HttpRequest req, ILogger log)
     {
         string primalStakes = req.Query["primalStakes"];
 

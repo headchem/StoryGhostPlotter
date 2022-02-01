@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import ToDoHome from './components/todo/ToDoHome'
+//import ToDoHome from './components/todo/ToDoHome'
 import Main from './components/plotter/Main'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -12,6 +12,27 @@ import Admin from './components/Admin'
 import * as PromptArea from './util/PromptArea'
 
 function App() {
+
+    const [userInfo, setUserInfo] = useState();
+
+    useEffect(() => {
+        (async () => {
+            setUserInfo(await getUserInfo());
+        })();
+    }, []);
+
+    async function getUserInfo() {
+        try {
+            const response = await fetch('/.auth/me');
+            const payload = await response.json();
+            console.log(payload);
+            const { clientPrincipal } = payload;
+            return clientPrincipal;
+        } catch (error) {
+            console.error('No profile could be found');
+            return undefined;
+        }
+    }
 
     const [curFocusElName, setCurFocusElName] = useState('')
     const [genre, setGenre] = useState('')
@@ -58,53 +79,53 @@ function App() {
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        
+
         const loadDescObj = async () => {
             let url = ''
 
             if (curFocusElName === 'genre' && genre !== '') {
-                url = '/api/GenreDescription?genre=' + genre
+                url = '/api/LogLine/GenreDescription?genre=' + genre
             } else if (curFocusElName === 'problem template' && problemTemplate !== '') {
-                url = '/api/ProblemTemplateDescription?problemTemplate=' + problemTemplate
+                url = '/api/LogLine/ProblemTemplateDescription?problemTemplate=' + problemTemplate
             } else if (curFocusElName === 'hero archetype' && heroArchetype !== '') {
-                url = '/api/ArchetypeDescription?archetype=' + heroArchetype
+                url = '/api/LogLine/ArchetypeDescription?archetype=' + heroArchetype
             } else if (curFocusElName === 'enemy archetype' && enemyArchetype !== '') {
-                url = '/api/ArchetypeDescription?archetype=' + enemyArchetype
+                url = '/api/LogLine/ArchetypeDescription?archetype=' + enemyArchetype
             } else if (curFocusElName === 'primal stakes' && primalStakes !== '') {
-                url = '/api/PrimalStakesDescription?primalStakes=' + primalStakes
+                url = '/api/LogLine/PrimalStakesDescription?primalStakes=' + primalStakes
             } else if (curFocusElName === 'dramatic question' && dramaticQuestion !== '') {
-                url = '/api/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
+                url = '/api/LogLine/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
             }
 
             if (url !== '') {
                 setDescIsLoading(true)
 
                 fetch(url)
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    return Promise.reject(response);
-                }).then(function (data) {
+                    .then(function (response) {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        return Promise.reject(response);
+                    }).then(function (data) {
 
-                    if (curFocusElName === 'genre') {
-                        setGenreDescObj(data)
-                    } else if (curFocusElName === 'problem template') {
-                        setProblemTemplateDescObj(data)
-                    } else if (curFocusElName === 'hero archetype') {
-                        setHeroArchetypeDescObj(data)
-                    } else if (curFocusElName === 'enemy archetype') {
-                        setEnemyArchetypeDescObj(data)
-                    } else if (curFocusElName === 'primal stakes') {
-                        setPrimalStakesDescObj(data)
-                    } else if (curFocusElName === 'dramatic question') {
-                        setDramaticQuestionDescObj(data)
-                    }
-                }).catch(function (error) {
-                    console.warn(error);
-                }).finally(function () {
-                    setDescIsLoading(false)
-                });
+                        if (curFocusElName === 'genre') {
+                            setGenreDescObj(data)
+                        } else if (curFocusElName === 'problem template') {
+                            setProblemTemplateDescObj(data)
+                        } else if (curFocusElName === 'hero archetype') {
+                            setHeroArchetypeDescObj(data)
+                        } else if (curFocusElName === 'enemy archetype') {
+                            setEnemyArchetypeDescObj(data)
+                        } else if (curFocusElName === 'primal stakes') {
+                            setPrimalStakesDescObj(data)
+                        } else if (curFocusElName === 'dramatic question') {
+                            setDramaticQuestionDescObj(data)
+                        }
+                    }).catch(function (error) {
+                        console.warn(error);
+                    }).finally(function () {
+                        setDescIsLoading(false)
+                    });
             }
         }
 
@@ -160,79 +181,93 @@ function App() {
 
     return (
         <Router>
-            <Header />
+            <Header userInfo={userInfo} />
 
             <main className="flex-shrink-0 mt-5">
                 <div className="container mt-5">
                     {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
                     <Routes>
-                        <Route path="/" element={
-                            <Main
-                                genre={genre}
-                                problemTemplate={problemTemplate}
-                                keywords={keywords}
-                                heroArchetype={heroArchetype}
-                                enemyArchetype={enemyArchetype}
-                                primalStakes={primalStakes}
-                                dramaticQuestion={dramaticQuestion}
+                        <Route path="/" element={<About />} />
+                        <Route path="/write" element={
+                            <>
+                                {userInfo && (
+                                    <>
+                                        <Main
+                                            userInfo={userInfo}
+                                            genre={genre}
+                                            problemTemplate={problemTemplate}
+                                            keywords={keywords}
+                                            heroArchetype={heroArchetype}
+                                            enemyArchetype={enemyArchetype}
+                                            primalStakes={primalStakes}
+                                            dramaticQuestion={dramaticQuestion}
 
-                                curFocusElName={curFocusElName}
+                                            curFocusElName={curFocusElName}
 
-                                onFocusChange={onFocus}
-                                onGenreChange={onGenreChange}
-                                onProblemTemplateChange={onProblemTemplateChange}
-                                onKeywordChange={onKeywordsChange}
-                                onHeroArchetypeChange={onHeroArchetypeChange}
-                                onEnemyArchetypeChange={onEnemyArchetypeChange}
-                                onPrimalStakesChange={onPrimalStakesChange}
-                                onDramaticQuestionChange={onDramaticQuestionChange}
+                                            onFocusChange={onFocus}
+                                            onGenreChange={onGenreChange}
+                                            onProblemTemplateChange={onProblemTemplateChange}
+                                            onKeywordChange={onKeywordsChange}
+                                            onHeroArchetypeChange={onHeroArchetypeChange}
+                                            onEnemyArchetypeChange={onEnemyArchetypeChange}
+                                            onPrimalStakesChange={onPrimalStakesChange}
+                                            onDramaticQuestionChange={onDramaticQuestionChange}
 
-                                descIsLoading={descIsLoading}
-                                genreDescObj={genreDescObj}
-                                problemTemplateDescObj={problemTemplateDescObj}
-                                heroArchetypeDescObj={heroArchetypeDescObj}
-                                enemyArchetypeDescObj={enemyArchetypeDescObj}
-                                primalStakesDescObj={primalStakesDescObj}
-                                dramaticQuestionDescObj={dramaticQuestionDescObj}
+                                            descIsLoading={descIsLoading}
+                                            genreDescObj={genreDescObj}
+                                            problemTemplateDescObj={problemTemplateDescObj}
+                                            heroArchetypeDescObj={heroArchetypeDescObj}
+                                            enemyArchetypeDescObj={enemyArchetypeDescObj}
+                                            primalStakesDescObj={primalStakesDescObj}
+                                            dramaticQuestionDescObj={dramaticQuestionDescObj}
 
-                                logLineIncomplete={logLineIncomplete}
+                                            logLineIncomplete={logLineIncomplete}
 
-                                orphanSummaryStatus={orphanSummaryStatus}
-                                orphanSummary={orphanSummary}
-                                setOrphanSummary={setOrphanSummary}
-                                orphanFull={orphanFull}
-                                setOrphanFull={setOrphanFull}
+                                            orphanSummaryStatus={orphanSummaryStatus}
+                                            orphanSummary={orphanSummary}
+                                            setOrphanSummary={setOrphanSummary}
+                                            orphanFull={orphanFull}
+                                            setOrphanFull={setOrphanFull}
 
-                                wandererSummaryStatus={wandererSummaryStatus}
-                                setWandererSummaryStatus={setWandererSummaryStatus}
-                                wandererSummary={wandererSummary}
-                                setWandererSummary={setWandererSummary}
-                                wandererFull={wandererFull}
-                                setWandererFull={setWandererFull}
-                                orphanComplete={orphanComplete}
-                                setOrphanComplete={setOrphanComplete}
+                                            wandererSummaryStatus={wandererSummaryStatus}
+                                            setWandererSummaryStatus={setWandererSummaryStatus}
+                                            wandererSummary={wandererSummary}
+                                            setWandererSummary={setWandererSummary}
+                                            wandererFull={wandererFull}
+                                            setWandererFull={setWandererFull}
+                                            orphanComplete={orphanComplete}
+                                            setOrphanComplete={setOrphanComplete}
 
-                                warriorSummaryStatus={warriorSummaryStatus}
-                                setWarriorSummaryStatus={setWarriorSummaryStatus}
-                                warriorSummary={warriorSummary}
-                                setWarriorSummary={setWarriorSummary}
-                                warriorFull={warriorFull}
-                                setWarriorFull={setWarriorFull}
-                                wandererComplete={wandererComplete}
-                                setWandererComplete={setWandererComplete}
+                                            warriorSummaryStatus={warriorSummaryStatus}
+                                            setWarriorSummaryStatus={setWarriorSummaryStatus}
+                                            warriorSummary={warriorSummary}
+                                            setWarriorSummary={setWarriorSummary}
+                                            warriorFull={warriorFull}
+                                            setWarriorFull={setWarriorFull}
+                                            wandererComplete={wandererComplete}
+                                            setWandererComplete={setWandererComplete}
 
-                                martyrSummaryStatus={martyrSummaryStatus}
-                                setMartyrSummaryStatus={setMartyrSummaryStatus}
-                                martyrSummary={martyrSummary}
-                                setMartyrSummary={setMartyrSummary}
-                                martyrFull={martyrFull}
-                                setMartyrFull={setMartyrFull}
-                                warriorComplete={warriorComplete}
-                                setWarriorComplete={setWarriorComplete}
-                            />
+                                            martyrSummaryStatus={martyrSummaryStatus}
+                                            setMartyrSummaryStatus={setMartyrSummaryStatus}
+                                            martyrSummary={martyrSummary}
+                                            setMartyrSummary={setMartyrSummary}
+                                            martyrFull={martyrFull}
+                                            setMartyrFull={setMartyrFull}
+                                            warriorComplete={warriorComplete}
+                                            setWarriorComplete={setWarriorComplete}
+                                        />
+                                    </>
+                                )}
+                                {
+                                    !userInfo &&
+                                    <>
+                                        <p>You must log in to access this page</p>
+                                    </>
+                                }
+                            </>
+
                         } />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/todo" element={<ToDoHome />} />
+                        {/* <Route path="/todo" element={<ToDoHome />} /> */}
                         <Route path="/admin" element={<Admin />} />
                     </Routes>
                 </div>

@@ -9,7 +9,7 @@ namespace StoryGhost.LogLine;
 public static class GenreDescription
 {
     [FunctionName("GenreDescription")]
-    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/GenreDescription")] HttpRequest req, ILogger log)
     {
         string genre = req.Query["genre"];
 
