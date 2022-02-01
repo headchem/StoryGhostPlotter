@@ -21,21 +21,16 @@ namespace MyNamespace
         {
             // exponential backoff with the following attempts - TODO: log error if exceeding attempts, handle gracefully in UI
             var exponentialBackoff = GetRetryPolicy();
-            var longTimeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(384));
+            var longTimeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(500));
 
             var combinedExpLongPolicy = longTimeoutPolicy.WrapAsync(exponentialBackoff);
 
-            builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>()
-                .SetHandlerLifetime(TimeSpan.FromSeconds(500))
-                .AddPolicyHandler(combinedExpLongPolicy);
-            // .AddTransientHttpErrorPolicy(policyBuilder =>
-            //     policyBuilder.WaitAndRetryAsync(3, retryNumber => TimeSpan.FromMilliseconds(600)))
-            // .AddTransientHttpErrorPolicy(policyBuilder =>
-            //     policyBuilder.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
-
+            // builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>()
+            //     .SetHandlerLifetime(TimeSpan.FromSeconds(500))
+            //     .AddPolicyHandler(combinedExpLongPolicy);
 
             // use below for testing the UI without using up real completions
-            //builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
+            builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
 
 
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaLock, FaLockOpen, FaCaretRight, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../util/FetchUtil'
+import LimitedTextArea from './LimitedTextArea'
 
 const CharacterStage = ({
     stage,
@@ -181,7 +182,8 @@ const CharacterStage = ({
 
                         {
                             summaryLocked === false &&
-                            <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)} rows={5}></textarea>
+                            <LimitedTextArea  className="form-control" value={summary} setValue={setSummary} rows={5} limit={500} />
+                            // <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)} rows={5}></textarea>
                         }
                         {
                             summaryLocked === true &&
@@ -238,11 +240,12 @@ const CharacterStage = ({
 
                                 {
                                     fullLocked === false &&
-                                    <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)} rows={10}></textarea>
+                                    // <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)} rows={10}></textarea>
+                                    <LimitedTextArea  className="form-control" value={full} setValue={setFull} rows={10} limit={2000} />
                                 }
                                 {
                                     fullLocked === true &&
-                                    <p style={{whiteSpace: "pre-wrap"}}>{full}</p>
+                                    <p style={{ whiteSpace: "pre-wrap" }}>{full}</p>
                                 }
 
                             </>

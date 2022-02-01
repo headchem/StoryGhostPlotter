@@ -53,12 +53,12 @@ public class OpenAICompletionService : ICompletionService
 
         if (story.CompletionType.ToLower().Contains("summary"))
         {
-            maxCompletionLength = 192;
+            maxCompletionLength = 160; // average 80 tokens on training data
             temperature = 0.85;
         }
         else if (story.CompletionType.ToLower().Contains("full"))
         {
-            maxCompletionLength = 512;
+            maxCompletionLength = 400; // average 295 tokens on training data
             temperature = 0.9;
         }
 
