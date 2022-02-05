@@ -7,6 +7,7 @@ using Polly;
 using Polly.Retry;
 using Microsoft.Extensions.Http;
 using Polly.Extensions.Http;
+using Microsoft.Azure.Cosmos;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Services;
@@ -35,6 +36,20 @@ namespace MyNamespace
 
             builder.Services.AddApplicationInsightsTelemetry();
 
+            var cosmosDBConnection = Environment.GetEnvironmentVariable("COSMOS_DB_CONNECTION");
+            builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
+            {
+                IHttpClientFactory httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+
+                CosmosClientOptions cosmosClientOptions = new CosmosClientOptions
+                {
+                    HttpClientFactory = httpClientFactory.CreateClient,
+                    ConnectionMode = ConnectionMode.Gateway
+                };
+
+                return new CosmosClient(cosmosDBConnection, cosmosClientOptions);
+            });
+
 
             // examples below for other injections
 
@@ -52,7 +67,7 @@ namespace MyNamespace
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError() // handles: HttpRequestException, HTTP 5xx, HTTP 408
-                //.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                                            //.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
                 .OrResult(msg => msg.StatusCode == HttpStatusCode.TooManyRequests) // handles HTTP 429
                 .WaitAndRetryAsync(
                     retryCount: 8, // 255 sec total (4.25 min)
