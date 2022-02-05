@@ -33,6 +33,10 @@ namespace MyNamespace
             builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
 
 
+            builder.Services.AddApplicationInsightsTelemetry();
+
+
+            // examples below for other injections
 
             //builder.Services.AddHttpClient<GitHubService>();
 

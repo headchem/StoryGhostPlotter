@@ -15,9 +15,13 @@ using ClosedXML.Excel;
 namespace StoryGhost.LogLine;
 public static class CreateFinetuningDataset
 {
-    [FunctionName("CreateFinetuningDataset")]
-    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Admin/CreateFinetuningDataset")] HttpRequest req, ILogger log)
+    [FunctionName("CreateFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours "SGAdmin"
+    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SGAdmin/CreateFinetuningDataset")] HttpRequest req, ILogger log)
     {
+        var user = StaticWebAppsAuth.Parse(req);
+
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
         try
         {
             var formdata = await req.ReadFormAsync();

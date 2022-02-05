@@ -13,8 +13,9 @@ In VSCode menu "Run and Debug"
 to build for prod and see if there are any linting error before deploying, run the following:
 npm run build
 
-TODO:
-	find/replace "successsfully" check for other mispellings, but correcting them will break all finetuned models... so wait until I have doubled the example file
+Before starting a new feature:
+
+git checkout -b feature/my-new-feature
 
 FINETUNING
 
