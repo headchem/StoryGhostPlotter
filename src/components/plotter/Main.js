@@ -88,9 +88,7 @@ const Main = (
 
         const loadOptions = async () => {
 
-            fetch('/api/LogLine/LogLineOptions', {
-                credentials: 'same-origin'
-            }).then(function (response) {
+            fetch('/api/LogLine/LogLineOptions').then(function (response) {
                 if (response.ok) {
                     return response.json();
                 }

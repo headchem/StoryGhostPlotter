@@ -43,7 +43,7 @@ const Admin = () => {
         const formData = new FormData()
         formData.append('myFile', file)
 
-        fetch('/api/Admin/CreateFinetuningDataset', {
+        fetch('/api/SGAdmin/CreateFinetuningDataset', {
             method: 'POST',
             body: formData
         })
