@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FaLock, FaLockOpen, FaCaretRight, FaGhost } from 'react-icons/fa'
-import { fetchWithTimeout } from '../../util/FetchUtil'
+import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 
 const CharacterStage = ({

@@ -191,7 +191,7 @@ public static class Factory
     }
 
     /// <summary>Given a <c>Story</c>, based off of the <c>CompletionType</c> property, will return the entire prompt for the given CompletionType</summary>
-    public static string GetPrompt(Story req)
+    public static string GetPrompt(Plot req)
     {
         var characterStage = getCharacterStage(req.CompletionType);
 
@@ -259,7 +259,7 @@ public static class Factory
         return joinedList;
     }
 
-    private static string getPreviousEvents(string completionType, Story req)
+    private static string getPreviousEvents(string completionType, Plot req)
     {
         var summaryPrefix = "SUMMARY: ";
 
@@ -277,7 +277,7 @@ public static class Factory
         };
     }
 
-    private static string getRequestToAI(string completionType, Story req)
+    private static string getRequestToAI(string completionType, Plot req)
     {
         return completionType switch
         {

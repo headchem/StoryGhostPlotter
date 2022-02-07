@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
 import CharacterStage from './CharacterStage'
-import * as PromptArea from '../../util/PromptArea'
+import * as PromptArea from '../../../util/PromptArea'
 
-const Main = (
+const PlotHome = (
     {
         userInfo,
         curFocusElName,
@@ -402,4 +402,4 @@ const Main = (
     )
 }
 
-export default Main
+export default PlotHome

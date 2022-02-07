@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StoryGhost.Models;
 
-public class Story
+public class Plot
 {
     public string CompletionType { get; set; } // orphanSummary, orphanFull, wandererSummary, wandererFull, warriorSummary, warriorFull, martyrSummary, martyrFull
     public string Genre { get; set; }

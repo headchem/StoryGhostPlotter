@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 //import ToDoHome from './components/todo/ToDoHome'
-import Main from './components/plotter/Main'
+import PlotHome from './components/plotter/plot/PlotHome'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './components/About'
 import Admin from './components/Admin'
+import UserHome from './components/plotter/user/UserHome'
 
 import * as PromptArea from './util/PromptArea'
 
@@ -148,7 +149,7 @@ function App() {
 
 
 
-    // const setGenre = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
+    // const onGenreChange = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
     const onGenreChange = (inputValue) => {
         setGenre(inputValue.value)
     }
@@ -188,11 +189,27 @@ function App() {
                     {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
                     <Routes>
                         <Route path="/" element={<About />} />
-                        <Route path="/write" element={
+                        <Route path="/plots" element={
+                            <>
+                                {userInfo &&
+                                    <>
+                                        <UserHome userInfo={userInfo} />
+                                    </>
+                                }
+                                {
+                                    !userInfo &&
+                                    <>
+                                        <p>You must log in to access your plots</p>
+                                    </>
+                                }
+
+                            </>
+                        } />
+                        <Route path="/plot" element={
                             <>
                                 {userInfo && (
                                     <>
-                                        <Main
+                                        <PlotHome
                                             userInfo={userInfo}
                                             genre={genre}
                                             problemTemplate={problemTemplate}
@@ -268,7 +285,10 @@ function App() {
 
                         } />
                         {/* <Route path="/todo" element={<ToDoHome />} /> */}
-                        <Route path="/admin" element={<Admin />} />
+
+                        {userInfo && userInfo.userRoles.includes('admin') &&
+                            <Route path="/admin" element={<Admin />} />
+                        }
                     </Routes>
                 </div>
             </main>

@@ -8,5 +8,5 @@ namespace StoryGhost.Interfaces;
 
 public interface ICompletionService
 {
-    public Task<GenerateResponse> GetCompletion(Story story);
+    public Task<GenerateResponse> GetCompletion(Plot story);
 }

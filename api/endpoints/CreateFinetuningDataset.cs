@@ -55,7 +55,7 @@ public static class CreateFinetuningDataset
         }
     }
 
-    private static List<FinetuningRow> getRows(string completionType, List<Story> stories)
+    private static List<FinetuningRow> getRows(string completionType, List<Plot> stories)
     {
         var results = new List<FinetuningRow>();
 
@@ -68,7 +68,7 @@ public static class CreateFinetuningDataset
         return results;
     }
 
-    private static FinetuningRow getPromptAndCompletion(string completionType, Story story)
+    private static FinetuningRow getPromptAndCompletion(string completionType, Plot story)
     {
         var row = new FinetuningRow();
 
@@ -96,7 +96,7 @@ public static class CreateFinetuningDataset
     public static string StopSequence = "\n\n###\n\n";
 
     /// <summary>Given an Excel file, return a fully populated <c>List<Story></c></summary>
-    private static async Task<List<Story>> getStoryRows(IFormFile file)
+    private static async Task<List<Plot>> getStoryRows(IFormFile file)
     {
         using var stream = new MemoryStream();
         await file.CopyToAsync(stream);
@@ -108,7 +108,7 @@ public static class CreateFinetuningDataset
 
         //Loop through the Worksheet rows.
         bool firstRow = true;
-        var stories = new List<Story>();
+        var stories = new List<Plot>();
 
         foreach (IXLRow row in worksheet.Rows())
         {
@@ -123,7 +123,7 @@ public static class CreateFinetuningDataset
                 // stop iterating once an empty row is found
                 if (string.IsNullOrWhiteSpace(row.Cell(1).CachedValue.ToString())) break;
 
-                var storyRow = new Story();
+                var storyRow = new Plot();
 
                 int i = 0;
                 foreach (IXLCell cell in row.Cells())

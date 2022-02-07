@@ -12,6 +12,7 @@ using StoryGhost.Models;
 using StoryGhost.Interfaces;
 using System.Net;
 using Newtonsoft.Json;
+using Microsoft.Azure.Documents;
 
 namespace StoryGhost.Generate;
 
@@ -27,7 +28,7 @@ public class Generate
     }
 
     [FunctionName("Generate")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Story story, HttpRequest req, ILogger log)
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Plot story, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
 
@@ -43,23 +44,30 @@ public class Generate
         var result = await _completionService.GetCompletion(story);
 
         // testing Cosmos db
+
+        //using (var client = new DocumentClient(new Uri("service endpoint"), "auth key"))
+        //{
+            //Document doc = await client.UpsertDocumentAsync("dbs/db_rid/colls/coll_rid/", new MyObject { MyProperty = "A Value" });
+        //}
+
+
         // Read the item to see if it exists.
-        var container = _db.GetContainer("Plotter", "Users");
+        //var container = _db.GetContainer("Plotter", "Users");
 
-        try
-        {
-            var testUserResponse = await container.ReadItemAsync<TestUser>(userId, new PartitionKey(userId)); //await _db.ReadItemAsync<TestUser>(u.Id, new PartitionKey(u.UserId));
-        }
-        catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-        {
-            var newUser = new TestUser
-            {
-                Id = userId,
-                DisplayName = user.Identity.Name
-            };
+        // try
+        // {
+        //     var testUserResponse = await container.ReadItemAsync<TestUser>(userId, new PartitionKey(userId)); //await _db.ReadItemAsync<TestUser>(u.Id, new PartitionKey(u.UserId));
+        // }
+        // catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        // {
+        //     var newUser = new TestUser
+        //     {
+        //         Id = userId,
+        //         DisplayName = user.Identity.Name
+        //     };
 
-            var newUserResponse = await container.CreateItemAsync<TestUser>(newUser, new PartitionKey(newUser.Id));
-        }
+        //     var newUserResponse = await container.CreateItemAsync<TestUser>(newUser, new PartitionKey(newUser.Id));
+        // }
 
         return new OkObjectResult(result);
     }

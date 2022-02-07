@@ -41,7 +41,7 @@ public class OpenAICompletionService : ICompletionService
     //     await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
     //         "repos/dotnet/AspNetCore.Docs/branches");
 
-    public async Task<GenerateResponse> GetCompletion(Story story)
+    public async Task<GenerateResponse> GetCompletion(Plot story)
     {
         var prompt = Factory.GetPrompt(story);
 
