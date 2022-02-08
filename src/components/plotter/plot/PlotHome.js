@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
-import CharacterStage from './CharacterStage'
+//import CharacterStage from './CharacterStage'
+import Sequence from './Sequence'
 import * as PromptArea from '../../../util/PromptArea'
 
 const PlotHome = (
@@ -68,6 +69,15 @@ const PlotHome = (
         setMartyrFull,
         warriorComplete,
         setWarriorComplete,
+
+        sequences,
+        addSequence,
+        deleteSequence,
+        updateSequenceText,
+        updateSequenceLocked,
+        updateSequenceName,
+
+        moveToNextSequence
     }
 ) => {
 
@@ -135,7 +145,7 @@ const PlotHome = (
                 <>
                     <div className='row align-items-md-stretch'>
                         <div className='col-md-7 logline fs-5'>
-                            <span>I want a </span>
+                            <span>This is a </span>
 
                             <LogLineSelect
                                 placeholder='Genre'
@@ -234,6 +244,13 @@ const PlotHome = (
                     </div>
 
                     {
+                        sequences.map((sequence) => (
+                            <Sequence key={sequence.sequenceName} sequence={sequence} sequences={sequences} onFocusChange={() => onFocusChange('sequence')} addSequence={addSequence} deleteSequence={deleteSequence} updateSequenceText={updateSequenceText} updateSequenceLocked={updateSequenceLocked} updateSequenceName={updateSequenceName} />
+                        ))
+                    }
+
+
+                    {/* {
                         userInfo && userInfo.userRoles.includes('customer') === false &&
                         <div className='row'>
                             <p>You must be a customer to use the Generate feature.</p>
@@ -393,7 +410,7 @@ const PlotHome = (
                                 />
                             }
                         </>
-                    }
+                    } */}
 
 
                 </>

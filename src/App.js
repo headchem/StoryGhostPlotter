@@ -14,6 +14,54 @@ import * as PromptArea from './util/PromptArea'
 
 function App() {
 
+    const [sequences, setSequences] = useState(
+        [
+            {
+                sequenceName: 'Opening Image',
+                text: '',
+                isLocked: false,
+                allowed: ['Opening Image', 'Theme Stated', 'Setup']//, 'Inciting Incident', 'Debate', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
+            }
+        ]
+    )
+
+    const addSequence = (newSequence) => {
+        //const newId = Math.floor(Math.random() * 100000) + 1
+
+        //const newSequence = { id: newId, ...sequence } // copy existing sequence, but update fields
+        
+
+        setSequences([...sequences, newSequence]) // set tasks to all the existing tasks, plus add the new one
+    }
+
+    const deleteSequence = (sequenceName) => {
+        setSequences(sequences.filter((sequence) => sequence.sequenceName !== sequenceName))
+    }
+
+    const updateSequenceText = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, text: text } : sequence
+            )
+        )
+    }
+
+    const updateSequenceName = (sequenceName, newSequenceName) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, sequenceName: newSequenceName } : sequence
+            )
+        )
+    }
+
+    const updateSequenceLocked = (sequenceName, isLocked) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, isLocked: isLocked } : sequence
+            )
+        )
+    }
+
     const [userInfo, setUserInfo] = useState();
 
     useEffect(() => {
@@ -272,6 +320,14 @@ function App() {
                                             setMartyrFull={setMartyrFull}
                                             warriorComplete={warriorComplete}
                                             setWarriorComplete={setWarriorComplete}
+
+                                            sequences = {sequences}
+                                            
+                                            addSequence={addSequence}
+                                            deleteSequence={deleteSequence}
+                                            updateSequenceText={updateSequenceText}
+                                            updateSequenceLocked={updateSequenceLocked}
+                                            updateSequenceName={updateSequenceName}
                                         />
                                     </>
                                 )}
