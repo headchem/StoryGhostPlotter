@@ -48,6 +48,7 @@ const Sequence = ({
 
 
     return (
+
         <div className='row border-top' onClick={onFocusChange}>
             <div className='col-3'>
                 {/* <Select
@@ -103,7 +104,7 @@ const Sequence = ({
 
             </div>
             <div className='col-5'>
-                <p>advice specific to {sequence.sequenceName}</p>
+                <p>Tabs? advice specific to {sequence.sequenceName}. Public user-submitted comments (from other authenticated users). Checkboxes for "addressed", "ignored" like a mini TODO list per Sequence. Tab for AI-generated image inspiration? Tab for search for similar stories?</p>
             </div>
         </div>
     )

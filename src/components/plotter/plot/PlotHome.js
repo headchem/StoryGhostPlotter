@@ -245,10 +245,19 @@ const PlotHome = (
                     </div>
 
                     {
-                        sequences.map((sequence) => (
-                            <Sequence key={sequence.sequenceName} sequence={sequence} onFocusChange={() => onFocusChange('sequence')} updateSequenceText={updateSequenceText} updateSequenceName={updateSequenceName} moveToNextSequence={moveToNextSequence}
-                            moveToPrevSequence={moveToPrevSequence} />
-                        ))
+                        logLineIncomplete === true &&
+                        <p>All fields above must be completed.</p>
+                    }
+                    {
+                        logLineIncomplete === false &&
+                        <>
+                            {
+                                sequences.filter(sequence => sequence.allowed.length > 0).map((sequence) => (
+                                    <Sequence key={sequence.sequenceName} sequence={sequence} onFocusChange={() => onFocusChange('sequence')} updateSequenceText={updateSequenceText} updateSequenceName={updateSequenceName} moveToNextSequence={moveToNextSequence}
+                                        moveToPrevSequence={moveToPrevSequence} />
+                                ))
+                            }
+                        </>
                     }
 
 

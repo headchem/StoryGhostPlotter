@@ -21,23 +21,10 @@ function App() {
                 text: '',
                 isLocked: false,
                 isReadOnly: false,
-                allowed: ['Opening Image', 'Theme Stated', 'Setup']//, 'Inciting Incident', 'Debate', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
+                allowed: ['Opening Image']
             }
         ]
     )
-
-    // const addSequence = (newSequence) => {
-    //     //const newId = Math.floor(Math.random() * 100000) + 1
-
-    //     //const newSequence = { id: newId, ...sequence } // copy existing sequence, but update fields
-
-
-    //     setSequences([...sequences, newSequence]) // set tasks to all the existing tasks, plus add the new one
-    // }
-
-    // const deleteSequence = (sequenceName) => {
-    //     setSequences(sequences.filter((sequence) => sequence.sequenceName !== sequenceName))
-    // }
 
     const updateSequenceText = (sequenceName, text) => {
         setSequences(
@@ -55,27 +42,105 @@ function App() {
         )
     }
 
-    // const updateSequenceLocked = (sequenceName, isLocked) => {
-    //     setSequences(
-    //         sequences.map(
-    //             (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, isLocked: isLocked } : sequence
-    //         )
-    //     )
-    // }
+    const allSequenceNames = ['Opening Image', 'Setup', 'Theme Stated', 'Setup (Continued)', 'Catalyst', 'Debate', 'B Story', 'Debate (Continued)', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
 
-    const allSequenceNames = ['Opening Image', 'Theme Stated', 'Setup', 'Inciting Incident', 'Debate', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
+    // given all the existing sequences, choose the approporiate next sequence name. For example, if we already have [Opening Image, Theme Stated] then the best next sequence would be 'Setup'
+    const getNewSequenceName = (existingSequences) => {
+        const curSequenceName = existingSequences.at(-1).sequenceName
+
+        return getAllowedNextSequenceNames(curSequenceName, existingSequences)[0]
+    }
+
+    // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
+    const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
+        const existingSequenceNames = new Set(existingSequences.map((seq) => seq.sequenceName))
+        let allowedSequenceNames = []
+
+        switch (curSequenceName) {
+            case 'Opening Image':
+                allowedSequenceNames = ['Setup', 'Theme Stated']
+                break;
+            case 'Setup':
+                allowedSequenceNames = ['Theme Stated', 'Catalyst']
+                break;
+            case 'Theme Stated':
+                allowedSequenceNames = ['Setup', 'Setup (Continued)', 'B Story', 'Catalyst', 'Debate (Continued)']
+                break;
+            case 'Setup (Continued)':
+                allowedSequenceNames = ['Catalyst']
+                break;
+            case 'Catalyst':
+                allowedSequenceNames = ['B Story', 'Debate', 'Theme Stated']
+                break;
+            case 'Debate':
+                allowedSequenceNames = ['Break Into Two', 'B Story', 'Theme Stated']
+                break;
+            case 'B Story':
+                allowedSequenceNames = ['Debate', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
+                break;
+            case 'Debate (Continued)':
+                allowedSequenceNames = ['Break Into Two']
+                break;
+            case 'Break Into Two':
+                allowedSequenceNames = ['Fun And Games', 'B Story']
+                break;
+            case 'Fun And Games':
+                allowedSequenceNames = ['Midpoint', 'First Pinch Point']
+                break;
+            case 'First Pinch Point':
+                allowedSequenceNames = ['Midpoint']
+                break;
+            case 'Midpoint':
+                allowedSequenceNames = ['Bad Guys Close In']
+                break;
+            case 'Bad Guys Close In':
+                allowedSequenceNames = ['All Hope Is Lost', 'Second Pinch Point']
+                break;
+            case 'Second Pinch Point':
+                allowedSequenceNames = ['All Hope Is Lost']
+                break;
+            case 'All Hope Is Lost':
+                allowedSequenceNames = ['Dark Night Of The Soul']
+                break;
+            case 'Dark Night Of The Soul':
+                allowedSequenceNames = ['Break Into Three']
+                break;
+            case 'Break Into Three':
+                allowedSequenceNames = ['Climax']
+                break;
+            case 'Climax':
+                allowedSequenceNames = ['Cooldown']
+                break;
+            case 'Cooldown':
+                allowedSequenceNames = []
+                break;
+            default:
+                console.error('unhandled fallthrough case for allowed next sequences');
+        }
+
+        // filter out '___ (Continued)' entries if the original hasn't been used yet
+        if (!existingSequenceNames.has('Setup')) {
+            allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Setup (Continued)')
+        }
+        if (!existingSequenceNames.has('Debate')) {
+            allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Debate (Continued)')
+        }
+
+        allowedSequenceNames = allowedSequenceNames.filter(seqName => !existingSequenceNames.has(seqName))
+
+        return allowedSequenceNames;
+    }
 
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
     const moveToNextSequence = (curSequenceName) => {
-
-        const newSequenceName = allSequenceNames[sequences.length]
+        const allowedNext = getAllowedNextSequenceNames(curSequenceName, sequences)
 
         const newSequence = {
-            sequenceName: newSequenceName, // TODO: make this dyanmic based on existing sequences
+            sequenceName: getNewSequenceName(sequences),
             text: '',
             isLocked: false,
             isReadOnly: false,
-            allowed: allSequenceNames.slice(sequences.length) //['Opening Image', 'Theme Stated', 'Setup'] // TODO: make this dyanmic based on existing sequences
+            allowed: allowedNext
         }
 
         let newSequences = sequences.map(
