@@ -71,13 +71,14 @@ const PlotHome = (
         setWarriorComplete,
 
         sequences,
-        addSequence,
-        deleteSequence,
+        //addSequence,
+        //deleteSequence,
         updateSequenceText,
-        updateSequenceLocked,
+        //updateSequenceLocked,
         updateSequenceName,
 
-        moveToNextSequence
+        moveToNextSequence,
+        moveToPrevSequence,
     }
 ) => {
 
@@ -245,7 +246,8 @@ const PlotHome = (
 
                     {
                         sequences.map((sequence) => (
-                            <Sequence key={sequence.sequenceName} sequence={sequence} sequences={sequences} onFocusChange={() => onFocusChange('sequence')} addSequence={addSequence} deleteSequence={deleteSequence} updateSequenceText={updateSequenceText} updateSequenceLocked={updateSequenceLocked} updateSequenceName={updateSequenceName} />
+                            <Sequence key={sequence.sequenceName} sequence={sequence} onFocusChange={() => onFocusChange('sequence')} updateSequenceText={updateSequenceText} updateSequenceName={updateSequenceName} moveToNextSequence={moveToNextSequence}
+                            moveToPrevSequence={moveToPrevSequence} />
                         ))
                     }
 

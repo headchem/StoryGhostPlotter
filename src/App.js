@@ -20,23 +20,24 @@ function App() {
                 sequenceName: 'Opening Image',
                 text: '',
                 isLocked: false,
+                isReadOnly: false,
                 allowed: ['Opening Image', 'Theme Stated', 'Setup']//, 'Inciting Incident', 'Debate', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
             }
         ]
     )
 
-    const addSequence = (newSequence) => {
-        //const newId = Math.floor(Math.random() * 100000) + 1
+    // const addSequence = (newSequence) => {
+    //     //const newId = Math.floor(Math.random() * 100000) + 1
 
-        //const newSequence = { id: newId, ...sequence } // copy existing sequence, but update fields
-        
+    //     //const newSequence = { id: newId, ...sequence } // copy existing sequence, but update fields
 
-        setSequences([...sequences, newSequence]) // set tasks to all the existing tasks, plus add the new one
-    }
 
-    const deleteSequence = (sequenceName) => {
-        setSequences(sequences.filter((sequence) => sequence.sequenceName !== sequenceName))
-    }
+    //     setSequences([...sequences, newSequence]) // set tasks to all the existing tasks, plus add the new one
+    // }
+
+    // const deleteSequence = (sequenceName) => {
+    //     setSequences(sequences.filter((sequence) => sequence.sequenceName !== sequenceName))
+    // }
 
     const updateSequenceText = (sequenceName, text) => {
         setSequences(
@@ -54,12 +55,54 @@ function App() {
         )
     }
 
-    const updateSequenceLocked = (sequenceName, isLocked) => {
-        setSequences(
-            sequences.map(
-                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, isLocked: isLocked } : sequence
-            )
+    // const updateSequenceLocked = (sequenceName, isLocked) => {
+    //     setSequences(
+    //         sequences.map(
+    //             (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, isLocked: isLocked } : sequence
+    //         )
+    //     )
+    // }
+
+    const allSequenceNames = ['Opening Image', 'Theme Stated', 'Setup', 'Inciting Incident', 'Debate', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
+
+    // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
+    const moveToNextSequence = (curSequenceName) => {
+
+        const newSequenceName = allSequenceNames[sequences.length]
+
+        const newSequence = {
+            sequenceName: newSequenceName, // TODO: make this dyanmic based on existing sequences
+            text: '',
+            isLocked: false,
+            isReadOnly: false,
+            allowed: allSequenceNames.slice(sequences.length) //['Opening Image', 'Theme Stated', 'Setup'] // TODO: make this dyanmic based on existing sequences
+        }
+
+        let newSequences = sequences.map(
+            (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: true, isReadOnly: false } : { ...sequence, isReadOnly: true }
         )
+
+        newSequences.push(newSequence)
+
+        setSequences(
+            newSequences
+        )
+    }
+
+    const moveToPrevSequence = (curSequenceName) => {
+        let newSequences = sequences.map(
+            (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: false, isReadOnly: false } : sequence
+        )
+
+        newSequences = newSequences.filter((sequence) => sequence.sequenceName !== sequences.at(-1).sequenceName)
+
+        if (newSequences.length > 1) {
+            newSequences.at(-2).isReadOnly = false
+        } else {
+            newSequences.at(-1).isReadOnly = false
+        }
+
+        setSequences(newSequences)
     }
 
     const [userInfo, setUserInfo] = useState();
@@ -321,13 +364,15 @@ function App() {
                                             warriorComplete={warriorComplete}
                                             setWarriorComplete={setWarriorComplete}
 
-                                            sequences = {sequences}
-                                            
-                                            addSequence={addSequence}
-                                            deleteSequence={deleteSequence}
+                                            sequences={sequences}
+
+                                            //addSequence={addSequence}
+                                            //deleteSequence={deleteSequence}
                                             updateSequenceText={updateSequenceText}
-                                            updateSequenceLocked={updateSequenceLocked}
+                                            //updateSequenceLocked={updateSequenceLocked}
                                             updateSequenceName={updateSequenceName}
+                                            moveToNextSequence={moveToNextSequence}
+                                            moveToPrevSequence={moveToPrevSequence}
                                         />
                                     </>
                                 )}
