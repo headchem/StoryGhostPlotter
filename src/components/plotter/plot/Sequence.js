@@ -1,13 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useDebouncedEffect } from "../../../util/useDebouncedEffect";
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
-//import Select, { components } from 'react-select'
-
-// const Placeholder = (props) => {
-//     return <components.Placeholder {...props} />;
-// };
 
 const Sequence = ({
 
@@ -123,10 +117,10 @@ const Sequence = ({
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    //useDebouncedEffect(() => {
     useEffect(() => {
         if (sequence.isLocked === false) {
 
+            // run advice immediately, then debounce all subsequent requests
             if (isFirstAdviceRun.current) {
                 isFirstAdviceRun.current = false
                 getAdvice()
