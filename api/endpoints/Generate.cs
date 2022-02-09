@@ -28,7 +28,7 @@ public class Generate
     }
 
     [FunctionName("Generate")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] Plot story, HttpRequest req, ILogger log)
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/Generate")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
 
@@ -38,10 +38,10 @@ public class Generate
 
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
-            log.LogInformation("An example of an Information level message");
+            //log.LogInformation("An example of an Information level message");
         }
 
-        var result = await _completionService.GetCompletion(story);
+        var result = await _completionService.GetCompletion(plot);
 
         // testing Cosmos db
 

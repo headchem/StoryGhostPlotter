@@ -4,7 +4,7 @@ import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
 //import CharacterStage from './CharacterStage'
 import Sequence from './Sequence'
-import * as PromptArea from '../../../util/PromptArea'
+//import * as PromptArea from '../../../util/PromptArea'
 
 const PlotHome = (
     {
@@ -253,8 +253,24 @@ const PlotHome = (
                         <>
                             {
                                 sequences.filter(sequence => sequence.allowed.length > 0).map((sequence) => (
-                                    <Sequence key={sequence.sequenceName} sequence={sequence} onFocusChange={() => onFocusChange('sequence')} updateSequenceText={updateSequenceText} updateSequenceName={updateSequenceName} moveToNextSequence={moveToNextSequence}
-                                        moveToPrevSequence={moveToPrevSequence} />
+                                    <Sequence
+                                        key={sequence.sequenceName}
+                                        sequence={sequence}
+                                        sequences={sequences}
+                                        onFocusChange={() => onFocusChange('sequence')}
+                                        updateSequenceText={updateSequenceText}
+                                        updateSequenceName={updateSequenceName}
+                                        moveToNextSequence={moveToNextSequence}
+                                        moveToPrevSequence={moveToPrevSequence}
+
+                                        genre={genre}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        heroArchetype={heroArchetype}
+                                        enemyArchetype={enemyArchetype}
+                                        primalStakes={primalStakes}
+                                        dramaticQuestion={dramaticQuestion}
+                                    />
                                 ))
                             }
                         </>

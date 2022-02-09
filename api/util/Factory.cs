@@ -7,6 +7,7 @@ using StoryGhost.Models.ProblemTemplates;
 using StoryGhost.Models.Archetypes;
 using StoryGhost.Models.PrimalStakes;
 using StoryGhost.Models.DramaticQuestions;
+using StoryGhost.Models.Sequences;
 using StoryGhost.Models;
 
 
@@ -172,6 +173,39 @@ public static class Factory
         }
 
         return dramaticQuestionObj;
+    }
+
+    /// <summary><c>sequenceName</c> is case sensitive.</summary>
+    public static ISequence GetSequence(string sequenceName)
+    {
+        ISequence sequenceObj = GetSequences().Where(s => s.Name == sequenceName).First();
+
+        return sequenceObj;
+    }
+
+    public static List<ISequence> GetSequences()
+    {
+        return new List<ISequence> {
+            new OpeningImage(),
+            new Setup(),
+            new ThemeStated(),
+            new SetupContinued(),
+            new Catalyst(),
+            new Debate(),
+            new BStory(),
+            new DebateContinued(),
+            new BreakIntoTwo(),
+            new FunAndGames(),
+            new FirstPinchPoint(),
+            new Midpoint(),
+            new BadGuysCloseIn(),
+            new SecondPinchPoint(),
+            new AllHopeIsLost(),
+            new DarkNightOfTheSoul(),
+            new BreakIntoThree(),
+            new Climax(),
+            new Cooldown()
+        };
     }
 
     private static string getCharacterStage(string completionType)

@@ -23,7 +23,7 @@ public class DummyCompletionService : ICompletionService
 
     public async Task<GenerateResponse> GetCompletion(Plot story)
     {
-        var prompt = Factory.GetPrompt(story);
+        var prompt = "test prompt goes here";//Factory.GetPrompt(story);
 
         var result = new GenerateResponse();
 

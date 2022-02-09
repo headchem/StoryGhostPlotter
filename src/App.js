@@ -42,8 +42,6 @@ function App() {
         )
     }
 
-    const allSequenceNames = ['Opening Image', 'Setup', 'Theme Stated', 'Setup (Continued)', 'Catalyst', 'Debate', 'B Story', 'Debate (Continued)', 'Break Into Two', 'Fun And Games', 'First Pinch Point', 'Midpoint', 'Bad Guys Close In', 'Second Pinch Point', 'All Hope Is Lost', 'Dark Night Of The Soul', 'Break Into Three', 'Climax', 'Cooldown']
-
     // given all the existing sequences, choose the approporiate next sequence name. For example, if we already have [Opening Image, Theme Stated] then the best next sequence would be 'Setup'
     const getNewSequenceName = (existingSequences) => {
         const curSequenceName = existingSequences.at(-1).sequenceName
@@ -76,7 +74,7 @@ function App() {
                 allowedSequenceNames = ['Break Into Two', 'B Story', 'Theme Stated']
                 break;
             case 'B Story':
-                allowedSequenceNames = ['Debate', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
+                allowedSequenceNames = ['Theme Stated', 'Debate', 'Setup', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
                 break;
             case 'Debate (Continued)':
                 allowedSequenceNames = ['Break Into Two']

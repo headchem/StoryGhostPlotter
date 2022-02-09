@@ -23,4 +23,6 @@ public class Plot
     public string WarriorFull { get; set; }
     public string MartyrSummary { get; set; }
     public string MartyrFull { get; set; }
+
+    public List<UserSequence> Sequences { get; set; }
 }
