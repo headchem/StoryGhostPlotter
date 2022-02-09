@@ -26,7 +26,7 @@ public class ProtectPossession : IPrimalStakes
             "orphan" => "The main character starts off with a valuable possession, but a dangerous outsider threatens them.",
             "wanderer" => "The main character is able to partially protect their possession, but the root problem is still a threat.",
             "warrior" => "The main character is incapacitated, and appears to have lost any ability to protect the possession.",
-            "martyr" => "Using lessons the main character learned throughout this ordeal, they successsfully protect the possession, defeating the threat once and for all.",
+            "martyr" => "Using lessons the main character learned throughout this ordeal, they successfully protect the possession, defeating the threat once and for all.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }
