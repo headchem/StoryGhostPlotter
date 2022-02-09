@@ -54,3 +54,7 @@
 .gen-text-arrow {
     font-size: 700%;
 }
+
+.text-loading {
+    opacity: 0.7;
+}

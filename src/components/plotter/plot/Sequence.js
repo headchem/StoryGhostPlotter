@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDebouncedEffect } from "../../../util/useDebouncedEffect";
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
@@ -33,6 +33,7 @@ const Sequence = ({
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [sequenceAdvice, setSequenceAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
+    const isFirstAdviceRun = useRef(true)
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -122,9 +123,21 @@ const Sequence = ({
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    useDebouncedEffect(() => {
+    //useDebouncedEffect(() => {
+    useEffect(() => {
         if (sequence.isLocked === false) {
-            getAdvice()
+
+            if (isFirstAdviceRun.current) {
+                isFirstAdviceRun.current = false
+                getAdvice()
+                return
+            }
+
+            const timeout = setTimeout(() => {
+                getAdvice()
+            }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
+
+            return () => clearTimeout(timeout) //clear timeout (delete function execution)
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -186,7 +199,7 @@ const Sequence = ({
                         }
                         {
                             isCompletionLoading === true &&
-                            <p>loading...</p>
+                            <p className="text-right">loading...</p>
                         }
                     </>
                 }
@@ -196,14 +209,7 @@ const Sequence = ({
                 {
                     sequence.isLocked === false &&
                     <>
-                        {
-                            isAdviceLoading === false &&
-                            <p>{sequenceAdvice}</p>
-                        }
-                        {
-                            isAdviceLoading === true &&
-                            <p>loading...</p>
-                        }
+                        <p className={`${isAdviceLoading ? 'text-loading':''}`}>{sequenceAdvice}</p>
                     </>
                 }
             </div>
