@@ -11,6 +11,7 @@ const PlotHome = (
     }
 ) => {
 
+    const [title, setTitle] = useState('')
     const [genre, setGenre] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
@@ -23,6 +24,7 @@ const PlotHome = (
     const [searchParams] = useSearchParams()
 
     const populatePlot = (data) => {
+        setTitle(data['title'])
         setGenre(data['genre'])
         setProblemTemplate(data['problemTemplate'])
         setKeywords(data['keywords'] ?? [])
@@ -61,6 +63,7 @@ const PlotHome = (
     // on page load, this is called, which waits for both LogLineOptions and GetPlot to complete before setting any values (LogLineOptions must populate dropdowns before we can set values)
     useEffect(() => {
         // clean up controller. FROM: https://stackoverflow.com/a/63144665 avoids the error "To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function."
+        // eslint-disable-next-line no-unused-vars
         let isSubscribed = true;
 
         // upon initial page load, call API that returns all of the Log Line dropdown options
@@ -344,7 +347,7 @@ const PlotHome = (
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
-            if (isNullOrEmpty(genre) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(heroArchetype) || isNullOrEmpty(enemyArchetype) || isNullOrEmpty(primalStakes) || isNullOrEmpty(dramaticQuestion)) {
+            if (isNullOrEmpty(title) || isNullOrEmpty(genre) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(heroArchetype) || isNullOrEmpty(enemyArchetype) || isNullOrEmpty(primalStakes) || isNullOrEmpty(dramaticQuestion)) {
                 setLogLineIncomplete(true)
                 return
             }
@@ -354,10 +357,49 @@ const PlotHome = (
 
         loadDescObj(curFocusElName)
         checkLogLineIsComplete()
-        // even though we use 'curFocusElName' in this method, we don't want to trigger reloading whenever it changes, hence the linter hint below to get this to build in prod...
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+
+
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            autoSaveLogLine()
+        }, 2000) //2000ms - timeout to execute this function if timeout will be not cleared
+
+        return () => clearTimeout(timeout) //clear timeout (delete function execution)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+
+    const autoSaveLogLine = () => {
+        const plotId = searchParams.get("id")
+        console.log(`auto save logline for plotId: ${plotId}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
+
+        fetch('/api/SaveLogLine?id=' + plotId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'title': title,
+                'genre': genre,
+                'problemTemplate': problemTemplate,
+                'keywords': keywords,
+                'heroArchetype': heroArchetype,
+                'enemyArchetype': enemyArchetype,
+                'primalStakes': primalStakes,
+                'dramaticQuestion': dramaticQuestion
+            })
+        })
+            .catch(error => {
+                console.error(error)
+            }).finally(function () {
+
+            });
+
+    }
 
     const onGenreChange = (event) => {
         setGenre(event.target.value)
@@ -387,6 +429,9 @@ const PlotHome = (
         setDramaticQuestion(event.target.value)
     }
 
+    const onTitleChange = (event) => {
+        setTitle(event.target.value)
+    }
 
     return (
         <>
@@ -398,6 +443,9 @@ const PlotHome = (
                 <>
                     <div className='row align-items-md-stretch'>
                         <div className='col-md-7 logline fs-5'>
+                            <p>
+                                <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
+                            </p>
                             <p>
                                 This is a
                                 <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={genre} onChange={onGenreChange} onFocus={() => onFocusChange('genre')}>

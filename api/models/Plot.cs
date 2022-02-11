@@ -5,6 +5,7 @@ namespace StoryGhost.Models;
 
 public class Plot
 {
+    public string Title { get; set; }
     public string CompletionType { get; set; } // orphanSummary, orphanFull, wandererSummary, wandererFull, warriorSummary, warriorFull, martyrSummary, martyrFull
     public string Genre { get; set; }
     public string ProblemTemplate { get; set; }

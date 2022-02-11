@@ -21,7 +21,7 @@ public static class UserActions
             PlotReferences = new List<PlotReference>{
                 new PlotReference{
                     PlotId = "123",
-                    DisplayName = "My first story"
+                    DisplayName = "Aladin"
                 },
                 new PlotReference{
                     PlotId = "444",
@@ -55,6 +55,7 @@ public static class UserActions
         var plot = new Plot();
 
         if (id == "123") {
+            plot.Title = "Aladin";
             plot.Genre = "fantasy";
             plot.ProblemTemplate = "outOfTheBottle";
             plot.Keywords = new List<string>{"genie", "wish", "lamp"};
@@ -91,5 +92,29 @@ public static class UserActions
         }
 
         return new OkObjectResult(plot);
+    }
+
+    [FunctionName("SaveLogLine")]
+    public static IActionResult SaveLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveLogLine")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var id = req.Query["id"];
+        
+        var title = plot.Title;
+
+        // update existing plot
+
+        return new NoContentResult();
+    }
+
+    [FunctionName("SaveSequenceText")]
+    public static IActionResult SaveSequenceText([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveSequenceText")] UserSequence sequence, HttpRequest req, ILogger log)
+    {
+        var id = req.Query["id"];
+        
+        var text = sequence.Text;
+
+        // update existing plot
+
+        return new NoContentResult();
     }
 }

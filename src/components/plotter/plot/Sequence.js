@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useSearchParams } from "react-router-dom";
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
@@ -23,6 +24,8 @@ const Sequence = ({
     moveToNextSequence,
     moveToPrevSequence,
 }) => {
+
+    const [searchParams] = useSearchParams()
 
     const textLimits = {
         'Opening Image': {
@@ -106,7 +109,6 @@ const Sequence = ({
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [sequenceAdvice, setSequenceAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
-    const isFirstAdviceRun = useRef(true)
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -195,6 +197,8 @@ const Sequence = ({
 
     }
 
+    const isFirstAdviceRun = useRef(true)
+
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         if (sequence.isLocked === false) {
@@ -214,7 +218,43 @@ const Sequence = ({
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sequence, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion], 500);
+    }, [sequence, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+
+
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            autoSaveSequence()
+        }, 2000) // timeout to execute this function if timeout will be not cleared
+
+        return () => clearTimeout(timeout) //clear timeout (delete function execution)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sequence]);
+
+    const autoSaveSequence = () => {
+        const plotId = searchParams.get("id")
+        console.log(`PlotId: ${plotId}, sequence name: ${sequence.sequenceName}, isLocked: ${sequence.isLocked}, isReadOnly: ${sequence.isReadOnly}, allowed: ${sequence.allowed}, auto save text: ${sequence.text}`);
+
+        fetch('/api/SaveSequenceText?id=' + plotId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'sequenceName': sequence.sequenceName,
+                'isLocked': sequence.isLocked,
+                'isReadOnly': sequence.isReadOnly,
+                'allowed': sequence.allowed,
+                'text': sequence.text
+            })
+        })
+            .catch(error => {
+                console.error(error)
+            }).finally(function () {
+
+            })
+    }
 
     return (
 
