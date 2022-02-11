@@ -223,6 +223,7 @@ const Sequence = ({
 
     useEffect(() => {
         getAdvice()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
