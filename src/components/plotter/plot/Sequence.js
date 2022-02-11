@@ -34,7 +34,7 @@ const Sequence = ({
         },
         'Setup': {
             'charMax': 500,
-            'rows': 8
+            'rows': 7
         },
         'Theme Stated': {
             'charMax': 300,
@@ -45,64 +45,64 @@ const Sequence = ({
             'rows': 7
         },
         'Catalyst': {
-            'charMax': 300,
-            'rows': 5
+            'charMax': 500,
+            'rows': 7
         },
         'Debate': {
-            'charMax': 650,
-            'rows': 10
+            'charMax': 800,
+            'rows': 11
         },
         'B Story': {
-            'charMax': 300,
-            'rows': 4
+            'charMax': 400,
+            'rows': 5
         },
         'Debate (Continued)': {
             'charMax': 300,
             'rows': 5
         },
         'Break Into Two': {
-            'charMax': 250,
-            'rows': 3
+            'charMax': 500,
+            'rows': 7
         },
         'Fun And Games': {
-            'charMax': 1000,
-            'rows': 18
+            'charMax': 1700,
+            'rows': 22
         },
         'First Pinch Point': {
             'charMax': 150,
             'rows': 2
         },
         'Midpoint': {
-            'charMax': 500,
-            'rows': 7
+            'charMax': 400,
+            'rows': 6
         },
         'Bad Guys Close In': {
-            'charMax': 1200,
-            'rows': 20
+            'charMax': 1000,
+            'rows': 14
         },
         'Second Pinch Point': {
-            'charMax': 150,
-            'rows': 2
+            'charMax': 350,
+            'rows': 5
         },
         'All Hope Is Lost': {
             'charMax': 500,
-            'rows': 5
+            'rows': 7
         },
         'Dark Night Of The Soul': {
             'charMax': 750,
-            'rows': 8
+            'rows': 10
         },
         'Break Into Three': {
-            'charMax': 300,
-            'rows': 4
+            'charMax': 600,
+            'rows': 8
         },
         'Climax': {
-            'charMax': 1200,
-            'rows': 20
+            'charMax': 1100,
+            'rows': 14
         },
         'Cooldown': {
-            'charMax': 350,
-            'rows': 5
+            'charMax': 600,
+            'rows': 8
         }
     }
 
@@ -119,7 +119,7 @@ const Sequence = ({
         setIsAdviceLoading(true)
         fetchAdvice(sequence.sequenceName)
     }
-    
+
     // const onGenreChange = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
     const onSequenceChange = (event) => {
         var selectElement = event.target;
@@ -197,19 +197,11 @@ const Sequence = ({
 
     }
 
-    const isFirstAdviceRun = useRef(true)
+
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        if (sequence.isLocked === false) {
-
-            // run advice immediately, then debounce all subsequent requests
-            if (isFirstAdviceRun.current) {
-                isFirstAdviceRun.current = false
-                //getAdvice()
-                return
-            }
-
+        if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
             const timeout = setTimeout(() => {
                 getAdvice()
             }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
@@ -218,7 +210,30 @@ const Sequence = ({
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sequence, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+    }, [sequence]);
+
+    const isFirstAdviceRun = useRef(true)
+
+    // BOTH of the useEffect below are to kick off getAdvice, once for LogLine changes, and another for new sequences being added
+
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
+    useEffect(() => {
+
+        // run advice immediately, then debounce all subsequent requests
+        if (isFirstAdviceRun.current) {
+            isFirstAdviceRun.current = false
+            //getAdvice()
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            getAdvice()
+        }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
+
+        return () => clearTimeout(timeout) //clear timeout (delete function execution)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
 
     useEffect(() => {
