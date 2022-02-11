@@ -21,7 +21,7 @@ const LimitedTextArea = ({ rows, cols, value, limit, className, setValue, showCo
             />
             {
                 showCount === true &&
-                <p className="char-count">
+                <p className="char-count" title="seek brevity, this is a technical maximum">
                     {value.length}/{limit}
                 </p>
             }

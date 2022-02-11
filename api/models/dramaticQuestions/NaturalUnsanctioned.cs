@@ -6,7 +6,7 @@ namespace StoryGhost.Models.DramaticQuestions;
 public class NaturalUnsanctioned : IDramaticQuestion
 {
     public string Id { get { return "naturalUnsanctioned"; } }
-    public string Name { get { return "Natural but unsanctioned behavior"; } }
+    public string Name { get { return "Natural, unsanctioned behavior"; } }
     public string Description { get { return "Can unnatural behavior be sanctioned?"; } }
 
     public string Contrary { get { return "Unnatural but sanctioned behavior"; } }

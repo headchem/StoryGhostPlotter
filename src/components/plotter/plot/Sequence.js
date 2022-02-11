@@ -24,6 +24,85 @@ const Sequence = ({
     moveToPrevSequence,
 }) => {
 
+    const textLimits = {
+        'Opening Image': {
+            'charMax': 150,
+            'rows': 2
+        },
+        'Setup': {
+            'charMax': 500,
+            'rows': 8
+        },
+        'Theme Stated': {
+            'charMax': 300,
+            'rows': 5
+        },
+        'Setup (Continued)': {
+            'charMax': 500,
+            'rows': 7
+        },
+        'Catalyst': {
+            'charMax': 300,
+            'rows': 5
+        },
+        'Debate': {
+            'charMax': 650,
+            'rows': 10
+        },
+        'B Story': {
+            'charMax': 300,
+            'rows': 4
+        },
+        'Debate (Continued)': {
+            'charMax': 300,
+            'rows': 5
+        },
+        'Break Into Two': {
+            'charMax': 250,
+            'rows': 3
+        },
+        'Fun And Games': {
+            'charMax': 1000,
+            'rows': 18
+        },
+        'First Pinch Point': {
+            'charMax': 150,
+            'rows': 2
+        },
+        'Midpoint': {
+            'charMax': 500,
+            'rows': 7
+        },
+        'Bad Guys Close In': {
+            'charMax': 1200,
+            'rows': 20
+        },
+        'Second Pinch Point': {
+            'charMax': 150,
+            'rows': 2
+        },
+        'All Hope Is Lost': {
+            'charMax': 500,
+            'rows': 5
+        },
+        'Dark Night Of The Soul': {
+            'charMax': 750,
+            'rows': 8
+        },
+        'Break Into Three': {
+            'charMax': 300,
+            'rows': 4
+        },
+        'Climax': {
+            'charMax': 1200,
+            'rows': 20
+        },
+        'Cooldown': {
+            'charMax': 350,
+            'rows': 5
+        }
+    }
+
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [sequenceAdvice, setSequenceAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
@@ -143,7 +222,7 @@ const Sequence = ({
             <div className='col-3'>
                 {
                     sequence.isLocked === false &&
-                    <select className='form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
+                    <select className='sequence-name form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
                         {
                             sequence.allowed.map(function (o) {
                                 return <option key={o} value={o}>{o}</option>
@@ -153,7 +232,7 @@ const Sequence = ({
                 }
                 {
                     sequence.isLocked === true &&
-                    <p>{sequence.sequenceName}</p>
+                    <p className='sequence-name'>{sequence.sequenceName}</p>
                 }
 
                 {
@@ -180,7 +259,14 @@ const Sequence = ({
 
             </div>
             <div className='col-4'>
-                <LimitedTextArea className="form-control" value={sequence.text} setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)} rows={3} limit={100} showCount={!sequence.isLocked} />
+                <LimitedTextArea
+                    className="form-control"
+                    value={sequence.text}
+                    setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)}
+                    rows={textLimits[sequence.sequenceName]['rows']}
+                    limit={textLimits[sequence.sequenceName]['charMax']}
+                    showCount={!sequence.isLocked}
+                />
                 {
                     sequence.isLocked === false &&
                     <>
@@ -203,7 +289,7 @@ const Sequence = ({
                 {
                     sequence.isLocked === false &&
                     <>
-                        <p className={`${isAdviceLoading ? 'text-loading':''}`}>{sequenceAdvice}</p>
+                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>{sequenceAdvice}</p>
                     </>
                 }
             </div>
