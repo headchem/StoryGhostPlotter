@@ -119,7 +119,7 @@ const Sequence = ({
         setIsAdviceLoading(true)
         fetchAdvice(sequence.sequenceName)
     }
-
+    
     // const onGenreChange = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
     const onSequenceChange = (event) => {
         var selectElement = event.target;
@@ -206,7 +206,7 @@ const Sequence = ({
             // run advice immediately, then debounce all subsequent requests
             if (isFirstAdviceRun.current) {
                 isFirstAdviceRun.current = false
-                getAdvice()
+                //getAdvice()
                 return
             }
 
@@ -220,6 +220,10 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sequence, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
+
+    useEffect(() => {
+        getAdvice()
+    }, [])
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
@@ -259,7 +263,7 @@ const Sequence = ({
     return (
 
         <div className='row border-top m-3 p-3' onClick={onFocusChange}>
-            <div className='col-3'>
+            <div className='col-2'>
                 {
                     sequence.isLocked === false &&
                     <select className='sequence-name form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
@@ -298,7 +302,7 @@ const Sequence = ({
                 }
 
             </div>
-            <div className='col-4'>
+            <div className='col-6'>
                 <LimitedTextArea
                     className="form-control"
                     value={sequence.text}
@@ -325,9 +329,9 @@ const Sequence = ({
                 }
 
             </div>
-            <div className='col-5'>
+            <div className='col-4'>
                 {
-                    sequence.isLocked === false &&
+                    //sequence.isLocked === false &&
                     <>
                         <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>{sequenceAdvice}</p>
                     </>
