@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.Azure.Cosmos;
 using System.Collections.Generic;
 using System.Net;
+using System.Linq;
 using Newtonsoft.Json;
 using StoryGhost.Util;
 using StoryGhost.Models;
@@ -26,6 +27,9 @@ public class UserActions
         _db = db;
     }
 
+    /// <summary>
+    /// Ensure current user is logged in, then check if a Cosmos container exists for them. If a container exists, return it, otherwise create a new container.
+    /// </summary>
     [FunctionName("User")]
     public async Task<IActionResult> GetUser([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "User")] HttpRequest req, ILogger log)
     {
@@ -69,7 +73,8 @@ public class UserActions
                 }
                 catch (Exception exNewUser)
                 {
-                    log.LogError($"Failed to create new user: {user.Identity.Name}, userId: {userId}");
+                    log.LogError($"Failed to create new user: {user.Identity.Name}, userId: {userId}. Exception message: {exNewUser.Message}");
+                    throw exNewUser;
                 }
             }
         }
@@ -78,77 +83,214 @@ public class UserActions
     }
 
     [FunctionName("NewPlot")]
-    public IActionResult NewPlot([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "NewPlot")] string NewPlotName, HttpRequest req, ILogger log)
+    public async Task<IActionResult> NewPlot([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "NewPlot")] string NewPlotName, HttpRequest req, ILogger log)
     {
-        // create new plot in cosmos, return Id
+        var user = StaticWebAppsAuth.Parse(req);
+        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        var newPlotId = "999";
+        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        {
+            // create new plot in cosmos
 
-        return new OkObjectResult(newPlotId);
+            var newPlot = new Plot
+            {
+                Id = Guid.NewGuid().ToString("N"), // formats to no dashes, all lower case
+                UserId = userId,
+                Title = NewPlotName,
+                Seed = new Random().NextInt64(),
+                Keywords = new List<string>()
+            };
+
+            var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+
+            try
+            {
+                var newPlotResponse = await plotsContainer.CreateItemAsync<Plot>(newPlot, new PartitionKey(userId));
+                var RUs = newPlotResponse.RequestCharge;
+                var newPlotObj = newPlotResponse.Resource;
+
+                // update the PlotReferences field in the user's container
+                var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+                var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+                var userObj = userResponse.Resource;
+
+                if (userObj.PlotReferences == null)
+                {
+                    userObj.PlotReferences = new List<PlotReference>();
+                }
+
+                userObj.PlotReferences.Add(new PlotReference
+                {
+                    PlotId = newPlot.Id,
+                    DisplayName = NewPlotName
+                });
+
+                var patchOps = new List<PatchOperation>();
+                patchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
+
+                var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
+
+                return new OkObjectResult(newPlot.Id);
+            }
+            catch (Exception ex)
+            {
+                log.LogError($"Failed to create new plot: {user.Identity.Name}, userId: {userId}. Exception message: {ex.Message}");
+                var deleteResult = await plotsContainer.DeleteItemAsync<Plot>(newPlot.Id, new PartitionKey(userId)); // cleanup upon failure
+
+                throw ex;
+            }
+        }
     }
 
     [FunctionName("GetPlot")]
-    public IActionResult GetPlot([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetPlot")] HttpRequest req, ILogger log)
+    public async Task<IActionResult> GetPlot([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetPlot")] HttpRequest req, ILogger log)
     {
-        var id = req.Query["id"];
+        var user = StaticWebAppsAuth.Parse(req);
+        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var plotId = req.Query["id"][0];
 
-        // get Plot from Cosmos
-        // check if current user is same as Plot author
-        // should be same Ids as in LogLineOptions
+        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+        var plotObj = plotResponse.Resource;
 
-        var plot = new Plot();
+        if (plotObj.UserId != userId) return new UnauthorizedResult();
 
-        if (id == "123")
-        {
-            plot.Title = "Aladin";
-            plot.Genre = "fantasy";
-            plot.ProblemTemplate = "outOfTheBottle";
-            plot.Keywords = new List<string> { "genie", "wish", "lamp" };
-            plot.HeroArchetype = "orphan";
-            plot.EnemyArchetype = "magician";
-            plot.PrimalStakes = "findConnection";
-            plot.DramaticQuestion = "truth";
+        // var plot = new Plot();
 
-            plot.Sequences = new List<UserSequence>{
-                new UserSequence{
-                    SequenceName = "Opening Image",
-                    Text = "The sands of the Middle East lead to a peddler on the outskirts of Agrabah.",
-                    IsLocked = true,
-                    isReadOnly = true,
-                    Allowed = new List<string>{"Opening Image"}
-                },
-                new UserSequence{
-                    SequenceName = "Setup",
-                    Text = "Jafar, the Sultan's adviser, finds the Cave of Wonders. The magic cave tells Jafar only a Diamond in the Rough may enter. In Agrabah, street urchin Aladdin avoids the Sultan's guards as he steals food to eat. Aladdin and his monkey Abu see some starving children and give them their bread rather than let them go hungry.",
-                    IsLocked = true,
-                    isReadOnly = false,
-                    Allowed = new List<string>{"Setup", "Theme Stated"}
-                },
-                new UserSequence{
-                    SequenceName = "Theme Stated",
-                    Text = "Aladdin laments the fact that everyone looks down on him as a mere \"street rat,\" admonishing that if they looked closer, they'd see that there is so much more to him.",
-                    IsLocked = false,
-                    isReadOnly = false,
-                    Allowed = new List<string>{"Theme Stated", "Catalyst"}
-                },
-            };
-        }
-        else if (id == "444")
-        {
+        // if (id == "123")
+        // {
+        //     plot.Title = "Aladin";
+        //     plot.Genre = "fantasy";
+        //     plot.ProblemTemplate = "outOfTheBottle";
+        //     plot.Keywords = new List<string> { "genie", "wish", "lamp" };
+        //     plot.HeroArchetype = "orphan";
+        //     plot.EnemyArchetype = "magician";
+        //     plot.PrimalStakes = "findConnection";
+        //     plot.DramaticQuestion = "truth";
 
-        }
+        //     plot.Sequences = new List<UserSequence>{
+        //         new UserSequence{
+        //             SequenceName = "Opening Image",
+        //             Text = "The sands of the Middle East lead to a peddler on the outskirts of Agrabah.",
+        //             IsLocked = true,
+        //             isReadOnly = true,
+        //             Allowed = new List<string>{"Opening Image"}
+        //         },
+        //         new UserSequence{
+        //             SequenceName = "Setup",
+        //             Text = "Jafar, the Sultan's adviser, finds the Cave of Wonders. The magic cave tells Jafar only a Diamond in the Rough may enter. In Agrabah, street urchin Aladdin avoids the Sultan's guards as he steals food to eat. Aladdin and his monkey Abu see some starving children and give them their bread rather than let them go hungry.",
+        //             IsLocked = true,
+        //             isReadOnly = false,
+        //             Allowed = new List<string>{"Setup", "Theme Stated"}
+        //         },
+        //         new UserSequence{
+        //             SequenceName = "Theme Stated",
+        //             Text = "Aladdin laments the fact that everyone looks down on him as a mere \"street rat,\" admonishing that if they looked closer, they'd see that there is so much more to him.",
+        //             IsLocked = false,
+        //             isReadOnly = false,
+        //             Allowed = new List<string>{"Theme Stated", "Catalyst"}
+        //         },
+        //     };
+        // }
+        // else if (id == "444")
+        // {
 
-        return new OkObjectResult(plot);
+        // }
+
+        return new OkObjectResult(plotObj);
     }
 
     [FunctionName("SaveLogLine")]
-    public IActionResult SaveLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveLogLine")] Plot plot, HttpRequest req, ILogger log)
+    public async Task<IActionResult> SaveLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveLogLine")] Plot plot, HttpRequest req, ILogger log)
     {
-        var id = req.Query["id"];
+        var user = StaticWebAppsAuth.Parse(req);
+        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        var title = plot.Title;
+        var plotId = req.Query["id"][0];
+
+        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+        var curPlotObj = plotResponse.Resource;
+
+        if (curPlotObj.UserId != userId) return new UnauthorizedResult();
+
+        var newTitle = plot.Title;
+
+        if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
+        {
+            // get user container, update PlotReference to match new title
+
+            var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+            var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+            var userObj = userResponse.Resource;
+
+            userObj.PlotReferences.Where(p => p.PlotId == plotId).First().DisplayName = newTitle;
+
+            var userPatchOps = new List<PatchOperation>();
+            userPatchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
+
+            var userPatchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: userPatchOps);
+        }
 
         // update existing plot
+        var plotPatchOps = new List<PatchOperation>();
+
+        var newDramaticQuestion = plot.DramaticQuestion;
+        var newEnemyArchetype = plot.EnemyArchetype;
+        var newGenre = plot.Genre;
+        var newHeroArchetype = plot.HeroArchetype;
+        var newKeywords = plot.Keywords;
+        var newPrimalStakes = plot.PrimalStakes;
+        var newProblemTemplate = plot.ProblemTemplate;
+
+        if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/title", newTitle));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newDramaticQuestion) && newDramaticQuestion != curPlotObj.DramaticQuestion)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/dramaticQuestion", newDramaticQuestion));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newEnemyArchetype) && newEnemyArchetype != curPlotObj.EnemyArchetype)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/enemyArchetype", newEnemyArchetype));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newGenre) && newGenre != curPlotObj.Genre)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/genre", newGenre));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newHeroArchetype) && newHeroArchetype != curPlotObj.HeroArchetype)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/heroArchetype", newHeroArchetype));
+        }
+
+        // if keywords exists on both ends, update it
+        if (newKeywords != null && curPlotObj.Keywords != null && string.Join(',', newKeywords) != string.Join(',', curPlotObj.Keywords))
+        {
+            plotPatchOps.Add(PatchOperation.Set("/keywords", newKeywords));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newPrimalStakes) && newPrimalStakes != curPlotObj.PrimalStakes)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/primalStakes", newPrimalStakes));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newProblemTemplate) && newProblemTemplate != curPlotObj.ProblemTemplate)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/problemTemplate", newProblemTemplate));
+        }
+
+        if (plotPatchOps.Count > 0)
+        {
+            var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
+        }
 
         return new NoContentResult();
     }
@@ -160,7 +302,7 @@ public class UserActions
 
         var text = sequence.Text;
 
-        // update existing plot
+        // LEFT OFF: update existing sequence - try using PatchItemAsync to the specific item in the array. Worst-case, we have to do a full replacement on the entire sequences array
 
         return new NoContentResult();
     }

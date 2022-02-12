@@ -10,7 +10,7 @@ public class SetupContinued : ISequence
     public string Name { get { return "Setup (Continued)"; } }
     public string Description { get { return "Continue introducing the characters and setting."; } }
     
-    public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"{Name} advice goes here... {Description}";
     }

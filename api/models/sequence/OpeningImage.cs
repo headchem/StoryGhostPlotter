@@ -10,7 +10,7 @@ public class OpeningImage : ISequence
     public string Name { get { return "Opening Image"; } }
     public string Description { get { return "Present a brief snapshot of the Hero's status quo life, and what they are missing. Establish the tone of the story, and hint at the problem to come."; } }
     
-    public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"{Name} advice goes here... {Description}";
     }

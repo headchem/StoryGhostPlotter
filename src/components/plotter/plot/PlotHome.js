@@ -374,8 +374,13 @@ const PlotHome = (
     }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
     const autoSaveLogLine = () => {
+        if (title === '') {
+            console.log('title was empty string, skip auto-save');
+            return;
+        }
+
         const plotId = searchParams.get("id")
-        console.log(`auto save logline for plotId: ${plotId}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
+        console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
 
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',

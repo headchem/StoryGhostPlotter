@@ -14,7 +14,7 @@ public class Liberty : IDramaticQuestion
     public string Negation { get { return "Slavery perceived as freedom"; } }
     public string Positive { get { return "Liberty"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if freedom can be found in slavery.";
     }

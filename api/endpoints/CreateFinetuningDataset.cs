@@ -72,20 +72,20 @@ public static class CreateFinetuningDataset
     {
         var row = new FinetuningRow();
 
-        story.CompletionType = completionType;
+        //story.CompletionType = completionType;
         row.Prompt = Factory.GetPrompt(story);
-        row.Completion = completionType switch
-        {
-            "orphanSummary" => story.OrphanSummary,
-            "orphanFull" => story.OrphanFull,
-            "wandererSummary" => story.WandererSummary,
-            "wandererFull" => story.WandererFull,
-            "warriorSummary" => story.WarriorSummary,
-            "warriorFull" => story.WarriorFull,
-            "martyrSummary" => story.MartyrSummary,
-            "martyrFull" => story.MartyrFull,
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
-        };
+        // row.Completion = completionType switch
+        // {
+        //     "orphanSummary" => story.OrphanSummary,
+        //     "orphanFull" => story.OrphanFull,
+        //     "wandererSummary" => story.WandererSummary,
+        //     "wandererFull" => story.WandererFull,
+        //     "warriorSummary" => story.WarriorSummary,
+        //     "warriorFull" => story.WarriorFull,
+        //     "martyrSummary" => story.MartyrSummary,
+        //     "martyrFull" => story.MartyrFull,
+        //     _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
+        // };
 
         row.Completion = " " + row.Completion.Trim() + StopSequence; // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
 
@@ -155,30 +155,30 @@ public static class CreateFinetuningDataset
                         case 7:
                             storyRow.Keywords = cellVal.Split(",").Select(x => x.Trim()).ToList();
                             break;
-                        case 9:
-                            storyRow.OrphanFull = cellVal;
-                            break;
-                        case 10:
-                            storyRow.OrphanSummary = cellVal;
-                            break;
-                        case 11:
-                            storyRow.WandererFull = cellVal;
-                            break;
-                        case 12:
-                            storyRow.WandererSummary = cellVal;
-                            break;
-                        case 13:
-                            storyRow.WarriorFull = cellVal;
-                            break;
-                        case 14:
-                            storyRow.WarriorSummary = cellVal;
-                            break;
-                        case 15:
-                            storyRow.MartyrFull = cellVal;
-                            break;
-                        case 16:
-                            storyRow.MartyrSummary = cellVal;
-                            break;
+                        // case 9:
+                        //     storyRow.OrphanFull = cellVal;
+                        //     break;
+                        // case 10:
+                        //     storyRow.OrphanSummary = cellVal;
+                        //     break;
+                        // case 11:
+                        //     storyRow.WandererFull = cellVal;
+                        //     break;
+                        // case 12:
+                        //     storyRow.WandererSummary = cellVal;
+                        //     break;
+                        // case 13:
+                        //     storyRow.WarriorFull = cellVal;
+                        //     break;
+                        // case 14:
+                        //     storyRow.WarriorSummary = cellVal;
+                        //     break;
+                        // case 15:
+                        //     storyRow.MartyrFull = cellVal;
+                        //     break;
+                        // case 16:
+                        //     storyRow.MartyrSummary = cellVal;
+                        //     break;
                         default:
                             break;
                     }

@@ -14,7 +14,7 @@ public class Success : IDramaticQuestion
     public string Negation { get { return "Selling Out"; } }
     public string Positive { get { return "Success"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if selling out can be a form of success.";
     }

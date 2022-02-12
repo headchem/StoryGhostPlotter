@@ -10,7 +10,7 @@ public class FirstPinchPoint : ISequence
     public string Name { get { return "First Pinch Point"; } }
     public string Description { get { return "Unbeknownst to the Hero, an event demonstrates to the audience how the problem is still looming."; } }
     
-    public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"{Name} advice goes here... {Description}";
     }

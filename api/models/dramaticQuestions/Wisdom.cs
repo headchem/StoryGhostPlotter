@@ -14,7 +14,7 @@ public class Wisdom : IDramaticQuestion
     public string Negation { get { return "Stupidity perceived as intelligence"; } }
     public string Positive { get { return "Wisdom"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if faking intelligence can lead to true wisdom.";
     }

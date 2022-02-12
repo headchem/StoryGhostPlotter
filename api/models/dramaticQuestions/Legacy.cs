@@ -13,7 +13,7 @@ public class Legacy : IDramaticQuestion
     public string Negation { get { return "Having a destructive legacy while thinking it's positive"; } }
     public string Positive { get { return "Build a positive legacy"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if a destructive legacy is better than no legacy at all.";
     }

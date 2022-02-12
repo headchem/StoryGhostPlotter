@@ -21,5 +21,5 @@ public interface IDramaticQuestion
     /// <summary>Occurs fourth. Primary value at stake.</summary>
     public string Positive {get;}
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes);
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes);
 }

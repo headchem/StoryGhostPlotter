@@ -51,21 +51,21 @@ public class OpenAICompletionService : ICompletionService
         var maxCompletionLength = 1;
         var temperature = 1.0;
 
-        if (story.CompletionType.ToLower().Contains("summary"))
-        {
-            maxCompletionLength = 160; // average 80 tokens on training data
-            temperature = 0.85;
-        }
-        else if (story.CompletionType.ToLower().Contains("full"))
-        {
-            maxCompletionLength = 400; // average 295 tokens on training data
-            temperature = 0.9;
-        }
+        // if (story.CompletionType.ToLower().Contains("summary"))
+        // {
+        //     maxCompletionLength = 160; // average 80 tokens on training data
+        //     temperature = 0.85;
+        // }
+        // else if (story.CompletionType.ToLower().Contains("full"))
+        // {
+        //     maxCompletionLength = 400; // average 295 tokens on training data
+        //     temperature = 0.9;
+        // }
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = models[story.CompletionType],
+            //Model = models[story.CompletionType], // TODO, update completion type with new sequence/beat structure
             MaxTokens = maxCompletionLength,
             Temperature = temperature,
             Stop = CreateFinetuningDataset.StopSequence // IMPORTANT: this must match exactly what we used during finetuning

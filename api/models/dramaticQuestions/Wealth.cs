@@ -14,7 +14,7 @@ public class Wealth : IDramaticQuestion
     public string Negation { get { return "Rich but suffering the pains of poverty"; } }
     public string Positive { get { return "Wealth"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if money can buy happiness.";
     }

@@ -227,7 +227,9 @@ public static class Factory
     /// <summary>Given a <c>Story</c>, based off of the <c>CompletionType</c> property, will return the entire prompt for the given CompletionType</summary>
     public static string GetPrompt(Plot req)
     {
-        var characterStage = getCharacterStage(req.CompletionType);
+        var completionType = "TODO? With new sequence structure...";
+
+        var characterStage = getCharacterStage(completionType);
 
         var problemTemplate = Factory.GetProblemTemplate(req.ProblemTemplate);
         var heroArchetype = Factory.GetArchetype(req.HeroArchetype);
@@ -239,7 +241,7 @@ public static class Factory
         var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
         var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
         var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(req.Seed, req.CompletionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(req.Seed, completionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
         var keywordsContribution = getKeywordsSentence(req.Keywords);
 
@@ -249,15 +251,15 @@ public static class Factory
 
         var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
 
-        if (req.CompletionType != "orphanSummary")
+        if (completionType != "orphanSummary")
         {
-            var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(req.CompletionType, req);
+            var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(completionType, req);
 
             consolidatedContributions += previousEvents;
         }
 
         consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
-        consolidatedContributions += "\n\n" + getRequestToAI(req.CompletionType, req);
+        consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
 
         consolidatedContributions += "\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
@@ -297,18 +299,20 @@ public static class Factory
     {
         var summaryPrefix = "SUMMARY: ";
 
-        return completionType switch
-        {
-            "orphanSummary" => "",
-            "orphanFull" => summaryPrefix + req.OrphanSummary,
-            "wandererSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull,
-            "wandererFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary,
-            "warriorSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull,
-            "warriorFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary,
-            "martyrSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary + "\n\n" + req.WarriorFull,
-            "martyrFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + summaryPrefix + req.MartyrSummary,
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
-        };
+        // return completionType switch
+        // {
+        //     "orphanSummary" => "",
+        //     "orphanFull" => summaryPrefix + req.OrphanSummary,
+        //     "wandererSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull,
+        //     "wandererFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary,
+        //     "warriorSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull,
+        //     "warriorFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary,
+        //     "martyrSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary + "\n\n" + req.WarriorFull,
+        //     "martyrFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + summaryPrefix + req.MartyrSummary,
+        //     _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
+        // };
+
+        return "TODO!";
     }
 
     private static string getRequestToAI(string completionType, Plot req)

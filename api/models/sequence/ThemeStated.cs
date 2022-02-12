@@ -10,7 +10,7 @@ public class ThemeStated : ISequence
     public string Name { get { return "Theme Stated"; } }
     public string Description { get { return "Subtly pose the Dramatic Question. They Hero doesn't have the experience or context yet to understand it."; } }
     
-    public string GetLogLineContribution(int seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"{Name} advice goes here... {Description}";
     }
