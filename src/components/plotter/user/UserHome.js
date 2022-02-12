@@ -21,7 +21,11 @@ const UserHome = ({ userInfo }) => {
                 }
                 return Promise.reject(response);
             }).then(function (data) {
-                setUserPlots(data['plotReferences'])
+                if (data['plotReferences'] === null) {
+                    setUserPlots([])
+                } else {
+                    setUserPlots(data['plotReferences'])
+                }
             }).catch(function (error) {
                 console.warn(error);
             }).finally(function () {

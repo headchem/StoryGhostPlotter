@@ -254,7 +254,7 @@ const Sequence = ({
 
     const autoSaveSequence = () => {
         const plotId = searchParams.get("id")
-        console.log(`PlotId: ${plotId}, sequence name: ${sequence.sequenceName}, isLocked: ${sequence.isLocked}, isReadOnly: ${sequence.isReadOnly}, allowed: ${sequence.allowed}, auto save text: ${sequence.text}`);
+        //console.log(`PlotId: ${plotId}, sequence name: ${sequence.sequenceName}, isLocked: ${sequence.isLocked}, isReadOnly: ${sequence.isReadOnly}, allowed: ${sequence.allowed}, auto save text: ${sequence.text}`);
 
         fetch('/api/SaveSequenceText?id=' + plotId, {
             method: 'POST',

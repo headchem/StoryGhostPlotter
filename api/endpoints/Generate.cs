@@ -43,6 +43,8 @@ public class Generate
 
         var result = await _completionService.GetCompletion(plot);
 
+
+        // TODO: log token usage by OpenAI to current user container
         // testing Cosmos db
 
         //using (var client = new DocumentClient(new Uri("service endpoint"), "auth key"))

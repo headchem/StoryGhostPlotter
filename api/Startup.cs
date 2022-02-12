@@ -44,7 +44,11 @@ namespace MyNamespace
                 CosmosClientOptions cosmosClientOptions = new CosmosClientOptions
                 {
                     HttpClientFactory = httpClientFactory.CreateClient,
-                    ConnectionMode = ConnectionMode.Gateway
+                    ConnectionMode = ConnectionMode.Gateway,
+                    SerializerOptions = new CosmosSerializationOptions()
+                    {
+                        PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                    }
                 };
 
                 return new CosmosClient(cosmosDBConnection, cosmosClientOptions);
