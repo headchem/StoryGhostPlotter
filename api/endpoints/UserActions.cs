@@ -67,9 +67,8 @@ public class UserActions
                 {
                     var newUserResponse = await container.CreateItemAsync<StoryGhost.Models.User>(newUser, new PartitionKey(newUser.Id));
                     var RUs = newUserResponse.RequestCharge;
-                    var newUserObj = newUserResponse.Resource;
 
-                    return new OkObjectResult(newUserObj);
+                    return new OkObjectResult(newUser);
                 }
                 catch (Exception exNewUser)
                 {
@@ -108,7 +107,7 @@ public class UserActions
             {
                 var newPlotResponse = await plotsContainer.CreateItemAsync<Plot>(newPlot, new PartitionKey(userId));
                 var RUs = newPlotResponse.RequestCharge;
-                var newPlotObj = newPlotResponse.Resource;
+                //var newPlotObj = newPlotResponse.Resource;
 
                 // update the PlotReferences field in the user's container
                 var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
@@ -245,6 +244,7 @@ public class UserActions
         var newKeywords = plot.Keywords;
         var newPrimalStakes = plot.PrimalStakes;
         var newProblemTemplate = plot.ProblemTemplate;
+        var newSequences = plot.Sequences;
 
         if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
         {
@@ -287,6 +287,13 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/problemTemplate", newProblemTemplate));
         }
 
+        var seqComparer = new ObjectsComparer.Comparer<List<UserSequence>>();
+
+        if (seqComparer.Compare(newSequences, curPlotObj.Sequences) == false)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/sequences", newSequences));
+        }
+
         if (plotPatchOps.Count > 0)
         {
             var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
@@ -295,15 +302,15 @@ public class UserActions
         return new NoContentResult();
     }
 
-    [FunctionName("SaveSequenceText")]
-    public IActionResult SaveSequenceText([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveSequenceText")] UserSequence sequence, HttpRequest req, ILogger log)
-    {
-        var id = req.Query["id"];
+    // [FunctionName("SaveSequenceText")]
+    // public IActionResult SaveSequenceText([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveSequenceText")] UserSequence sequence, HttpRequest req, ILogger log)
+    // {
+    //     var id = req.Query["id"];
 
-        var text = sequence.Text;
+    //     var text = sequence.Text;
 
-        // LEFT OFF: update existing sequence - try using PatchItemAsync to the specific item in the array. Worst-case, we have to do a full replacement on the entire sequences array
+    //     // LEFT OFF: update existing sequence - try using PatchItemAsync to the specific item in the array. Worst-case, we have to do a full replacement on the entire sequences array
 
-        return new NoContentResult();
-    }
+    //     return new NoContentResult();
+    // }
 }

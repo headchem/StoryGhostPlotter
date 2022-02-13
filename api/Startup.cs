@@ -48,7 +48,9 @@ namespace MyNamespace
                     SerializerOptions = new CosmosSerializationOptions()
                     {
                         PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                    }
+                    },
+                    //GatewayModeMaxConnectionLimit = 1000, // error: this can't be set alongside of HttpClientFactory... // https://docs.microsoft.com/en-us/azure/cosmos-db/sql/best-practice-dotnet#best-practices-when-using-gateway-mode
+                    EnableContentResponseOnWrite = false // https://docs.microsoft.com/en-us/azure/cosmos-db/sql/best-practice-dotnet#best-practices-for-write-heavy-workloads
                 };
 
                 return new CosmosClient(cosmosDBConnection, cosmosClientOptions);

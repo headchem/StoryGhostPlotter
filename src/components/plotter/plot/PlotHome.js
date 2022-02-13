@@ -365,15 +365,15 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            autoSaveLogLine()
+            autoSave()
         }, 2000) //2000ms - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion, sequences]);
 
-    const autoSaveLogLine = () => {
+    const autoSave = () => {
         if (title === '') {
             console.log('title was empty string, skip auto-save');
             return;
@@ -395,7 +395,8 @@ const PlotHome = (
                 'heroArchetype': heroArchetype,
                 'enemyArchetype': enemyArchetype,
                 'primalStakes': primalStakes,
-                'dramaticQuestion': dramaticQuestion
+                'dramaticQuestion': dramaticQuestion,
+                'sequences': sequences
             })
         })
             .catch(error => {
@@ -545,6 +546,7 @@ const PlotHome = (
                                 sequences.filter(sequence => sequence.allowed.length > 0).map((sequence) => (
                                     <Sequence
                                         key={sequence.sequenceName}
+                                        userInfo={userInfo}
                                         sequence={sequence}
                                         sequences={sequences}
                                         onFocusChange={() => onFocusChange('sequence')}
