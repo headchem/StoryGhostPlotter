@@ -64,16 +64,36 @@ public class Caregiver : IArchetype
     public string Motto { get { return "Love your neighbour as yourself"; } }
 
     
-    public string GetHeroLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string OpeningImage { get { return ""; } }
+    public string ThemeStated { get { return ""; } }
+    public string Setup { get { return ""; } }
+    public string IncitingIncident { get { return ""; } }
+    public string Debate { get { return ""; } }
+    public string BStory { get { return ""; } }
+    public string BreakIntoTwo { get { return ""; } }
+    public string FunAndGames { get { return ""; } }
+    public string FirstPinchPoint { get { return ""; } }
+    public string Midpoint { get { return ""; } }
+    public string BadGuysCloseIn { get { return ""; } }
+    public string SecondPinchPoint { get { return ""; } }
+    public string AllHopeIsLost { get { return ""; } }
+    public string DarkNightOfTheSoul { get { return ""; } }
+    public string BreakIntoThree { get { return ""; } }
+    public string Climax { get { return ""; } }
+    public string Cooldown { get { return ""; } }
+
+
+
+    public string GetHeroLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"The main character's personality is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
-    public string GetEnemyLogLineContribution(int seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetEnemyLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"The personality of the secondary character (or antagonist) is that of a {Name.ToLower()} (for example: {string.Join(", ", Examples)}).";
     }
 
-    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch
         {

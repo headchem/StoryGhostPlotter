@@ -14,7 +14,7 @@ public class LoveFake : IDramaticQuestion
     public string Negation { get { return "Hatred masquerading as love"; } }
     public string Positive { get { return "Love"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if faking love can lead to real love.";
     }

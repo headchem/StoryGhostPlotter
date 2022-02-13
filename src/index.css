@@ -1,14 +1,26 @@
-.logline > span, .logLineSelect {
-    float: left;
-    display: inline-block;
-    padding: .3em;
-    padding-top: 0em;
-    height: 3em;
-    vertical-align: middle;
+.logline {
+    line-height: 3em;
 }
 
-.logline > span {
-    padding-top: .5em;
+.logLineSelect, .logLineSelectKeywords {
+    width: auto;
+    display: inline-block;
+    margin: .3em;
+}
+
+.logLineSelect:required:invalid {
+    /* color: rgb(161, 37, 37); */
+    color: rgb(128, 128, 128);
+  }
+  option[value=""][disabled] {
+    display: none;
+  }
+  option {
+      color: rgb(33, 37, 41);
+  }
+
+.logLineSelectKeywords {
+    line-height: 1em;
 }
 
 .list-to-comma-str figcaption {
@@ -40,13 +52,21 @@
 }
 
 .generate {
-    float: left;
+    float: right;
 }
 
 .lock {
     float: right;
 }
 
-.gen-text-arrow {
-    font-size: 700%;
+.char-count {
+    float: left;
+}
+
+.text-loading {
+    opacity: 0.7;
+}
+
+.sequence-name {
+    float: left;
 }

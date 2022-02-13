@@ -13,9 +13,24 @@ In VSCode menu "Run and Debug"
 to build for prod and see if there are any linting error before deploying, run the following:
 npm run build
 
-Before starting a new feature:
 
-git checkout -b feature/my-new-feature
+Workflow for new work:
+
+git checkout -b my-new-feature
+... do code changes ...
+git add .
+git commit -m "your message"
+git push origin my-new-feature
+If a staging env already exists, this immediately kicks off the deployment pipeline for this branch (I think below steps are required only when pushing a new branch for the first time?)
+... in browser go to GitHub, click "Compare & pull request" button, then assuming no conflicts, click other button to "Create Pull Request". This kicks off a GitHub action that will deploy this branch to a new Azure Static Web App you can browse to for testing. You can also access this new site from the Azure portal under "Environments"
+... if all looks good, back in GitHub, click the "Merge pull request" button to merge the pull request into the main branch to deploy the changes to PROD. You can delete the feature branch once it has been merged.
+... after the merge and deployment to prod completes, the GitHub action automatically deletes the static web app of the feature branch
+git checkout main
+git pull
+
+
+
+
 
 FINETUNING
 

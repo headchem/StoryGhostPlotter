@@ -6,7 +6,7 @@ namespace StoryGhost.Models.DramaticQuestions;
 public class SanctionedUnnatural : IDramaticQuestion
 {
     public string Id { get { return "sanctionedUnnatural"; } }
-    public string Name { get { return "Sanctioned but unnatural behavior"; } }
+    public string Name { get { return "Sanctioned, unnatural behavior"; } }
     public string Description { get { return "Can unsanctioned behavior be natural?"; } }
 
     public string Contrary { get { return "Unsanctioned but natural behavior"; } }
@@ -14,7 +14,7 @@ public class SanctionedUnnatural : IDramaticQuestion
     public string Negation { get { return "Grotesque and abhorrent behavior"; } }
     public string Positive { get { return "Sanctioned Behavior"; } }
 
-    public string GetLogLineContribution(int seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if unsanctioned behavior can be accepted as natural.";
     }

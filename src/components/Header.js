@@ -21,7 +21,7 @@ const Header = ({ userInfo }) => {
                                 <Link className="nav-link" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/write">Write</Link>
+                                <Link className="nav-link" to="/plots">My Plots</Link>
                             </li>
                             {
                                 userInfo && userInfo.userRoles.includes('admin') &&

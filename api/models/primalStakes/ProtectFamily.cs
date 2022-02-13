@@ -19,14 +19,14 @@ public class ProtectFamily : IPrimalStakes
         }
     }
 
-    public string GetCharacterStageContribution(int seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
+    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch
         {
             "orphan" => "The main character starts off with their family in safety, but a dangerous outsider threatens them.",
             "wanderer" => "The main character is able to partially protect their family, but the root problem is still a threat.",
             "warrior" => "The main character is incapacitated, and appears to have lost any ability to protect their family.",
-            "martyr" => "Using lessons the main character learned throughout this ordeal, they successsfully protect their family, defeating the threat once and for all.",
+            "martyr" => "Using lessons the main character learned throughout this ordeal, they successfully protect their family, defeating the threat once and for all.",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
         };
     }
