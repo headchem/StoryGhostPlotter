@@ -42,10 +42,14 @@ const UserHome = ({ userInfo }) => {
     }, []);
 
     const plotList = userPlots.map((plot) =>
-        <li key={plot['plotId']}>
-            <Link className="nav-link" to={'/plot?id=' + plot['plotId']}>{plot['displayName']}</Link>
-            <DeletePlot plotId={plot['plotId']} plotTitle={plot['displayName']} loadAllPlots={loadAllPlots} />
-        </li>
+        <div className='row user-plot-row p-3' key={plot['plotId']}>
+            <div className='col-8'>
+                <Link className="nav-link" to={'/plot?id=' + plot['plotId']}>{plot['displayName']}</Link>
+            </div>
+            <div className='col-4'>
+                <DeletePlot plotId={plot['plotId']} plotTitle={plot['displayName']} loadAllPlots={loadAllPlots} />
+            </div>
+        </div>
     );
 
     const onCreateNewPlot = async () => {
@@ -83,9 +87,9 @@ const UserHome = ({ userInfo }) => {
                 <>
                     {
                         plotList.length > 0 &&
-                        <ul>
+                        <>
                             {plotList}
-                        </ul>
+                        </>
                     }
                     {
                         plotList.length === 0 &&
@@ -102,13 +106,21 @@ const UserHome = ({ userInfo }) => {
             {
                 newPlotLoading === false &&
                 <>
-                    <input
-                        onChange={e => setNewPlotName(e.target.value)}
-                        value={newPlotName}
-                    />
-                    <button onClick={onCreateNewPlot} type="button" className="btn btn-primary m-3" >
-                        Create new plot
-                    </button>
+                    <div className='row m-3'>
+                        <div className='col-6'>
+                            <input
+                                className='fs-5 form-control'
+                                onChange={e => setNewPlotName(e.target.value)}
+                                value={newPlotName}
+                                placeholder='New plot name...'
+                            />
+                        </div>
+                        <div className='col-6'>
+                            <button onClick={onCreateNewPlot} type="button" className="btn btn-primary" >
+                                Create new plot
+                            </button>
+                        </div>
+                    </div>
                 </>
             }
         </div>

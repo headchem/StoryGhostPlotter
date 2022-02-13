@@ -21,6 +21,7 @@ const PlotHome = (
     const [dramaticQuestion, setDramaticQuestion] = useState('')
     const [sequences, setSequences] = useState(null)
     const [isNotFound, setIsNotFound] = useState(false)
+    const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
 
     const [searchParams] = useSearchParams()
 
@@ -368,7 +369,7 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            autoSave()
+            savePlot()
         }, 2000) //2000ms - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -376,7 +377,7 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion, sequences]);
 
-    const autoSave = () => {
+    const savePlot = () => {
         if (isNotFound === true) return;
 
         if (title === '') {
@@ -404,12 +405,24 @@ const PlotHome = (
                 'sequences': sequences
             })
         })
+            .then((response) => {
+                if (response.ok) {
+                    // Do something
+                    if (response.status === 204) {
+                        console.log('save 204 success!');
+                        setLastSaveSuccess(Date.now())
+                    } else {
+                        // Other problem!
+                    }
+                } else {
+                    console.log('error saving');
+                }
+            })
             .catch(error => {
                 console.error(error)
             }).finally(function () {
 
             });
-
     }
 
     const onGenreChange = (event) => {
@@ -578,6 +591,16 @@ const PlotHome = (
                             }
                         </>
                     }
+                    <p className='text-end text-muted'>
+                        {
+                            lastSaveSuccess === null &&
+                            <span>not yet saved</span>
+                        }
+                        {
+                            lastSaveSuccess !== null &&
+                            <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
+                        }
+                    </p>
                 </>
             }
         </>

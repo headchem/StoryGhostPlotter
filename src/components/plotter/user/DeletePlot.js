@@ -35,7 +35,7 @@ const DeletePlot = ({ plotId, plotTitle, loadAllPlots }) => {
     }
 
     return (
-        <div>
+        <>
             {
                 showConfirm === false && isDeleting === false &&
                 <button onClick={onShowConfirm} className="btn btn-danger" title='you will be prompted to confirm'>
@@ -44,7 +44,7 @@ const DeletePlot = ({ plotId, plotTitle, loadAllPlots }) => {
             }
             {
                 showConfirm === true && isDeleting === false &&
-                <button className='btn btn-link' onClick={() => setShowConfirm(false)}>cancel delete</button>
+                <button className='btn btn-link p-0' onClick={() => setShowConfirm(false)}>cancel delete</button>
             }
             {
                 showConfirm === true &&
@@ -71,7 +71,7 @@ const DeletePlot = ({ plotId, plotTitle, loadAllPlots }) => {
                     <p>deleting...</p>
                 </>
             }
-        </div>
+        </>
     )
 }
 
