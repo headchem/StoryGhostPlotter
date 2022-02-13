@@ -52,7 +52,7 @@ const UserHome = ({ userInfo }) => {
             method: 'POST',
             body: newPlotName
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(newPlotId => {
                 //console.log('redirect to plot?id=' + newPlotId);
                 navigate('/plot?id=' + newPlotId)
