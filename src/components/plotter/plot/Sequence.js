@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useSearchParams } from "react-router-dom";
+//import { useSearchParams } from "react-router-dom";
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
@@ -25,7 +25,7 @@ const Sequence = ({
     moveToPrevSequence,
 }) => {
 
-    const [searchParams] = useSearchParams()
+    //const [searchParams] = useSearchParams()
 
     const textLimits = {
         'Opening Image': {
@@ -236,10 +236,10 @@ const Sequence = ({
     }, [genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
 
-    useEffect(() => {
-        getAdvice()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    // useEffect(() => {
+    //     getAdvice()
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     // useEffect(() => {
