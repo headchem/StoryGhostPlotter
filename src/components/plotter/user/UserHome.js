@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import DeletePlot from './DeletePlot'
 
 const UserHome = ({ userInfo }) => {
 
@@ -9,8 +10,7 @@ const UserHome = ({ userInfo }) => {
     const [newPlotLoading, setNewPlotLoading] = useState(false)
     const navigate = useNavigate()
 
-    useEffect(() => {
-
+    const loadAllPlots = () => {
         setPlotsLoading(true)
 
         const loadPlots = async () => {
@@ -33,13 +33,18 @@ const UserHome = ({ userInfo }) => {
             });
         }
 
-        loadPlots()
+        loadPlots();
+    }
+
+    useEffect(() => {
+        loadAllPlots()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const plotList = userPlots.map((plot) =>
         <li key={plot['plotId']}>
             <Link className="nav-link" to={'/plot?id=' + plot['plotId']}>{plot['displayName']}</Link>
+            <DeletePlot plotId={plot['plotId']} plotTitle={plot['displayName']} loadAllPlots={loadAllPlots} />
         </li>
     );
 
@@ -75,9 +80,18 @@ const UserHome = ({ userInfo }) => {
             }
             {
                 plotsLoading === false &&
-                <ul>
-                    {plotList}
-                </ul>
+                <>
+                    {
+                        plotList.length > 0 &&
+                        <ul>
+                            {plotList}
+                        </ul>
+                    }
+                    {
+                        plotList.length === 0 &&
+                        <p>No plots have been created yet.</p>
+                    }
+                </>
             }
             {
                 newPlotLoading &&

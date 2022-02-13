@@ -20,6 +20,7 @@ const PlotHome = (
     const [primalStakes, setPrimalStakes] = useState('')
     const [dramaticQuestion, setDramaticQuestion] = useState('')
     const [sequences, setSequences] = useState(null)
+    const [isNotFound, setIsNotFound] = useState(false)
 
     const [searchParams] = useSearchParams()
 
@@ -69,8 +70,6 @@ const PlotHome = (
         // upon initial page load, call API that returns all of the Log Line dropdown options
         //if (optionsLoaded === true) return // only load once on initial page load
 
-        console.log('initial component load');
-
         setPlotLoading(true)
 
         const plotId = searchParams.get("id")
@@ -79,10 +78,14 @@ const PlotHome = (
             fetch('/api/LogLine/LogLineOptions'),
             fetch('/api/GetPlot?id=' + plotId)
         ]).then(function (responses) {
-            // Get a JSON object from each of the responses
-            return Promise.all(responses.map(function (response) {
-                return response.json();
-            }));
+            if (responses[1].ok === false) {
+                setIsNotFound(true)
+            } else {
+                // Get a JSON object from each of the responses
+                return Promise.all(responses.map(function (response) {
+                    return response.json();
+                }));
+            }
         }).then(function (data) {
             const logLineOptionsData = data[0]
             populateLogLineOptions(logLineOptionsData)
@@ -374,6 +377,8 @@ const PlotHome = (
     }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion, sequences]);
 
     const autoSave = () => {
+        if (isNotFound === true) return;
+
         if (title === '') {
             console.log('title was empty string, skip auto-save');
             return;
@@ -445,7 +450,13 @@ const PlotHome = (
                 plotLoading === true && <p>loading...</p>
             }
             {
-                plotLoading === false &&
+                isNotFound === true &&
+                <>
+                    <p>Plot not found</p>
+                </>
+            }
+            {
+                plotLoading === false && isNotFound === false &&
                 <>
                     <div className='row align-items-md-stretch'>
                         <div className='col-md-7 logline fs-5'>

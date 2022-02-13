@@ -53,6 +53,9 @@ public class UserActions
                 var RUs = userResponse.RequestCharge;
                 var existingUserObj = userResponse.Resource;
 
+                // filter out plots flagged as deleted
+                existingUserObj.PlotReferences = existingUserObj.PlotReferences.Where(p => p.IsDeleted == false).ToList();
+
                 return new OkObjectResult(existingUserObj);
             }
             catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -60,7 +63,9 @@ public class UserActions
                 var newUser = new StoryGhost.Models.User
                 {
                     Id = userId,
-                    DisplayName = user.Identity.Name
+                    DisplayName = user.Identity.Name,
+                    Created = DateTime.UtcNow,
+                    Modified = DateTime.UtcNow
                 };
 
                 try
@@ -98,7 +103,10 @@ public class UserActions
                 UserId = userId,
                 Title = NewPlotName,
                 Seed = new Random().NextInt64(),
-                Keywords = new List<string>()
+                Keywords = new List<string>(),
+                Created = DateTime.UtcNow,
+                Modified = DateTime.UtcNow,
+                IsDeleted = false
             };
 
             var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
@@ -122,11 +130,13 @@ public class UserActions
                 userObj.PlotReferences.Add(new PlotReference
                 {
                     PlotId = newPlot.Id,
-                    DisplayName = NewPlotName
+                    DisplayName = NewPlotName,
+                    IsDeleted = false
                 });
 
                 var patchOps = new List<PatchOperation>();
                 patchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
+                patchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
 
                 var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
 
@@ -154,49 +164,9 @@ public class UserActions
         var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
         var plotObj = plotResponse.Resource;
 
+        if (plotObj.IsDeleted) return new NotFoundResult();
+
         if (plotObj.UserId != userId) return new UnauthorizedResult();
-
-        // var plot = new Plot();
-
-        // if (id == "123")
-        // {
-        //     plot.Title = "Aladin";
-        //     plot.Genre = "fantasy";
-        //     plot.ProblemTemplate = "outOfTheBottle";
-        //     plot.Keywords = new List<string> { "genie", "wish", "lamp" };
-        //     plot.HeroArchetype = "orphan";
-        //     plot.EnemyArchetype = "magician";
-        //     plot.PrimalStakes = "findConnection";
-        //     plot.DramaticQuestion = "truth";
-
-        //     plot.Sequences = new List<UserSequence>{
-        //         new UserSequence{
-        //             SequenceName = "Opening Image",
-        //             Text = "The sands of the Middle East lead to a peddler on the outskirts of Agrabah.",
-        //             IsLocked = true,
-        //             isReadOnly = true,
-        //             Allowed = new List<string>{"Opening Image"}
-        //         },
-        //         new UserSequence{
-        //             SequenceName = "Setup",
-        //             Text = "Jafar, the Sultan's adviser, finds the Cave of Wonders. The magic cave tells Jafar only a Diamond in the Rough may enter. In Agrabah, street urchin Aladdin avoids the Sultan's guards as he steals food to eat. Aladdin and his monkey Abu see some starving children and give them their bread rather than let them go hungry.",
-        //             IsLocked = true,
-        //             isReadOnly = false,
-        //             Allowed = new List<string>{"Setup", "Theme Stated"}
-        //         },
-        //         new UserSequence{
-        //             SequenceName = "Theme Stated",
-        //             Text = "Aladdin laments the fact that everyone looks down on him as a mere \"street rat,\" admonishing that if they looked closer, they'd see that there is so much more to him.",
-        //             IsLocked = false,
-        //             isReadOnly = false,
-        //             Allowed = new List<string>{"Theme Stated", "Catalyst"}
-        //         },
-        //     };
-        // }
-        // else if (id == "444")
-        // {
-
-        // }
 
         return new OkObjectResult(plotObj);
     }
@@ -296,21 +266,51 @@ public class UserActions
 
         if (plotPatchOps.Count > 0)
         {
+            plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
             var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
         }
 
         return new NoContentResult();
     }
 
-    // [FunctionName("SaveSequenceText")]
-    // public IActionResult SaveSequenceText([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SaveSequenceText")] UserSequence sequence, HttpRequest req, ILogger log)
-    // {
-    //     var id = req.Query["id"];
+    [FunctionName("DeletePlot")]
+    public async Task<IActionResult> DeletePlot([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeletePlot")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-    //     var text = sequence.Text;
+        var plotId = req.Query["id"][0];
 
-    //     // LEFT OFF: update existing sequence - try using PatchItemAsync to the specific item in the array. Worst-case, we have to do a full replacement on the entire sequences array
+        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+        var curPlotObj = plotResponse.Resource;
 
-    //     return new NoContentResult();
-    // }
+        if (curPlotObj.IsDeleted) return new NotFoundResult();
+
+        if (curPlotObj.UserId != userId) return new UnauthorizedResult();
+
+        // update IsDeleted to true in both the Plot item and the User.PlotReferences item
+
+        var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+        var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+        var userObj = userResponse.Resource;
+
+        userObj.PlotReferences.Where(p => p.PlotId == plotId).First().IsDeleted = true;
+
+        var userPatchOps = new List<PatchOperation>();
+        userPatchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
+
+        var userPatchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: userPatchOps);
+
+
+        var plotPatchOps = new List<PatchOperation>();
+        plotPatchOps.Add(PatchOperation.Set("/isDeleted", true));
+
+        plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
+        var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
+
+        return new NoContentResult();
+    }
+
 }

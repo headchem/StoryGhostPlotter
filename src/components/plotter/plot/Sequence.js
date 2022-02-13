@@ -242,41 +242,6 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    // useEffect(() => {
-    //     const timeout = setTimeout(() => {
-    //         autoSaveSequence()
-    //     }, 2000) // timeout to execute this function if timeout will be not cleared
-
-    //     return () => clearTimeout(timeout) //clear timeout (delete function execution)
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [sequence]);
-
-    // const autoSaveSequence = () => {
-    //     const plotId = searchParams.get("id")
-    //     //console.log(`PlotId: ${plotId}, sequence name: ${sequence.sequenceName}, isLocked: ${sequence.isLocked}, isReadOnly: ${sequence.isReadOnly}, allowed: ${sequence.allowed}, auto save text: ${sequence.text}`);
-
-    //     fetch('/api/SaveSequenceText?id=' + plotId, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             'sequenceName': sequence.sequenceName,
-    //             'isLocked': sequence.isLocked,
-    //             'isReadOnly': sequence.isReadOnly,
-    //             'allowed': sequence.allowed,
-    //             'text': sequence.text
-    //         })
-    //     })
-    //         .catch(error => {
-    //             console.error(error)
-    //         }).finally(function () {
-
-    //         })
-    // }
-
     return (
 
         <div className='row border-top m-3 p-3' onClick={onFocusChange}>

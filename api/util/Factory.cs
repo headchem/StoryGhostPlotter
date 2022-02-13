@@ -297,7 +297,7 @@ public static class Factory
 
     private static string getPreviousEvents(string completionType, Plot req)
     {
-        var summaryPrefix = "SUMMARY: ";
+        //var summaryPrefix = "SUMMARY: ";
 
         // return completionType switch
         // {

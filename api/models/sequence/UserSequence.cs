@@ -23,5 +23,4 @@ public class UserSequence
 
     [JsonPropertyName("allowed")]
     public List<string> Allowed { get; set; }
-
 }
