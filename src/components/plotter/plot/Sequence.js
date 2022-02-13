@@ -236,10 +236,11 @@ const Sequence = ({
     }, [genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
 
-    // useEffect(() => {
-    //     getAdvice()
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
+    // load advice on first load of a new Sequence component
+    useEffect(() => {
+        getAdvice()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     // useEffect(() => {
@@ -279,7 +280,7 @@ const Sequence = ({
     return (
 
         <div className='row border-top m-3 p-3' onClick={onFocusChange}>
-            <div className='col-2'>
+            <div className='col-md-2'>
                 {
                     sequence.isLocked === false &&
                     <select className='sequence-name form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
@@ -318,7 +319,7 @@ const Sequence = ({
                 }
 
             </div>
-            <div className='col-6'>
+            <div className='col-md-6'>
                 <LimitedTextArea
                     className="form-control"
                     value={sequence.text}
@@ -345,7 +346,7 @@ const Sequence = ({
                 }
 
             </div>
-            <div className='col-4'>
+            <div className='col-md-4'>
                 {
                     //sequence.isLocked === false &&
                     <>
