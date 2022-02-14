@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 //import ToDoHome from './components/todo/ToDoHome'
 import PlotHome from './components/plotter/plot/PlotHome'
+import PlotView from './components/plotter/plot/PlotView'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './components/About'
@@ -71,6 +72,12 @@ function App() {
                                         <p>You must log in to access this page</p>
                                     </>
                                 }
+                            </>
+
+                        } />
+                        <Route path="/view" element={
+                            <>
+                                <PlotView userInfo={userInfo} />
                             </>
 
                         } />

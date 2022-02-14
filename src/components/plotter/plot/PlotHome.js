@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
 import LogLineSelect from './LogLineSelect'
@@ -27,6 +27,7 @@ const PlotHome = (
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
 
     const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
 
     const onIsPublicChange = () => {
         setIsPublic(!isPublic)
@@ -101,17 +102,17 @@ const PlotHome = (
 
             const plotData = data[1]
 
-            if (!plotData.sequences || plotData.sequences.length === 0) {
-                plotData.sequences = [
-                    {
-                        sequenceName: 'Opening Image',
-                        text: '',
-                        isLocked: false,
-                        isReadOnly: false,
-                        allowed: ['Opening Image']
-                    }
-                ]
-            }
+            // if (!plotData.sequences || plotData.sequences.length === 0) {
+            //     plotData.sequences = [
+            //         {
+            //             sequenceName: 'Opening Image',
+            //             text: '',
+            //             isLocked: false,
+            //             isReadOnly: false,
+            //             allowed: ['Opening Image']
+            //         }
+            //     ]
+            // }
 
             populatePlot(plotData)
 
@@ -465,6 +466,11 @@ const PlotHome = (
         setTitle(event.target.value)
     }
 
+    const goToViewPlot = () => {
+        const plotId = searchParams.get("id")
+        navigate('/view?id=' + plotId)
+    }
+
     return (
         <>
             {
@@ -601,10 +607,10 @@ const PlotHome = (
                     }
                     <div className='row'>
                         <div className='col-8'>
-                            <button className='btn btn-primary'>View and Share</button>
+                            <button className='btn btn-primary' onClick={goToViewPlot}>View and Share</button>
                         </div>
                         <div className="col-2 form-check" title="check this box to make your plot public">
-                            <label className="form-check-label" for={isPublicCheckboxId}>
+                            <label className="form-check-label" htmlFor={isPublicCheckboxId}>
                                 Is Public
                             </label>
                             <input id={isPublicCheckboxId} className='form-check-input' type='checkbox' onChange={onIsPublicChange} checked={isPublic} />
