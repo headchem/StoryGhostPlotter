@@ -81,25 +81,25 @@ const PlotView = (
             } */}
             {
                 plotLoading === false && isNotFound === false &&
-                <>
+                <div className='row mb-4'>
                     {
                         userInfo && userInfo.userId === authorUserId && isPublic === false &&
                         <>
                             <p>Only you the author can see this because you have not set this plot to be public.</p>
                         </>
                     }
-                    <h1>{title}</h1>
+                    <h1 className='pb-4'>{title}</h1>
                     {
                         sequences &&
                         <>
                             {
                                 sequences.map((sequence) => (
-                                    <p key={sequence.sequenceName}>{sequence.text}</p>
+                                    <p key={sequence.sequenceName} className='fs-5'>{sequence.text}</p>
                                 ))
                             }
                         </>
                     }
-                </>
+                </div>
             }
         </>
     )

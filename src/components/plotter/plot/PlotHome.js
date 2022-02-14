@@ -605,7 +605,7 @@ const PlotHome = (
                             }
                         </>
                     }
-                    <div className='row'>
+                    <div className='row mb-4'>
                         <div className='col-8'>
                             <button className='btn btn-primary' onClick={goToViewPlot}>View and Share</button>
                         </div>
