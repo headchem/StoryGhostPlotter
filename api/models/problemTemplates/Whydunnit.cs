@@ -19,24 +19,25 @@ public class Whydunnit : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return ""; } }
-    public string IncitingIncident { get { return "An unknown and unseen Enemy commits a crime."; } }
-    public string Debate { get { return "Due to personal reasons, the Hero is reluctant to dedicate themselves to investigating."; } }
-    public string BreakIntoTwo { get { return "The Hero can't shake the obsession of needing to know why the crime was committed."; } }
-    public string FunAndGames { get { return ""; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return "The Hero thinks they have found who committed the crime."; } }
-    public string BadGuysCloseIn { get { return "The Hero is unsatisfied with the answer of why the presumed culprit committed the crime."; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return "The crime goes much deeper than the Hero realized - Every discovery they had made now appears irrelevant."; } }
-    public string DarkNightOfTheSoul { get { return "The Hero realizes they are not so different from the Enemy."; } }
-    public string BreakIntoThree { get { return ""; } }
-    public string Climax { get { return ""; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                IncitingIncident = "An unknown and unseen Enemy commits a crime.",
+                Debate = "Due to personal reasons, the Hero is reluctant to dedicate themselves to investigating.",
+                BreakIntoTwo = "The Hero can't shake the obsession of needing to know why the crime was committed.",
+                Midpoint = "The Hero thinks they have found who committed the crime.",
+                BadGuysCloseIn = "The Hero is unsatisfied with the answer of why the presumed culprit committed the crime.",
+                AllHopeIsLost = "The crime goes much deeper than the Hero realized - Every discovery they had made now appears irrelevant.",
+                DarkNightOfTheSoul = "The Hero realizes they are not so different from the Enemy."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {

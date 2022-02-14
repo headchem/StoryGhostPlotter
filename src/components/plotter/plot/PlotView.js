@@ -35,9 +35,10 @@ const PlotView = (
         setPlotLoading(true)
 
         const plotId = searchParams.get("id")
+        const authorId = searchParams.get("a")
 
         Promise.all([
-            fetch('/api/GetPlot?id=' + plotId)
+            fetch('/api/GetPlot?id=' + plotId + '&a=' + authorId)
             // other fetches could go here
         ]).then(function (responses) {
             if (responses[0].ok === false) {

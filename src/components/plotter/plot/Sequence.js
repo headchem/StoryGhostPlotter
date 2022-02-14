@@ -107,7 +107,13 @@ const Sequence = ({
     }
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    const [sequenceAdvice, setSequenceAdvice] = useState('')
+    const [commonAdvice, setCommonAdvice] = useState('')
+    const [genreAdvice, setGenreAdvice] = useState('')
+    const [problemTemplateAdvice, setProblemTemplateAdvice] = useState('')
+    const [heroArchetypeAdvice, setHeroArchetypeAdvice] = useState('')
+    const [enemyArchetypeAdvice, setEnemyArchetypeAdvice] = useState('')
+    const [primalStakesAdvice, setPrimalStakesAdvice] = useState('')
+    const [dramaticQuestionAdvice, setDramaticQuestionAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
 
     const onGenerateCompletion = async () => {
@@ -188,7 +194,13 @@ const Sequence = ({
             }
             return Promise.reject(response);
         }).then(function (data) {
-            setSequenceAdvice(data['advice'])
+            setCommonAdvice(data['common'])
+            setGenreAdvice(data['genre'])
+            setProblemTemplateAdvice(data['problemTemplate'])
+            setHeroArchetypeAdvice(data['heroArchetype'])
+            setEnemyArchetypeAdvice(data['enemyArchetype'])
+            setPrimalStakesAdvice(data['primalStakes'])
+            setDramaticQuestionAdvice(data['dramaticQuestion'])
         }).catch(function (error) {
             console.warn(error);
         }).finally(function () {
@@ -315,7 +327,15 @@ const Sequence = ({
                 {
                     //sequence.isLocked === false &&
                     <>
-                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>{sequenceAdvice}</p>
+                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
+                            <span title="common advice">{commonAdvice}</span>
+                            <span title="genre advice">{genreAdvice}</span>
+                            <span title="problem template advice">{problemTemplateAdvice}</span>
+                            <span title="hero archetype advice">{heroArchetypeAdvice}</span>
+                            <span title="enemy archetype advice">{enemyArchetypeAdvice}</span>
+                            <span title="primal stakes advice">{primalStakesAdvice}</span>
+                            <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
+                        </p>
                     </>
                 }
             </div>

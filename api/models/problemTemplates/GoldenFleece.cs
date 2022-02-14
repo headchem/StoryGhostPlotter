@@ -19,24 +19,22 @@ public class GoldenFleece : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return ""; } }
-    public string IncitingIncident { get { return ""; } }
-    public string Debate { get { return ""; } }
-    public string BreakIntoTwo { get { return "The Hero goes \"on the road\" with a naive understanding of the destination they think they want to reach."; } }
-    public string FunAndGames { get { return "Seemingly disconnected episodes each help the Hero grow, even if little progress is made on the \"road\"."; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return ""; } }
-    public string BadGuysCloseIn { get { return ""; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return ""; } }
-    public string DarkNightOfTheSoul { get { return "The Hero realizes the real treasure is their own personal growth."; } }
-    public string BreakIntoThree { get { return "Fully leveraging how the Hero has grown, a plan is hatched to attain the physical treasure."; } }
-    public string Climax { get { return ""; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                BreakIntoTwo = "The Hero goes \"on the road\" with a naive understanding of the destination they think they want to reach.",
+                FunAndGames = "Seemingly disconnected episodes each help the Hero grow, even if little progress is made on the \"road\".",
+                DarkNightOfTheSoul = "The Hero realizes the real treasure is their own personal growth.",
+                BreakIntoThree = "Fully leveraging how the Hero has grown, a plan is hatched to attain the physical treasure."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {

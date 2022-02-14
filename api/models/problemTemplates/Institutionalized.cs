@@ -19,24 +19,25 @@ public class Institutionalized : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return "The Hero shares a strong bond with their (Enemy) group."; } }
-    public string IncitingIncident { get { return "The Group pursues a goal that goes against what the Hero believes in."; } }
-    public string Debate { get { return ""; } }
-    public string BreakIntoTwo { get { return ""; } }
-    public string FunAndGames { get { return "The Hero tries out life separate from the group."; } }
-    public string FirstPinchPoint { get { return "The Hero is oblivious to a symbolic reminder that being separate from the group is not the same as being an individual."; } }
-    public string Midpoint { get { return ""; } }
-    public string BadGuysCloseIn { get { return "The Hero feels independent, but the group is pulling them back in."; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return "The Hero contemplates giving up their individualism for the sake of being accepted by the group"; } }
-    public string DarkNightOfTheSoul { get { return ""; } }
-    public string BreakIntoThree { get { return ""; } }
-    public string Climax { get { return "The Hero finds a way to hold true to their own identity, while honoring and affecting positive change on the group."; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = "The Hero shares a strong bond with their (Enemy) group.",
+                IncitingIncident = "The Group pursues a goal that goes against what the Hero believes in.",
+                FunAndGames = "The Hero tries out life separate from the group.",
+                FirstPinchPoint = "The Hero is oblivious to a symbolic reminder that being separate from the group is not the same as being an individual.",
+                BadGuysCloseIn = "The Hero feels independent, but the group is pulling them back in.",
+                AllHopeIsLost = "The Hero contemplates giving up their individualism for the sake of being accepted by the group.",
+                Climax = "The Hero finds a way to hold true to their own identity, while honoring and affecting positive change on the group."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {

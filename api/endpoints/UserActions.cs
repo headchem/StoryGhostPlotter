@@ -156,13 +156,22 @@ public class UserActions
     [FunctionName("GetPlot")]
     public async Task<IActionResult> GetPlot([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetPlot")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
         var plotId = req.Query["id"][0];
+        var authorId = "";
+        var curUser = StaticWebAppsAuth.Parse(req);
+
+        // if "a" is in the url, use that as the authorId (partition key) otherwise use the currently authenticated userId
+        if (req.Query.ContainsKey("a"))
+        {
+            authorId = req.Query["a"][0];
+        }
+        else if (curUser.Identity != null && curUser.Identity.IsAuthenticated)
+        {
+            authorId = curUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+        }
 
         var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(authorId));
         var plotObj = plotResponse.Resource;
 
         if (plotObj.IsDeleted) return new NotFoundResult();
@@ -172,8 +181,11 @@ public class UserActions
             return new OkObjectResult(plotObj);
         }
 
+        if (curUser.Identity == null || !curUser.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var curUserId = curUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
         // to reach this point, plot must NOT be public, so only return object is author == current user
-        if (plotObj.UserId != userId) return new UnauthorizedResult();
+        if (plotObj.UserId != curUserId) return new UnauthorizedResult();
 
         return new OkObjectResult(plotObj);
     }

@@ -64,23 +64,21 @@ public class Lover : IArchetype
     public string Motto { get { return "You're the only one for me."; } }
 
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return ""; } }
-    public string IncitingIncident { get { return ""; } }
-    public string Debate { get { return ""; } }
-    public string BStory { get { return ""; } }
-    public string BreakIntoTwo { get { return ""; } }
-    public string FunAndGames { get { return ""; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return ""; } }
-    public string BadGuysCloseIn { get { return ""; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return ""; } }
-    public string DarkNightOfTheSoul { get { return ""; } }
-    public string BreakIntoThree { get { return ""; } }
-    public string Climax { get { return ""; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence HeroAdviceSequence {
+        get {
+            return new AdviceSequence{
+                
+            };
+        }
+    }
+
+    public AdviceSequence EnemyAdviceSequence {
+        get {
+            return new AdviceSequence{
+                
+            };
+        }
+    }
 
 
 

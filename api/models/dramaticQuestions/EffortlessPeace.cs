@@ -13,6 +13,16 @@ public class EffortlessPeace : IDramaticQuestion
     public string Negation { get { return "Exertion leading to strife"; } }
     public string Positive { get { return "Effortless peace"; } }
 
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+            };
+        }
+    }
+
     public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if effort is required to attain peace.";

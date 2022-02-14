@@ -19,11 +19,7 @@ public static class SequenceAdvice
 
         // TODO: use sequenceRequest.Text for something, maybe do emotional analysis on it, or use to render images.
 
-        var adviceText = sequenceObj.GetAdvice(sequenceRequest.ProblemTemplate, sequenceRequest.HeroArchetype, sequenceRequest.EnemyArchetype, sequenceRequest.PrimalStakes, sequenceRequest.DramaticQuestion);
-
-        var adviceObj = new AdviceResponse{
-            Advice = adviceText
-        };
+        var adviceObj = sequenceObj.GetAdvice(sequenceRequest.Genre, sequenceRequest.ProblemTemplate, sequenceRequest.HeroArchetype, sequenceRequest.EnemyArchetype, sequenceRequest.PrimalStakes, sequenceRequest.DramaticQuestion);
 
         return new OkObjectResult(adviceObj);
     }

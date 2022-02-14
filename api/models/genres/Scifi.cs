@@ -19,6 +19,16 @@ public class Scifi : IGenre
         }
     }
 
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+            };
+        }
+    }
+
     public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"This is an award winning scifi story full of futuristic concepts in science and technology.";

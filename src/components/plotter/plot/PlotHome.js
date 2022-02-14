@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
 import LogLineSelect from './LogLineSelect'
@@ -468,7 +468,9 @@ const PlotHome = (
 
     const goToViewPlot = () => {
         const plotId = searchParams.get("id")
-        navigate('/view?id=' + plotId)
+
+        const params = { id: plotId, a: userInfo.userId };
+        navigate('/view?' + createSearchParams(params))
     }
 
     return (

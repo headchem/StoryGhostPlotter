@@ -19,24 +19,22 @@ public class UnexpectedProblem : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return "The Hero is an ordinary person. The Enemy is larger than life."; } }
-    public string IncitingIncident { get { return ""; } }
-    public string Debate { get { return ""; } }
-    public string BreakIntoTwo { get { return ""; } }
-    public string FunAndGames { get { return ""; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return "The larger-than-life Enemy is forced to take notice of the ordinary Hero."; } }
-    public string BadGuysCloseIn { get { return ""; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return "The Enemy reminds the ordinary Hero that they are powerless and should know their place."; } }
-    public string DarkNightOfTheSoul { get { return "The Hero finds something within themselves - something every average person has - that might allow them to defeat the Enemy."; } }
-    public string BreakIntoThree { get { return ""; } }
-    public string Climax { get { return ""; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = "The Hero is an ordinary person. The Enemy is larger than life.",
+                Midpoint = "The larger-than-life Enemy is forced to take notice of the ordinary Hero.",
+                AllHopeIsLost = "The Enemy reminds the ordinary Hero that they are powerless and should know their place.",
+                DarkNightOfTheSoul = "The Hero finds something within themselves - something every average person has - that might allow them to defeat the Enemy."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {

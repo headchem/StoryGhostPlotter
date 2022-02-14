@@ -4,26 +4,16 @@ using System.Text.Json.Serialization;
 
 namespace StoryGhost.Models;
 
-public class SequenceAdviceRequest
+public class AdviceComponents
 {
-    [JsonPropertyName("genre")]
+    //[JsonPropertyName("sequenceName")]
+    public string Common { get; set; }
     public string Genre { get; set; }
-    
-    [JsonPropertyName("problemTemplate")]
     public string ProblemTemplate { get; set; }
-
-    [JsonPropertyName("heroArchetype")]
     public string HeroArchetype { get; set; }
-
-    [JsonPropertyName("enemyArchetype")]
     public string EnemyArchetype { get; set; }
-
-    [JsonPropertyName("primalStakes")]
     public string PrimalStakes { get; set; }
-
-    [JsonPropertyName("dramaticQuestion")]
     public string DramaticQuestion { get; set; }
 
-    [JsonPropertyName("text")]
-    public string Text { get; set; }
+
 }

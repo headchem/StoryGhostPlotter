@@ -19,6 +19,16 @@ public class ProtectFamily : IPrimalStakes
         }
     }
 
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+            };
+        }
+    }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch

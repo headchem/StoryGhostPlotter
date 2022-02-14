@@ -19,24 +19,22 @@ public class MonsterInTheHouse : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return "Both Hero and Enemy are confined to a small space, forcing them to interact."; } }
-    public string IncitingIncident { get { return "The Hero commits a sin that results in the awakening of a monster."; } }
-    public string Debate { get { return ""; } }
-    public string BreakIntoTwo { get { return ""; } }
-    public string FunAndGames { get { return ""; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return ""; } }
-    public string BadGuysCloseIn { get { return ""; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return ""; } }
-    public string DarkNightOfTheSoul { get { return "The Hero realizes the sin they committed and repents."; } }
-    public string BreakIntoThree { get { return ""; } }
-    public string Climax { get { return "The monster vanquishes those who have sinned, but spares those who have repented."; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = "Both Hero and Enemy are confined to a small space, forcing them to interact.",
+                IncitingIncident = "The Hero commits a sin that results in the awakening of a monster.",
+                DarkNightOfTheSoul = "The Hero realizes the sin they committed and repents.",
+                Climax = "The monster vanquishes those who have sinned, but spares those who have repented."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {

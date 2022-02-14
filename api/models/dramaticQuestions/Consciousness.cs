@@ -13,6 +13,16 @@ public class Consciousness : IDramaticQuestion
     public string Negation { get { return "Damnation"; } }
     public string Positive { get { return "Consciousness"; } }
 
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+            };
+        }
+    }
+
     public string GetLogLineContribution(long seed, string CompletionType, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
     {
         return $"The overarching theme of this story is asking if the risk of eternal damnation is worth existing in the first place.";

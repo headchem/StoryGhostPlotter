@@ -19,6 +19,16 @@ public class Adventure : IGenre
         }
     }
 
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+            };
+        }
+    }
+
     public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {
         return $"This is an award winning adventure story where the main character is placed in a risky situation that requires them to go on a quest to discover the truth.";

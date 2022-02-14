@@ -22,24 +22,10 @@ public interface IArchetype
     public string WandererResponse { get; }
     public string WarriorResponse { get; }
 
-    public string OpeningImage { get; }
-    public string ThemeStated { get; }
-    public string Setup { get; }
-    public string IncitingIncident { get; }
-    public string BStory { get; }
-    public string Debate { get; }
-    public string BreakIntoTwo { get; }
-    public string FunAndGames { get; }
-    public string FirstPinchPoint { get; }
-    public string Midpoint { get; }
-    public string BadGuysCloseIn { get; }
-    public string SecondPinchPoint { get; }
-    public string AllHopeIsLost { get; }
-    public string DarkNightOfTheSoul { get; }
-    public string BreakIntoThree { get; }
-    public string Climax { get; }
-    public string Cooldown { get; }
+    public AdviceSequence HeroAdviceSequence { get; }
+    public AdviceSequence EnemyAdviceSequence { get; }
 
+    
     public string GetHeroLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion);
     public string GetEnemyLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion);
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion);

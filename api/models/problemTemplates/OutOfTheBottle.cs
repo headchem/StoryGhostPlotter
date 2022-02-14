@@ -19,24 +19,26 @@ public class OutOfTheBottle : IProblemTemplate
         }
     }
 
-    public string OpeningImage { get { return ""; } }
-    public string ThemeStated { get { return ""; } }
-    public string Setup { get { return "The underdog Hero secretly makes a wish to the universe for some supernatural blessing."; } }
-    public string IncitingIncident { get { return "The Hero's wish is actually fulfilled."; } }
-    public string Debate { get { return "The Hero confirms the blessing is real by testing it."; } }
-    public string BreakIntoTwo { get { return ""; } }
-    public string FunAndGames { get { return ""; } }
-    public string FirstPinchPoint { get { return ""; } }
-    public string Midpoint { get { return ""; } }
-    public string BadGuysCloseIn { get { return "The Hero feels entitled to their blessing and takes it for granted."; } }
-    public string SecondPinchPoint { get { return ""; } }
-    public string AllHopeIsLost { get { return "The Hero's blessing can't fix their flaws."; } }
-    public string DarkNightOfTheSoul { get { return "The Hero admits they didn't need the blessing - what they really needed was to grow as a person."; } }
-    public string BreakIntoThree { get { return "The Hero formulates a plan to defeat the Problem that doesn't rely on the blessing."; } }
-    public string Climax { get { return ""; } }
-    public string Cooldown { get { return ""; } }
+    public AdviceSequence AdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = "The underdog Hero secretly makes a wish to the universe for some supernatural blessing.",
+                IncitingIncident = "The Hero's wish is actually fulfilled.",
+                Debate = "The Hero confirms the blessing is real by testing it.",
+                BadGuysCloseIn = "The Hero feels entitled to their blessing and takes it for granted.",
+                AllHopeIsLost = "The Hero's blessing can't fix their flaws, and they lose the blessing.",
+                DarkNightOfTheSoul = "The Hero admits they didn't need the blessing - what they really needed was to grow as a person.",
+                BreakIntoThree = "The Hero formulates a plan to solve the Problem that doesn't rely on the blessing.",
+                Climax = "The Hero reacquires the blessing."
+            };
+        }
+    }
 
-public Adjectives OrphanAdjectives
+
+    public Adjectives OrphanAdjectives
     {
         get
         {
