@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from "react-router-dom";
+import { useUniqueId } from '../../../util/GenerateUniqueId'
 
 import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
@@ -20,10 +21,16 @@ const PlotHome = (
     const [primalStakes, setPrimalStakes] = useState('')
     const [dramaticQuestion, setDramaticQuestion] = useState('')
     const [sequences, setSequences] = useState(null)
+    const [isPublic, setIsPublic] = useState(false)
+    const [isPublicCheckboxId] = useState(useUniqueId('isPublicCheckbox'))
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
 
     const [searchParams] = useSearchParams()
+
+    const onIsPublicChange = () => {
+        setIsPublic(!isPublic)
+    }
 
     const populatePlot = (data) => {
         setTitle(data['title'])
@@ -35,6 +42,7 @@ const PlotHome = (
         setPrimalStakes(data['primalStakes'])
         setDramaticQuestion(data['dramaticQuestion'])
         setSequences(data['sequences'])
+        setIsPublic(data['isPublic'])
     }
 
     const populateLogLineOptions = (data) => {
@@ -375,7 +383,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion, sequences]);
+    }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion, sequences, isPublic]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -402,20 +410,20 @@ const PlotHome = (
                 'enemyArchetype': enemyArchetype,
                 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
-                'sequences': sequences
+                'sequences': sequences,
+                'isPublic': isPublic
             })
         })
             .then((response) => {
                 if (response.ok) {
                     // Do something
                     if (response.status === 204) {
-                        console.log('save 204 success!');
                         setLastSaveSuccess(Date.now())
                     } else {
-                        // Other problem!
+                        console.error('error saving: ' + response.status);
                     }
                 } else {
-                    console.log('error saving');
+                    console.error('error saving: ' + response.status);
                 }
             })
             .catch(error => {
@@ -465,7 +473,7 @@ const PlotHome = (
             {
                 isNotFound === true &&
                 <>
-                    <p>Plot not found</p>
+                    <p>This plot either doesn't exist, or the author has not made it public.</p>
                 </>
             }
             {
@@ -591,16 +599,30 @@ const PlotHome = (
                             }
                         </>
                     }
-                    <p className='text-end text-muted'>
-                        {
-                            lastSaveSuccess === null &&
-                            <span>not yet saved</span>
-                        }
-                        {
-                            lastSaveSuccess !== null &&
-                            <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
-                        }
-                    </p>
+                    <div className='row'>
+                        <div className='col-8'>
+                            <button className='btn btn-primary'>View and Share</button>
+                        </div>
+                        <div className="col-2 form-check" title="check this box to make your plot public">
+                            <label className="form-check-label" for={isPublicCheckboxId}>
+                                Is Public
+                            </label>
+                            <input id={isPublicCheckboxId} className='form-check-input' type='checkbox' onChange={onIsPublicChange} checked={isPublic} />
+
+                        </div>
+                        <div className='col-2'>
+                            <p className='text-muted text-end'>
+                                {
+                                    lastSaveSuccess === null &&
+                                    <span>not yet saved in this session</span>
+                                }
+                                {
+                                    lastSaveSuccess !== null &&
+                                    <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
                 </>
             }
         </>

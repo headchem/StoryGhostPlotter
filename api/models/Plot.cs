@@ -34,6 +34,7 @@ public class Plot
     public DateTime Modified { get; set; }
 
     public bool IsDeleted { get; set; }
+    public bool IsPublic { get; set; }
 
     public List<UserSequence> Sequences { get; set; }
 }

@@ -106,7 +106,8 @@ public class UserActions
                 Keywords = new List<string>(),
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
-                IsDeleted = false
+                IsDeleted = false,
+                IsPublic = false
             };
 
             var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
@@ -166,6 +167,12 @@ public class UserActions
 
         if (plotObj.IsDeleted) return new NotFoundResult();
 
+        if (plotObj.IsPublic)
+        {
+            return new OkObjectResult(plotObj);
+        }
+
+        // to reach this point, plot must NOT be public, so only return object is author == current user
         if (plotObj.UserId != userId) return new UnauthorizedResult();
 
         return new OkObjectResult(plotObj);
@@ -215,6 +222,7 @@ public class UserActions
         var newPrimalStakes = plot.PrimalStakes;
         var newProblemTemplate = plot.ProblemTemplate;
         var newSequences = plot.Sequences;
+        var newIsPublic = plot.IsPublic;
 
         if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
         {
@@ -255,6 +263,11 @@ public class UserActions
         if (!string.IsNullOrWhiteSpace(newProblemTemplate) && newProblemTemplate != curPlotObj.ProblemTemplate)
         {
             plotPatchOps.Add(PatchOperation.Set("/problemTemplate", newProblemTemplate));
+        }
+
+        if (newIsPublic != curPlotObj.IsPublic)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/isPublic", newIsPublic));
         }
 
         var seqComparer = new ObjectsComparer.Comparer<List<UserSequence>>();
