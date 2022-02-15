@@ -26,6 +26,7 @@ const decodeStr = arr => {
 
 const dictZip = (x, y) => {
   const result = {}
+  // eslint-disable-next-line
   x.map((_, i) => { result[x[i]] = y[i] })
   return result
 }
@@ -46,6 +47,7 @@ function bytes_to_unicode() {
   cs = cs.map(x => chr(x))
 
   const result = {}
+  // eslint-disable-next-line
   bs.map((_, i) => { result[bs[i]] = cs[i] })
   return result
 }
@@ -64,6 +66,7 @@ function get_pairs(word) {
 const pat = /'s|'t|'re|'ve|'m|'l l|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/gu
 
 const decoder = {}
+// eslint-disable-next-line
 Object.keys(encoder).map(x => { decoder[encoder[x]] = x })
 
 const lines = bpe_file.split('\n')
@@ -75,6 +78,7 @@ const bpe_merges = lines.slice(1, lines.length - 1).map(x => {
 
 const byte_encoder = bytes_to_unicode()
 const byte_decoder = {}
+// eslint-disable-next-line
 Object.keys(byte_encoder).map(x => { byte_decoder[byte_encoder[x]] = x })
 
 const bpe_ranks = dictZip(bpe_merges, range(0, bpe_merges.length))
@@ -95,6 +99,7 @@ function bpe(token) {
 
   while (true) {
     const minPairs = {}
+    // eslint-disable-next-line
     Array.from(pairs).map(pair => {
       const rank = bpe_ranks[pair]
       minPairs[(isNaN(rank) ? 10e10 : rank)] = pair
