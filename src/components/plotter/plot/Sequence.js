@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 //import { useSearchParams } from "react-router-dom";
-import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
+import { FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -22,15 +22,10 @@ const Sequence = ({
     sequences,
 
     updateSequenceText,
-    updateSequenceName,
-    //moveToNextSequence,
-    //moveToPrevSequence,
     insertSequence,
     deleteSequence,
     allowed
 }) => {
-
-    //const [searchParams] = useSearchParams()
 
     const textLimits = {
         'Opening Image': {
@@ -131,14 +126,6 @@ const Sequence = ({
         setIsAdviceLoading(true)
         fetchAdvice(sequence.sequenceName)
     }
-
-    // const onSequenceChange = (event) => {
-    //     var value = event.target.value;
-    //     setNextSequenceName(value)
-    //     //updateSequenceName(sequence.sequenceName, value)
-    //     //console.log('current sequence: ');
-    //     //console.log(sequence);
-    // }
 
     const onInsertSequence = (nextSequenceName) => {
         console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
@@ -279,43 +266,8 @@ const Sequence = ({
 
         <div className='row border-top m-3 p-3' onClick={onFocusChange}>
             <div className='col-md-2'>
-                {/* {
-                    sequence.isLocked === false &&
-                    <select className='sequence-name form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
-                        {
-                            sequence.allowed.map(function (o) {
-                                return <option key={o} value={o}>{o}</option>
-                            })
-                        }
-                    </select>
-                } */}
-                {/* {
-                    sequence.isLocked === true &&
-                    <p className='sequence-name'>{sequence.sequenceName}</p>
-                } */}
+                
                 <p className='sequence-name'>{sequence.sequenceName}</p>
-
-                {/* {
-                    sequence.isReadOnly === false &&
-                    <>
-                        {
-                            sequence.isLocked === false &&
-                            <button className='lock btn btn-secondary mt-2 text-right' onClick={() => moveToNextSequence(sequence.sequenceName)}>
-                                <>
-                                    <FaLockOpen /> Lock
-                                </>
-                            </button>
-                        }
-                        {
-                            sequence.isLocked === true &&
-                            <button className='lock btn btn-secondary mt-2 text-right' onClick={() => moveToPrevSequence(sequence.sequenceName)}>
-                                <>
-                                    <FaLock /> Unlock
-                                </>
-                            </button>
-                        }
-                    </>
-                } */}
 
                 {
                     allowed.length > 0 &&
@@ -343,7 +295,6 @@ const Sequence = ({
                     showCount={true}
                 />
                 {
-                    //sequence.isLocked === false &&
                     <>
                         {
                             isCompletionLoading === false && userInfo && userInfo.userRoles.includes('customer') &&
@@ -362,7 +313,6 @@ const Sequence = ({
             </div>
             <div className='col-md-4'>
                 {
-                    //sequence.isLocked === false &&
                     <>
                         <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
                             <span title="common advice">{commonAdvice}</span>

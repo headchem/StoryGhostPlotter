@@ -138,21 +138,6 @@ const PlotHome = (
         )
     }
 
-    // const updateSequenceName = (sequenceName, newSequenceName) => {
-    //     setSequences(
-    //         sequences.map(
-    //             (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, sequenceName: newSequenceName } : sequence
-    //         )
-    //     )
-    // }
-
-    // given all the existing sequences, choose the approporiate next sequence name. For example, if we already have [Opening Image, Theme Stated] then the best next sequence would be 'Setup'
-    // const getNewSequenceName = (existingSequences) => {
-    //     const curSequenceName = existingSequences.at(-1).sequenceName
-
-    //     return getAllowedNextSequenceNames(curSequenceName, existingSequences)[0]
-    // }
-
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
         const existingSequenceNames = new Set(existingSequences.map((seq) => seq.sequenceName))
@@ -245,22 +230,13 @@ const PlotHome = (
         const newSequence = {
             sequenceName: newSequenceName, //getNewSequenceName(sequences),
             text: '',
-            // isLocked: false,
-            // isReadOnly: false,
-            //allowed: allowedNext
         }
 
-        //console.log(newSequence)
-
         const curSequenceIndex = sequences.indexOf(sequences.filter((sequence) => sequence.sequenceName === curSequenceName)[0])
-
-        //console.log('cur seq index: ' + curSequenceIndex)
 
         if (curSequenceIndex === sequences.length - 1) {
 
             setSequences([...sequences, newSequence]) // set sequences to all the existing sequences, plus add the new one
-
-            //console.log('push new seq')
         } else {
             let newSequences = [...sequences]
             newSequences.splice(curSequenceIndex + 1, 0, newSequence);
@@ -284,22 +260,6 @@ const PlotHome = (
             newSequences
         )
     }
-
-    // const moveToPrevSequence = (curSequenceName) => {
-    //     let newSequences = sequences.map(
-    //         (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: false, isReadOnly: false } : sequence
-    //     )
-
-    //     newSequences = newSequences.filter((sequence) => sequence.sequenceName !== sequences.at(-1).sequenceName)
-
-    //     if (newSequences.length > 1) {
-    //         newSequences.at(-2).isReadOnly = false
-    //     } else {
-    //         newSequences.at(-1).isReadOnly = false
-    //     }
-
-    //     setSequences(newSequences)
-    // }
 
     const [plotLoading, setPlotLoading] = useState(false)
 
@@ -635,10 +595,7 @@ const PlotHome = (
                                             sequences={sequences}
                                             onFocusChange={() => onFocusChange('sequence')}
                                             updateSequenceText={updateSequenceText}
-                                            //updateSequenceName={updateSequenceName}
 
-                                            //moveToNextSequence={moveToNextSequence}
-                                            //moveToPrevSequence={moveToPrevSequence}
                                             insertSequence={insertSequence}
                                             deleteSequence={deleteSequence}
 
