@@ -3,7 +3,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
-import {encode} from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
+import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
+
 
 const Sequence = ({
     userInfo,
@@ -22,8 +23,11 @@ const Sequence = ({
 
     updateSequenceText,
     updateSequenceName,
-    moveToNextSequence,
-    moveToPrevSequence,
+    //moveToNextSequence,
+    //moveToPrevSequence,
+    insertSequence,
+    deleteSequence,
+    allowed
 }) => {
 
     //const [searchParams] = useSearchParams()
@@ -128,14 +132,21 @@ const Sequence = ({
         fetchAdvice(sequence.sequenceName)
     }
 
-    // const onGenreChange = (inputValue, { action, prevInputValue }) => { // optional method signature if we ever need the previous value from the dropdown
-    const onSequenceChange = (event) => {
-        var selectElement = event.target;
-        var value = selectElement.value;
+    // const onSequenceChange = (event) => {
+    //     var value = event.target.value;
+    //     setNextSequenceName(value)
+    //     //updateSequenceName(sequence.sequenceName, value)
+    //     //console.log('current sequence: ');
+    //     //console.log(sequence);
+    // }
 
-        updateSequenceName(sequence.sequenceName, value)
-        console.log('current sequence: ');
-        console.log(sequence);
+    const onInsertSequence = (nextSequenceName) => {
+        console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
+        insertSequence(sequence.sequenceName, nextSequenceName)
+    }
+
+    const onDeleteSequence = () => {
+        deleteSequence(sequence.sequenceName)
     }
 
     const fetchCompletion = async (completionType) => {
@@ -220,14 +231,14 @@ const Sequence = ({
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
-            const timeout = setTimeout(() => {
-                getAdvice()
-                updateTokenCount()
-            }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
+        //if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
+        const timeout = setTimeout(() => {
+            getAdvice()
+            updateTokenCount()
+        }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
-            return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        }
+        return () => clearTimeout(timeout) //clear timeout (delete function execution)
+        //}
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sequence]);
@@ -262,11 +273,13 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const optionalSequences = ['Theme Stated', 'Setup (Continued)', 'Debate (Continued)', 'B Story', 'First Pinch Point', 'Second Pinch Point']
+
     return (
 
         <div className='row border-top m-3 p-3' onClick={onFocusChange}>
             <div className='col-md-2'>
-                {
+                {/* {
                     sequence.isLocked === false &&
                     <select className='sequence-name form-select' placeholder='Sequence' defaultValue={sequence.sequenceName} onChange={onSequenceChange}>
                         {
@@ -275,13 +288,14 @@ const Sequence = ({
                             })
                         }
                     </select>
-                }
-                {
+                } */}
+                {/* {
                     sequence.isLocked === true &&
                     <p className='sequence-name'>{sequence.sequenceName}</p>
-                }
+                } */}
+                <p className='sequence-name'>{sequence.sequenceName}</p>
 
-                {
+                {/* {
                     sequence.isReadOnly === false &&
                     <>
                         {
@@ -301,7 +315,20 @@ const Sequence = ({
                             </button>
                         }
                     </>
+                } */}
+
+                {
+                    allowed.length > 0 &&
+                    <>
+                        {
+                            allowed.map(function (nextAllowed) {
+                                return <button className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-secondary' : 'btn btn-primary'} onClick={() => onInsertSequence(nextAllowed)}>Insert {nextAllowed}</button>
+                            })
+                        }
+                    </>
                 }
+
+                <button onClick={onDeleteSequence} className='btn btn-danger'>delete current</button>
 
             </div>
             <div className='col-md-6'>
@@ -312,10 +339,11 @@ const Sequence = ({
                     rows={textLimits[sequence.sequenceName]['rows']}
                     limit={textLimits[sequence.sequenceName]['max']}
                     curTokenCount={sequenceTokenCount}
-                    showCount={!sequence.isLocked}
+                    // showCount={!sequence.isLocked}
+                    showCount={true}
                 />
                 {
-                    sequence.isLocked === false &&
+                    //sequence.isLocked === false &&
                     <>
                         {
                             isCompletionLoading === false && userInfo && userInfo.userRoles.includes('customer') &&

@@ -105,13 +105,14 @@ const PlotHome = (
 
             // this is required to kickstart a newly created plot
             if (!plotData.sequences || plotData.sequences.length === 0) {
+
                 plotData.sequences = [
                     {
                         sequenceName: 'Opening Image',
                         text: '',
-                        isLocked: false,
-                        isReadOnly: false,
-                        allowed: ['Opening Image']
+                        // isLocked: false,
+                        // isReadOnly: false,
+                        allowed: ['Setup', 'Theme Stated']
                     }
                 ]
             }
@@ -137,20 +138,20 @@ const PlotHome = (
         )
     }
 
-    const updateSequenceName = (sequenceName, newSequenceName) => {
-        setSequences(
-            sequences.map(
-                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, sequenceName: newSequenceName } : sequence
-            )
-        )
-    }
+    // const updateSequenceName = (sequenceName, newSequenceName) => {
+    //     setSequences(
+    //         sequences.map(
+    //             (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, sequenceName: newSequenceName } : sequence
+    //         )
+    //     )
+    // }
 
     // given all the existing sequences, choose the approporiate next sequence name. For example, if we already have [Opening Image, Theme Stated] then the best next sequence would be 'Setup'
-    const getNewSequenceName = (existingSequences) => {
-        const curSequenceName = existingSequences.at(-1).sequenceName
+    // const getNewSequenceName = (existingSequences) => {
+    //     const curSequenceName = existingSequences.at(-1).sequenceName
 
-        return getAllowedNextSequenceNames(curSequenceName, existingSequences)[0]
-    }
+    //     return getAllowedNextSequenceNames(curSequenceName, existingSequences)[0]
+    // }
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
@@ -216,7 +217,7 @@ const PlotHome = (
                 allowedSequenceNames = []
                 break;
             default:
-                console.error('unhandled fallthrough case for allowed next sequences');
+                console.error('unhandled fallthrough case for allowed next sequences: "' + curSequenceName + '"');
         }
 
         // filter out '___ (Continued)' entries if the original hasn't been used yet
@@ -227,49 +228,78 @@ const PlotHome = (
             allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Debate (Continued)')
         }
 
+        // TODO: some incorrect ording is allowed, for example for: Opening -> Setup -> Theme -> B Story -> Catalyst
+        // B Story allows for inserting Fun and Break into 2, which can't be allowed to happen before Catalyst...
+        // create mapping table rules for temporal ordering requirements. Ex: 'Fun and Games': ['Opening Image', 'Setup', 'Catalyst', 'Debate', 'Break Into Two']
+        // all of those options must appear BEFORE the current sequence in order. If we're on 'B Story' and we're deciding whether or not to render 'Fun And Games' as an option to insert, first we check if all the temporal requirements are met, and only include if that check returns true
+
         allowedSequenceNames = allowedSequenceNames.filter(seqName => !existingSequenceNames.has(seqName))
 
         return allowedSequenceNames;
     }
 
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
-    const moveToNextSequence = (curSequenceName) => {
-        const allowedNext = getAllowedNextSequenceNames(curSequenceName, sequences)
+    const insertSequence = (curSequenceName, newSequenceName) => {
+        //const allowedNext = getAllowedNextSequenceNames(newSequenceName, sequences)
 
         const newSequence = {
-            sequenceName: getNewSequenceName(sequences),
+            sequenceName: newSequenceName, //getNewSequenceName(sequences),
             text: '',
-            isLocked: false,
-            isReadOnly: false,
-            allowed: allowedNext
+            // isLocked: false,
+            // isReadOnly: false,
+            //allowed: allowedNext
         }
 
-        let newSequences = sequences.map(
-            (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: true, isReadOnly: false } : { ...sequence, isReadOnly: true }
-        )
+        //console.log(newSequence)
 
-        newSequences.push(newSequence)
+        const curSequenceIndex = sequences.indexOf(sequences.filter((sequence) => sequence.sequenceName === curSequenceName)[0])
+
+        //console.log('cur seq index: ' + curSequenceIndex)
+
+        if (curSequenceIndex === sequences.length - 1) {
+
+            setSequences([...sequences, newSequence]) // set sequences to all the existing sequences, plus add the new one
+
+            //console.log('push new seq')
+        } else {
+            let newSequences = [...sequences]
+            newSequences.splice(curSequenceIndex + 1, 0, newSequence);
+            console.log('insert new seq:')
+            console.log(newSequences)
+
+            setSequences(
+                newSequences
+            )
+        }
+
+    }
+
+    const deleteSequence = (curSequenceName) => {
+        const curSequenceIndex = sequences.indexOf(sequences.filter((sequence) => sequence.sequenceName === curSequenceName)[0])
+
+        let newSequences = [...sequences]
+        newSequences.splice(curSequenceIndex, 1);
 
         setSequences(
             newSequences
         )
     }
 
-    const moveToPrevSequence = (curSequenceName) => {
-        let newSequences = sequences.map(
-            (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: false, isReadOnly: false } : sequence
-        )
+    // const moveToPrevSequence = (curSequenceName) => {
+    //     let newSequences = sequences.map(
+    //         (sequence) => sequence.sequenceName === curSequenceName ? { ...sequence, isLocked: false, isReadOnly: false } : sequence
+    //     )
 
-        newSequences = newSequences.filter((sequence) => sequence.sequenceName !== sequences.at(-1).sequenceName)
+    //     newSequences = newSequences.filter((sequence) => sequence.sequenceName !== sequences.at(-1).sequenceName)
 
-        if (newSequences.length > 1) {
-            newSequences.at(-2).isReadOnly = false
-        } else {
-            newSequences.at(-1).isReadOnly = false
-        }
+    //     if (newSequences.length > 1) {
+    //         newSequences.at(-2).isReadOnly = false
+    //     } else {
+    //         newSequences.at(-1).isReadOnly = false
+    //     }
 
-        setSequences(newSequences)
-    }
+    //     setSequences(newSequences)
+    // }
 
     const [plotLoading, setPlotLoading] = useState(false)
 
@@ -381,7 +411,7 @@ const PlotHome = (
     const updateTotalTokens = () => {
         if (!sequences || sequences.length === 0) return
         const allText = sequences.map(s => s.text).join(" ")
-        console.log(allText)
+        //console.log(allText)
         const numTokens = encode(allText).length
         setTotalTokens(numTokens)
     }
@@ -595,27 +625,34 @@ const PlotHome = (
                         logLineIncomplete === false &&
                         <>
                             {
-                                sequences.filter(sequence => sequence.allowed.length > 0).map((sequence) => (
-                                    <Sequence
-                                        key={sequence.sequenceName}
-                                        userInfo={userInfo}
-                                        sequence={sequence}
-                                        sequences={sequences}
-                                        onFocusChange={() => onFocusChange('sequence')}
-                                        updateSequenceText={updateSequenceText}
-                                        updateSequenceName={updateSequenceName}
-                                        moveToNextSequence={moveToNextSequence}
-                                        moveToPrevSequence={moveToPrevSequence}
+                                sequences
+                                    //.filter(sequence => sequence.allowed.length > 0)
+                                    .map((sequence) => (
+                                        <Sequence
+                                            key={sequence.sequenceName}
+                                            userInfo={userInfo}
+                                            sequence={sequence}
+                                            sequences={sequences}
+                                            onFocusChange={() => onFocusChange('sequence')}
+                                            updateSequenceText={updateSequenceText}
+                                            //updateSequenceName={updateSequenceName}
 
-                                        genre={genre}
-                                        problemTemplate={problemTemplate}
-                                        keywords={keywords}
-                                        heroArchetype={heroArchetype}
-                                        enemyArchetype={enemyArchetype}
-                                        primalStakes={primalStakes}
-                                        dramaticQuestion={dramaticQuestion}
-                                    />
-                                ))
+                                            //moveToNextSequence={moveToNextSequence}
+                                            //moveToPrevSequence={moveToPrevSequence}
+                                            insertSequence={insertSequence}
+                                            deleteSequence={deleteSequence}
+
+                                            allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
+
+                                            genre={genre}
+                                            problemTemplate={problemTemplate}
+                                            keywords={keywords}
+                                            heroArchetype={heroArchetype}
+                                            enemyArchetype={enemyArchetype}
+                                            primalStakes={primalStakes}
+                                            dramaticQuestion={dramaticQuestion}
+                                        />
+                                    ))
                             }
                         </>
                     }
@@ -643,7 +680,7 @@ const PlotHome = (
                                 {
                                     <>
                                         <br />
-                                        <span>{totalTokens}/{2048-320} tokens</span>
+                                        <span>{totalTokens}/{2048 - 320} tokens</span>
                                     </>
                                 }
                             </p>
