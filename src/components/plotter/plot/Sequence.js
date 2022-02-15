@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
+import {encode} from "../../../util/tokenizer/mod";
 
 const Sequence = ({
     userInfo,
@@ -29,79 +30,79 @@ const Sequence = ({
 
     const textLimits = {
         'Opening Image': {
-            'charMax': 150,
-            'rows': 2
+            'max': 300,
+            'rows': 3
         },
         'Setup': {
-            'charMax': 500,
+            'max': 500,
             'rows': 7
         },
         'Theme Stated': {
-            'charMax': 300,
+            'max': 300,
             'rows': 5
         },
         'Setup (Continued)': {
-            'charMax': 500,
+            'max': 500,
             'rows': 7
         },
         'Catalyst': {
-            'charMax': 500,
+            'max': 500,
             'rows': 7
         },
         'Debate': {
-            'charMax': 800,
+            'max': 800,
             'rows': 11
         },
         'B Story': {
-            'charMax': 400,
+            'max': 400,
             'rows': 5
         },
         'Debate (Continued)': {
-            'charMax': 300,
+            'max': 300,
             'rows': 5
         },
         'Break Into Two': {
-            'charMax': 500,
+            'max': 500,
             'rows': 7
         },
         'Fun And Games': {
-            'charMax': 1700,
+            'max': 1700,
             'rows': 22
         },
         'First Pinch Point': {
-            'charMax': 150,
+            'max': 150,
             'rows': 2
         },
         'Midpoint': {
-            'charMax': 400,
+            'max': 400,
             'rows': 6
         },
         'Bad Guys Close In': {
-            'charMax': 1000,
+            'max': 1000,
             'rows': 14
         },
         'Second Pinch Point': {
-            'charMax': 350,
+            'max': 350,
             'rows': 5
         },
         'All Hope Is Lost': {
-            'charMax': 500,
+            'max': 500,
             'rows': 7
         },
         'Dark Night Of The Soul': {
-            'charMax': 750,
+            'max': 750,
             'rows': 10
         },
         'Break Into Three': {
-            'charMax': 600,
+            'max': 600,
             'rows': 8
         },
         'Climax': {
-            'charMax': 1100,
+            'max': 1100,
             'rows': 14
         },
         'Cooldown': {
-            'charMax': 600,
+            'max': 600,
             'rows': 8
         }
     }
@@ -115,6 +116,7 @@ const Sequence = ({
     const [primalStakesAdvice, setPrimalStakesAdvice] = useState('')
     const [dramaticQuestionAdvice, setDramaticQuestionAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
+    const [sequenceTokenCount, setSequenceTokenCount] = useState(0)
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -171,6 +173,11 @@ const Sequence = ({
         });
     }
 
+    const updateTokenCount = () => {
+        const tokens = encode(sequence.text)
+        setSequenceTokenCount(tokens.length)
+    }
+
     const fetchAdvice = async (completionType) => {
         fetch('/api/Sequence/Advice?sequenceName=' + sequence.sequenceName, {
             method: 'POST',
@@ -216,6 +223,7 @@ const Sequence = ({
         if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
             const timeout = setTimeout(() => {
                 getAdvice()
+                updateTokenCount()
             }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
             return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -302,7 +310,8 @@ const Sequence = ({
                     value={sequence.text}
                     setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)}
                     rows={textLimits[sequence.sequenceName]['rows']}
-                    limit={textLimits[sequence.sequenceName]['charMax']}
+                    limit={textLimits[sequence.sequenceName]['max']}
+                    curTokenCount={sequenceTokenCount}
                     showCount={!sequence.isLocked}
                 />
                 {

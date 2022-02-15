@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LimitedTextArea = ({ rows, cols, value, limit, className, setValue, showCount }) => {
+const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, setValue, showCount }) => {
 
     const setTruncatedContent = React.useCallback(
         text => {
@@ -22,7 +22,7 @@ const LimitedTextArea = ({ rows, cols, value, limit, className, setValue, showCo
             {
                 showCount === true &&
                 <p className="char-count" title="seek brevity, this is a technical maximum">
-                    {value.length}/{limit}
+                    {value.length}/{limit} ({curTokenCount} tokens)
                 </p>
             }
 

@@ -5,6 +5,7 @@ import { useUniqueId } from '../../../util/GenerateUniqueId'
 import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
 import Sequence from './Sequence'
+import { encode } from "../../../util/tokenizer/mod";
 
 const PlotHome = (
     {
@@ -102,17 +103,18 @@ const PlotHome = (
 
             const plotData = data[1]
 
-            // if (!plotData.sequences || plotData.sequences.length === 0) {
-            //     plotData.sequences = [
-            //         {
-            //             sequenceName: 'Opening Image',
-            //             text: '',
-            //             isLocked: false,
-            //             isReadOnly: false,
-            //             allowed: ['Opening Image']
-            //         }
-            //     ]
-            // }
+            // this is required to kickstart a newly created plot
+            if (!plotData.sequences || plotData.sequences.length === 0) {
+                plotData.sequences = [
+                    {
+                        sequenceName: 'Opening Image',
+                        text: '',
+                        isLocked: false,
+                        isReadOnly: false,
+                        allowed: ['Opening Image']
+                    }
+                ]
+            }
 
             populatePlot(plotData)
 
@@ -374,11 +376,20 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, genre, problemTemplate, keywords, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
+    const [totalTokens, setTotalTokens] = useState(0)
+
+    const updateTotalTokens = () => {
+        const allText = sequences.map(s => s.text).join(" ")
+        console.log(allText)
+        const numTokens = encode(allText).length
+        setTotalTokens(numTokens)
+    }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
             savePlot()
+            updateTotalTokens()
         }, 2000) //2000ms - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -627,6 +638,12 @@ const PlotHome = (
                                 {
                                     lastSaveSuccess !== null &&
                                     <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
+                                }
+                                {
+                                    <>
+                                        <br />
+                                        <span>{totalTokens}/{2048-320} tokens</span>
+                                    </>
                                 }
                             </p>
                         </div>
