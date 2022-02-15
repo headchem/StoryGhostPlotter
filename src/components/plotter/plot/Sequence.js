@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { FaLock, FaLockOpen, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
-import {encode} from "../../../util/tokenizer/mod";
+import {encode} from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
 const Sequence = ({
     userInfo,

@@ -5,7 +5,7 @@ import { useUniqueId } from '../../../util/GenerateUniqueId'
 import LogLineSelect from './LogLineSelect'
 import LogLineDescription from './LogLineDescription'
 import Sequence from './Sequence'
-import { encode } from "../../../util/tokenizer/mod";
+import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
 const PlotHome = (
     {
@@ -379,6 +379,7 @@ const PlotHome = (
     const [totalTokens, setTotalTokens] = useState(0)
 
     const updateTotalTokens = () => {
+        if (!sequences || sequences.length === 0) return
         const allText = sequences.map(s => s.text).join(" ")
         console.log(allText)
         const numTokens = encode(allText).length
