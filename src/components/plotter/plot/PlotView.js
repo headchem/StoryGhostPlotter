@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 
 
@@ -84,6 +84,10 @@ const PlotView = (
             {
                 plotLoading === false && isNotFound === false &&
                 <div className='row mb-4'>
+                    {
+                        userInfo && userInfo.userId === authorUserId &&
+                        <Link className="nav-link" to={'/plot?id=' + searchParams.get("id")}>Edit your plot</Link>
+                    }
                     {
                         userInfo && userInfo.userId === authorUserId && isPublic === false &&
                         <>
