@@ -98,32 +98,27 @@ const UserHome = ({ userInfo }) => {
                     }
                 </>
             }
-            {
-                newPlotLoading &&
-                <>
-                    <p>creating new plot...</p>
-                </>
-            }
-            {
-                newPlotLoading === false &&
-                <>
-                    <div className='row m-3'>
-                        <div className='col-6'>
-                            <input
-                                className='fs-5 form-control'
-                                onChange={e => setNewPlotName(e.target.value)}
-                                value={newPlotName}
-                                placeholder='New plot name...'
-                            />
-                        </div>
-                        <div className='col-6'>
-                            <button onClick={onCreateNewPlot} type="button" className="btn btn-primary" >
-                                Create new plot
-                            </button>
-                        </div>
-                    </div>
-                </>
-            }
+
+            <div className='row m-3'>
+                <div className='col-6'>
+                    <input
+                        className='fs-5 form-control'
+                        onChange={e => setNewPlotName(e.target.value)}
+                        value={newPlotName}
+                        placeholder='New plot name...'
+                    />
+                </div>
+                <div className='col-6'>
+                    <button disabled={newPlotLoading} onClick={onCreateNewPlot} type="button" className="btn btn-primary" >
+                        {
+                            newPlotLoading === true &&
+                            <Spinner size="sm" as="span" animation="border" variant="dark" />
+                        }
+                        <span> Create new plot</span>
+                    </button>
+                </div>
+            </div>
+
         </div>
     )
 }
