@@ -9,7 +9,6 @@
 }
 
 .logLineSelect:required:invalid {
-    /* color: rgb(161, 37, 37); */
     color: rgb(128, 128, 128);
   }
   option[value=""][disabled] {
@@ -81,4 +80,17 @@
 
 .user-plot-row:hover {
     box-shadow:inset 0px 0px 0px 1px #ccc;
+}
+
+.popover {
+    max-width: 500px;
+}
+
+.btn-block {
+    display: block;
+    width: auto;
+}
+
+.btn-no-border {
+    border: none;
 }

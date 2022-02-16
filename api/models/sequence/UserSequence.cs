@@ -12,15 +12,6 @@ public class UserSequence
     [JsonPropertyName("text")]
     public string Text { get; set; }
 
-
-    // seems redundant to persist below to disk, maybe derive via C# logic instead of pulling from Cosmos?
-
-    [JsonPropertyName("isLocked")]
-    public bool IsLocked { get; set; }
-
-    [JsonPropertyName("isReadOnly")]
-    public bool isReadOnly { get; set; }
-
-    [JsonPropertyName("allowed")]
-    public List<string> Allowed { get; set; }
+    [JsonPropertyName("aiText")]
+    public string AIText { get; set; }
 }

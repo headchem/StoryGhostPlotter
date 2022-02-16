@@ -48,7 +48,7 @@ const PlotHome = (
     }
 
     const populateLogLineOptions = (data) => {
-        console.log('populateLogLineOptions')
+        //console.log('populateLogLineOptions')
 
         // convert list of string tuples from the webservice into the format expected by React-Select
         const mapToSelectOptions = (arr) => {
@@ -138,9 +138,41 @@ const PlotHome = (
         )
     }
 
+    const updateAIText = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, aiText: text } : sequence
+            )
+        )
+    }
+
+    // only allow creating a new Sequence of the key if the value has already occurred in the list of sequences prior to the current key
+    const seqTemporalDeps = {
+        'Opening Image': [],
+        'Setup': 'Opening Image',
+        'Theme Stated': 'Opening Image',
+        'Setup (Continued)': 'Setup',
+        'Catalyst': 'Setup',
+        'Debate': 'Catalyst',
+        'B Story': 'Setup',
+        'Debate (Continued)': 'Debate',
+        'Break Into Two': 'Debate',
+        'Fun And Games': 'Debate',
+        'First Pinch Point': 'Fun And Games',
+        'Midpoint': 'Fun And Games',
+        'Bad Guys Close In': 'Midpoint',
+        'Second Pinch Point': 'Bad Guys Close In',
+        'All Hope Is Lost': 'Bad Guys Close In',
+        'Dark Night Of The Soul': 'All Hope Is Lost',
+        'Break Into Three': 'Dark Night Of The Soul',
+        'Climax': 'Break Into Three',
+        'Cooldown': 'Climax',
+    }
+
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
-        const existingSequenceNames = new Set(existingSequences.map((seq) => seq.sequenceName))
+        const existingSequenceNamesArr = existingSequences.map((seq) => seq.sequenceName)
+        const existingSequenceNames = new Set(existingSequenceNamesArr)
         let allowedSequenceNames = []
 
         switch (curSequenceName) {
@@ -206,11 +238,24 @@ const PlotHome = (
         }
 
         // filter out '___ (Continued)' entries if the original hasn't been used yet
-        if (!existingSequenceNames.has('Setup')) {
-            allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Setup (Continued)')
-        }
-        if (!existingSequenceNames.has('Debate')) {
-            allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Debate (Continued)')
+        // if (!existingSequenceNames.has('Setup')) {
+        //     allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Setup (Continued)')
+        // }
+        // if (!existingSequenceNames.has('Debate')) {
+        //     allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Debate (Continued)')
+        // }
+
+        if (curSequenceName !== 'Opening Image') {
+            // filter out entries if their requirements don't appear before the curSequenceName
+            const curSeqIndex = existingSequenceNamesArr.indexOf(curSequenceName)
+            const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex+1) // +1 to include self
+            const prevSeqs = new Set(prevSeqsArr)
+
+            console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
+
+
+            // for each allowed Seq, check if that seq's prereq exists in prevSeqs
+            allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
         }
 
         // TODO: some incorrect ording is allowed, for example for: Opening -> Setup -> Theme -> B Story -> Catalyst
@@ -218,6 +263,7 @@ const PlotHome = (
         // create mapping table rules for temporal ordering requirements. Ex: 'Fun and Games': ['Opening Image', 'Setup', 'Catalyst', 'Debate', 'Break Into Two']
         // all of those options must appear BEFORE the current sequence in order. If we're on 'B Story' and we're deciding whether or not to render 'Fun And Games' as an option to insert, first we check if all the temporal requirements are met, and only include if that check returns true
 
+        // remove any sequences that have already been used
         allowedSequenceNames = allowedSequenceNames.filter(seqName => !existingSequenceNames.has(seqName))
 
         return allowedSequenceNames;
@@ -235,19 +281,17 @@ const PlotHome = (
         const curSequenceIndex = sequences.indexOf(sequences.filter((sequence) => sequence.sequenceName === curSequenceName)[0])
 
         if (curSequenceIndex === sequences.length - 1) {
-
             setSequences([...sequences, newSequence]) // set sequences to all the existing sequences, plus add the new one
         } else {
             let newSequences = [...sequences]
             newSequences.splice(curSequenceIndex + 1, 0, newSequence);
-            console.log('insert new seq:')
+            //console.log('insert new seq:')
             console.log(newSequences)
 
             setSequences(
                 newSequences
             )
         }
-
     }
 
     const deleteSequence = (curSequenceName) => {
@@ -397,7 +441,7 @@ const PlotHome = (
         }
 
         const plotId = searchParams.get("id")
-        console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
+        //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
 
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
@@ -586,7 +630,6 @@ const PlotHome = (
                         <>
                             {
                                 sequences
-                                    //.filter(sequence => sequence.allowed.length > 0)
                                     .map((sequence) => (
                                         <Sequence
                                             key={sequence.sequenceName}
@@ -595,6 +638,7 @@ const PlotHome = (
                                             sequences={sequences}
                                             onFocusChange={() => onFocusChange('sequence')}
                                             updateSequenceText={updateSequenceText}
+                                            updateAIText={updateAIText}
 
                                             insertSequence={insertSequence}
                                             deleteSequence={deleteSequence}
@@ -613,7 +657,7 @@ const PlotHome = (
                             }
                         </>
                     }
-                    <div className='row mb-4'>
+                    <div className='row mb-4 pt-5 border-top'>
                         <div className='col-8'>
                             <button className='btn btn-primary' onClick={goToViewPlot}>View and Share</button>
                         </div>

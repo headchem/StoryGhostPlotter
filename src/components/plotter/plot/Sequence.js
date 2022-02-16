@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
+import Popover from 'react-bootstrap/Popover';
+import Accordion from 'react-bootstrap/Accordion';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 //import { useSearchParams } from "react-router-dom";
-import { FaGhost } from 'react-icons/fa'
+import { FaGhost, FaPlusCircle, FaMinusCircle } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -22,6 +25,7 @@ const Sequence = ({
     sequences,
 
     updateSequenceText,
+    updateAIText,
     insertSequence,
     deleteSequence,
     allowed
@@ -128,7 +132,7 @@ const Sequence = ({
     }
 
     const onInsertSequence = (nextSequenceName) => {
-        console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
+        //console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
         insertSequence(sequence.sequenceName, nextSequenceName)
     }
 
@@ -162,7 +166,7 @@ const Sequence = ({
             }
             return Promise.reject(response);
         }).then(function (data) {
-            updateSequenceText(sequence.sequenceName, data['completion'])
+            updateAIText(sequence.sequenceName, data['completion'])
         }).catch(function (error) {
             console.warn(error);
             console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
@@ -262,71 +266,126 @@ const Sequence = ({
 
     const optionalSequences = ['Theme Stated', 'Setup (Continued)', 'Debate (Continued)', 'B Story', 'First Pinch Point', 'Second Pinch Point']
 
+    const popover = (
+        <Popover id="popover-basic">
+            {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
+            <Popover.Body>
+
+                <div className="btn-group next-seq-btn-grp" role="group" aria-label="choose next sequence">
+                    {
+                        allowed.length > 0 &&
+                        <>
+                            {
+                                allowed.map(function (nextAllowed) {
+                                    return <button type='button' className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-outline-secondary' : 'btn btn-outline-primary'} onClick={() => onInsertSequence(nextAllowed)}>{nextAllowed}</button>
+                                })
+                            }
+                        </>
+                    }
+
+                </div>
+
+            </Popover.Body>
+        </Popover>
+    );
+
+    const AddSequenceButton = () => (
+        <>
+            {
+                allowed.length > 0 &&
+                <OverlayTrigger trigger="focus" placement="bottom" overlay={popover}>
+                    <button className='btn btn-lg btn-outline-success btn-block btn-no-border pb-3'>
+                        <FaPlusCircle />
+                    </button>
+                </OverlayTrigger>
+            }
+        </>
+    );
+
     return (
+        <>
+            <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
+                <div className='col-md-7'>
+                    <p className='sequence-name'>{sequence.sequenceName}</p>
 
-        <div className='row border-top m-3 p-3' onClick={onFocusChange}>
-            <div className='col-md-2'>
-                
-                <p className='sequence-name'>{sequence.sequenceName}</p>
+                    {
+                        sequence.sequenceName !== 'Opening Image' &&
+                        <button onClick={onDeleteSequence} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
+                    }
+                    <LimitedTextArea
+                        className="form-control"
+                        value={sequence.text}
+                        setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)}
+                        rows={textLimits[sequence.sequenceName]['rows']}
+                        limit={textLimits[sequence.sequenceName]['max']}
+                        curTokenCount={sequenceTokenCount}
+                        showCount={true}
+                    />
 
-                {
-                    allowed.length > 0 &&
-                    <>
-                        {
-                            allowed.map(function (nextAllowed) {
-                                return <button className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-secondary' : 'btn btn-primary'} onClick={() => onInsertSequence(nextAllowed)}>Insert {nextAllowed}</button>
-                            })
-                        }
-                    </>
-                }
 
-                <button onClick={onDeleteSequence} className='btn btn-danger'>delete current</button>
+                </div>
+                <div className='col-md-5'>
+                    {
+                        <>
 
+                            <Accordion defaultActiveKey={['1']} alwaysOpen>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Generate with AI</Accordion.Header>
+                                    <Accordion.Body>
+                                        {
+                                            <div className='row'>
+                                                {
+                                                    isCompletionLoading === false && userInfo && userInfo.userRoles.includes('customer') &&
+                                                    <>
+                                                        {
+                                                            sequence.aiText && sequence.aiText.length > 0 &&
+                                                            <p>{sequence.aiText}</p>
+                                                        }
+
+                                                        <button title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
+                                                            <FaGhost /> Brainstorm with AI
+                                                        </button>
+                                                    </>
+                                                }
+                                                {
+                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                                                    <>
+                                                        <p>Sign up for our premium plan to ask the AI to brainstorm ideas for this sequence.</p>
+                                                    </>
+                                                }
+                                                {
+                                                    isCompletionLoading === true &&
+                                                    <p className="text-right">loading...</p>
+                                                }
+                                            </div>
+                                        }
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>Advice</Accordion.Header>
+                                    <Accordion.Body>
+                                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
+                                            <span title="common advice">{commonAdvice}</span>
+                                            <span title="genre advice">{genreAdvice}</span>
+                                            <span title="problem template advice">{problemTemplateAdvice}</span>
+                                            <span title="hero archetype advice">{heroArchetypeAdvice}</span>
+                                            <span title="enemy archetype advice">{enemyArchetypeAdvice}</span>
+                                            <span title="primal stakes advice">{primalStakesAdvice}</span>
+                                            <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
+                                        </p>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+
+
+                        </>
+                    }
+                </div>
             </div>
-            <div className='col-md-6'>
-                <LimitedTextArea
-                    className="form-control"
-                    value={sequence.text}
-                    setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)}
-                    rows={textLimits[sequence.sequenceName]['rows']}
-                    limit={textLimits[sequence.sequenceName]['max']}
-                    curTokenCount={sequenceTokenCount}
-                    // showCount={!sequence.isLocked}
-                    showCount={true}
-                />
-                {
-                    <>
-                        {
-                            isCompletionLoading === false && userInfo && userInfo.userRoles.includes('customer') &&
-
-                            <button type="button" className="generate btn btn-primary mt-2 text-right" onClick={onGenerateCompletion}>
-                                <FaGhost /> Generate with AI
-                            </button>
-                        }
-                        {
-                            isCompletionLoading === true &&
-                            <p className="text-right">loading...</p>
-                        }
-                    </>
-                }
-
+            <div className='row pb-3'>
+                <AddSequenceButton />
             </div>
-            <div className='col-md-4'>
-                {
-                    <>
-                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                            <span title="common advice">{commonAdvice}</span>
-                            <span title="genre advice">{genreAdvice}</span>
-                            <span title="problem template advice">{problemTemplateAdvice}</span>
-                            <span title="hero archetype advice">{heroArchetypeAdvice}</span>
-                            <span title="enemy archetype advice">{enemyArchetypeAdvice}</span>
-                            <span title="primal stakes advice">{primalStakesAdvice}</span>
-                            <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
-                        </p>
-                    </>
-                }
-            </div>
-        </div>
+        </>
     )
 }
 
