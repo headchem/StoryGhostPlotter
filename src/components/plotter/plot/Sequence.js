@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import Popover from 'react-bootstrap/Popover';
 import Accordion from 'react-bootstrap/Accordion';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Spinner from 'react-bootstrap/Spinner';
 //import { useSearchParams } from "react-router-dom";
 import { FaGhost, FaPlusCircle, FaMinusCircle } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
@@ -181,6 +182,9 @@ const Sequence = ({
     }
 
     const fetchAdvice = async (completionType) => {
+
+        console.log('GET ADVICE')
+
         fetch('/api/Sequence/Advice?sequenceName=' + sequence.sequenceName, {
             method: 'POST',
             headers: {
@@ -244,7 +248,7 @@ const Sequence = ({
         // run advice immediately, then debounce all subsequent requests
         if (isFirstAdviceRun.current) {
             isFirstAdviceRun.current = false
-            //getAdvice()
+            getAdvice()
             return
         }
 
@@ -257,18 +261,10 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
 
-
-    // load advice on first load of a new Sequence component
-    useEffect(() => {
-        getAdvice()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     const optionalSequences = ['Theme Stated', 'Setup (Continued)', 'Debate (Continued)', 'B Story', 'First Pinch Point', 'Second Pinch Point']
 
     const popover = (
         <Popover id="popover-basic">
-            {/* <Popover.Header as="h3">Popover right</Popover.Header> */}
             <Popover.Body>
 
                 <div className="btn-group next-seq-btn-grp" role="group" aria-label="choose next sequence">
@@ -277,7 +273,7 @@ const Sequence = ({
                         <>
                             {
                                 allowed.map(function (nextAllowed) {
-                                    return <button type='button' className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-outline-secondary' : 'btn btn-outline-primary'} onClick={() => onInsertSequence(nextAllowed)}>{nextAllowed}</button>
+                                    return <button key={sequence.sequenceName + nextAllowed} type='button' className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-outline-secondary' : 'btn btn-outline-primary'} onClick={() => onInsertSequence(nextAllowed)}>{nextAllowed}</button>
                                 })
                             }
                         </>
@@ -335,15 +331,23 @@ const Sequence = ({
                                         {
                                             <div className='row'>
                                                 {
-                                                    isCompletionLoading === false && userInfo && userInfo.userRoles.includes('customer') &&
+                                                    userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
                                                         {
                                                             sequence.aiText && sequence.aiText.length > 0 &&
                                                             <p>{sequence.aiText}</p>
                                                         }
 
-                                                        <button title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
-                                                            <FaGhost /> Brainstorm with AI
+                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
+                                                            {
+                                                                isCompletionLoading === true &&
+                                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                                            }
+                                                            {
+                                                                isCompletionLoading === false &&
+                                                                <FaGhost />
+                                                            }
+                                                            <span> Brainstorm with AI</span>
                                                         </button>
                                                     </>
                                                 }
@@ -353,10 +357,7 @@ const Sequence = ({
                                                         <p>Sign up for our premium plan to ask the AI to brainstorm ideas for this sequence.</p>
                                                     </>
                                                 }
-                                                {
-                                                    isCompletionLoading === true &&
-                                                    <p className="text-right">loading...</p>
-                                                }
+
                                             </div>
                                         }
                                     </Accordion.Body>

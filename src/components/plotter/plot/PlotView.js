@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const PlotView = (
@@ -69,7 +70,7 @@ const PlotView = (
     return (
         <>
             {
-                plotLoading === true && <p>loading...</p>
+                plotLoading === true && <Spinner animation="border" variant="secondary" />
             }
             {
                 isNotFound === true &&

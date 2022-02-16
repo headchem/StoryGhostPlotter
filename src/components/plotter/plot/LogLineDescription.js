@@ -1,3 +1,4 @@
+import Spinner from 'react-bootstrap/Spinner';
 import GenreDescription from './GenreDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import HeroArchetypeDescription from './HeroArchetypeDescription'
@@ -21,7 +22,7 @@ const LogLineDescription = (
     return (
         <div>
             {
-                descIsLoading === true && <p>loading...</p>
+                descIsLoading === true && <Spinner animation="border" variant="secondary" />
             }
             {
                 descIsLoading === false && <>

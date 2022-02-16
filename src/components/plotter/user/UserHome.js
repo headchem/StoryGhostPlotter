@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 import DeletePlot from './DeletePlot'
 
 const UserHome = ({ userInfo }) => {
@@ -80,7 +81,7 @@ const UserHome = ({ userInfo }) => {
 
             {
                 plotsLoading === true &&
-                <p>loading...</p>
+                <Spinner animation="border" variant="secondary" />
             }
             {
                 plotsLoading === false &&

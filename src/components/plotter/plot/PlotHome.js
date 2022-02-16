@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Spinner from 'react-bootstrap/Spinner';
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
@@ -35,6 +36,7 @@ const PlotHome = (
     }
 
     const populatePlot = (data) => {
+        console.log('POPULATE PLOT');
         setTitle(data['title'])
         setGenre(data['genre'])
         setProblemTemplate(data['problemTemplate'])
@@ -78,8 +80,7 @@ const PlotHome = (
         // eslint-disable-next-line no-unused-vars
         let isSubscribed = true;
 
-        // upon initial page load, call API that returns all of the Log Line dropdown options
-        //if (optionsLoaded === true) return // only load once on initial page load
+        console.log('INIT LOAD')
 
         setPlotLoading(true)
 
@@ -109,10 +110,7 @@ const PlotHome = (
                 plotData.sequences = [
                     {
                         sequenceName: 'Opening Image',
-                        text: '',
-                        // isLocked: false,
-                        // isReadOnly: false,
-                        allowed: ['Setup', 'Theme Stated']
+                        text: ''
                     }
                 ]
             }
@@ -195,7 +193,7 @@ const PlotHome = (
                 allowedSequenceNames = ['Break Into Two', 'B Story', 'Theme Stated']
                 break;
             case 'B Story':
-                allowedSequenceNames = ['Theme Stated', 'Debate', 'Setup', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
+                allowedSequenceNames = ['Theme Stated', 'Debate', 'Debate (Continued)', 'Setup', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
                 break;
             case 'Debate (Continued)':
                 allowedSequenceNames = ['Break Into Two']
@@ -237,18 +235,10 @@ const PlotHome = (
                 console.error('unhandled fallthrough case for allowed next sequences: "' + curSequenceName + '"');
         }
 
-        // filter out '___ (Continued)' entries if the original hasn't been used yet
-        // if (!existingSequenceNames.has('Setup')) {
-        //     allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Setup (Continued)')
-        // }
-        // if (!existingSequenceNames.has('Debate')) {
-        //     allowedSequenceNames = allowedSequenceNames.filter(seqName => seqName !== 'Debate (Continued)')
-        // }
-
         if (curSequenceName !== 'Opening Image') {
             // filter out entries if their requirements don't appear before the curSequenceName
             const curSeqIndex = existingSequenceNamesArr.indexOf(curSequenceName)
-            const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex+1) // +1 to include self
+            const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex + 1) // +1 to include self
             const prevSeqs = new Set(prevSeqsArr)
 
             console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
@@ -258,11 +248,6 @@ const PlotHome = (
             allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
         }
 
-        // TODO: some incorrect ording is allowed, for example for: Opening -> Setup -> Theme -> B Story -> Catalyst
-        // B Story allows for inserting Fun and Break into 2, which can't be allowed to happen before Catalyst...
-        // create mapping table rules for temporal ordering requirements. Ex: 'Fun and Games': ['Opening Image', 'Setup', 'Catalyst', 'Debate', 'Break Into Two']
-        // all of those options must appear BEFORE the current sequence in order. If we're on 'B Story' and we're deciding whether or not to render 'Fun And Games' as an option to insert, first we check if all the temporal requirements are met, and only include if that check returns true
-
         // remove any sequences that have already been used
         allowedSequenceNames = allowedSequenceNames.filter(seqName => !existingSequenceNames.has(seqName))
 
@@ -271,7 +256,6 @@ const PlotHome = (
 
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
     const insertSequence = (curSequenceName, newSequenceName) => {
-        //const allowedNext = getAllowedNextSequenceNames(newSequenceName, sequences)
 
         const newSequence = {
             sequenceName: newSequenceName, //getNewSequenceName(sequences),
@@ -393,6 +377,8 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
 
+        console.log('LOG LINE UPDATE')
+
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
@@ -423,9 +409,10 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
+            console.log('save and update tokens')
             savePlot()
             updateTotalTokens()
-        }, 2000) //2000ms - timeout to execute this function if timeout will be not cleared
+        }, 2000) //ms timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
@@ -522,7 +509,7 @@ const PlotHome = (
     return (
         <>
             {
-                plotLoading === true && <p>loading...</p>
+                plotLoading === true && <Spinner animation="border" variant="secondary" />
             }
             {
                 isNotFound === true &&
