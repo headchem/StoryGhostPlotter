@@ -25,20 +25,13 @@ public class Survive : IPrimalStakes
         {
             return new AdviceSequence
             {
+                Setup = "The main character starts off comfortable in their life.",
+                IncitingIncident = "An event threatens the main character's survival.",
+                Midpoint = "The main character is able to survive, but only barely.",
+                BadGuysCloseIn = "The threat to the main character's survival still looms.",
+                AllHopeIsLost = "The main character's will to persevere is tested, and they appear to be losing the battle to survive.",
+                Climax = "Using lessons the main character learned throughout this ordeal, they successfully survive the ordeal and find peace."
             };
         }
     }
-
-    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
-    {
-        return characterStage switch
-        {
-            "orphan" => "The main character starts off comfortable in their life, but an event threatens their survival.",
-            "wanderer" => "The main character is able to partially survive, but the root problem is still a threat.",
-            "warrior" => "The main character's will to persevere is tested, and they appear to be losing the battle to survive.",
-            "martyr" => "Using lessons the main character learned throughout this ordeal, they successfully survive the ordeal and find peace.",
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
-        };
-    }
-
 }

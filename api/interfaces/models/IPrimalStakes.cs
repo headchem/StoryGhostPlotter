@@ -12,7 +12,4 @@ public interface IPrimalStakes
     public List<string> Keywords { get; }
 
     public AdviceSequence AdviceSequence { get; }
-
-    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion);
-
 }

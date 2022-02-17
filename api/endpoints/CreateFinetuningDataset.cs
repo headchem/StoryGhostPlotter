@@ -8,15 +8,25 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Cosmos;
 using StoryGhost.Util;
 using StoryGhost.Models;
-using ClosedXML.Excel;
 
-namespace StoryGhost.LogLine;
-public static class CreateFinetuningDataset
+namespace StoryGhost.Util;
+public class CreateFinetuningDataset
 {
-    [FunctionName("CreateFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours "SGAdmin"
-    public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SGAdmin/CreateFinetuningDataset")] HttpRequest req, ILogger log)
+    /// <summary>IMPORTANT: if this ever changes, you'll have to re-fine-tune ALL models! This is also referenced by Factory.cs</summary>
+    public static string StopSequence = "\n\n###\n\n";
+
+    private readonly CosmosClient _db;
+
+    public CreateFinetuningDataset(CosmosClient db)
+    {
+        _db = db;
+    }
+
+    [FunctionName("CreateFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
 
@@ -24,27 +34,33 @@ public static class CreateFinetuningDataset
 
         try
         {
-            var formdata = await req.ReadFormAsync();
-            var file = req.Form.Files["myFile"];
-
-            var stories = await getStoryRows(file);
+            var plots = await getTrainingPlots();
 
             var results = new Dictionary<string, List<FinetuningRow>>();
 
-            var completionTypes = new List<string>{
-                "orphanSummary",
-                "orphanFull",
-                "wandererSummary",
-                "wandererFull",
-                "warriorSummary",
-                "warriorFull",
-                "martyrSummary",
-                "martyrFull"
+            var sequenceNames = new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Setup (Continued)",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "Fun And Games",
+                "First Pinch Point",
+                "Midpoint",
+                "Bad Guys Close In",
+                "Second Pinch Point",
+                "All Hope Is Lost",
+                "Dark Night Of The Soul",
+                "Break Into Three",
+                "Climax",
+                "Cooldown"
             };
 
-            foreach (var completionType in completionTypes)
+            foreach (var sequenceName in sequenceNames)
             {
-                results[completionType] = getRows(completionType, stories);
+                results[sequenceName] = getRows(sequenceName, plots);
             }
 
             return new OkObjectResult(results);
@@ -55,157 +71,68 @@ public static class CreateFinetuningDataset
         }
     }
 
-    private static List<FinetuningRow> getRows(string completionType, List<Plot> stories)
+    private async Task<List<Plot>> getTrainingPlots()
     {
-        var results = new List<FinetuningRow>();
+        var container = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+        var userId = "ef1494647e3f4fe69890dfb8b41431a1"; // jdparsons.dev@gmail.com - all of the finetuning datapoints have been added to this specific account (filter out the dedicated "TESTING" plot)
+        var userResponse = await container.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+        var existingUserObj = userResponse.Resource;
+        // filter out deleted plots
+        existingUserObj.PlotReferences = existingUserObj.PlotReferences.Where(p => p.IsDeleted == false).ToList();
 
-        foreach (var story in stories)
+        var results = new List<Plot>();
+
+        foreach (var plotRef in existingUserObj.PlotReferences)
         {
-            var row = getPromptAndCompletion(completionType, story);
-            results.Add(row);
+            var plotId = plotRef.PlotId;
+            var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+            var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+            var plotObj = plotResponse.Resource;
+
+            if (plotObj.Title.ToLower().Contains("testing") == false)
+            {
+                results.Add(plotObj);
+            }
         }
 
         return results;
     }
 
-    private static FinetuningRow getPromptAndCompletion(string completionType, Plot story)
+    private List<FinetuningRow> getRows(string sequenceName, List<Plot> plots)
     {
-        var row = new FinetuningRow();
+        var results = new List<FinetuningRow>();
 
-        //story.CompletionType = completionType;
-        row.Prompt = Factory.GetPrompt(story);
-        // row.Completion = completionType switch
-        // {
-        //     "orphanSummary" => story.OrphanSummary,
-        //     "orphanFull" => story.OrphanFull,
-        //     "wandererSummary" => story.WandererSummary,
-        //     "wandererFull" => story.WandererFull,
-        //     "warriorSummary" => story.WarriorSummary,
-        //     "warriorFull" => story.WarriorFull,
-        //     "martyrSummary" => story.MartyrSummary,
-        //     "martyrFull" => story.MartyrFull,
-        //     _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
-        // };
-
-        row.Completion = " " + row.Completion.Trim() + StopSequence; // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
-
-        return row;
-    }
-
-    /// <summary>IMPORTANT: if this ever changes, you'll have to re-fine-tune ALL models! This is also referenced by Generate.cs</summary>
-    public static string StopSequence = "\n\n###\n\n";
-
-    /// <summary>Given an Excel file, return a fully populated <c>List<Story></c></summary>
-    private static async Task<List<Plot>> getStoryRows(IFormFile file)
-    {
-        using var stream = new MemoryStream();
-        await file.CopyToAsync(stream);
-
-        using var workbook = new XLWorkbook(stream);
-
-        //Read the first Sheet from Excel file.
-        var worksheet = workbook.Worksheet(1);
-
-        //Loop through the Worksheet rows.
-        bool firstRow = true;
-        var stories = new List<Plot>();
-
-        foreach (IXLRow row in worksheet.Rows())
+        foreach (var plot in plots)
         {
-            //Use the first row to add columns to DataTable.
-            if (firstRow)
+            var row = getPromptAndCompletion(sequenceName, plot);
+
+            if (row != null)
             {
-                // skip first row
-                firstRow = false;
-            }
-            else
-            {
-                // stop iterating once an empty row is found
-                if (string.IsNullOrWhiteSpace(row.Cell(1).CachedValue.ToString())) break;
-
-                var storyRow = new Plot();
-
-                int i = 0;
-                foreach (IXLCell cell in row.Cells())
-                {
-                    var cellVal = cell.CachedValue.ToString();
-
-                    cellVal = clean(cellVal);
-
-                    switch (i)
-                    {
-                        case 1:
-                            storyRow.Genre = cellVal;
-                            break;
-                        case 2:
-                            storyRow.PrimalStakes = cellVal;
-                            break;
-                        case 3:
-                            storyRow.ProblemTemplate = cellVal;
-                            break;
-                        case 4:
-                            storyRow.HeroArchetype = cellVal;
-                            break;
-                        case 5:
-                            storyRow.EnemyArchetype = cellVal;
-                            break;
-                        case 6:
-                            storyRow.DramaticQuestion = cellVal;
-                            break;
-                        case 7:
-                            storyRow.Keywords = cellVal.Split(",").Select(x => x.Trim()).ToList();
-                            break;
-                        // case 9:
-                        //     storyRow.OrphanFull = cellVal;
-                        //     break;
-                        // case 10:
-                        //     storyRow.OrphanSummary = cellVal;
-                        //     break;
-                        // case 11:
-                        //     storyRow.WandererFull = cellVal;
-                        //     break;
-                        // case 12:
-                        //     storyRow.WandererSummary = cellVal;
-                        //     break;
-                        // case 13:
-                        //     storyRow.WarriorFull = cellVal;
-                        //     break;
-                        // case 14:
-                        //     storyRow.WarriorSummary = cellVal;
-                        //     break;
-                        // case 15:
-                        //     storyRow.MartyrFull = cellVal;
-                        //     break;
-                        // case 16:
-                        //     storyRow.MartyrSummary = cellVal;
-                        //     break;
-                        default:
-                            break;
-                    }
-
-                    i++;
-                }
-
-                stories.Add(storyRow);
+                results.Add(row);
             }
         }
 
-        return stories;
+        return results;
     }
 
-    private static string clean(string input)
+    private FinetuningRow getPromptAndCompletion(string sequenceName, Plot plot)
     {
-        input = input
-            .Replace("“", "\"")
-            .Replace("”", "\"")
-            .Replace("’", "'")
-            .Replace("‘", "'")
-            .Replace("…", "...")
-            .Replace("–", "-")
-            .Replace("SET-UP:", "SETUP:")
-            .Replace("ALL IS LOST:", "ALL HOPE IS LOST:");
+        var curSeqObj = plot.Sequences.Where(seq => seq.SequenceName == sequenceName).FirstOrDefault();
 
-        return input;
+        // not all plots have all sequence types
+        if (curSeqObj == null)
+        {
+            return null;
+        }
+
+        var row = new FinetuningRow();
+
+        row.SequenceName = sequenceName;
+        row.Prompt = Factory.GetPrompt(sequenceName, plot);
+
+        // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
+        row.Completion = " " + curSeqObj.Text + StopSequence;
+
+        return row;
     }
-
 }

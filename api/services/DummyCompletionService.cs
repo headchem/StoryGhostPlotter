@@ -21,9 +21,9 @@ public class DummyCompletionService : ICompletionService
     {
     }
 
-    public async Task<GenerateResponse> GetCompletion(Plot story)
+    public async Task<GenerateResponse> GetCompletion(string sequenceName, Plot story)
     {
-        var prompt = "test prompt goes here";//Factory.GetPrompt(story);
+        var prompt = Factory.GetPrompt(sequenceName, story);
 
         var result = new GenerateResponse();
 

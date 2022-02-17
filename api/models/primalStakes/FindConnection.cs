@@ -25,20 +25,13 @@ public class FindConnection : IPrimalStakes
         {
             return new AdviceSequence
             {
+                Setup = "The main character starts off feeling a lack of deep emotional connection.",
+                IncitingIncident = "The main character meets someone who they feel a connection toward.",
+                FunAndGames = "The main character attempts to bond with the other person, and it appears to be going well, despite their incompatibilities.",
+                BadGuysCloseIn = "Cracks form in the main character's relationships.",
+                AllHopeIsLost = "The main character alienates themselves.",
+                Climax = "Using lessons the main character learned throughout this ordeal, they successfully cement a deep emotional bond with the other person."
             };
         }
     }
-
-    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
-    {
-        return characterStage switch
-        {
-            "orphan" => "The main character starts off without any deep emotional connections, but they meet another character which starts a connection.",
-            "wanderer" => "The main character attempts to bond with another character, and it appears to be going well, despite their incompatibilities.",
-            "warrior" => "The main character's relationships are crumbling and they alienate themselves.",
-            "martyr" => "Using lessons the main character learned throughout this ordeal, they successfully cement a deep emotional bond.",
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
-        };
-    }
-
 }

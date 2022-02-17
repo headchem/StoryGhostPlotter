@@ -4,21 +4,23 @@ import React, { useState } from 'react'
 
 const Admin = () => {
 
-    const [file, setFile] = useState(null)
-    const [orphanSummary, setOrphanSummary] = useState('')
-    const [orphanFull, setOrphanFull] = useState('')
-    const [wandererSummary, setWandererSummary] = useState('')
-    const [wandererFull, setWandererFull] = useState('')
-    const [warriorSummary, setWarriorSummary] = useState('')
-    const [warriorFull, setWarriorFull] = useState('')
-    const [martyrSummary, setMartyrSummary] = useState('')
-    const [martyrFull, setMartyrFull] = useState('')
+    const [finetuningData, setFinetuningData] = useState(null)
 
-    const [longestWordCount, setLongestWordCount] = useState(0)
+    // const [file, setFile] = useState(null)
+    // const [orphanSummary, setOrphanSummary] = useState('')
+    // const [orphanFull, setOrphanFull] = useState('')
+    // const [wandererSummary, setWandererSummary] = useState('')
+    // const [wandererFull, setWandererFull] = useState('')
+    // const [warriorSummary, setWarriorSummary] = useState('')
+    // const [warriorFull, setWarriorFull] = useState('')
+    // const [martyrSummary, setMartyrSummary] = useState('')
+    // const [martyrFull, setMartyrFull] = useState('')
 
-    const onChangeFile = e => {
-        setFile(e.target.files[0]);
-    };
+    // const [longestWordCount, setLongestWordCount] = useState(0)
+
+    // const onChangeFile = e => {
+    //     setFile(e.target.files[0]);
+    // };
 
     const clean = (str) => {
         return str.replaceAll('\n', '\\n').replaceAll('"', '\\"')
@@ -27,11 +29,11 @@ const Admin = () => {
     // OpenAI has specific requirements for the format: https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
     const objToString = (arr) => {
         var strArr = arr.map(function (row) {
-            const wordCount = row['prompt'].split(' ').length + row['completion'].split(' ').length;
+            //const wordCount = row['prompt'].split(' ').length + row['completion'].split(' ').length;
 
-            if (wordCount > longestWordCount) {
-                setLongestWordCount(wordCount)
-            }
+            // if (wordCount > longestWordCount) {
+            //     setLongestWordCount(wordCount)
+            // }
 
             return '{"prompt":"' + clean(row['prompt']) + '", "completion":"' + clean(row['completion']) + '"}'
         })
@@ -39,24 +41,16 @@ const Admin = () => {
         return strArr.join('\n')
     }
 
-    const upload = () => {
-        const formData = new FormData()
-        formData.append('myFile', file)
+    const getFinetuningData = () => {
+        //const formData = new FormData()
+        //formData.append('myFile', file)
 
         fetch('/api/SGAdmin/CreateFinetuningDataset', {
-            method: 'POST',
-            body: formData
+            method: 'GET',
         })
             .then(response => response.json())
             .then(data => {
-                setOrphanSummary(objToString(data['orphanSummary']))
-                setOrphanFull(objToString(data['orphanFull']))
-                setWandererSummary(objToString(data['wandererSummary']))
-                setWandererFull(objToString(data['wandererFull']))
-                setWarriorSummary(objToString(data['warriorSummary']))
-                setWarriorFull(objToString(data['warriorFull']))
-                setMartyrSummary(objToString(data['martyrSummary']))
-                setMartyrFull(objToString(data['martyrFull']))
+                setFinetuningData(data)
             })
             .catch(error => {
                 console.error(error)
@@ -67,53 +61,18 @@ const Admin = () => {
         <div>
             <p>Admin page</p>
 
-            <input
-                type="file"
-                onChange={e => onChangeFile(e)}
-            />
-            <button onClick={upload}>Upload</button>
+            <button onClick={getFinetuningData}>Get Data</button>
 
-            <div className="form-group mt-4">
-                <label htmlFor="orphanSummary" className="fs-3">Orphan Summary</label>
-                <textarea className="form-control" id="orphanSummary" rows="3" defaultValue={orphanSummary}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="orphanFull" className="fs-3">Orphan Full</label>
-                <textarea className="form-control" id="orphanFull" rows="3" defaultValue={orphanFull}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="wandererSummary" className="fs-3">Wanderer Summary</label>
-                <textarea className="form-control" id="wandererSummary" rows="3" defaultValue={wandererSummary}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="wandererFull" className="fs-3">Wanderer Full</label>
-                <textarea className="form-control" id="wandererFull" rows="3" defaultValue={wandererFull}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="warriorSummary" className="fs-3">Warrior Summary</label>
-                <textarea className="form-control" id="warriorSummary" rows="3" defaultValue={warriorSummary}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="warriorFull" className="fs-3">Warrior Full</label>
-                <textarea className="form-control" id="warriorFull" rows="3" defaultValue={warriorFull}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="martyrSummary" className="fs-3">Martyr Summary</label>
-                <textarea className="form-control" id="martyrSummary" rows="3" defaultValue={martyrSummary}></textarea>
-            </div>
-
-            <div className="form-group mt-4">
-                <label htmlFor="martyrFull" className="fs-3">Martyr Full</label>
-                <textarea className="form-control" id="martyrFull" rows="3" defaultValue={martyrFull}></textarea>
-                <p><strong>Longest row word count: {longestWordCount}</strong></p>
-            </div>
-
+            {
+                finetuningData && Object.keys(finetuningData).map((sequenceName) => (
+                    <>
+                        <div key={sequenceName} className="form-group mt-4">
+                            <label htmlFor={sequenceName + '_textarea'} className="fs-3">{sequenceName}</label>
+                            <textarea className="form-control" id={sequenceName + '_textarea'} rows="3" defaultValue={objToString(finetuningData[sequenceName])}></textarea>
+                        </div>
+                    </>
+                ))
+            }
 
             <Link to="/">Back to Home</Link>
         </div>

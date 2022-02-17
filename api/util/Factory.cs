@@ -208,67 +208,75 @@ public static class Factory
         };
     }
 
-    private static string getCharacterStage(string completionType)
+    // private static string getCharacterStage(string sequenceName)
+    // {
+    //     return sequenceName switch
+    //     {
+    //         "orphanSummary" => "orphan",
+    //         "orphanFull" => "orphan",
+    //         "wandererSummary" => "wanderer",
+    //         "wandererFull" => "wanderer",
+    //         "warriorSummary" => "warrior",
+    //         "warriorFull" => "warrior",
+    //         "martyrSummary" => "martyr",
+    //         "martyrFull" => "martyr",
+    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(sequenceName)),
+    //     };
+    // }
+
+    /// <summary>Given a <c>Story</c>, will return the prompt for the given <c>sequenceName</c></summary>
+    public static string GetPrompt(string sequenceName, Plot plot)
     {
-        return completionType switch
-        {
-            "orphanSummary" => "orphan",
-            "orphanFull" => "orphan",
-            "wandererSummary" => "wanderer",
-            "wandererFull" => "wanderer",
-            "warriorSummary" => "warrior",
-            "warriorFull" => "warrior",
-            "martyrSummary" => "martyr",
-            "martyrFull" => "martyr",
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
-        };
-    }
+        // get LogLine objects
+        var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
+        var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
+        var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
+        var primalStakes = Factory.GetPrimalStake(plot.PrimalStakes);
+        var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
+        var genre = Factory.GetGenre(plot.Genre);
 
-    /// <summary>Given a <c>Story</c>, based off of the <c>CompletionType</c> property, will return the entire prompt for the given CompletionType</summary>
-    public static string GetPrompt(Plot req)
-    {
-        var completionType = "TODO? With new sequence structure...";
+        var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+        var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(plot.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+        var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
-        var characterStage = getCharacterStage(completionType);
-
-        var problemTemplate = Factory.GetProblemTemplate(req.ProblemTemplate);
-        var heroArchetype = Factory.GetArchetype(req.HeroArchetype);
-        var enemyArchetype = Factory.GetArchetype(req.EnemyArchetype);
-        var primalStakes = Factory.GetPrimalStake(req.PrimalStakes);
-        var dramaticQuestion = Factory.GetDramaticQuestion(req.DramaticQuestion);
-        var genre = Factory.GetGenre(req.Genre);
-
-        var genreContribution = genre.GetLogLineContribution(req.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(req.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
-        var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(req.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(req.Seed, completionType, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
-
-        var keywordsContribution = getKeywordsSentence(req.Keywords);
-
-        var primalStakesCharacterStageContribution = primalStakes.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
-        var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+        var keywordsContribution = getKeywordsSentence(plot.Keywords);
 
         var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
 
-        if (completionType != "orphanSummary")
-        {
-            var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(completionType, req);
+        consolidatedContributions += "\n\n";
 
-            consolidatedContributions += previousEvents;
+        if (sequenceName != "Opening Image")
+        {
+            // given the sequenceName, append all previous sequence texts with appropriate prefixes
+            consolidatedContributions += GetPreviousSequences(sequenceName, plot);
+            consolidatedContributions += "\n\n";
         }
 
-        consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
-        consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
+        consolidatedContributions += sequenceName.ToUpper() + ":";
 
-        consolidatedContributions += "\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
+        // var primalStakesCharacterStageContribution = primalStakes.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
+        // var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+        // var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+
+        // if (completionType != "orphanSummary")
+        // {
+        //     var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(completionType, req);
+
+        //     consolidatedContributions += previousEvents;
+        // }
+
+        //consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
+        //consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
+
+        consolidatedContributions += CreateFinetuningDataset.StopSequence; //"\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
         return consolidatedContributions;
     }
 
     private static string getKeywordsSentence(List<string> keywords)
     {
-        var prefix = "The story focuses on the following concepts:";
+        var prefix = "The story involves the following key concepts:";
 
         if (keywords == null || keywords.Count == 0)
         {
@@ -295,40 +303,36 @@ public static class Factory
         return joinedList;
     }
 
-    private static string getPreviousEvents(string completionType, Plot req)
+    public static string GetPreviousSequences(string curSequenceName, Plot plot)
     {
-        //var summaryPrefix = "SUMMARY: ";
+        var curSeqIndex = plot.Sequences.Select(seq => seq.SequenceName).ToList().IndexOf(curSequenceName);
+        var allPrevSequences = plot.Sequences.Take(curSeqIndex).ToList();
+        var prevSeqTexts = "";
 
-        // return completionType switch
-        // {
-        //     "orphanSummary" => "",
-        //     "orphanFull" => summaryPrefix + req.OrphanSummary,
-        //     "wandererSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull,
-        //     "wandererFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary,
-        //     "warriorSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull,
-        //     "warriorFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary,
-        //     "martyrSummary" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + summaryPrefix + req.WarriorSummary + "\n\n" + req.WarriorFull,
-        //     "martyrFull" => summaryPrefix + req.OrphanSummary + "\n\n" + req.OrphanFull + "\n\n" + summaryPrefix + req.WandererSummary + "\n\n" + req.WandererFull + "\n\n" + req.WarriorSummary + "\n\n" + req.WarriorFull + "\n\n" + summaryPrefix + req.MartyrSummary,
-        //     _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(req.CompletionType)),
-        // };
-
-        return "TODO!";
-    }
-
-    private static string getRequestToAI(string completionType, Plot req)
-    {
-        return completionType switch
+        foreach (var prevSeq in allPrevSequences)
         {
-            "orphanSummary" => "Write a concise single paragraph summarizing the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
-            "orphanFull" => "Based on the previous summary, write a more detailed list of story beats of the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
-            "wandererSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
-            "wandererFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
-            "warriorSummary" => "Based on the previous events, write a concise single paragraph summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
-            "warriorFull" => "Based on the previous events, write a more detailed list of story beats summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
-            "martyrSummary" => "Based on the previous events, write a concise single paragraph summarizing a fortuitous revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
-            "martyrFull" => "Based on the previous events, write a more detailed list of story beats summarizing a fortuitous revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
-        };
+            prevSeqTexts += prevSeq.SequenceName.ToUpper() + ":\n\n" + prevSeq.Text + "\n\n";
+        }
+
+        prevSeqTexts = prevSeqTexts.Trim();
+
+        return prevSeqTexts;
     }
+
+    // private static string getRequestToAI(string completionType, Plot req)
+    // {
+    //     return completionType switch
+    //     {
+    //         "orphanSummary" => "Write a concise single paragraph summarizing the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
+    //         "orphanFull" => "Based on the previous summary, write a more detailed list of story beats of the status quo behaviors of the main character before they are fully confronted with the problem, and their debate about how to tackle the problem now that their life has been plunged into chaos:",
+    //         "wandererSummary" => "Based on the previous events, write a concise single paragraph summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
+    //         "wandererFull" => "Based on the previous events, write a more detailed list of story beats summarizing how the main character's life is complicated by the problem, and how they are unsure how to procede, but still manage to win a minor victory against the problem:",
+    //         "warriorSummary" => "Based on the previous events, write a concise single paragraph summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
+    //         "warriorFull" => "Based on the previous events, write a more detailed list of story beats summarizing a negative twist that turns the main character's partial victory against the problem into a hollow one. Write about a crushing defeat that makes the main character nearly give up:",
+    //         "martyrSummary" => "Based on the previous events, write a concise single paragraph summarizing a fortuitous revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
+    //         "martyrFull" => "Based on the previous events, write a more detailed list of story beats summarizing a fortuitous revelation (preferably related in some way to the earlier false victory) that inspires the main character to dig down deep and effectively tackle the problem:",
+    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
+    //     };
+    // }
 
 }

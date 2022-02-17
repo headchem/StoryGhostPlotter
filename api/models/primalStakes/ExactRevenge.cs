@@ -25,20 +25,12 @@ public class ExactRevenge : IPrimalStakes
         {
             return new AdviceSequence
             {
+                IncitingIncident = "The main character starts off trusting, but one of the other characters betrays them.",
+                Debate = "The main character reels from the betrayal.",
+                FunAndGames = "The main character formulates a plan to get revenge.",
+                AllHopeIsLost = "The main character's plan for revenge looks like it will fail.",
+                Climax = "Using lessons the main character learned throughout this ordeal, they successfully get their revenge."
             };
         }
     }
-
-    public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IDramaticQuestion dramaticQuestion)
-    {
-        return characterStage switch
-        {
-            "orphan" => "The main character starts off trusting, but one of the other characters betrays them.",
-            "wanderer" => "The main character reels from the betrayal, and formulates a plan to get revenge.",
-            "warrior" => "The main character's plan for revenage looks like it will fail.",
-            "martyr" => "Using lessons the main character learned throughout this ordeal, they successfully get their revenge.",
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(characterStage)),
-        };
-    }
-
 }

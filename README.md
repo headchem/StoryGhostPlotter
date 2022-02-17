@@ -39,9 +39,9 @@ git pull
 
 FINETUNING
 
- * Go to Google Sheets, save file as Excel
- * Go to Admin page, upload Excel file
- * For all 8 textareas, copy and paste into Notepad++ and save as <completionType>.jsonl
+ * Go to Admin page, click the button
+ * For each textarea, copy and paste into Notepad++ and save as <sequenceName>.jsonl
+ * Open GIT BASH
  * export OPENAI_API_KEY="get the key from the OpenAI portal"
  * Run this tool as a sanity check on data formatting
  ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"

@@ -141,15 +141,14 @@ const Sequence = ({
         deleteSequence(sequence.sequenceName)
     }
 
-    const fetchCompletion = async (completionType) => {
-        fetchWithTimeout('/api/Sequence/Generate', {
+    const fetchCompletion = async (sequenceName) => {
+        fetchWithTimeout('/api/Sequence/Generate?sequenceName=' + sequenceName, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'completionType': completionType,
                 'seed': 123,
                 'genre': genre,
                 'problemTemplate': problemTemplate,
@@ -158,7 +157,6 @@ const Sequence = ({
                 'enemyArchetype': enemyArchetype,
                 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
-
                 'sequences': sequences
             })
         }).then(function (response) {
@@ -183,7 +181,7 @@ const Sequence = ({
 
     const fetchAdvice = async (completionType) => {
 
-        console.log('GET ADVICE')
+        //console.log('GET ADVICE')
 
         fetch('/api/Sequence/Advice?sequenceName=' + sequence.sequenceName, {
             method: 'POST',
@@ -310,6 +308,18 @@ const Sequence = ({
         </>
     );
 
+    // return true is any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
+    const brainstormDisabled = () => {
+        const existingSequenceNamesArr = sequences.map((seq) => seq.sequenceName)
+        const curSeqIndex = existingSequenceNamesArr.indexOf(sequence.sequenceName)
+        const prevSeqsArr = sequences.slice(0, curSeqIndex) // +1 to include self
+        const prevTexts = prevSeqsArr.map((seq) => seq.text)
+
+        const isBlank = (str) => (!str || str.trim().length === 0);
+
+        return prevTexts.some(isBlank)
+    }
+
     return (
         <>
             <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
@@ -338,7 +348,7 @@ const Sequence = ({
 
                             <Accordion defaultActiveKey={['1']} alwaysOpen>
                                 <Accordion.Item eventKey="0">
-                                    <Accordion.Header>Generate with AI</Accordion.Header>
+                                    <Accordion.Header>Brainstorm with AI</Accordion.Header>
                                     <Accordion.Body>
                                         {
                                             <div className='row'>
@@ -350,17 +360,24 @@ const Sequence = ({
                                                             <p>{sequence.aiText}</p>
                                                         }
 
-                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
-                                                            {
-                                                                isCompletionLoading === true &&
-                                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                                                            }
-                                                            {
-                                                                isCompletionLoading === false &&
-                                                                <FaGhost />
-                                                            }
-                                                            <span> Brainstorm with AI</span>
-                                                        </button>
+                                                        {
+                                                            brainstormDisabled() === true &&
+                                                            <p>Complete all previous texts to use the brainstorm feature.</p>
+                                                        }
+                                                        {
+                                                            brainstormDisabled() === false &&
+                                                            <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
+                                                                {
+                                                                    isCompletionLoading === true &&
+                                                                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                                                }
+                                                                {
+                                                                    isCompletionLoading === false &&
+                                                                    <FaGhost />
+                                                                }
+                                                                <span> Brainstorm with AI</span>
+                                                            </button>
+                                                        }
                                                     </>
                                                 }
                                                 {
@@ -395,7 +412,7 @@ const Sequence = ({
                     }
                 </div>
             </div>
-            <div className='row pb-3'>
+            <div className='row pb-3 pt-3'>
                 <AddSequenceButtons />
             </div>
         </>

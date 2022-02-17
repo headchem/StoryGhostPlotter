@@ -36,7 +36,7 @@ const PlotHome = (
     }
 
     const populatePlot = (data) => {
-        console.log('POPULATE PLOT');
+        //console.log('POPULATE PLOT');
         setTitle(data['title'])
         setGenre(data['genre'])
         setProblemTemplate(data['problemTemplate'])
@@ -80,7 +80,7 @@ const PlotHome = (
         // eslint-disable-next-line no-unused-vars
         let isSubscribed = true;
 
-        console.log('INIT LOAD')
+        //console.log('INIT LOAD')
 
         setPlotLoading(true)
 
@@ -241,8 +241,7 @@ const PlotHome = (
             const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex + 1) // +1 to include self
             const prevSeqs = new Set(prevSeqsArr)
 
-            console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
-
+            //console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
 
             // for each allowed Seq, check if that seq's prereq exists in prevSeqs
             allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
@@ -270,7 +269,7 @@ const PlotHome = (
             let newSequences = [...sequences]
             newSequences.splice(curSequenceIndex + 1, 0, newSequence);
             //console.log('insert new seq:')
-            console.log(newSequences)
+            //console.log(newSequences)
 
             setSequences(
                 newSequences
@@ -377,7 +376,7 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
 
-        console.log('LOG LINE UPDATE')
+        //console.log('LOG LINE UPDATE')
 
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
@@ -409,7 +408,7 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            console.log('save and update tokens')
+            //console.log('save and update tokens')
             savePlot()
             updateTotalTokens()
         }, 2000) //ms timeout to execute this function if timeout will be not cleared

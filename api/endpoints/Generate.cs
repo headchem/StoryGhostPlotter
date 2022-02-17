@@ -41,7 +41,9 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
         }
 
-        var result = await _completionService.GetCompletion(plot);
+        var sequenceName = req.Query["sequenceName"][0];
+
+        var result = await _completionService.GetCompletion(sequenceName, plot);
 
 
         // TODO: log token usage by OpenAI to current user container
