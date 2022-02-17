@@ -9,7 +9,7 @@ const PlotView = (
     }
 ) => {
 
-    console.log(userInfo)
+    //console.log(userInfo)
 
     const [title, setTitle] = useState('')
     const [sequences, setSequences] = useState(null)

@@ -193,7 +193,7 @@ const PlotHome = (
                 allowedSequenceNames = ['Break Into Two', 'B Story', 'Theme Stated']
                 break;
             case 'B Story':
-                allowedSequenceNames = ['Theme Stated', 'Debate', 'Debate (Continued)', 'Setup', 'Setup (Continued)', 'Fun And Games', 'Break Into Two']
+                allowedSequenceNames = ['Theme Stated', 'Debate', 'Debate (Continued)', 'Setup', 'Setup (Continued)', 'Catalyst', 'Fun And Games', 'Break Into Two']
                 break;
             case 'Debate (Continued)':
                 allowedSequenceNames = ['Break Into Two']

@@ -17,8 +17,11 @@ namespace StoryGhost.Services;
 public class DummyCompletionService : ICompletionService
 {
 
+    private readonly HttpClient _httpClient;
+
     public DummyCompletionService(HttpClient httpClient)
     {
+        _httpClient = httpClient;
     }
 
     public async Task<GenerateResponse> GetCompletion(string sequenceName, Plot story)

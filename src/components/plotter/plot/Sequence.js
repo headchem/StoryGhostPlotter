@@ -34,8 +34,8 @@ const Sequence = ({
 
     const textLimits = {
         'Opening Image': {
-            'max': 300,
-            'rows': 3
+            'max': 400,
+            'rows': 4
         },
         'Setup': {
             'max': 500,
@@ -395,12 +395,12 @@ const Sequence = ({
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
                                         <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                                            <span title="common advice">{commonAdvice}</span>
-                                            <span title="genre advice">{genreAdvice}</span>
-                                            <span title="problem template advice">{problemTemplateAdvice}</span>
-                                            <span title="hero archetype advice">{heroArchetypeAdvice}</span>
-                                            <span title="enemy archetype advice">{enemyArchetypeAdvice}</span>
-                                            <span title="primal stakes advice">{primalStakesAdvice}</span>
+                                            <span title="common advice">{commonAdvice} </span>
+                                            <span title="genre advice">{genreAdvice} </span>
+                                            <span title="problem template advice">{problemTemplateAdvice} </span>
+                                            <span title="hero archetype advice">{heroArchetypeAdvice} </span>
+                                            <span title="enemy archetype advice">{enemyArchetypeAdvice} </span>
+                                            <span title="primal stakes advice">{primalStakesAdvice} </span>
                                             <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
                                         </p>
                                     </Accordion.Body>
