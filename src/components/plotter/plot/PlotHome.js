@@ -181,7 +181,7 @@ const PlotHome = (
                 allowedSequenceNames = ['Theme Stated', 'Catalyst']
                 break;
             case 'Theme Stated':
-                allowedSequenceNames = ['Setup', 'Setup (Continued)', 'B Story', 'Catalyst', 'Debate (Continued)']
+                allowedSequenceNames = ['Setup', 'Setup (Continued)', 'B Story', 'Catalyst', 'Debate', 'Debate (Continued)', 'Break Into Two']
                 break;
             case 'Setup (Continued)':
                 allowedSequenceNames = ['Catalyst', 'Debate']

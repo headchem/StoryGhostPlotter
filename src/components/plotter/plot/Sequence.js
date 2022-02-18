@@ -42,8 +42,8 @@ const Sequence = ({
             'rows': 9
         },
         'Theme Stated': {
-            'max': 400,
-            'rows': 5
+            'max': 500,
+            'rows': 6
         },
         'Setup (Continued)': {
             'max': 500,
@@ -66,8 +66,8 @@ const Sequence = ({
             'rows': 5
         },
         'Break Into Two': {
-            'max': 500,
-            'rows': 7
+            'max': 650,
+            'rows': 8
         },
         'Fun And Games': {
             'max': 1700,
