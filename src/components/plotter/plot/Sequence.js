@@ -38,8 +38,8 @@ const Sequence = ({
             'rows': 4
         },
         'Setup': {
-            'max': 800,
-            'rows': 8
+            'max': 900,
+            'rows': 9
         },
         'Theme Stated': {
             'max': 400,
