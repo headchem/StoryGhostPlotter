@@ -38,11 +38,11 @@ const Sequence = ({
             'rows': 4
         },
         'Setup': {
-            'max': 500,
-            'rows': 7
+            'max': 800,
+            'rows': 8
         },
         'Theme Stated': {
-            'max': 300,
+            'max': 400,
             'rows': 5
         },
         'Setup (Continued)': {
@@ -78,7 +78,7 @@ const Sequence = ({
             'rows': 2
         },
         'Midpoint': {
-            'max': 400,
+            'max': 500,
             'rows': 6
         },
         'Bad Guys Close In': {
