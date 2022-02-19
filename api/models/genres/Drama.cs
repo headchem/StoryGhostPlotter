@@ -25,6 +25,9 @@ public class Drama : IGenre
         {
             return new AdviceSequence
             {
+                OpeningImage = "Tension is in the air.",
+                IncitingIncident = "An intensely stressful situation arises for the main character.",
+                Midpoint = "The main character overcomes some adversity for a brief reprieve from the stresses in their life."
             };
         }
     }

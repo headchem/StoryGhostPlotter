@@ -25,7 +25,7 @@ public class Whydunnit : IProblemTemplate
         {
             return new AdviceSequence
             {
-                IncitingIncident = "An unknown and unseen Enemy commits a crime.",
+                IncitingIncident = "An suspicious entity plans or commits a crime.",
                 Debate = "Due to personal reasons, the Hero is reluctant to dedicate themselves to investigating.",
                 BreakIntoTwo = "The Hero can't shake the obsession of needing to know why the crime was committed.",
                 Midpoint = "The Hero thinks they have found who committed the crime.",

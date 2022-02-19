@@ -8,7 +8,7 @@ namespace StoryGhost.Models.Sequences;
 public class FunAndGames : ISequence
 {
     public string Name { get { return "Fun And Games"; } }
-    public string Description { get { return "The Hero proactively attempts to resolve the problem while exploring this new upside-down world. Focus on the subplot (typically the love interest) and heavily infuse the Dramatic Question into the dialogue and events. The Hero meets new characters who are the antithesis of everything they knew in their old status quo life. This is the fun part of the story."; } }
+    public string Description { get { return "The Hero proactively attempts to resolve the problem while exploring this new upside-down world. Focus on the B Story subplot (typically the love interest) and heavily infuse the Dramatic Question into the dialogue and events. The Hero meets new characters who are the antithesis of everything they knew in their old status quo life. This is the fun part of the story."; } }
 
     public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

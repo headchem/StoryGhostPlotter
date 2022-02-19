@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Enums;
+using StoryGhost.Util;
 
 namespace StoryGhost.Models.Archetypes;
 
@@ -11,8 +12,8 @@ public class Innocent : IArchetype
     public string Name { get { return "Innocent"; } }
     public string Description { get { return "The Innocent is optimistic and trusting that the future is bright, endearing them to others. They have a child-like spontaneity to start any journey. Prone to naiveté, they are blind to their own weaknesses, and become dependent on others to accomplish their goals. They fear abandonment and seek safety."; } }
     public string SourceOfMotivation { get { return SourceOfMotivationEnum.Themselves; } }
-    public string OrphanDesires { get { return "Be happy, remain in safety, get to paradise."; } }
-    public string WandererResponse { get { return "Deny it or seek rescue."; } }
+    public string OrphanDesires { get { return "Be happy, remain in safety, reach their personal metaphorical paradise."; } }
+    public string WandererResponse { get { return "Deny the problem or seek rescue."; } }
     public string WarriorResponse { get { return "Do things right, loyally endangers self, discernment."; } }
     public List<string> GreatestFears
     {
@@ -65,18 +66,29 @@ public class Innocent : IArchetype
 
 
 
-    public AdviceSequence HeroAdviceSequence {
-        get {
-            return new AdviceSequence{
-                
+    public AdviceSequence HeroAdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = $"The main character wants to {OrphanDesires.ToLower()} Show their talents of {Factory.GetKeywordsSentence("", Talents)}",
+                Debate = $"The main character wants to {WandererResponse.ToLower()}",
+                FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
+                BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
+                AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}."
             };
         }
     }
 
-    public AdviceSequence EnemyAdviceSequence {
-        get {
-            return new AdviceSequence{
-                
+    public AdviceSequence EnemyAdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+
             };
         }
     }

@@ -8,7 +8,7 @@ namespace StoryGhost.Models.Sequences;
 public class ThemeStated : ISequence
 {
     public string Name { get { return "Theme Stated"; } }
-    public string Description { get { return "Subtly pose the Dramatic Question. They Hero doesn't have the experience or context yet to understand it."; } }
+    public string Description { get { return ""; } } // this is covered by the Dramatic Question description
 
     public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

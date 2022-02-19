@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Enums;
+using StoryGhost.Util;
 
 namespace StoryGhost.Models.Archetypes;
 
@@ -64,16 +65,28 @@ public class Caregiver : IArchetype
     public string Motto { get { return "Love your neighbour as yourself"; } }
 
 
-    public AdviceSequence HeroAdviceSequence {
-        get {
-            return new AdviceSequence{
+    public AdviceSequence HeroAdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
+                Setup = $"The main character wants to {OrphanDesires.ToLower()} Show their talents of {Factory.GetKeywordsSentence("", Talents)}",
+                Debate = $"The main character wants to {WandererResponse.ToLower()}",
+                FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
+                BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
+                AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}."
             };
         }
     }
 
-    public AdviceSequence EnemyAdviceSequence {
-        get {
-            return new AdviceSequence{
+    public AdviceSequence EnemyAdviceSequence
+    {
+        get
+        {
+            return new AdviceSequence
+            {
             };
         }
     }

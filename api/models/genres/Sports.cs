@@ -25,6 +25,9 @@ public class Sports : IGenre
         {
             return new AdviceSequence
             {
+                OpeningImage = "Briefly show a physical or symbolic element that demonstrates this story focuses on a specific sport.",
+                Setup = "Show the sports setting in action, and how it permeates the everyday lives of the characters.",
+                FunAndGames = "Celebrate the sport by showing its highs and lows. Show the sport from multiple perspectives: the players, the fans, and the business side."
             };
         }
     }

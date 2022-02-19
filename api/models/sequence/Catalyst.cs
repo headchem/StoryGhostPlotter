@@ -8,7 +8,7 @@ namespace StoryGhost.Models.Sequences;
 public class Catalyst : ISequence
 {
     public string Name { get { return "Catalyst"; } }
-    public string Description { get { return "Introduce the Problem through an Inciting Incident that irreversibly shatters the Hero's status quo. The Hero considers it an intensely negative event, but it's secretly what they need to grow."; } }
+    public string Description { get { return "Introduce the Problem through an Inciting Incident that irreversibly shatters the Hero's status quo. The Hero isn't sure what to make of it, but it is ultimately what they need to grow."; } }
 
     public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
     {

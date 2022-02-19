@@ -240,9 +240,9 @@ public static class Factory
         var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
         var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
 
-        var keywordsContribution = getKeywordsSentence(plot.Keywords);
+        var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
 
-        var consolidatedContributions = $"{genreContribution} {keywordsContribution} {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
+        var consolidatedContributions = $"{genreContribution} {keywordsContribution}. {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
 
         consolidatedContributions += "\n\n";
 
@@ -274,21 +274,19 @@ public static class Factory
         return consolidatedContributions;
     }
 
-    private static string getKeywordsSentence(List<string> keywords)
+    public static string GetKeywordsSentence(string prefix, List<string> keywords)
     {
-        var prefix = "The story involves the following key concepts:";
-
         if (keywords == null || keywords.Count == 0)
         {
             return "";
         }
         else if (keywords.Count == 1)
         {
-            return $"{prefix} {keywords[0]}.";
+            return $"{prefix} {keywords[0]}".Trim();
         }
         else if (keywords.Count == 2)
         {
-            return $"{prefix} {keywords[0]} and {keywords[1]}.";
+            return $"{prefix} {keywords[0]} and {keywords[1]}".Trim();
         }
 
         var joinedList = $"{prefix} ";
@@ -298,9 +296,9 @@ public static class Factory
             joinedList += $"{keywords[i]}, ";
         }
 
-        joinedList += $"and {keywords[keywords.Count - 1]}.";
+        joinedList += $"and {keywords[keywords.Count - 1]}";
 
-        return joinedList;
+        return joinedList.Trim();
     }
 
     public static string GetPreviousSequences(string curSequenceName, Plot plot)

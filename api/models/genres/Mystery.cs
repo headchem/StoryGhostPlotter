@@ -25,6 +25,11 @@ public class Mystery : IGenre
         {
             return new AdviceSequence
             {
+                OpeningImage = "An air of intrigue fills the scene.",
+                IncitingIncident = "A mysterious event leaves the main character wanting answers.",
+                BStory = "The main character is obsessed with the mystery, even at the expense of other aspects of their life and relationships.",
+                DarkNightOfTheSoul = "The main character appears to be locked out from ever solving the mystery.",
+                Cooldown = "More mysteries await the main character."
             };
         }
     }
