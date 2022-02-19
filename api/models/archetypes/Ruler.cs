@@ -77,7 +77,7 @@ public class Ruler : IArchetype
                 FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
                 BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
                 AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
-                DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}."
+                DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
             };
         }
     }
