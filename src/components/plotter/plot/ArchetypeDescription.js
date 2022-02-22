@@ -1,31 +1,48 @@
+import React, { useEffect, useState } from 'react'
+import Spinner from 'react-bootstrap/Spinner';
 
+const ArchetypeDescription = ({ archetype }) => {
 
-const ArchetypeDescription = ({ archetypeDescObj }) => {
+    const [archetypeDescObj, setArchetypeDescObj] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
-    const examplesList = archetypeDescObj.examples.map((example) =>
-        <li key={example}>{example}</li>
-    );
+    useEffect(() => {
+        fetchArchetype()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [archetype]);
 
-    const talentsList = archetypeDescObj.talents.map((talent) =>
-        <li key={talent}>{talent}</li>
-    );
+    const fetchArchetype = async () => {
+        if (!archetype) return;
 
-    const weaknessesList = archetypeDescObj.weaknesses.map((weakness) =>
-        <li key={weakness}>{weakness}</li>
-    );
+        setIsLoading(true)
 
-    const addictionsList = archetypeDescObj.addictions.map((addiction) =>
-        <li key={addiction}>{addiction}</li>
-    );
+        //console.log('GET ADVICE')
 
-    const greatestFearsList = archetypeDescObj.greatestFears.map((fear) =>
-        <li key={fear}>{fear}</li>
-    );
+        const url = '/api/LogLine/ArchetypeDescription?archetype=' + archetype
+
+        fetch(url)
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            }).then(function (data) {
+                setArchetypeDescObj(data)
+            }).catch(function (error) {
+                console.warn(error);
+            }).finally(function () {
+                setIsLoading(false)
+            });
+    }
 
     return (
         <div>
             {
-                archetypeDescObj &&
+                isLoading === true &&
+                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+            }
+            {
+                isLoading === false && archetypeDescObj &&
                 <>
                     <h2>{archetypeDescObj.name}</h2>
                     <p title="archetype motto"><em>"{archetypeDescObj.motto}"</em></p>
@@ -36,7 +53,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                         <figcaption>Examples</figcaption>
                         <ul>
                             {
-                                examplesList
+                                archetypeDescObj.examples.map((example) =>
+                                    <li key={example}>{example}</li>
+                                )
                             }
                         </ul>
                     </figure>
@@ -45,7 +64,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                         <figcaption>Talents</figcaption>
                         <ul>
                             {
-                                talentsList
+                                archetypeDescObj.talents.map((talent) =>
+                                    <li key={talent}>{talent}</li>
+                                )
                             }
                         </ul>
                     </figure>
@@ -54,7 +75,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                         <figcaption>Weaknesses</figcaption>
                         <ul>
                             {
-                                weaknessesList
+                                archetypeDescObj.weaknesses.map((weakness) =>
+                                    <li key={weakness}>{weakness}</li>
+                                )
                             }
                         </ul>
                     </figure>
@@ -63,7 +86,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                         <figcaption>Greatest fears</figcaption>
                         <ul>
                             {
-                                greatestFearsList
+                                archetypeDescObj.greatestFears.map((fear) =>
+                                    <li key={fear}>{fear}</li>
+                                )
                             }
                         </ul>
                     </figure>
@@ -73,7 +98,9 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                         <figcaption>Addictions</figcaption>
                         <ul>
                             {
-                                addictionsList
+                                archetypeDescObj.addictions.map((addiction) =>
+                                    <li key={addiction}>{addiction}</li>
+                                )
                             }
                         </ul>
                     </figure>
@@ -82,7 +109,7 @@ const ArchetypeDescription = ({ archetypeDescObj }) => {
                     <p><strong>Mature (successful) response to problem: </strong>{archetypeDescObj.warriorResponse}</p>
                 </>
             }
-        </div>
+        </div >
     )
 }
 

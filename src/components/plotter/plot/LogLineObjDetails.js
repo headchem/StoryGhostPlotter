@@ -1,7 +1,6 @@
 import Spinner from 'react-bootstrap/Spinner';
 import GenreDescription from './GenreDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
-//import ArchetypeDescription from './ArchetypeDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 
 const LogLineObjDetails = (

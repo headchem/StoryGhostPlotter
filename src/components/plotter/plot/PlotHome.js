@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { v4 as uuid } from 'uuid';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
@@ -7,8 +8,9 @@ import { useUniqueId } from '../../../util/GenerateUniqueId'
 
 import LogLineSelect from './LogLineSelect'
 import LogLineObjDetails from './LogLineObjDetails'
-import Sequence from './Sequence'
-import Character from './Character'
+
+import SequenceList from './SequenceList'
+import CharacterList from './CharacterList'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
 const PlotHome = (
@@ -56,8 +58,8 @@ const PlotHome = (
         // set default protagonist if arr is blank
         if (!data['characters'] || data['characters'].length === 0) {
             data['characters'] = [{
+                id: uuid(),
                 name: '',
-                alignment: 'Protagonist',
                 archetype: '',
                 description: ''
             }]
@@ -162,148 +164,41 @@ const PlotHome = (
         )
     }
 
-    const updateCharacterName = (alignment, newCharacterName) => {
+    const updateCharacterName = (id, newCharacterName) => {
         setCharacters(
             characters.map(
-                (character) => character.alignment === alignment ? { ...character, name: newCharacterName } : character
+                (character) => character.id === id ? { ...character, name: newCharacterName } : character
             )
         )
     }
 
-    const updateCharacterDescription = (characterName, description) => {
+    const updateCharacterDescription = (id, description) => {
         setCharacters(
             characters.map(
-                (character) => character.name === characterName ? { ...character, description: description } : character
+                (character) => character.id === id ? { ...character, description: description } : character
             )
         )
     }
 
-    const updateAICharacterDescription = (characterName, description) => {
+    const updateAICharacterDescription = (id, description) => {
         setCharacters(
             characters.map(
-                (character) => character.name === characterName ? { ...character, aiText: description } : character
+                (character) => character.id === id ? { ...character, aiText: description } : character
             )
         )
     }
 
-    const updateCharacterArchetype = (characterName, archetype) => {
+    const updateCharacterArchetype = (id, archetype) => {
         setCharacters(
             characters.map(
-                (character) => character.name === characterName ? { ...character, archetype: archetype } : character
+                (character) => character.id === id ? { ...character, archetype: archetype } : character
             )
         )
     }
 
-    
 
-    // only allow creating a new Sequence of the key if the value has already occurred in the list of sequences prior to the current key
-    const seqTemporalDeps = {
-        'Opening Image': [],
-        'Setup': 'Opening Image',
-        'Theme Stated': 'Opening Image',
-        'Setup (Continued)': 'Setup',
-        'Catalyst': 'Setup',
-        'Debate': 'Catalyst',
-        'B Story': 'Setup',
-        'Debate (Continued)': 'Debate',
-        'Break Into Two': 'Debate',
-        'Fun And Games': 'Debate',
-        'First Pinch Point': 'Fun And Games',
-        'Midpoint': 'Fun And Games',
-        'Bad Guys Close In': 'Midpoint',
-        'Second Pinch Point': 'Bad Guys Close In',
-        'All Hope Is Lost': 'Bad Guys Close In',
-        'Dark Night Of The Soul': 'All Hope Is Lost',
-        'Break Into Three': 'Dark Night Of The Soul',
-        'Climax': 'Break Into Three',
-        'Cooldown': 'Climax',
-    }
 
-    // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
-    const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
-        const existingSequenceNamesArr = existingSequences.map((seq) => seq.sequenceName)
-        const existingSequenceNames = new Set(existingSequenceNamesArr)
-        let allowedSequenceNames = []
 
-        switch (curSequenceName) {
-            case 'Opening Image':
-                allowedSequenceNames = ['Setup', 'Theme Stated']
-                break;
-            case 'Setup':
-                allowedSequenceNames = ['Theme Stated', 'Catalyst']
-                break;
-            case 'Theme Stated':
-                allowedSequenceNames = ['Setup', 'Setup (Continued)', 'B Story', 'Catalyst', 'Debate', 'Debate (Continued)', 'Break Into Two']
-                break;
-            case 'Setup (Continued)':
-                allowedSequenceNames = ['Catalyst', 'Debate']
-                break;
-            case 'Catalyst':
-                allowedSequenceNames = ['B Story', 'Debate', 'Theme Stated']
-                break;
-            case 'Debate':
-                allowedSequenceNames = ['Break Into Two', 'B Story', 'Theme Stated']
-                break;
-            case 'B Story':
-                allowedSequenceNames = ['Theme Stated', 'Debate', 'Debate (Continued)', 'Setup', 'Setup (Continued)', 'Catalyst', 'Fun And Games', 'Break Into Two']
-                break;
-            case 'Debate (Continued)':
-                allowedSequenceNames = ['Break Into Two']
-                break;
-            case 'Break Into Two':
-                allowedSequenceNames = ['Fun And Games', 'B Story']
-                break;
-            case 'Fun And Games':
-                allowedSequenceNames = ['Midpoint', 'First Pinch Point']
-                break;
-            case 'First Pinch Point':
-                allowedSequenceNames = ['Midpoint']
-                break;
-            case 'Midpoint':
-                allowedSequenceNames = ['Bad Guys Close In']
-                break;
-            case 'Bad Guys Close In':
-                allowedSequenceNames = ['All Hope Is Lost', 'Second Pinch Point']
-                break;
-            case 'Second Pinch Point':
-                allowedSequenceNames = ['All Hope Is Lost']
-                break;
-            case 'All Hope Is Lost':
-                allowedSequenceNames = ['Dark Night Of The Soul']
-                break;
-            case 'Dark Night Of The Soul':
-                allowedSequenceNames = ['Break Into Three']
-                break;
-            case 'Break Into Three':
-                allowedSequenceNames = ['Climax']
-                break;
-            case 'Climax':
-                allowedSequenceNames = ['Cooldown']
-                break;
-            case 'Cooldown':
-                allowedSequenceNames = []
-                break;
-            default:
-                console.error('unhandled fallthrough case for allowed next sequences: "' + curSequenceName + '"');
-        }
-
-        if (curSequenceName !== 'Opening Image') {
-            // filter out entries if their requirements don't appear before the curSequenceName
-            const curSeqIndex = existingSequenceNamesArr.indexOf(curSequenceName)
-            const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex + 1) // +1 to include self
-            const prevSeqs = new Set(prevSeqsArr)
-
-            //console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
-
-            // for each allowed Seq, check if that seq's prereq exists in prevSeqs
-            allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
-        }
-
-        // remove any sequences that have already been used
-        allowedSequenceNames = allowedSequenceNames.filter(seqName => !existingSequenceNames.has(seqName))
-
-        return allowedSequenceNames;
-    }
 
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
     const insertSequence = (curSequenceName, newSequenceName) => {
@@ -342,20 +237,20 @@ const PlotHome = (
 
 
 
-    const insertCharacter = (alignment) => {
+    const insertCharacter = () => {
 
         const newCharacter = {
-            name: '', //getNewSequenceName(sequences),
-            description: '',
-            alignment: alignment
+            id: uuid(),
+            name: '',
+            description: ''
         }
 
         setCharacters([...characters, newCharacter]) // set characters to all the existing characters, plus add the new one
 
     }
 
-    const deleteCharacter = (curCharacterName) => {
-        const curCharacterIndex = characters.indexOf(characters.filter((character) => character.name === curCharacterName)[0])
+    const deleteCharacter = (id) => {
+        const curCharacterIndex = characters.indexOf(characters.filter((character) => character.id === id)[0])
 
         let newCharacters = [...characters]
         newCharacters.splice(curCharacterIndex, 1);
@@ -681,66 +576,38 @@ const PlotHome = (
                         <>
                             <Tabs defaultActiveKey="characters" id="uncontrolled-tab-example" className="mb-3">
                                 <Tab eventKey="characters" title="Characters">
-                                    {
-                                        characters && characters.length > 0 &&
-                                        <>
-                                            {
-                                                characters
-                                                    .map((character) => (
-                                                        <Character
-                                                            key={character.alignment}
-                                                            userInfo={userInfo}
-                                                            archetypeOptions={archetypeOptions}
-                                                            character={character}
-                                                            characters={characters}
-                                                            onFocusChange={() => onFocusChange('character')}
-                                                            updateCharacterName={updateCharacterName}
-                                                            updateCharacterArchetype={updateCharacterArchetype}
-                                                            updateCharacterDescription={updateCharacterDescription}
-                                                            updateAICharacterDescription={updateAICharacterDescription}
-
-                                                            insertCharacter={insertCharacter}
-                                                            deleteCharacter={deleteCharacter}
-
-                                                            //allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
-
-                                                            genre={genre}
-                                                            problemTemplate={problemTemplate}
-                                                            keywords={keywords}
-                                                            dramaticQuestion={dramaticQuestion}
-                                                        />
-                                                    ))
-                                            }
-                                        </>
-
-                                    }
+                                    <CharacterList
+                                        characters={characters}
+                                        userInfo={userInfo}
+                                        archetypeOptions={archetypeOptions}
+                                        onFocusChange={onFocusChange}
+                                        updateCharacterName={updateCharacterName}
+                                        updateCharacterArchetype={updateCharacterArchetype}
+                                        updateCharacterDescription={updateCharacterDescription}
+                                        updateAICharacterDescription={updateAICharacterDescription}
+                                        insertCharacter={insertCharacter}
+                                        deleteCharacter={deleteCharacter}
+                                        genre={genre}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        dramaticQuestion={dramaticQuestion}
+                                    />
                                 </Tab>
                                 <Tab eventKey="sequences" title="Sequence of Events">
-                                    {
-                                        sequences
-                                            .map((sequence) => (
-                                                <Sequence
-                                                    key={sequence.sequenceName}
-                                                    userInfo={userInfo}
-                                                    sequence={sequence}
-                                                    sequences={sequences}
-                                                    onFocusChange={() => onFocusChange('sequence')}
-                                                    updateSequenceText={updateSequenceText}
-                                                    updateAIText={updateAISequenceText}
-
-                                                    insertSequence={insertSequence}
-                                                    deleteSequence={deleteSequence}
-
-                                                    allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
-
-                                                    genre={genre}
-                                                    problemTemplate={problemTemplate}
-                                                    keywords={keywords}
-                                                    characters={characters}
-                                                    dramaticQuestion={dramaticQuestion}
-                                                />
-                                            ))
-                                    }
+                                    <SequenceList
+                                        sequences={sequences}
+                                        userInfo={userInfo}
+                                        onFocusChange={onFocusChange}
+                                        updateSequenceText={updateSequenceText}
+                                        updateAISequenceText={updateAISequenceText}
+                                        insertSequence={insertSequence}
+                                        deleteSequence={deleteSequence}
+                                        genre={genre}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        characters={characters}
+                                        dramaticQuestion={dramaticQuestion}
+                                    />
                                 </Tab>
                                 <Tab eventKey="contact" title="Contact" disabled>
                                     <p>disabled</p>

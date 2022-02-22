@@ -111,9 +111,9 @@ public class UserActions
                 IsPublic = false,
                 Characters = new List<Character>{
                     new Character{
+                        Id = Guid.NewGuid().ToString(),
                         Name = "",
                         Archetype = "",
-                        Alignment = "Protagonist",
                         Description = ""
                     }
                 }

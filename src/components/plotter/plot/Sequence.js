@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 //import Popover from 'react-bootstrap/Popover';
 import Accordion from 'react-bootstrap/Accordion';
 //import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Spinner from 'react-bootstrap/Spinner';
 //import { useSearchParams } from "react-router-dom";
-import { FaGhost, FaPlusCircle, FaMinusCircle } from 'react-icons/fa'
+import { FaGhost, FaMinusCircle } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
+import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
 
@@ -254,54 +255,14 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genre, problemTemplate, dramaticQuestion]);
 
-    const optionalSequences = ['Theme Stated', 'Setup (Continued)', 'Debate (Continued)', 'B Story', 'First Pinch Point', 'Second Pinch Point']
+    const NextSequencesButtonGroupMemo = useMemo(() => ( // useMemo prevents the buttons from flickering on keypress
+        <NextSequencesButtonGroup
+            allowed={allowed}
+            onInsertSequence={onInsertSequence}
+        />
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ), [allowed]);
 
-    const NextSequencesButtonGroup = () => (
-        <div className="btn-group btn-block" role="group" aria-label="choose next sequence">
-            {
-                allowed.map(function (nextAllowed) {
-                    return <button
-                        key={sequence.sequenceName + nextAllowed}
-                        type='button'
-                        className={optionalSequences.indexOf(nextAllowed) > -1 ? 'btn btn-outline-secondary' : 'btn btn-outline-primary'}
-                        onClick={() => onInsertSequence(nextAllowed)}
-                    ><FaPlusCircle /> {nextAllowed}</button>
-                })
-            }
-        </div>
-    );
-
-    // const popover = (
-    //     <Popover id="popover-basic">
-    //         <Popover.Body>
-
-
-
-    //         </Popover.Body>
-    //     </Popover>
-    // );
-
-    // const AddSequenceButtons = () => (
-    //     <>
-    //         {
-    //             allowed.length > 0 &&
-    //             <OverlayTrigger trigger="focus" placement="bottom" overlay={popover}>
-    //                 <button className='btn btn-lg btn-outline-success btn-block btn-no-border pb-3'>
-    //                     <FaPlusCircle />
-    //                 </button>
-    //             </OverlayTrigger>
-    //         }
-    //     </>
-    // );
-
-    const AddSequenceButtons = () => (
-        <>
-            {
-                allowed.length > 0 &&
-                <NextSequencesButtonGroup />
-            }
-        </>
-    );
 
     // return true is any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
     const brainstormDisabled = () => {
@@ -334,7 +295,6 @@ const Sequence = ({
                         curTokenCount={sequenceTokenCount}
                         showCount={true}
                     />
-
 
                 </div>
                 <div className='col-md-5'>
@@ -408,7 +368,9 @@ const Sequence = ({
                 </div>
             </div>
             <div className='row pb-3 pt-3'>
-                <AddSequenceButtons />
+                {
+                    NextSequencesButtonGroupMemo
+                }
             </div>
         </>
     )
