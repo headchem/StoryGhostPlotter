@@ -36,7 +36,7 @@ public class Romance : IGenre
         }
     }
 
-    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return $"This is an award winning romance story focusing on the romantic tension and courtship between two characters.";
     }

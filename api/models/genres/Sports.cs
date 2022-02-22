@@ -32,7 +32,7 @@ public class Sports : IGenre
         }
     }
 
-    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return $"This is an award winning sports story where the main character's struggles are set against a backdrop of a sport that dominates their life.";
     }

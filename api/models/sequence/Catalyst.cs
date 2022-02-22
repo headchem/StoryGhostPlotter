@@ -10,18 +10,11 @@ public class Catalyst : ISequence
     public string Name { get { return "Catalyst"; } }
     public string Description { get { return "Introduce the Problem through an Inciting Incident that irreversibly shatters the Hero's status quo. The Hero isn't sure what to make of it, but it is ultimately what they need to grow."; } }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
-    {
-        return $"{Name} advice goes here... {Description}";
-    }
-
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string enemyArchetype, string primalStakes, string dramaticQuestion)
+    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
         var genreObj = Factory.GetGenre(genre);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
-        var enemyArchetypeObj = Factory.GetArchetype(enemyArchetype);
-        var primalStakesObj = Factory.GetPrimalStake(primalStakes);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
 
         return new AdviceComponents
@@ -30,8 +23,6 @@ public class Catalyst : ISequence
             Genre = genreObj.AdviceSequence.IncitingIncident,
             ProblemTemplate = problemTemplateObj.AdviceSequence.IncitingIncident,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.IncitingIncident,
-            EnemyArchetype = enemyArchetypeObj.EnemyAdviceSequence.IncitingIncident,
-            PrimalStakes = primalStakesObj.AdviceSequence.IncitingIncident,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.IncitingIncident
         };
     }

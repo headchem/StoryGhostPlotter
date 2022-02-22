@@ -15,11 +15,11 @@ public class SequenceAdviceRequest
     [JsonPropertyName("heroArchetype")]
     public string HeroArchetype { get; set; }
 
-    [JsonPropertyName("enemyArchetype")]
-    public string EnemyArchetype { get; set; }
+    // [JsonPropertyName("enemyArchetype")]
+    // public string EnemyArchetype { get; set; }
 
-    [JsonPropertyName("primalStakes")]
-    public string PrimalStakes { get; set; }
+    // [JsonPropertyName("primalStakes")]
+    // public string PrimalStakes { get; set; }
 
     [JsonPropertyName("dramaticQuestion")]
     public string DramaticQuestion { get; set; }

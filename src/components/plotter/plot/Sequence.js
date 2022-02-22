@@ -17,9 +17,7 @@ const Sequence = ({
     genre,
     problemTemplate,
     keywords,
-    heroArchetype,
-    enemyArchetype,
-    primalStakes,
+    characters,
     dramaticQuestion,
 
     sequence,
@@ -115,9 +113,6 @@ const Sequence = ({
     const [commonAdvice, setCommonAdvice] = useState('')
     const [genreAdvice, setGenreAdvice] = useState('')
     const [problemTemplateAdvice, setProblemTemplateAdvice] = useState('')
-    const [heroArchetypeAdvice, setHeroArchetypeAdvice] = useState('')
-    const [enemyArchetypeAdvice, setEnemyArchetypeAdvice] = useState('')
-    const [primalStakesAdvice, setPrimalStakesAdvice] = useState('')
     const [dramaticQuestionAdvice, setDramaticQuestionAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
     const [sequenceTokenCount, setSequenceTokenCount] = useState(0)
@@ -129,7 +124,7 @@ const Sequence = ({
 
     const getAdvice = async () => {
         setIsAdviceLoading(true)
-        fetchAdvice(sequence.sequenceName)
+        fetchAdvice()
     }
 
     const onInsertSequence = (nextSequenceName) => {
@@ -153,11 +148,12 @@ const Sequence = ({
                 'genre': genre,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                'heroArchetype': heroArchetype,
-                'enemyArchetype': enemyArchetype,
-                'primalStakes': primalStakes,
+                // 'heroArchetype': heroArchetype,
+                // 'enemyArchetype': enemyArchetype,
+                // 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
-                'sequences': sequences
+                'sequences': sequences,
+                'characters': characters
             })
         }).then(function (response) {
             if (response.ok) {
@@ -179,7 +175,7 @@ const Sequence = ({
         setSequenceTokenCount(tokens.length)
     }
 
-    const fetchAdvice = async (completionType) => {
+    const fetchAdvice = async () => {
 
         //console.log('GET ADVICE')
 
@@ -189,13 +185,12 @@ const Sequence = ({
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'completionType': completionType,
                 'genre': genre,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                'heroArchetype': heroArchetype,
-                'enemyArchetype': enemyArchetype,
-                'primalStakes': primalStakes,
+                'heroArchetype': 'Orphan', // TODO: get this from 
+                // 'enemyArchetype': enemyArchetype,
+                // 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
                 'text': sequence.text
             })
@@ -208,9 +203,9 @@ const Sequence = ({
             setCommonAdvice(data['common'])
             setGenreAdvice(data['genre'])
             setProblemTemplateAdvice(data['problemTemplate'])
-            setHeroArchetypeAdvice(data['heroArchetype'])
-            setEnemyArchetypeAdvice(data['enemyArchetype'])
-            setPrimalStakesAdvice(data['primalStakes'])
+            // setHeroArchetypeAdvice(data['heroArchetype'])
+            // setEnemyArchetypeAdvice(data['enemyArchetype'])
+            // setPrimalStakesAdvice(data['primalStakes'])
             setDramaticQuestionAdvice(data['dramaticQuestion'])
         }).catch(function (error) {
             console.warn(error);
@@ -257,7 +252,7 @@ const Sequence = ({
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion]);
+    }, [genre, problemTemplate, dramaticQuestion]);
 
     const optionalSequences = ['Theme Stated', 'Setup (Continued)', 'Debate (Continued)', 'B Story', 'First Pinch Point', 'Second Pinch Point']
 
@@ -398,9 +393,9 @@ const Sequence = ({
                                             <span title="common advice">{commonAdvice} </span>
                                             <span title="genre advice">{genreAdvice} </span>
                                             <span title="problem template advice">{problemTemplateAdvice} </span>
-                                            <span title="hero archetype advice">{heroArchetypeAdvice} </span>
+                                            {/* <span title="hero archetype advice">{heroArchetypeAdvice} </span>
                                             <span title="enemy archetype advice">{enemyArchetypeAdvice} </span>
-                                            <span title="primal stakes advice">{primalStakesAdvice} </span>
+                                            <span title="primal stakes advice">{primalStakesAdvice} </span> */}
                                             <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
                                         </p>
                                     </Accordion.Body>

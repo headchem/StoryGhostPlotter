@@ -33,10 +33,6 @@ public static class LogLineOptions
         var archetypesOptions = archetypes.Select(a => (a.Id, a.Name)).ToList();
         options.Add("archetypes", archetypesOptions);
 
-        var primalStakes = Factory.GetPrimalStakes();
-        var primalStakesOptions = primalStakes.Select(x => (x.Id, x.Name)).ToList();
-        options.Add("primalStakes", primalStakesOptions);
-
         var dramaticQuestions = Factory.GetDramaticQuestions();
         var dramaticQuestionsOptions = dramaticQuestions.Select(x => (x.Id, x.Name)).ToList();
         options.Add("dramaticQuestions", dramaticQuestionsOptions);

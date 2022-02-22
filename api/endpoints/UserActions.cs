@@ -101,13 +101,22 @@ public class UserActions
             {
                 Id = Guid.NewGuid().ToString("N"), // formats to no dashes, all lower case
                 UserId = userId,
+                LogLineDescription = "",
                 Title = NewPlotName,
                 Seed = new Random().NextInt64(),
                 Keywords = new List<string>(),
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
                 IsDeleted = false,
-                IsPublic = false
+                IsPublic = false,
+                Characters = new List<Character>{
+                    new Character{
+                        Name = "",
+                        Archetype = "",
+                        Alignment = "Protagonist",
+                        Description = ""
+                    }
+                }
             };
 
             var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
@@ -226,15 +235,22 @@ public class UserActions
         // update existing plot
         var plotPatchOps = new List<PatchOperation>();
 
+        var newLogLineDescription = plot.LogLineDescription;
+        var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
-        var newEnemyArchetype = plot.EnemyArchetype;
+        //var newEnemyArchetype = plot.EnemyArchetype;
         var newGenre = plot.Genre;
-        var newHeroArchetype = plot.HeroArchetype;
+        //var newHeroArchetype = plot.HeroArchetype;
         var newKeywords = plot.Keywords;
-        var newPrimalStakes = plot.PrimalStakes;
+        //var newPrimalStakes = plot.PrimalStakes;
         var newProblemTemplate = plot.ProblemTemplate;
         var newSequences = plot.Sequences;
         var newIsPublic = plot.IsPublic;
+
+        if (!string.IsNullOrWhiteSpace(newLogLineDescription) && newLogLineDescription != curPlotObj.LogLineDescription)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/logLineDescription", newLogLineDescription));
+        }
 
         if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
         {
@@ -246,20 +262,20 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/dramaticQuestion", newDramaticQuestion));
         }
 
-        if (!string.IsNullOrWhiteSpace(newEnemyArchetype) && newEnemyArchetype != curPlotObj.EnemyArchetype)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/enemyArchetype", newEnemyArchetype));
-        }
+        // if (!string.IsNullOrWhiteSpace(newEnemyArchetype) && newEnemyArchetype != curPlotObj.EnemyArchetype)
+        // {
+        //     plotPatchOps.Add(PatchOperation.Set("/enemyArchetype", newEnemyArchetype));
+        // }
 
         if (!string.IsNullOrWhiteSpace(newGenre) && newGenre != curPlotObj.Genre)
         {
             plotPatchOps.Add(PatchOperation.Set("/genre", newGenre));
         }
 
-        if (!string.IsNullOrWhiteSpace(newHeroArchetype) && newHeroArchetype != curPlotObj.HeroArchetype)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/heroArchetype", newHeroArchetype));
-        }
+        // if (!string.IsNullOrWhiteSpace(newHeroArchetype) && newHeroArchetype != curPlotObj.HeroArchetype)
+        // {
+        //     plotPatchOps.Add(PatchOperation.Set("/heroArchetype", newHeroArchetype));
+        // }
 
         // if keywords exists on both ends, update it
         if (newKeywords != null && curPlotObj.Keywords != null && string.Join(',', newKeywords) != string.Join(',', curPlotObj.Keywords))
@@ -267,10 +283,10 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/keywords", newKeywords));
         }
 
-        if (!string.IsNullOrWhiteSpace(newPrimalStakes) && newPrimalStakes != curPlotObj.PrimalStakes)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/primalStakes", newPrimalStakes));
-        }
+        // if (!string.IsNullOrWhiteSpace(newPrimalStakes) && newPrimalStakes != curPlotObj.PrimalStakes)
+        // {
+        //     plotPatchOps.Add(PatchOperation.Set("/primalStakes", newPrimalStakes));
+        // }
 
         if (!string.IsNullOrWhiteSpace(newProblemTemplate) && newProblemTemplate != curPlotObj.ProblemTemplate)
         {
@@ -283,10 +299,15 @@ public class UserActions
         }
 
         var seqComparer = new ObjectsComparer.Comparer<List<UserSequence>>();
-
         if (seqComparer.Compare(newSequences, curPlotObj.Sequences) == false)
         {
             plotPatchOps.Add(PatchOperation.Set("/sequences", newSequences));
+        }
+
+        var characterComparer = new ObjectsComparer.Comparer<List<Character>>();
+        if (characterComparer.Compare(newCharacters, curPlotObj.Characters) == false)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/characters", newCharacters));
         }
 
         if (plotPatchOps.Count > 0)

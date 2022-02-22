@@ -76,7 +76,8 @@ public class OpenAICompletionService : ICompletionService
 
         //var apiResponse = await _httpClient.GetFromJsonAsync<OpenAICompletionsResponse>("repos/dotnet/AspNetCore.Docs/branches");
 
-        using var response = await _httpClient.PostAsync("v1/completions", content);
+        //using var response = await _httpClient.PostAsync("v1/completions", content);
+        var response = await _httpClient.PostAsync("completions", content);
         response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
 
         var apiResponse = await response.Content.ReadAsStringAsync();

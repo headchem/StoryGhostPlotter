@@ -10,18 +10,11 @@ public class BadGuysCloseIn : ISequence
     public string Name { get { return "Bad Guys Close In"; } }
     public string Description { get { return "In-fighting, doubt and jealousy tear the Hero's team apart. The Enemy is temporarily defeated, but they are regrouping for an even stronger attack. The subplot interweaves with the main plot, building tension without resolution."; } }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
-    {
-        return $"{Name} advice goes here... {Description}";
-    }
-
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string enemyArchetype, string primalStakes, string dramaticQuestion)
+    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
         var genreObj = Factory.GetGenre(genre);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
-        var enemyArchetypeObj = Factory.GetArchetype(enemyArchetype);
-        var primalStakesObj = Factory.GetPrimalStake(primalStakes);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
 
         return new AdviceComponents
@@ -30,8 +23,6 @@ public class BadGuysCloseIn : ISequence
             Genre = genreObj.AdviceSequence.BadGuysCloseIn,
             ProblemTemplate = problemTemplateObj.AdviceSequence.BadGuysCloseIn,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.BadGuysCloseIn,
-            EnemyArchetype = enemyArchetypeObj.EnemyAdviceSequence.BadGuysCloseIn,
-            PrimalStakes = primalStakesObj.AdviceSequence.BadGuysCloseIn,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.BadGuysCloseIn
         };
     }

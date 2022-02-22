@@ -5,7 +5,6 @@ using StoryGhost.Interfaces;
 using StoryGhost.Models.Genres;
 using StoryGhost.Models.ProblemTemplates;
 using StoryGhost.Models.Archetypes;
-using StoryGhost.Models.PrimalStakes;
 using StoryGhost.Models.DramaticQuestions;
 using StoryGhost.Models.Sequences;
 using StoryGhost.Models;
@@ -110,33 +109,6 @@ public static class Factory
     }
 
 
-    public static List<IPrimalStakes> GetPrimalStakes()
-    {
-        return new List<IPrimalStakes> {
-            new FindConnection(),
-            new ExactRevenge(),
-            new ProtectFamily(),
-            new ProtectPossession(),
-            new Survive()
-        };
-    }
-
-    /// <summary><c>primalStakes</c> may be either Id or Name and is not case sensitive.</summary>
-    public static IPrimalStakes GetPrimalStake(string primalStakes)
-    {
-        primalStakes = primalStakes.ToLower().Trim();
-
-        IPrimalStakes primalStakesObj = GetPrimalStakes().Where(p => p.Id.ToLower() == primalStakes || p.Id.ToLower() == primalStakes.Replace(" ", "")).FirstOrDefault();
-
-        if (primalStakesObj == null)
-        {
-            primalStakesObj = GetPrimalStakes().Where(p => p.Name.ToLower() == primalStakes).FirstOrDefault();
-        }
-
-        return primalStakesObj;
-    }
-
-
     public static List<IDramaticQuestion> GetDramaticQuestions()
     {
         return new List<IDramaticQuestion> {
@@ -229,20 +201,17 @@ public static class Factory
     {
         // get LogLine objects
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
-        var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
-        var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
-        var primalStakes = Factory.GetPrimalStake(plot.PrimalStakes);
+        //var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
+        //var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
         var genre = Factory.GetGenre(plot.Genre);
 
-        var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        var heroArchetypeLogLineContribution = heroArchetype.GetHeroLogLineContribution(plot.Seed, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
-        var enemyArchetypeLogLineContribution = enemyArchetype.GetEnemyLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, primalStakes, dramaticQuestion);
-        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, genre, problemTemplate, heroArchetype, enemyArchetype, primalStakes);
+        var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, dramaticQuestion);
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, genre, problemTemplate);
 
         var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
 
-        var consolidatedContributions = $"{genreContribution} {keywordsContribution}. {heroArchetypeLogLineContribution} {enemyArchetypeLogLineContribution} {dramaticQuestionLogLineContribution}";
+        var consolidatedContributions = $"{genreContribution} {keywordsContribution}. {dramaticQuestionLogLineContribution}";
 
         consolidatedContributions += "\n\n";
 

@@ -274,6 +274,7 @@ Out of the Bottle
 	Aladin
 	LiarLiar
 	Fantasia
+	Soul
 Monster in the House
 	Whiplash
 	TheCraft
@@ -282,6 +283,8 @@ Golden Fleece
 	StarWarsEp4
 	TheWizardOfOz
 	TheMitchellsVsTheMachines
+	Finding Nemo
+	Up!
 Superhero
 	IronMan
 	KungFuPanda
@@ -302,10 +305,12 @@ Whydunnit
 	CaptainMarvel
 	TheBigLebowski
 	TheConversation
+	Zootopia
 Institutionalized
 	Sicario
 	DrStrangelove
 	FreeSolo
+	Encanto
 Unexpected Problem
 	TheLegoMovie
 	Taken
@@ -315,10 +320,12 @@ Unexpected Problem
 HERO
 Caregiver
 	ET
+	Finding Nemo
 Creator
 	IronMan
 	HowToTrainYourDragon
 	TheMitchellsVsTheMachines
+	Soul
 Explorer
 	Whiplash
 	MyOctopusTeacher
@@ -335,9 +342,11 @@ Innocent
 	TheBigLebowski
 	DrStrangelove
 	ACharlieBrownThanksgiving
+	Zootopia
 Jester
 	LiarLiar
 Lover
+	Encanto
 Magician
 	Fantasia
 Orphan
@@ -352,6 +361,7 @@ Ruler
 Sage
 	DontLookUp
 	TheConversation
+	Up!
 Warrior
 	StarWarsEp4
 
@@ -361,10 +371,14 @@ Caregiver
 	Float
 	LiarLiar
 	FreeSolo
+	Encanto
 Creator
 Explorer
+	Finding Nemo
+	Up!
 Innocent
 	ET
+	Soul
 Jester
 	Taken
 	DrStrangelove
@@ -378,6 +392,7 @@ Magician
 Orphan
 	MyOctopusTeacher
 	TheConversation
+	Zootopia
 Outlaw
 	StarWarsEp4
 	Sicario
@@ -414,12 +429,16 @@ Find Connection
 	TheMitchellsVsTheMachines
 	ACharlieBrownThanksgiving
 	ET
+	Up!
+	Soul
 Protect Family
 	StarWarsEp4
 	HowToTrainYourDragon
 	MyOctopusTeacher
 	Taken
 	DontLookUp
+	Finding Nemo
+	Encanto
 Protect Possession
 	IronMan
 	KungFuPanda

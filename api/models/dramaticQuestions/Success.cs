@@ -29,7 +29,7 @@ public class Success : IDramaticQuestion
         }
     }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate)
     {
         return $"The overarching theme of this story is asking if selling out can be a form of success.";
     }

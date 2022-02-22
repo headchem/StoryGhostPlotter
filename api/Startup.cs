@@ -20,13 +20,27 @@ namespace MyNamespace
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            //builder.Services.AddHttpClient(); // injects IHttpClientFactory into the constructor of any object which avoids port exhaustion
+
+            // inject caching layers
+            // builder.Services.AddTransient<SalesforceTokenService>();
+            // builder.Services.AddTransient<ISalesforceTokenService, CachedSalesforceTokenService>();
+
             // exponential backoff with the following attempts - TODO: log error if exceeding attempts, handle gracefully in UI
             var exponentialBackoff = GetRetryPolicy();
             var longTimeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(500));
 
             var combinedExpLongPolicy = longTimeoutPolicy.WrapAsync(exponentialBackoff);
 
-            // builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>()
+            // builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>(c =>
+            // {
+            //     c.BaseAddress = new System.Uri("https://api.openai.com/v1/");
+            //     c.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
+            //     c.DefaultRequestHeaders.Add("Accept", "application/json");
+
+            //     var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+            //     c.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+            // })
             //     .SetHandlerLifetime(TimeSpan.FromSeconds(500))
             //     .AddPolicyHandler(combinedExpLongPolicy);
 

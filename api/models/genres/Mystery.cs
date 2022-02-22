@@ -34,7 +34,7 @@ public class Mystery : IGenre
         }
     }
 
-    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes, IDramaticQuestion dramaticQuestion)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return $"This is an award winning mystery story where the main character investigates a shocking event, where a small cast of suspects each have a plausible motive.";
     }

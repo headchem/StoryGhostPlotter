@@ -15,15 +15,20 @@ public class Plot
     //[JsonPropertyName("UserId")]
     public string UserId { get; set; }
 
+    public string LogLineDescription { get; set; }
+
     [JsonPropertyName("title")]
     public string Title { get; set; }
     //public string CompletionType { get; set; } // orphanSummary, orphanFull, wandererSummary, wandererFull, warriorSummary, warriorFull, martyrSummary, martyrFull
     public string Genre { get; set; }
     public string ProblemTemplate { get; set; }
     public List<string> Keywords { get; set; }
-    public string HeroArchetype { get; set; }
-    public string EnemyArchetype { get; set; }
-    public string PrimalStakes { get; set; }
+    // public string HeroArchetype { get; set; }
+    // public string EnemyArchetype { get; set; }
+
+    public List<Character> Characters { get; set; }
+
+    //public string PrimalStakes { get; set; }
     public string DramaticQuestion { get; set; }
     public long Seed { get; set; }
 

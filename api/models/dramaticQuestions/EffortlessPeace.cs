@@ -28,7 +28,7 @@ public class EffortlessPeace : IDramaticQuestion
         }
     }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate, IArchetype heroArchetype, IArchetype enemyArchetype, IPrimalStakes primalStakes)
+    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate)
     {
         return $"The overarching theme of this story is asking if effort is required to attain peace.";
     }

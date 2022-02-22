@@ -1,20 +1,15 @@
 import Spinner from 'react-bootstrap/Spinner';
 import GenreDescription from './GenreDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
-import HeroArchetypeDescription from './HeroArchetypeDescription'
-import EnemyArchetypeDescription from './EnemyArchetypeDescription'
-import PrimalStakesDescription from './PrimalStakesDescription'
+//import ArchetypeDescription from './ArchetypeDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 
-const LogLineDescription = (
+const LogLineObjDetails = (
     {
         curFocusElName,
         descIsLoading,
         genreDescObj,
         problemTemplateDescObj,
-        heroArchetypeDescObj,
-        enemyArchetypeDescObj,
-        primalStakesDescObj,
         dramaticQuestionDescObj
     }
 ) => {
@@ -31,15 +26,6 @@ const LogLineDescription = (
                     }
                     {
                         curFocusElName === 'problem template' && problemTemplateDescObj && <ProblemTemplateDescription problemTemplateDescObj={problemTemplateDescObj} />
-                    }
-                    {
-                        curFocusElName === 'hero archetype' && heroArchetypeDescObj && <HeroArchetypeDescription heroArchetypeDescObj={heroArchetypeDescObj} />
-                    }
-                    {
-                        curFocusElName === 'enemy archetype' && enemyArchetypeDescObj && <EnemyArchetypeDescription enemyArchetypeDescObj={enemyArchetypeDescObj} />
-                    }
-                    {
-                        curFocusElName === 'primal stakes' && primalStakesDescObj && <PrimalStakesDescription primalStakesDescObj={primalStakesDescObj} />
                     }
                     {
                         curFocusElName === 'dramatic question' && dramaticQuestionDescObj && <DramaticQuestionDescription dramaticQuestionDescObj={dramaticQuestionDescObj} />
@@ -60,4 +46,4 @@ const LogLineDescription = (
     )
 }
 
-export default LogLineDescription
+export default LogLineObjDetails
