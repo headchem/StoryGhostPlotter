@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 //import Popover from 'react-bootstrap/Popover';
 import Accordion from 'react-bootstrap/Accordion';
 //import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
@@ -145,8 +145,6 @@ const Character = ({
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [character]);
-
-    const isFirstAdviceRun = useRef(true)
 
     const NextCharactersButtonGroup = () => (
         <div className="btn-group btn-block" role="group" aria-label="choose next character">
