@@ -197,7 +197,7 @@ public static class Factory
     // }
 
     /// <summary>Given a <c>Story</c>, will return the prompt for the given <c>sequenceName</c></summary>
-    public static string GetPrompt(string sequenceName, Plot plot)
+    public static string GetSequencePrompt(string sequenceName, Plot plot)
     {
         // get LogLine objects
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);

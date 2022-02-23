@@ -24,14 +24,25 @@ public class DummyCompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<GenerateResponse> GetCompletion(string sequenceName, Plot story)
+    public async Task<GenerateResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
-        var prompt = Factory.GetPrompt(sequenceName, story);
+        var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
         var result = new GenerateResponse();
 
         result.Prompt = prompt;
-        result.Completion = "AI completion goes here...";
+        result.Completion = "AI SEQUENCE completion goes here...";
+
+        return result;
+    }
+
+    public async Task<GenerateResponse> GetCharacterCompletion(string archetype, Plot story) {
+        var prompt = "TODO character archetype prompt goes here...";
+        
+        var result = new GenerateResponse();
+
+        result.Prompt = prompt;
+        result.Completion = "AI CHARACTER completion goes here...";
 
         return result;
     }

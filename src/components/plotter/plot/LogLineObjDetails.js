@@ -32,7 +32,14 @@ const LogLineObjDetails = (
                     {
                         curFocusElName === 'keywords' &&
                         <>
-                            <p>Description about best types of keywords...</p>
+                            <p>Enter 3-5 core concepts this story relies upon. For example:</p>
+                            <ul>
+                                <li>magic ring</li>
+                                <li>spaceship</li>
+                                <li>deception</li>
+                                <li>The Chosen One</li>
+                                <li>shame</li>
+                            </ul>
                         </>
                     }
                     {

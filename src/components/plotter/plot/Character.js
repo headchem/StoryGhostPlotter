@@ -112,7 +112,7 @@ const Character = ({
             <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
 
                 <div className='col-md-7'>
-                    <div className='row'>
+                    <div className='row pb-3'>
                         <div className='col-md-7'>
                             <input type='text' className='fs-5 form-control' placeholder='Character Name' required onChange={onCharacterNameChange} defaultValue={character.name} />
 
@@ -128,12 +128,14 @@ const Character = ({
                             </select>
                         </div>
                         <div className='col-md-1'>
-                            <button onClick={onDeleteCharacter} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
-
+                            {
+                                character.id !== characters[0].id &&
+                                <button onClick={onDeleteCharacter} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
+                            }
                         </div>
                     </div>
                     <div className='row'>
-                        <div className='col-md-12'>
+                        <div className='col-md-11'>
                             <LimitedTextArea
                                 className="form-control"
                                 value={character.description}

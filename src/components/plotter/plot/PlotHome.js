@@ -6,6 +6,7 @@ import Tab from 'react-bootstrap/Tab'
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
+import LimitedTextArea from './LimitedTextArea'
 import LogLineSelect from './LogLineSelect'
 import LogLineObjDetails from './LogLineObjDetails'
 
@@ -34,6 +35,8 @@ const PlotHome = (
     const [isPublicCheckboxId] = useState(useUniqueId('isPublicCheckbox'))
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
+
+    const [logLineDescriptionTokenCount, setLogLineDescriptionTokenCount] = useState(0)
 
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -378,7 +381,7 @@ const PlotHome = (
 
     const updateTotalTokens = () => {
         if (!sequences || sequences.length === 0) return
-        const allText = sequences.map(s => s.text).join(" ")
+        const allText = sequences.map(s => s.text).join(" ") + characters.map(s => s.description).join(" ") + logLineDescription
         //console.log(allText)
         const numTokens = encode(allText).length
         setTotalTokens(numTokens)
@@ -389,7 +392,11 @@ const PlotHome = (
         const timeout = setTimeout(() => {
             //console.log('save and update tokens')
             savePlot()
+
+            const logLineTokens = encode(logLineDescription)
+            setLogLineDescriptionTokenCount(logLineTokens.length)
             updateTotalTokens()
+            
         }, 2000) //ms timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -479,8 +486,8 @@ const PlotHome = (
         setTitle(event.target.value)
     }
 
-    const onLogLineDescriptionChange = (event) => {
-        setLogLineDescription(event.target.value)
+    const onLogLineDescriptionChange = (val) => {
+        setLogLineDescription(val)
     }
 
     const goToViewPlot = () => {
@@ -506,9 +513,20 @@ const PlotHome = (
                 <>
                     <div className='row align-items-md-stretch'>
                         <div className='col-md-7 logline fs-5'>
-                            <p>
+                            <LimitedTextArea
+                                className="form-control"
+                                value={logLineDescription}
+                                setValue={(newValue) => onLogLineDescriptionChange(newValue)}
+                                rows={2}
+                                limit={200}
+                                curTokenCount={logLineDescriptionTokenCount}
+                                showCount={true}
+                            />
+
+                            {/* <p>
                                 <input type='text' className='fs-5 form-control' placeholder='Log Line Description' required onChange={onLogLineDescriptionChange} defaultValue={logLineDescription} onFocus={() => onFocusChange('logLineDescription')} />
-                            </p>
+
+                            </p> */}
                             <p>
                                 <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
                             </p>

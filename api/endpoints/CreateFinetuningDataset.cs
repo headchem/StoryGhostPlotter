@@ -104,7 +104,7 @@ public class CreateFinetuningDataset
 
         foreach (var plot in plots)
         {
-            var row = getPromptAndCompletion(sequenceName, plot);
+            var row = getSequencePromptAndCompletion(sequenceName, plot);
 
             if (row != null)
             {
@@ -115,7 +115,7 @@ public class CreateFinetuningDataset
         return results;
     }
 
-    private FinetuningRow getPromptAndCompletion(string sequenceName, Plot plot)
+    private FinetuningRow getSequencePromptAndCompletion(string sequenceName, Plot plot)
     {
         var curSeqObj = plot.Sequences.Where(seq => seq.SequenceName == sequenceName).FirstOrDefault();
 
@@ -128,7 +128,7 @@ public class CreateFinetuningDataset
         var row = new FinetuningRow();
 
         row.SequenceName = sequenceName;
-        row.Prompt = Factory.GetPrompt(sequenceName, plot);
+        row.Prompt = Factory.GetSequencePrompt(sequenceName, plot);
 
         // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
         row.Completion = " " + curSeqObj.Text + StopSequence;

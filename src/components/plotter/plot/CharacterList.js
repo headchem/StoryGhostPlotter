@@ -61,11 +61,13 @@ const CharacterList = ({
             }
 
             <div className='row pb-3 pt-3'>
-                <button
-                    type='button'
-                    className='btn btn-outline-primary'
-                    onClick={onInsertCharacter}
-                ><FaPlusCircle /> New Character</button>
+                <div className='col'>
+                    <button
+                        type='button'
+                        className='btn btn-outline-primary btn-block'
+                        onClick={onInsertCharacter}
+                    ><FaPlusCircle /> New Character</button>
+                </div>
             </div>
         </>
     )
