@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, setValue, showCount }) => {
+const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, setValue, showCount, onFocus }) => {
 
     const setTruncatedContent = React.useCallback(
         text => {
@@ -18,6 +18,7 @@ const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, s
                 cols={cols}
                 onChange={e => setTruncatedContent(e.target.value)}
                 value={value}
+                onFocus={onFocus}
             />
             {
                 showCount === true &&

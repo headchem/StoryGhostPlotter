@@ -21,13 +21,11 @@ const PlotHome = (
 ) => {
 
     const [logLineDescription, setLogLineDescription] = useState('')
+    const [AILogLineDescription, setAILogLineDescription] = useState('')
     const [title, setTitle] = useState('')
     const [genre, setGenre] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
-    //const [heroArchetype, setHeroArchetype] = useState('')
-    //const [enemyArchetype, setEnemyArchetype] = useState('')
-    //const [primalStakes, setPrimalStakes] = useState('')
     const [dramaticQuestion, setDramaticQuestion] = useState('')
     const [sequences, setSequences] = useState(null)
     const [characters, setCharacters] = useState(null)
@@ -46,15 +44,12 @@ const PlotHome = (
     }
 
     const populatePlot = (data) => {
-        //console.log('POPULATE PLOT');
         setLogLineDescription(data['logLineDescription'])
+        setAILogLineDescription(data['aiLogLineDescription'])
         setTitle(data['title'])
         setGenre(data['genre'])
         setProblemTemplate(data['problemTemplate'])
         setKeywords(data['keywords'] ?? [])
-        //setHeroArchetype(data['heroArchetype'])
-        //setEnemyArchetype(data['enemyArchetype'])
-        //setPrimalStakes(data['primalStakes'])
         setDramaticQuestion(data['dramaticQuestion'])
         setSequences(data['sequences'])
 
@@ -73,8 +68,6 @@ const PlotHome = (
     }
 
     const populateLogLineOptions = (data) => {
-        //console.log('populateLogLineOptions')
-
         // convert list of string tuples from the webservice into the format expected by React-Select
         const mapToSelectOptions = (arr) => {
             return arr.map(function (x) {
@@ -85,25 +78,19 @@ const PlotHome = (
         const mappedGenreOptions = mapToSelectOptions(data['genres'])
         const mappedProblemTemplateOptions = mapToSelectOptions(data['problemTemplates'])
         const mappedArchetypeOptions = mapToSelectOptions(data['archetypes'])
-        //const mappedPrimalStakesOptions = mapToSelectOptions(data['primalStakes'])
         const mappedDramaticQuestionsOptions = mapToSelectOptions(data['dramaticQuestions'])
 
         setGenreOptions(mappedGenreOptions)
         setProblemTemplateOptions(mappedProblemTemplateOptions)
         setArchetypeOptions(mappedArchetypeOptions)
-        //setPrimalStakesOptions(mappedPrimalStakesOptions)
         setDramaticQuestionOptions(mappedDramaticQuestionsOptions)
     }
-
-
 
     // on page load, this is called, which waits for both LogLineOptions and GetPlot to complete before setting any values (LogLineOptions must populate dropdowns before we can set values)
     useEffect(() => {
         // clean up controller. FROM: https://stackoverflow.com/a/63144665 avoids the error "To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function."
         // eslint-disable-next-line no-unused-vars
         let isSubscribed = true;
-
-        //console.log('INIT LOAD')
 
         setPlotLoading(true)
 
@@ -141,7 +128,6 @@ const PlotHome = (
             populatePlot(plotData)
 
         }).catch(function (error) {
-            // if there's an error, log it
             console.log(error);
         }).finally(function () {
             setPlotLoading(false)
@@ -200,9 +186,6 @@ const PlotHome = (
     }
 
 
-
-
-
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
     const insertSequence = (curSequenceName, newSequenceName) => {
 
@@ -218,8 +201,6 @@ const PlotHome = (
         } else {
             let newSequences = [...sequences]
             newSequences.splice(curSequenceIndex + 1, 0, newSequence);
-            //console.log('insert new seq:')
-            //console.log(newSequences)
 
             setSequences(
                 newSequences
@@ -269,25 +250,17 @@ const PlotHome = (
     const [genreOptions, setGenreOptions] = useState([])
     const [problemTemplateOptions, setProblemTemplateOptions] = useState([])
     const [archetypeOptions, setArchetypeOptions] = useState([])
-    //const [primalStakesOptions, setPrimalStakesOptions] = useState([])
     const [dramaticQuestionOptions, setDramaticQuestionOptions] = useState([])
 
 
     const [curFocusElName, setCurFocusElName] = useState('')
 
-    const [descIsLoading, setDescIsLoading] = useState(false)
-    const [genreDescObj, setGenreDescObj] = useState(null)
-    const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
-    // const [heroArchetypeDescObj, setHeroArchetypeDescObj] = useState(null)
-    // const [enemyArchetypeDescObj, setEnemyArchetypeDescObj] = useState(null)
-    // const [primalStakesDescObj, setPrimalStakesDescObj] = useState(null)
-    const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
+
 
     const [logLineIncomplete, setLogLineIncomplete] = useState(true)
 
     const onFocusChange = (elName) => {
         setCurFocusElName(elName)
-        loadDescObj(elName)
     }
 
     const isNullOrEmpty = (val) => {
@@ -298,62 +271,6 @@ const PlotHome = (
 
         return false
     }
-
-    const loadDescObj = async (elName) => {
-        let url = ''
-
-        if (elName === 'genre' && !isNullOrEmpty(genre)) {
-            url = '/api/LogLine/GenreDescription?genre=' + genre
-        } else if (elName === 'problem template' && !isNullOrEmpty(problemTemplate)) {
-            url = '/api/LogLine/ProblemTemplateDescription?problemTemplate=' + problemTemplate
-        }
-        // else if (elName === 'hero archetype' && !isNullOrEmpty(heroArchetype)) {
-        //     url = '/api/LogLine/ArchetypeDescription?archetype=' + heroArchetype
-        // } else if (elName === 'enemy archetype' && !isNullOrEmpty(enemyArchetype)) {
-        //     url = '/api/LogLine/ArchetypeDescription?archetype=' + enemyArchetype
-        // }
-        // else if (elName === 'primal stakes' && !isNullOrEmpty(primalStakes)) {
-        //     url = '/api/LogLine/PrimalStakesDescription?primalStakes=' + primalStakes
-        // }
-        else if (elName === 'dramatic question' && !isNullOrEmpty(dramaticQuestion)) {
-            url = '/api/LogLine/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
-        }
-
-        if (url !== '') {
-            setDescIsLoading(true)
-
-            fetch(url)
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    return Promise.reject(response);
-                }).then(function (data) {
-
-                    if (elName === 'genre') {
-                        setGenreDescObj(data)
-                    } else if (elName === 'problem template') {
-                        setProblemTemplateDescObj(data)
-                    }
-                    // else if (elName === 'hero archetype') {
-                    //     setHeroArchetypeDescObj(data)
-                    // } else if (elName === 'enemy archetype') {
-                    //     setEnemyArchetypeDescObj(data)
-                    // }
-                    // else if (elName === 'primal stakes') {
-                    //     setPrimalStakesDescObj(data)
-                    // }
-                    else if (elName === 'dramatic question') {
-                        setDramaticQuestionDescObj(data)
-                    }
-                }).catch(function (error) {
-                    console.warn(error);
-                }).finally(function () {
-                    setDescIsLoading(false)
-                });
-        }
-    }
-
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
@@ -371,7 +288,6 @@ const PlotHome = (
             setLogLineIncomplete(false)
         }
 
-        loadDescObj(curFocusElName)
         checkLogLineIsComplete()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -390,19 +306,18 @@ const PlotHome = (
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            //console.log('save and update tokens')
             savePlot()
 
             const logLineTokens = encode(logLineDescription)
             setLogLineDescriptionTokenCount(logLineTokens.length)
             updateTotalTokens()
-            
+
         }, 2000) //ms timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genre, problemTemplate, keywords, logLineDescription, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genre, problemTemplate, keywords, logLineDescription, AILogLineDescription, dramaticQuestion, sequences, characters, isPublic]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -422,13 +337,11 @@ const PlotHome = (
             },
             body: JSON.stringify({
                 'logLineDescription': logLineDescription,
+                'AILogLineDescription': AILogLineDescription,
                 'title': title,
                 'genre': genre,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                // 'heroArchetype': heroArchetype,
-                // 'enemyArchetype': enemyArchetype,
-                //'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
                 'sequences': sequences,
                 'characters': characters,
@@ -466,18 +379,6 @@ const PlotHome = (
         setKeywords(inputValue.map(el => el.value))
     }
 
-    // const onHeroArchetypeChange = (event) => {
-    //     setHeroArchetype(event.target.value)
-    // }
-
-    // const onEnemyArchetypeChange = (event) => {
-    //     setEnemyArchetype(event.target.value)
-    // }
-
-    // const onPrimalStakesChange = (event) => {
-    //     setPrimalStakes(event.target.value)
-    // }
-
     const onDramaticQuestionChange = (event) => {
         setDramaticQuestion(event.target.value)
     }
@@ -488,6 +389,10 @@ const PlotHome = (
 
     const onLogLineDescriptionChange = (val) => {
         setLogLineDescription(val)
+    }
+
+    const onAILogLineDescriptionChange = (val) => {
+        setAILogLineDescription(val)
     }
 
     const goToViewPlot = () => {
@@ -521,12 +426,9 @@ const PlotHome = (
                                 limit={200}
                                 curTokenCount={logLineDescriptionTokenCount}
                                 showCount={true}
+                                onFocus={() => onFocusChange('logLineDescription')}
                             />
 
-                            {/* <p>
-                                <input type='text' className='fs-5 form-control' placeholder='Log Line Description' required onChange={onLogLineDescriptionChange} defaultValue={logLineDescription} onFocus={() => onFocusChange('logLineDescription')} />
-
-                            </p> */}
                             <p>
                                 <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
                             </p>
@@ -575,12 +477,16 @@ const PlotHome = (
                         </div>
                         <div className='col-md-5'>
                             <LogLineObjDetails
+                                userInfo={userInfo}
+                                onAILogLineDescriptionChange={onAILogLineDescriptionChange}
+                                AILogLineDescription={AILogLineDescription}
                                 curFocusElName={curFocusElName}
-                                descIsLoading={descIsLoading}
-
-                                genreDescObj={genreDescObj}
-                                problemTemplateDescObj={problemTemplateDescObj}
-                                dramaticQuestionDescObj={dramaticQuestionDescObj}
+                                genre={genre}
+                                problemTemplate={problemTemplate}
+                                dramaticQuestion={dramaticQuestion}
+                                keywords={keywords}
+                                sequences={sequences}
+                                characters={characters}
                             />
                         </div>
                     </div>
@@ -592,7 +498,7 @@ const PlotHome = (
                     {
                         logLineIncomplete === false &&
                         <>
-                            <Tabs defaultActiveKey="characters" id="uncontrolled-tab-example" className="mb-3">
+                            <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
                                 <Tab eventKey="characters" title="Characters">
                                     <CharacterList
                                         characters={characters}
@@ -627,11 +533,7 @@ const PlotHome = (
                                         dramaticQuestion={dramaticQuestion}
                                     />
                                 </Tab>
-                                <Tab eventKey="contact" title="Contact" disabled>
-                                    <p>disabled</p>
-                                </Tab>
                             </Tabs>
-
 
                         </>
                     }

@@ -41,6 +41,18 @@ public class OpenAICompletionService : ICompletionService
     //     await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
     //         "repos/dotnet/AspNetCore.Docs/branches");
 
+    public async Task<GenerateResponse> GetLogLineDescriptionCompletion(Plot story)
+    {
+        var prompt = "TODO log line desc prompt goes here...";
+
+        var result = new GenerateResponse();
+
+        result.Prompt = prompt;
+        result.Completion = "AI Log Line Description completion goes here...";
+
+        return result;
+    }
+
     public async Task<GenerateResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
         var prompt = Factory.GetSequencePrompt(sequenceName, story);

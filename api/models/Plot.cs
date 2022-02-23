@@ -17,6 +17,8 @@ public class Plot
 
     public string LogLineDescription { get; set; }
 
+    public string AILogLineDescription { get; set; }
+
     [JsonPropertyName("title")]
     public string Title { get; set; }
     //public string CompletionType { get; set; } // orphanSummary, orphanFull, wandererSummary, wandererFull, warriorSummary, warriorFull, martyrSummary, martyrFull
