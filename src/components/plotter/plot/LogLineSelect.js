@@ -6,7 +6,7 @@ const Placeholder = (props) => {
 
 const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, options, value, onChange }) => {
     return (
-        <div className='logLineSelectKeywords' style={{ width: width }} onFocus={onFocusChange}>
+        <div className='logLineSelectMulti' style={{ width: width }} onFocus={onFocusChange}>
             {
                 isMultiSelect === false ?
                     <Select

@@ -330,10 +330,7 @@ const PlotHome = (
         }
 
         const plotId = searchParams.get("id")
-        //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
-
-        console.log('GENRES:');
-        console.log(genres);
+        //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genres: ${genres}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
 
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
@@ -422,80 +419,107 @@ const PlotHome = (
             {
                 plotLoading === false && isNotFound === false &&
                 <>
-                    <div className='row align-items-md-stretch'>
-                        <div className='col-md-7 logline fs-5'>
-                            <p>Genres: </p>
-                            <Select
-                                defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
-                                isMulti
-                                name="genres"
-                                options={genreOptions}
-                                className="genres-multi-select"
-                                classNamePrefix="select"
-                                onChange={onGenresChange}
-                                onFocus={() => onFocusChange('genres')}
-                            />
 
-                            <p>
-                                <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
-                            </p>
+                    <div className='row pb-5'>
+                        <div className='col-md-7 logline'>
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label htmlFor="genres" className="form-label">Genres</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <div style={{ width: '100%' }}>
+                                        <Select
+                                            defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
+                                            isMulti
+                                            name="genres"
+                                            options={genreOptions}
+                                            className="genres-multi-select"
+                                            classNamePrefix="select"
+                                            onChange={onGenresChange}
+                                            onFocus={() => onFocusChange('genres')}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
-                            <LimitedTextArea
-                                className="form-control"
-                                value={logLineDescription}
-                                setValue={(newValue) => onLogLineDescriptionChange(newValue)}
-                                rows={2}
-                                limit={200}
-                                curTokenCount={logLineDescriptionTokenCount}
-                                showCount={true}
-                                onFocus={() => onFocusChange('logLineDescription')}
-                            />
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="title" className="form-label">Title</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
+                                </div>
+                            </div>
+
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="logLineDesc" className="form-label">Log Line</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <LimitedTextArea
+                                        id='logLineDesc'
+                                        className="form-control"
+                                        value={logLineDescription}
+                                        setValue={(newValue) => onLogLineDescriptionChange(newValue)}
+                                        rows={4}
+                                        limit={700}
+                                        curTokenCount={logLineDescriptionTokenCount}
+                                        showCount={true}
+                                        onFocus={() => onFocusChange('logLineDescription')}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="problemTemplate" className="form-label">Problem Template</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <select id='problemTemplate' required className='fs-5 form-select' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
+                                        <option key="blank" value="" disabled selected>Problem Template</option>
+                                        {
+                                            problemTemplateOptions.map(function (o) {
+                                                return <option key={o.value} value={o.value}>{o.label}</option>
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <select id='dramaticQuestion' required className='fs-5 form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
+                                        <option key="blank" value="" disabled selected>Dramatic Question</option>
+                                        {
+                                            dramaticQuestionOptions.map(function (o) {
+                                                return <option key={o.value} value={o.value}>{o.label}</option>
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="keywords" className="form-label">Keywords</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <div style={{ width: '100%' }}>
+                                        <LogLineSelect
+                                            placeholder='Keywords'
+                                            isMultiSelect={true}
+                                            onFocusChange={() => onFocusChange('keywords')}
+                                            value={keywords}
+                                            onChange={onKeywordsChange}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
 
 
-                            <p>
-                                
-
-                                {/* <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={genre} onChange={onGenreChange} onFocus={() => onFocusChange('genres')}>
-                                    <option key="blank" value="" disabled selected>Genre</option>
-                                    {
-                                        genreOptions.map(function (o) {
-                                            return <option key={o.value} value={o.value}>{o.label}</option>
-                                        })
-                                    }
-                                </select> */}
-
-                                Problem Template:
-
-                                <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
-                                    <option key="blank" value="" disabled selected>Problem Template</option>
-                                    {
-                                        problemTemplateOptions.map(function (o) {
-                                            return <option key={o.value} value={o.value}>{o.label}</option>
-                                        })
-                                    }
-                                </select>
-
-                                Theme:
-
-                                <select required className='fs-5 logLineSelect form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
-                                    <option key="blank" value="" disabled selected>Dramatic Question</option>
-                                    {
-                                        dramaticQuestionOptions.map(function (o) {
-                                            return <option key={o.value} value={o.value}>{o.label}</option>
-                                        })
-                                    }
-                                </select>
-
-                                involving
-                                <LogLineSelect
-                                    placeholder='Keywords'
-                                    width='20em'
-                                    isMultiSelect={true}
-                                    onFocusChange={() => onFocusChange('keywords')}
-                                    value={keywords}
-                                    onChange={onKeywordsChange}
-                                />.
-                            </p>
 
                         </div>
                         <div className='col-md-5'>

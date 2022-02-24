@@ -24,7 +24,7 @@ const LogLineObjDetails = (
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
-    const [genresDescObj, setGenresDescObj] = useState(null)
+    const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
@@ -106,7 +106,7 @@ const LogLineObjDetails = (
                 }).then(function (data) {
 
                     if (elName === 'genres') {
-                        setGenresDescObj(data)
+                        setGenresDescObjs(data)
                     } else if (elName === 'problem template') {
                         setProblemTemplateDescObj(data)
                     } else if (elName === 'dramatic question') {
@@ -184,10 +184,10 @@ const LogLineObjDetails = (
                     }
                     {
                         curFocusElName === 'title' &&
-                        <p>A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
+                        <p id="titleHelp">A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
                     }
                     {
-                        curFocusElName === 'genres' && genresDescObj !== null && <GenresDescription genresDescObj={genresDescObj} />
+                        curFocusElName === 'genres' && genresDescObjs !== null && <GenresDescription genresDescObjs={genresDescObjs} />
                     }
                     {
                         curFocusElName === 'problem template' && problemTemplateDescObj && <ProblemTemplateDescription problemTemplateDescObj={problemTemplateDescObj} />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, setValue, showCount, onFocus }) => {
+const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, className, setValue, showCount, onFocus }) => {
 
     const setTruncatedContent = React.useCallback(
         text => {
@@ -13,6 +13,7 @@ const LimitedTextArea = ({ rows, cols, value, limit, curTokenCount, className, s
     return (
         <>
             <textarea
+                id={id}
                 className={className}
                 rows={rows}
                 cols={cols}

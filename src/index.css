@@ -1,12 +1,4 @@
-.logline {
-    line-height: 3em;
-}
 
-.logLineSelect, .logLineSelectKeywords {
-    width: auto;
-    display: inline-block;
-    margin: .3em;
-}
 
 .logLineSelect:required:invalid {
     color: rgb(128, 128, 128);
@@ -17,10 +9,6 @@
   option {
       color: rgb(33, 37, 41);
   }
-
-.logLineSelectKeywords {
-    line-height: 1em;
-}
 
 .list-to-comma-str figcaption {
     display: inline;
@@ -81,10 +69,6 @@
 .user-plot-row:hover {
     box-shadow:inset 0px 0px 0px 1px #ccc;
 }
-
-/* .popover {
-    max-width: 500px;
-} */
 
 .btn-block {
     display: block;
