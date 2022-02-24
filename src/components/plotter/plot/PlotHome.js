@@ -3,6 +3,8 @@ import { v4 as uuid } from 'uuid';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Select from 'react-select';
+
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
@@ -23,7 +25,7 @@ const PlotHome = (
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescription, setAILogLineDescription] = useState('')
     const [title, setTitle] = useState('')
-    const [genre, setGenre] = useState('')
+    const [genres, setGenres] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
     const [dramaticQuestion, setDramaticQuestion] = useState('')
@@ -47,7 +49,7 @@ const PlotHome = (
         setLogLineDescription(data['logLineDescription'])
         setAILogLineDescription(data['aiLogLineDescription'])
         setTitle(data['title'])
-        setGenre(data['genre'])
+        setGenres(data['genres'])
         setProblemTemplate(data['problemTemplate'])
         setKeywords(data['keywords'] ?? [])
         setDramaticQuestion(data['dramaticQuestion'])
@@ -280,7 +282,7 @@ const PlotHome = (
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
-            if (isNullOrEmpty(logLineDescription) || isNullOrEmpty(title) || isNullOrEmpty(genre) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(dramaticQuestion)) {
+            if (isNullOrEmpty(logLineDescription) || isNullOrEmpty(title) || isNullOrEmpty(genres) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(dramaticQuestion)) {
                 setLogLineIncomplete(true)
                 return
             }
@@ -291,7 +293,7 @@ const PlotHome = (
         checkLogLineIsComplete()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genre, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
+    }, [title, genres, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
 
     const [totalTokens, setTotalTokens] = useState(0)
 
@@ -317,7 +319,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genre, problemTemplate, keywords, logLineDescription, AILogLineDescription, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescription, dramaticQuestion, sequences, characters, isPublic]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -330,6 +332,9 @@ const PlotHome = (
         const plotId = searchParams.get("id")
         //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genre: ${genre}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
 
+        console.log('GENRES:');
+        console.log(genres);
+
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
             headers: {
@@ -339,7 +344,7 @@ const PlotHome = (
                 'logLineDescription': logLineDescription,
                 'AILogLineDescription': AILogLineDescription,
                 'title': title,
-                'genre': genre,
+                'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 'dramaticQuestion': dramaticQuestion,
@@ -367,8 +372,9 @@ const PlotHome = (
             });
     }
 
-    const onGenreChange = (event) => {
-        setGenre(event.target.value)
+    const onGenresChange = (inputValue) => {
+        setGenres(inputValue.map(el => el.value))
+        //setGenre(event.target.value)
     }
 
     const onProblemTemplateChange = (event) => {
@@ -418,6 +424,22 @@ const PlotHome = (
                 <>
                     <div className='row align-items-md-stretch'>
                         <div className='col-md-7 logline fs-5'>
+                            <p>Genres: </p>
+                            <Select
+                                defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
+                                isMulti
+                                name="genres"
+                                options={genreOptions}
+                                className="genres-multi-select"
+                                classNamePrefix="select"
+                                onChange={onGenresChange}
+                                onFocus={() => onFocusChange('genres')}
+                            />
+
+                            <p>
+                                <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
+                            </p>
+
                             <LimitedTextArea
                                 className="form-control"
                                 value={logLineDescription}
@@ -429,19 +451,20 @@ const PlotHome = (
                                 onFocus={() => onFocusChange('logLineDescription')}
                             />
 
+
                             <p>
-                                <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} />
-                            </p>
-                            <p>
-                                This is a
-                                <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={genre} onChange={onGenreChange} onFocus={() => onFocusChange('genre')}>
+                                
+
+                                {/* <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={genre} onChange={onGenreChange} onFocus={() => onFocusChange('genres')}>
                                     <option key="blank" value="" disabled selected>Genre</option>
                                     {
                                         genreOptions.map(function (o) {
                                             return <option key={o.value} value={o.value}>{o.label}</option>
                                         })
                                     }
-                                </select>
+                                </select> */}
+
+                                Problem Template:
 
                                 <select required className='fs-5 logLineSelect form-select form-inline' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
                                     <option key="blank" value="" disabled selected>Problem Template</option>
@@ -452,7 +475,7 @@ const PlotHome = (
                                     }
                                 </select>
 
-                                story with a theme of
+                                Theme:
 
                                 <select required className='fs-5 logLineSelect form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
                                     <option key="blank" value="" disabled selected>Dramatic Question</option>
@@ -481,7 +504,7 @@ const PlotHome = (
                                 onAILogLineDescriptionChange={onAILogLineDescriptionChange}
                                 AILogLineDescription={AILogLineDescription}
                                 curFocusElName={curFocusElName}
-                                genre={genre}
+                                genres={genres}
                                 problemTemplate={problemTemplate}
                                 dramaticQuestion={dramaticQuestion}
                                 keywords={keywords}
@@ -511,7 +534,7 @@ const PlotHome = (
                                         updateAICharacterDescription={updateAICharacterDescription}
                                         insertCharacter={insertCharacter}
                                         deleteCharacter={deleteCharacter}
-                                        genre={genre}
+                                        genres={genres}
                                         problemTemplate={problemTemplate}
                                         keywords={keywords}
                                         dramaticQuestion={dramaticQuestion}
@@ -526,7 +549,7 @@ const PlotHome = (
                                         updateAISequenceText={updateAISequenceText}
                                         insertSequence={insertSequence}
                                         deleteSequence={deleteSequence}
-                                        genre={genre}
+                                        genres={genres}
                                         problemTemplate={problemTemplate}
                                         keywords={keywords}
                                         characters={characters}

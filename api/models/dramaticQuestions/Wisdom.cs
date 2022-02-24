@@ -29,7 +29,7 @@ public class Wisdom : IDramaticQuestion
         }
     }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate)
     {
         return $"The overarching theme of this story is asking if faking intelligence can lead to true wisdom.";
     }

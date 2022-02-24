@@ -6,8 +6,8 @@ namespace StoryGhost.Models;
 
 public class SequenceAdviceRequest
 {
-    [JsonPropertyName("genre")]
-    public string Genre { get; set; }
+    [JsonPropertyName("genres")]
+    public List<string> Genres { get; set; }
     
     [JsonPropertyName("problemTemplate")]
     public string ProblemTemplate { get; set; }

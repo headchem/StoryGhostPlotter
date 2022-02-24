@@ -17,29 +17,46 @@ public static class Factory
     public static List<IGenre> GetGenres()
     {
         return new List<IGenre> {
-            new Adventure(),
             new Drama(),
+            new Comedy(),
+            new Thriller(),
+            new StoryGhost.Models.Genres.Action(),
+            new Adventure(),
+            new Horror(),
+            new Family(),
+            new Romance(),
+            new Crime(),
+            new Scifi(),
             new Fantasy(),
             new Mystery(),
-            new Romance(),
-            new Scifi(),
+            new History(),
+            new War(),
+            new Music(),
+            new Western(),
             new Sports(),
         };
     }
 
     /// <summary><c>genre</c> may be either Id or Name and is not case sensitive.</summary>
-    public static IGenre GetGenre(string genre)
+    public static List<IGenre> GetGenres(List<string> genres)
     {
-        genre = genre.ToLower().Trim();
+        var results = new List<IGenre>();
 
-        IGenre genreObj = GetGenres().Where(g => g.Id.ToLower() == genre || g.Id.ToLower() == genre.Replace(" ", "")).FirstOrDefault();
-
-        if (genreObj == null)
+        foreach (var curGenre in genres)
         {
-            genreObj = GetGenres().Where(g => g.Name.ToLower() == genre).FirstOrDefault();
-        }
+            var genre = curGenre.ToLower().Trim();
 
-        return genreObj;
+            IGenre genreObj = GetGenres().Where(g => g.Id.ToLower() == genre || g.Id.ToLower() == genre.Replace(" ", "")).FirstOrDefault();
+
+            if (genreObj == null)
+            {
+                genreObj = GetGenres().Where(g => g.Name.ToLower() == genre).FirstOrDefault();
+            }
+
+            results.Add(genreObj);
+        }
+        
+        return results;
     }
 
 
@@ -204,14 +221,14 @@ public static class Factory
         //var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
         //var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
-        var genre = Factory.GetGenre(plot.Genre);
+        //var genre = Factory.GetGenre(plot.Genre);
 
-        var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, dramaticQuestion);
-        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, genre, problemTemplate);
+        //var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, dramaticQuestion);
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
 
         var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
 
-        var consolidatedContributions = $"{genreContribution} {keywordsContribution}. {dramaticQuestionLogLineContribution}";
+        var consolidatedContributions = $"{keywordsContribution}. {dramaticQuestionLogLineContribution}";
 
         consolidatedContributions += "\n\n";
 

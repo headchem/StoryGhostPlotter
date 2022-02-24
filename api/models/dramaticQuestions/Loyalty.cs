@@ -29,7 +29,7 @@ public class Loyalty : IDramaticQuestion
         }
     }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate)
     {
         return $"The overarching theme of this story is asking if one can be loyal to others while betraying themselves.";
     }

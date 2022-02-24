@@ -15,7 +15,7 @@ const Sequence = ({
     userInfo,
     onFocusChange,
 
-    genre,
+    genres,
     problemTemplate,
     keywords,
     characters,
@@ -112,7 +112,7 @@ const Sequence = ({
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [commonAdvice, setCommonAdvice] = useState('')
-    const [genreAdvice, setGenreAdvice] = useState('')
+    const [genresAdvice, setGenresAdvice] = useState('')
     const [problemTemplateAdvice, setProblemTemplateAdvice] = useState('')
     const [dramaticQuestionAdvice, setDramaticQuestionAdvice] = useState('')
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
@@ -146,7 +146,7 @@ const Sequence = ({
             },
             body: JSON.stringify({
                 'seed': 123,
-                'genre': genre,
+                'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 // 'heroArchetype': heroArchetype,
@@ -186,7 +186,7 @@ const Sequence = ({
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'genre': genre,
+                'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 'heroArchetype': 'Orphan', // TODO: get this from 
@@ -202,7 +202,7 @@ const Sequence = ({
             return Promise.reject(response);
         }).then(function (data) {
             setCommonAdvice(data['common'])
-            setGenreAdvice(data['genre'])
+            setGenresAdvice(data['genres'])
             setProblemTemplateAdvice(data['problemTemplate'])
             // setHeroArchetypeAdvice(data['heroArchetype'])
             // setEnemyArchetypeAdvice(data['enemyArchetype'])
@@ -253,7 +253,7 @@ const Sequence = ({
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [genre, problemTemplate, dramaticQuestion]);
+    }, [genres, problemTemplate, dramaticQuestion]);
 
     const NextSequencesButtonGroupMemo = useMemo(() => ( // useMemo prevents the buttons from flickering on keypress
         <NextSequencesButtonGroup
@@ -351,7 +351,7 @@ const Sequence = ({
                                     <Accordion.Body>
                                         <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
                                             <span title="common advice">{commonAdvice} </span>
-                                            <span title="genre advice">{genreAdvice} </span>
+                                            <span title="genres advice">{genresAdvice} </span>
                                             <span title="problem template advice">{problemTemplateAdvice} </span>
                                             {/* <span title="hero archetype advice">{heroArchetypeAdvice} </span>
                                             <span title="enemy archetype advice">{enemyArchetypeAdvice} </span>

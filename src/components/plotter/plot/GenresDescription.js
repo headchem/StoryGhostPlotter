@@ -1,18 +1,18 @@
 
 
-const GenreDescription = ({ genreDescObj }) => {
+const GenresDescription = ({ genresDescObj }) => {
 
-    const keywordsList = genreDescObj.keywords.map((word) =>
-        <li key={word}>{word}</li>
-    );
+    // const keywordsList = genresDescObj.keywords.map((word) =>
+    //     <li key={word}>{word}</li>
+    // );
 
     return (
         <div>
-            {
-                genreDescObj &&
+            {/* {
+                genresDescObj &&
                 <>
-                    <h2>{genreDescObj.name}</h2>
-                    <p>{genreDescObj.description}</p>
+                    <h2>{genresDescObj.name}</h2>
+                    <p>{genresDescObj.description}</p>
                     <figure className="list-to-comma-str">
                         <figcaption>Keywords</figcaption>
                         <ul>
@@ -22,9 +22,10 @@ const GenreDescription = ({ genreDescObj }) => {
                         </ul>
                     </figure>
                 </>
-            }
+            } */}
+            <p>TODO!</p>
         </div>
     )
 }
 
-export default GenreDescription
+export default GenresDescription

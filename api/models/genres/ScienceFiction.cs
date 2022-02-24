@@ -6,9 +6,9 @@ namespace StoryGhost.Models.Genres;
 
 public class Scifi : IGenre
 {
-    public string Id { get { return "scifi"; } }
-    public string Name { get { return "Scifi"; } }
-    public string Description { get { return "Scifi is packed full of futuristic ideas, extrapolating from what's possible today into advanced science and technology. It examines the consequences of these innovations, and seeks to inspire a sense of forward-thinking wonder."; } }
+    public string Id { get { return "science fiction"; } }
+    public string Name { get { return "Science Fiction"; } }
+    public string Description { get { return "Science Fiction is packed full of futuristic ideas, extrapolating from what's possible today into advanced science and technology. It examines the consequences of these innovations, and seeks to inspire a sense of forward-thinking wonder."; } }
     public List<string> Keywords
     {
         get
@@ -30,11 +30,6 @@ public class Scifi : IGenre
                 FunAndGames = "Show the most high-tech aspects of the fantasy setting, and how the characters treat it as mundane, having grown used to it."
             };
         }
-    }
-
-    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
-    {
-        return $"This is an award winning scifi story full of futuristic concepts in science and technology.";
     }
 
 }

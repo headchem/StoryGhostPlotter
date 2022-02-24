@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Util;
@@ -10,9 +11,9 @@ public class DebateContinued : ISequence
     public string Name { get { return "Debate (Continued)"; } }
     public string Description { get { return "The Hero and supporting characters continue debating whether they can tackle the problem."; } }
 
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
+    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
-        var genreObj = Factory.GetGenre(genre);
+        var genresList = Factory.GetGenres(genres);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
@@ -20,7 +21,7 @@ public class DebateContinued : ISequence
         return new AdviceComponents
         {
             Common = Description,
-            Genre = genreObj.AdviceSequence.DebateContinued,
+            Genres = string.Join(" ", genresList.Select(g => g.AdviceSequence.DebateContinued)),
             ProblemTemplate = problemTemplateObj.AdviceSequence.DebateContinued,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.DebateContinued,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.DebateContinued

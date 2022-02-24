@@ -23,5 +23,5 @@ public interface IDramaticQuestion
 
     public AdviceSequence AdviceSequence { get; }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate);
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate);
 }

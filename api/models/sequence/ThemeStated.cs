@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Util;
@@ -10,9 +11,9 @@ public class ThemeStated : ISequence
     public string Name { get { return "Theme Stated"; } }
     public string Description { get { return ""; } } // this is covered by the Dramatic Question description
 
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
+    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
-        var genreObj = Factory.GetGenre(genre);
+        var genresList = Factory.GetGenres(genres);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
@@ -20,7 +21,7 @@ public class ThemeStated : ISequence
         return new AdviceComponents
         {
             Common = Description,
-            Genre = genreObj.AdviceSequence.ThemeStated,
+            Genres = string.Join(" ", genresList.Select(g => g.AdviceSequence.ThemeStated)),
             ProblemTemplate = problemTemplateObj.AdviceSequence.ThemeStated,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.ThemeStated,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.ThemeStated

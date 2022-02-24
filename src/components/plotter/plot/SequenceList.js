@@ -8,7 +8,7 @@ const SequenceList = ({
     updateAISequenceText,
     insertSequence,
     deleteSequence,
-    genre,
+    genres,
     problemTemplate,
     keywords,
     characters,
@@ -145,7 +145,7 @@ const SequenceList = ({
 
                             allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
 
-                            genre={genre}
+                            genres={genres}
                             problemTemplate={problemTemplate}
                             keywords={keywords}
                             characters={characters}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FaGhost } from 'react-icons/fa'
 import Accordion from 'react-bootstrap/Accordion';
 import Spinner from 'react-bootstrap/Spinner';
-import GenreDescription from './GenreDescription'
+import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
@@ -13,7 +13,7 @@ const LogLineObjDetails = (
         AILogLineDescription,
         onAILogLineDescriptionChange,
         curFocusElName,
-        genre,
+        genres,
         problemTemplate,
         dramaticQuestion,
         keywords,
@@ -24,7 +24,7 @@ const LogLineObjDetails = (
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
-    const [genreDescObj, setGenreDescObj] = useState(null)
+    const [genresDescObj, setGenresDescObj] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
@@ -42,7 +42,7 @@ const LogLineObjDetails = (
             },
             body: JSON.stringify({
                 'seed': 123,
-                'genre': genre,
+                'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 // 'heroArchetype': heroArchetype,
@@ -72,7 +72,7 @@ const LogLineObjDetails = (
         loadDescObj(curFocusElName)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [curFocusElName, genre, problemTemplate, dramaticQuestion]);
+    }, [curFocusElName, genres, problemTemplate, dramaticQuestion]);
 
     const isNullOrEmpty = (val) => {
         if (val === undefined) return true
@@ -86,8 +86,8 @@ const LogLineObjDetails = (
     const loadDescObj = async (elName) => {
         let url = ''
 
-        if (elName === 'genre' && !isNullOrEmpty(genre)) {
-            url = '/api/LogLine/GenreDescription?genre=' + genre
+        if (elName === 'genres' && !isNullOrEmpty(genres)) {
+            url = '/api/LogLine/GenresDescription?genres=' + genres.join(',')
         } else if (elName === 'problem template' && !isNullOrEmpty(problemTemplate)) {
             url = '/api/LogLine/ProblemTemplateDescription?problemTemplate=' + problemTemplate
         } else if (elName === 'dramatic question' && !isNullOrEmpty(dramaticQuestion)) {
@@ -105,8 +105,8 @@ const LogLineObjDetails = (
                     return Promise.reject(response);
                 }).then(function (data) {
 
-                    if (elName === 'genre') {
-                        setGenreDescObj(data)
+                    if (elName === 'genres') {
+                        setGenresDescObj(data)
                     } else if (elName === 'problem template') {
                         setProblemTemplateDescObj(data)
                     } else if (elName === 'dramatic question') {
@@ -187,7 +187,7 @@ const LogLineObjDetails = (
                         <p>A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
                     }
                     {
-                        curFocusElName === 'genre' && genreDescObj !== null && <GenreDescription genreDescObj={genreDescObj} />
+                        curFocusElName === 'genres' && genresDescObj !== null && <GenresDescription genresDescObj={genresDescObj} />
                     }
                     {
                         curFocusElName === 'problem template' && problemTemplateDescObj && <ProblemTemplateDescription problemTemplateDescObj={problemTemplateDescObj} />

@@ -105,6 +105,7 @@ public class UserActions
                 Title = NewPlotName,
                 Seed = new Random().NextInt64(),
                 Keywords = new List<string>(),
+                Genres = new List<string>(),
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
                 IsDeleted = false,
@@ -239,11 +240,8 @@ public class UserActions
         var newAILogLineDescription = plot.AILogLineDescription;
         var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
-        //var newEnemyArchetype = plot.EnemyArchetype;
-        var newGenre = plot.Genre;
-        //var newHeroArchetype = plot.HeroArchetype;
+        var newGenres = plot.Genres;
         var newKeywords = plot.Keywords;
-        //var newPrimalStakes = plot.PrimalStakes;
         var newProblemTemplate = plot.ProblemTemplate;
         var newSequences = plot.Sequences;
         var newIsPublic = plot.IsPublic;
@@ -268,31 +266,16 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/dramaticQuestion", newDramaticQuestion));
         }
 
-        // if (!string.IsNullOrWhiteSpace(newEnemyArchetype) && newEnemyArchetype != curPlotObj.EnemyArchetype)
-        // {
-        //     plotPatchOps.Add(PatchOperation.Set("/enemyArchetype", newEnemyArchetype));
-        // }
-
-        if (!string.IsNullOrWhiteSpace(newGenre) && newGenre != curPlotObj.Genre)
+        if (newGenres != null && curPlotObj.Genres != null && string.Join(',', newGenres) != string.Join(',', curPlotObj.Genres))
         {
-            plotPatchOps.Add(PatchOperation.Set("/genre", newGenre));
+            plotPatchOps.Add(PatchOperation.Set("/genres", newGenres));
         }
-
-        // if (!string.IsNullOrWhiteSpace(newHeroArchetype) && newHeroArchetype != curPlotObj.HeroArchetype)
-        // {
-        //     plotPatchOps.Add(PatchOperation.Set("/heroArchetype", newHeroArchetype));
-        // }
 
         // if keywords exists on both ends, update it
         if (newKeywords != null && curPlotObj.Keywords != null && string.Join(',', newKeywords) != string.Join(',', curPlotObj.Keywords))
         {
             plotPatchOps.Add(PatchOperation.Set("/keywords", newKeywords));
         }
-
-        // if (!string.IsNullOrWhiteSpace(newPrimalStakes) && newPrimalStakes != curPlotObj.PrimalStakes)
-        // {
-        //     plotPatchOps.Add(PatchOperation.Set("/primalStakes", newPrimalStakes));
-        // }
 
         if (!string.IsNullOrWhiteSpace(newProblemTemplate) && newProblemTemplate != curPlotObj.ProblemTemplate)
         {

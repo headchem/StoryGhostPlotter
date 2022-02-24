@@ -29,7 +29,7 @@ public class NaturalUnsanctioned : IDramaticQuestion
         }
     }
 
-    public string GetLogLineContribution(long seed, IGenre genre, IProblemTemplate problemTemplate)
+    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate)
     {
         return $"The overarching theme of this story is asking if unnatural behavior can ultimately be sanctioned.";
     }

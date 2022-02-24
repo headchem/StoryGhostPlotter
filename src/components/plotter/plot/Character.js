@@ -16,7 +16,7 @@ const Character = ({
     onFocusChange,
 
     archetypeOptions,
-    genre,
+    genres,
     problemTemplate,
     keywords,
     dramaticQuestion,
@@ -56,7 +56,7 @@ const Character = ({
             },
             body: JSON.stringify({
                 'seed': 123,
-                'genre': genre,
+                'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 // 'heroArchetype': heroArchetype,

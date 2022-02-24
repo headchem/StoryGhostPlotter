@@ -12,6 +12,4 @@ public interface IGenre
     public List<string> Keywords { get; }
 
     public AdviceSequence AdviceSequence { get; }
-
-    public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion);
 }

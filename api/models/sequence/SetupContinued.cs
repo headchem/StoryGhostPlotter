@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Util;
@@ -10,9 +11,9 @@ public class SetupContinued : ISequence
     public string Name { get { return "Setup (Continued)"; } }
     public string Description { get { return "Continue introducing the characters and setting."; } }
 
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
+    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
-        var genreObj = Factory.GetGenre(genre);
+        var genresList = Factory.GetGenres(genres);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
@@ -20,7 +21,7 @@ public class SetupContinued : ISequence
         return new AdviceComponents
         {
             Common = Description,
-            Genre = genreObj.AdviceSequence.SetupContinued,
+            Genres = string.Join(" ", genresList.Select(g => g.AdviceSequence.SetupContinued)),
             ProblemTemplate = problemTemplateObj.AdviceSequence.SetupContinued,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.SetupContinued,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.SetupContinued

@@ -9,5 +9,5 @@ public interface ISequence
     public string Name { get; }
     public string Description { get; }
 
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion);
+    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion);
 }

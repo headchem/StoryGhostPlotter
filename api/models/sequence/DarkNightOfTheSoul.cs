@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 using StoryGhost.Util;
@@ -10,9 +11,9 @@ public class DarkNightOfTheSoul : ISequence
     public string Name { get { return "Dark Night Of The Soul"; } }
     public string Description { get { return "The Hero wallows in hopelessness and mourns what has \"died\". The death of something old makes way for something new to be born, but the fertile ground remains unseeded for now."; } }
 
-    public AdviceComponents GetAdvice(string genre, string problemTemplate, string heroArchetype, string dramaticQuestion)
+    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
-        var genreObj = Factory.GetGenre(genre);
+        var genresList = Factory.GetGenres(genres);
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);
         var heroArchetypeObj = Factory.GetArchetype(heroArchetype);
         var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
@@ -20,7 +21,7 @@ public class DarkNightOfTheSoul : ISequence
         return new AdviceComponents
         {
             Common = Description,
-            Genre = genreObj.AdviceSequence.DarkNightOfTheSoul,
+            Genres = string.Join(" ", genresList.Select(g => g.AdviceSequence.DarkNightOfTheSoul)),
             ProblemTemplate = problemTemplateObj.AdviceSequence.DarkNightOfTheSoul,
             HeroArchetype = heroArchetypeObj.HeroAdviceSequence.DarkNightOfTheSoul,
             DramaticQuestion = dramaticQuestionObj.AdviceSequence.DarkNightOfTheSoul

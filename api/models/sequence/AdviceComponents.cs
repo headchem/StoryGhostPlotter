@@ -8,7 +8,7 @@ public class AdviceComponents
 {
     //[JsonPropertyName("sequenceName")]
     public string Common { get; set; }
-    public string Genre { get; set; }
+    public string Genres { get; set; }
     public string ProblemTemplate { get; set; }
     public string HeroArchetype { get; set; }
     public string DramaticQuestion { get; set; }
