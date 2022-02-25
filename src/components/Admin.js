@@ -6,7 +6,9 @@ const Admin = () => {
 
     const [finetuningData, setFinetuningData] = useState(null)
 
-    // const [file, setFile] = useState(null)
+    const [logLineFile, setLogLineFile] = useState(null)
+    const [logLineJSONL, setLogLineJSONL] = useState(null)
+
     // const [orphanSummary, setOrphanSummary] = useState('')
     // const [orphanFull, setOrphanFull] = useState('')
     // const [wandererSummary, setWandererSummary] = useState('')
@@ -18,9 +20,9 @@ const Admin = () => {
 
     // const [longestWordCount, setLongestWordCount] = useState(0)
 
-    // const onChangeFile = e => {
-    //     setFile(e.target.files[0]);
-    // };
+    const onLogLineChangeFile = e => {
+        setLogLineFile(e.target.files[0]);
+    };
 
     const clean = (str) => {
         return str.replaceAll('\n', '\\n').replaceAll('"', '\\"')
@@ -45,7 +47,7 @@ const Admin = () => {
         //const formData = new FormData()
         //formData.append('myFile', file)
 
-        fetch('/api/SGAdmin/CreateFinetuningDataset', {
+        fetch('/api/SGAdmin/CreateSequenceFinetuningDataset', {
             method: 'GET',
         })
             .then(response => response.json())
@@ -57,9 +59,39 @@ const Admin = () => {
             })
     }
 
+    const uploadLogLineFile = () => {
+        const formData = new FormData()
+        formData.append('logLineFile', logLineFile)
+
+        fetch('/api/SGAdmin/CreateLogLineFinetuningDataset', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setLogLineJSONL(data['text'])
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
     return (
         <div>
             <p>Admin page</p>
+
+            <input
+                type="file"
+                onChange={e => onLogLineChangeFile(e)}
+            />
+
+            <button onClick={uploadLogLineFile}>Upload Log Line Data</button>
+            <label htmlFor="logLineFinetune" className="fs-3">Log Line Finetune</label>
+            <textarea className="form-control" id="logLineFinetune" rows="3" defaultValue={logLineJSONL}></textarea>
+
+
+            <hr/>
 
             <button onClick={getFinetuningData}>Get Data</button>
 

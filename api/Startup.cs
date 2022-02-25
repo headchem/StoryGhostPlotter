@@ -26,27 +26,33 @@ namespace MyNamespace
             // builder.Services.AddTransient<SalesforceTokenService>();
             // builder.Services.AddTransient<ISalesforceTokenService, CachedSalesforceTokenService>();
 
-            // exponential backoff with the following attempts - TODO: log error if exceeding attempts, handle gracefully in UI
-            var exponentialBackoff = GetRetryPolicy();
-            var longTimeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(500));
+            var isDebug = true; // toggle the dummy completion service or the real OpenAI service
 
-            var combinedExpLongPolicy = longTimeoutPolicy.WrapAsync(exponentialBackoff);
+            if (isDebug == false)
+            {
+                // exponential backoff with the following attempts - TODO: log error if exceeding attempts, handle gracefully in UI
+                var exponentialBackoff = GetRetryPolicy();
+                var longTimeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(500));
 
-            // builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>(c =>
-            // {
-            //     c.BaseAddress = new System.Uri("https://api.openai.com/v1/");
-            //     c.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
-            //     c.DefaultRequestHeaders.Add("Accept", "application/json");
+                var combinedExpLongPolicy = longTimeoutPolicy.WrapAsync(exponentialBackoff);
 
-            //     var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
-            //     c.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
-            // })
-            //     .SetHandlerLifetime(TimeSpan.FromSeconds(500))
-            //     .AddPolicyHandler(combinedExpLongPolicy);
+                builder.Services.AddHttpClient<ICompletionService, OpenAICompletionService>(c =>
+                {
+                    c.BaseAddress = new System.Uri("https://api.openai.com/v1/");
+                    c.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
+                    c.DefaultRequestHeaders.Add("Accept", "application/json");
 
-            // use below for testing the UI without using up real completions
-            builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
-
+                    var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+                    c.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+                })
+                    .SetHandlerLifetime(TimeSpan.FromSeconds(500))
+                    .AddPolicyHandler(combinedExpLongPolicy);
+            }
+            else
+            {
+                // use below for testing the UI without using up real completions
+                builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
+            }
 
             builder.Services.AddApplicationInsightsTelemetry();
 
@@ -94,6 +100,7 @@ namespace MyNamespace
                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), // 1=1s, 2=2s, 3=4s, 4=8s, 5=16s, 6=32s, 7=64s, 8=128s, 9=256s
                     onRetry: (exception, sleepDuration, attemptNumber, context) =>
                         {
+                            Console.WriteLine(exception.ToString());
                             //var test = "got an exception... log more here?";
                             //Log($"Too many requests. Retrying in {sleepDuration}. {attemptNumber} / {MAX_RETRIES}");
                         }

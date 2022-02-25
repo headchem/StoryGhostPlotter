@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
@@ -21,34 +22,37 @@ public class OpenAICompletionService : ICompletionService
     public OpenAICompletionService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-
-        _httpClient.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
-
-        _httpClient.BaseAddress = new Uri("https://api.openai.com/");
-        //_httpClient.BaseAddress = new Uri("https://dasdf83jasdfhasd2jh3jhasdf.com/");
-
-
-        var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
-
-        // using Microsoft.Net.Http.Headers;
-        // The GitHub API requires two headers.
-        _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
-        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/vnd.github.v3+json");
-        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.UserAgent, "HttpRequestsSample");
     }
 
-    // public async Task<IEnumerable<GitHubBranch>?> GetAspNetCoreDocsBranchesAsync() =>
-    //     await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
-    //         "repos/dotnet/AspNetCore.Docs/branches");
-
-    public async Task<GenerateResponse> GetLogLineDescriptionCompletion(Plot story)
+    public async Task<GenerateResponse> GetLogLineDescriptionCompletion(Plot plot)
     {
-        var prompt = "TODO log line desc prompt goes here...";
+        var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            Model = "babbage:ft-personal-2022-02-25-07-36-34",
+            MaxTokens = 200, // longest log line prompt was 167 tokens,
+            Temperature = 1.0,
+            Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
+        };
+
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync("completions", content);
+        response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
         var result = new GenerateResponse();
 
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
         result.Prompt = prompt;
-        result.Completion = "AI Log Line Description completion goes here...";
+        result.Completion = completion;
 
         return result;
     }
@@ -80,7 +84,7 @@ public class OpenAICompletionService : ICompletionService
             //Model = models[story.CompletionType], // TODO, update completion type with new sequence/beat structure
             MaxTokens = maxCompletionLength,
             Temperature = temperature,
-            Stop = CreateFinetuningDataset.StopSequence // IMPORTANT: this must match exactly what we used during finetuning
+            Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
         };
 
         var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);

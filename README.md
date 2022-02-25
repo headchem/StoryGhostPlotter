@@ -42,12 +42,13 @@ FINETUNING
  * Go to Admin page, click the button
  * For each textarea, copy and paste into Notepad++ and save as <sequenceName>.jsonl
  * Open GIT BASH
- * export OPENAI_API_KEY="get the key from the OpenAI portal"
+ * export OPENAI_API_KEY="get_key_from_OpenAI_portal"
  * Run this tool as a sanity check on data formatting
  ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"
  * To kick off a finetune job:
  ** SUMMARY: openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
  ** FULL: openai api fine_tunes.create -t "sg_finetune\orphanFull.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+ ** LOGLINE: openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05

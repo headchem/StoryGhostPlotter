@@ -255,7 +255,7 @@ public static class Factory
         //consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
         //consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
 
-        consolidatedContributions += CreateFinetuningDataset.StopSequence; //"\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
+        consolidatedContributions += CreateFinetuningDataset.CompletionStopSequence; //"\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
         return consolidatedContributions;
     }
