@@ -10,6 +10,7 @@ using System.Text.Json;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
+using StoryGhost.Models.Completions;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
 
@@ -24,14 +25,19 @@ public class OpenAICompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<GenerateResponse> GetLogLineDescriptionCompletion(Plot plot)
+    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot plot)
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
+
+        /*
+"babbage:ft-personal-2022-02-25-07-36-34" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
+"babbage:ft-personal-2022-02-26-07-23-02" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
+        */
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = "babbage:ft-personal-2022-02-25-07-36-34",
+            Model = "babbage:ft-personal-2022-02-26-07-23-02", //,
             MaxTokens = 200, // longest log line prompt was 167 tokens,
             Temperature = 1.0,
             Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
@@ -46,18 +52,34 @@ public class OpenAICompletionService : ICompletionService
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var result = new GenerateResponse();
-
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        result.Prompt = prompt;
-        result.Completion = completion;
+        var completionTitle = "";
+        var completionDescription = "";
+
+        var completionParts = completion.Split(" --- ");
+        if (completionParts.Length > 1)
+        { // it should always have 2 parts, but we check just in case
+            completionTitle = completionParts[0];
+            completionDescription = completionParts[1];
+        }
+        else
+        {
+            completionDescription = completionParts[0];
+        }
+
+        var result = new LogLineResponse
+        {
+            Prompt = prompt,
+            Title = completionTitle,
+            Completion = completionDescription
+        };
 
         return result;
     }
 
-    public async Task<GenerateResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
         var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
@@ -99,7 +121,7 @@ public class OpenAICompletionService : ICompletionService
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var result = new GenerateResponse();
+        var result = new SequenceResponse();
 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
@@ -110,11 +132,11 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<GenerateResponse> GetCharacterCompletion(string archetype, Plot story)
+    public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story)
     {
         var prompt = "TODO character archetype prompt goes here...";
 
-        var result = new GenerateResponse();
+        var result = new SequenceResponse();
 
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";

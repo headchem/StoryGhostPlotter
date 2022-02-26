@@ -47,12 +47,16 @@ public class CreateFinetuningDataset
 
         rows = rows.Where(r => r.HasAdult == "No" && r.HasDisturbing == "No").ToList();
 
+        // randomize row order just in case
+        rows = rows.OrderBy(a => Guid.NewGuid()).ToList();
+
+
         var finetuningRows = new List<FinetuningRow>();
 
         foreach (var row in rows)
         {
             var prompt = string.Join(", ", row.Genres);
-            var completion = row.Overview;
+            var completion = row.Title + " --- " + row.Overview;
 
             finetuningRows.Add(getFinetuningRow(prompt, completion));
         }

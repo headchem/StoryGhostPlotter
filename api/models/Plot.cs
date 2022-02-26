@@ -18,6 +18,7 @@ public class Plot
     public string LogLineDescription { get; set; }
 
     public string AILogLineDescription { get; set; }
+    public string AILogLineTitle { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; }

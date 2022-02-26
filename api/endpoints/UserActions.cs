@@ -238,6 +238,7 @@ public class UserActions
 
         var newLogLineDescription = plot.LogLineDescription;
         var newAILogLineDescription = plot.AILogLineDescription;
+        var newAILogLineTitle = plot.AILogLineTitle;
         var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
         var newGenres = plot.Genres;
@@ -249,6 +250,11 @@ public class UserActions
         if (!string.IsNullOrWhiteSpace(newLogLineDescription) && newLogLineDescription != curPlotObj.LogLineDescription)
         {
             plotPatchOps.Add(PatchOperation.Set("/logLineDescription", newLogLineDescription));
+        }
+
+        if (!string.IsNullOrWhiteSpace(newAILogLineTitle) && newAILogLineTitle != curPlotObj.AILogLineTitle)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/AILogLineTitle", newAILogLineTitle));
         }
 
         if (!string.IsNullOrWhiteSpace(newAILogLineDescription) && newAILogLineDescription != curPlotObj.AILogLineDescription)

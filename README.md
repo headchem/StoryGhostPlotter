@@ -38,7 +38,7 @@ git pull
 
 
 FINETUNING
-
+ * from Google Sheets, export file as csv
  * Go to Admin page, click the button
  * For each textarea, copy and paste into Notepad++ and save as <sequenceName>.jsonl
  * Open GIT BASH
@@ -49,6 +49,8 @@ FINETUNING
  ** SUMMARY: openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
  ** FULL: openai api fine_tunes.create -t "sg_finetune\orphanFull.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
  ** LOGLINE: openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
+ ----- LEFT OFF: try another finetune with the upper limit of learning rate, same epochs
+ NEW RUN: openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05

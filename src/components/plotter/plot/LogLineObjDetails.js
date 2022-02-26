@@ -10,7 +10,9 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const LogLineObjDetails = (
     {
         userInfo,
+        AILogLineTitle,
         AILogLineDescription,
+        onAILogLineTitleChange,
         onAILogLineDescriptionChange,
         curFocusElName,
         genres,
@@ -58,6 +60,7 @@ const LogLineObjDetails = (
             }
             return Promise.reject(response);
         }).then(function (data) {
+            onAILogLineTitleChange(data['title'])
             onAILogLineDescriptionChange(data['completion'])
         }).catch(function (error) {
             console.warn(error);
@@ -141,6 +144,10 @@ const LogLineObjDetails = (
                                                 {
                                                     userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
+                                                        {
+                                                            AILogLineTitle && AILogLineTitle.length > 0 &&
+                                                            <h4>{AILogLineTitle}</h4>
+                                                        }
                                                         {
                                                             AILogLineDescription && AILogLineDescription.length > 0 &&
                                                             <p>{AILogLineDescription}</p>

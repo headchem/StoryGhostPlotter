@@ -9,6 +9,7 @@ using System.Text;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
+using StoryGhost.Models.Completions;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
 
@@ -24,22 +25,23 @@ public class DummyCompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<GenerateResponse> GetLogLineDescriptionCompletion(Plot story) {
+    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot story) {
         var prompt = "TODO log line desc prompt goes here...";
         
-        var result = new GenerateResponse();
+        var result = new LogLineResponse();
 
         result.Prompt = prompt;
+        result.Title = "AI Title goes here...";
         result.Completion = "AI Log Line Description completion goes here...";
 
         return result;
     }
 
-    public async Task<GenerateResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
         var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
-        var result = new GenerateResponse();
+        var result = new SequenceResponse();
 
         result.Prompt = prompt;
         result.Completion = "AI SEQUENCE completion goes here...";
@@ -47,10 +49,10 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<GenerateResponse> GetCharacterCompletion(string archetype, Plot story) {
+    public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story) {
         var prompt = "TODO character archetype prompt goes here...";
         
-        var result = new GenerateResponse();
+        var result = new SequenceResponse();
 
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
