@@ -24,7 +24,7 @@ const PlotHome = (
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescription, setAILogLineDescription] = useState('')
-    const [AILogLineTitle, setAILogLineTitle] = useState('')
+    //const [AILogLineTitle, setAILogLineTitle] = useState('')
     const [title, setTitle] = useState('')
     const [genres, setGenres] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
@@ -49,7 +49,7 @@ const PlotHome = (
     const populatePlot = (data) => {
         setLogLineDescription(data['logLineDescription'])
         setAILogLineDescription(data['aiLogLineDescription'])
-        setAILogLineTitle(data['aiLogLineTitle'])
+        //setAILogLineTitle(data['aiLogLineTitle'])
         setTitle(data['title'])
         setGenres(data['genres'])
         setProblemTemplate(data['problemTemplate'])
@@ -396,9 +396,9 @@ const PlotHome = (
         setLogLineDescription(val)
     }
 
-    const onAILogLineTitleChange = (val) => {
-        setAILogLineTitle(val)
-    }
+    // const onAILogLineTitleChange = (val) => {
+    //     setAILogLineTitle(val)
+    // }
 
     const onAILogLineDescriptionChange = (val) => {
         setAILogLineDescription(val)
@@ -532,8 +532,8 @@ const PlotHome = (
                             <LogLineObjDetails
                                 userInfo={userInfo}
                                 onAILogLineDescriptionChange={onAILogLineDescriptionChange}
-                                onAILogLineTitleChange={onAILogLineTitleChange}
-                                AILogLineTitle={AILogLineTitle}
+                                // onAILogLineTitleChange={onAILogLineTitleChange}
+                                // AILogLineTitle={AILogLineTitle}
                                 AILogLineDescription={AILogLineDescription}
                                 curFocusElName={curFocusElName}
                                 genres={genres}

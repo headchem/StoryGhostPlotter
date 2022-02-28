@@ -44,13 +44,19 @@ FINETUNING
  * Open GIT BASH
  * export OPENAI_API_KEY="get_key_from_OpenAI_portal"
  * Run this tool as a sanity check on data formatting
- ** openai tools fine_tunes.prepare_data -f "sg_finetune\orphanSummary.jsonl"
+ ** openai tools fine_tunes.prepare_data -f "logline.jsonl"
  * To kick off a finetune job:
  ** SUMMARY: openai api fine_tunes.create -t "sg_finetune\orphanSummary.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.03
  ** FULL: openai api fine_tunes.create -t "sg_finetune\orphanFull.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
  ** LOGLINE: openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
  ----- LEFT OFF: try another finetune with the upper limit of learning rate, same epochs
- NEW RUN: openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
+ NEW RUN:
+ 	openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
+	openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.2
+	openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.02
+		ABOVE did not stay on topic... maybe it didn't learn enough
+	openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
+	
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05
@@ -63,6 +69,8 @@ FINETUNING
 * “A Curie fine-tuned on 100 examples may have similar results to a Babbage fine-tuned on 2,000 examples. The larger models can do remarkable things with very little data.” - https://bdtechtalks.com/2021/11/29/gpt-3-application-development-tips/
  * The documentation also states for conditional generation: "aim for at least ~500 examples" and "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  * My prompts all start with "Here is a summary of an award winning story: " When fine tuning, is that style of prompt still useful to start every row of example data? ANSWER: with a small number of examples, the repeated prompt language is useful, but as I get closer to 100 examples, it may no longer be necessary
+
+ * DELETE A MODEL: openai api models.delete -i davinci:ft-personal-2022-01-14-07-09-45
 
 IDEAS:
 

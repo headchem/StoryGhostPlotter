@@ -30,16 +30,19 @@ public class OpenAICompletionService : ICompletionService
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
         /*
-"babbage:ft-personal-2022-02-25-07-36-34" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
+DELETED: "babbage:ft-personal-2022-02-25-07-36-34" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
 "babbage:ft-personal-2022-02-26-07-23-02" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
+"babbage:ft-personal-2022-02-27-22-34-14" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.2
+DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.02
+"curie:ft-personal-2022-02-27-23-31-57" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
         */
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = "babbage:ft-personal-2022-02-26-07-23-02", //,
+            Model = "curie:ft-personal-2022-02-27-23-31-57", //,
             MaxTokens = 200, // longest log line prompt was 167 tokens,
-            Temperature = 1.0,
+            Temperature = 0.85,
             Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
         };
 
@@ -55,25 +58,25 @@ public class OpenAICompletionService : ICompletionService
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        var completionTitle = "";
-        var completionDescription = "";
+        //var completionTitle = "";
+        //var completionDescription = "";
 
-        var completionParts = completion.Split(" --- ");
-        if (completionParts.Length > 1)
-        { // it should always have 2 parts, but we check just in case
-            completionTitle = completionParts[0];
-            completionDescription = completionParts[1];
-        }
-        else
-        {
-            completionDescription = completionParts[0];
-        }
+        // var completionParts = completion.Split(" --- ");
+        // if (completionParts.Length > 1)
+        // { // it should always have 2 parts, but we check just in case
+        //     completionDescription = completionParts[0];
+        //     completionTitle = completionParts[1];
+        // }
+        // else
+        // {
+        //     completionDescription = completion;
+        // }
 
         var result = new LogLineResponse
         {
             Prompt = prompt,
-            Title = completionTitle,
-            Completion = completionDescription
+            //Title = completionTitle,
+            Completion = completion
         };
 
         return result;
@@ -81,9 +84,15 @@ public class OpenAICompletionService : ICompletionService
 
     public async Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
+        return new SequenceResponse
+        {
+            Prompt = "prompt goes here",
+            Completion = "AI Sequence completion goes here..."
+        };
+
         var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
-        var models = getModels();
+        //var models = getModels();
 
         // set sensible defaults based on how long we expect average completions for summary and full
         var maxCompletionLength = 1;
@@ -142,25 +151,5 @@ public class OpenAICompletionService : ICompletionService
         result.Completion = "AI CHARACTER completion goes here...";
 
         return result;
-    }
-
-    private static Dictionary<string, string> getModels()
-    {
-        var models = new Dictionary<string, string>(); // key=completion type, value=finetuned model name
-
-        //OLD request delete! models.Add("orphanSummary", "davinci:ft-personal-2022-01-07-03-57-47"); // file: ???
-        // OLD models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-07-09-45"); // file: file-Ume90SHsl7fZrKi3CUZYpWvv
-        // OLD models.Add("orphanFull", "davinci:ft-personal-2022-01-14-07-33-38"); // file: file-WInOrbv1OUtTjPxVJhLXM52E
-        //models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-20-10-28"); // file: file-y0DyC2OllYkIac7IVlWWPreg
-        models.Add("orphanSummary", "davinci:ft-personal-2022-01-14-20-37-11"); // file: file-dgqvXcXRPGozYDRw51QOUgjG
-        models.Add("orphanFull", "davinci:ft-personal-2022-01-14-19-46-56"); // file: file-qdh65y1NlmZcfTtRuY1aFw5y
-        models.Add("wandererSummary", "davinci:ft-personal-2022-01-17-05-54-33"); // file: file-NsboEGXUSkMnnOU3i1Gl9Ena
-        models.Add("wandererFull", "davinci:ft-personal-2022-01-17-06-30-49"); // file: file-tyog5wRUgFdWkgWZoPueNPI2
-        models.Add("warriorSummary", "davinci:ft-personal-2022-01-18-04-17-36"); // file: file-0O2o8DDY7Lh55WAxTu1le26g
-        models.Add("warriorFull", "davinci:ft-personal-2022-01-18-04-24-32"); // file: file-ACTIYBCFNHuiflu1SXNKIE2F
-        models.Add("martyrSummary", "davinci:ft-personal-2022-01-18-04-45-55"); // file: file-et3zf0arSUtAhI55yPcH3RTI
-        models.Add("martyrFull", "davinci:ft-personal-2022-01-18-04-58-53");// $4.74 to finetune with 30 examples on davinci, file: file-iv17D0PBMkBpvpteUVHhNuKy
-
-        return models;
     }
 }

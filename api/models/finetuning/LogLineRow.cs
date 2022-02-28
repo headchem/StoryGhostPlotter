@@ -20,7 +20,7 @@ public class LogLineRow
         get
         {
             // randomizes the order of the genres
-            return Genre.Replace("[", "").Replace("]", "").Split(',').ToList().Select(g => g.Replace("'", "").Trim()).ToList().OrderBy(a => Guid.NewGuid()).ToList();
+            return Genre.Replace("[", "").Replace("]", "").Split(',').ToList().Select(g => g.Replace("'", "").Trim()).ToList().Where(g => g != "TV Movie").OrderBy(a => Guid.NewGuid()).ToList();
         }
     }
     public string HasSports { get; set; }
