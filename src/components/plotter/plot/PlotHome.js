@@ -24,7 +24,6 @@ const PlotHome = (
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescription, setAILogLineDescription] = useState('')
-    //const [AILogLineTitle, setAILogLineTitle] = useState('')
     const [title, setTitle] = useState('')
     const [genres, setGenres] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
@@ -49,7 +48,6 @@ const PlotHome = (
     const populatePlot = (data) => {
         setLogLineDescription(data['logLineDescription'])
         setAILogLineDescription(data['aiLogLineDescription'])
-        //setAILogLineTitle(data['aiLogLineTitle'])
         setTitle(data['title'])
         setGenres(data['genres'])
         setProblemTemplate(data['problemTemplate'])
@@ -450,10 +448,18 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="title" className="form-label">Title</label>
+                                    <label for="keywords" className="form-label">Keywords</label>
                                 </div>
                                 <div className='col-md-9'>
-                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
+                                    <div style={{ width: '100%' }}>
+                                        <LogLineSelect
+                                            placeholder='Keywords'
+                                            isMultiSelect={true}
+                                            onFocusChange={() => onFocusChange('keywords')}
+                                            value={keywords}
+                                            onChange={onKeywordsChange}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
@@ -473,6 +479,15 @@ const PlotHome = (
                                         showCount={true}
                                         onFocus={() => onFocusChange('logLineDescription')}
                                     />
+                                </div>
+                            </div>
+
+                            <div className='row pb-3'>
+                                <div className='col-md-3'>
+                                    <label for="title" className="form-label">Title</label>
+                                </div>
+                                <div className='col-md-9'>
+                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
                                 </div>
                             </div>
 
@@ -508,32 +523,11 @@ const PlotHome = (
                                 </div>
                             </div>
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label for="keywords" className="form-label">Keywords</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <div style={{ width: '100%' }}>
-                                        <LogLineSelect
-                                            placeholder='Keywords'
-                                            isMultiSelect={true}
-                                            onFocusChange={() => onFocusChange('keywords')}
-                                            value={keywords}
-                                            onChange={onKeywordsChange}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-
-
                         </div>
                         <div className='col-md-5'>
                             <LogLineObjDetails
                                 userInfo={userInfo}
                                 onAILogLineDescriptionChange={onAILogLineDescriptionChange}
-                                // onAILogLineTitleChange={onAILogLineTitleChange}
-                                // AILogLineTitle={AILogLineTitle}
                                 AILogLineDescription={AILogLineDescription}
                                 curFocusElName={curFocusElName}
                                 genres={genres}

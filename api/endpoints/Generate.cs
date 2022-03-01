@@ -41,7 +41,9 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
         }
 
-        var result = await _completionService.GetLogLineDescriptionCompletion(plot);
+        var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
+
+        var result = await _completionService.GetLogLineDescriptionCompletion(plot, keywordsLogitBias);
 
         // TODO: log token usage by OpenAI to current user container
         

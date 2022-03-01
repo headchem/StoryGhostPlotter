@@ -25,7 +25,68 @@ public class OpenAICompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot plot)
+    private void addTokenVariationsIfFound(Dictionary<string, int> logitBias, string keyword, int keywordsLogitBias)
+    {
+        var suppressAmt = -100;
+        var enhanceAmt = keywordsLogitBias; // experimentation results in 5 being a happy medium
+
+        var direction = 0;
+
+        // meaning suppress this keyword
+        if (keyword.StartsWith("-"))
+        {
+            direction = suppressAmt;
+            keyword = keyword.Substring(1); // strip out the "-"
+        }
+        else
+        {
+            direction = enhanceAmt;
+        }
+
+        var lower = keyword.ToLower();
+        var capitalized = "";
+
+        if (keyword.Length == 1)
+        {
+            capitalized += keyword.ToUpper();
+        }
+        else
+        {
+            capitalized += keyword[0].ToString().ToUpper() + keyword.Substring(1);
+        }
+
+        // no space
+        if (GPTTokens.Tokens.ContainsKey(lower))
+        {
+            var tokenId = GPTTokens.Tokens[lower].ToString();
+            logitBias.Add(tokenId, direction);
+        }
+
+        // no space
+        if (GPTTokens.Tokens.ContainsKey(capitalized))
+        {
+            var tokenId = GPTTokens.Tokens[capitalized].ToString();
+            logitBias.Add(tokenId, direction);
+        }
+
+        // with space
+        var lowerWithSpace = "Ġ" + lower;
+        if (GPTTokens.Tokens.ContainsKey(lowerWithSpace))
+        {
+            var tokenId = GPTTokens.Tokens[lowerWithSpace].ToString();
+            logitBias.Add(tokenId, direction);
+        }
+
+        // with space
+        var capitalizedWithSpace = "Ġ" + capitalized;
+        if (GPTTokens.Tokens.ContainsKey(capitalizedWithSpace))
+        {
+            var tokenId = GPTTokens.Tokens[capitalizedWithSpace].ToString();
+            logitBias.Add(tokenId, direction);
+        }
+    }
+
+    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
@@ -41,10 +102,28 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         {
             Prompt = prompt,
             Model = "curie:ft-personal-2022-02-27-23-31-57", //,
-            MaxTokens = 200, // longest log line prompt was 167 tokens,
-            Temperature = 0.85,
-            Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
+            MaxTokens = 150, // longest log line prompt was 167 tokens,
+            Temperature = 0.9,
+            TopP = 1.0,
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0,
+            FrequencyPenalty = 0.0,
         };
+
+        var logitBiasRatio = keywordsLogitBias / 9.0;
+
+        openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+        openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+
+        if (plot.Keywords != null && plot.Keywords.Count > 0)
+        {
+            openAIRequest.LogitBias = new Dictionary<string, int>();
+
+            foreach (var keyword in plot.Keywords)
+            {
+                addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
+            }
+        }
 
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");

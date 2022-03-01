@@ -25,7 +25,7 @@ public class DummyCompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot story) {
+    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot story, int keywordsLogitBias) {
         var prompt = "TODO log line desc prompt goes here...";
         
         var result = new LogLineResponse();

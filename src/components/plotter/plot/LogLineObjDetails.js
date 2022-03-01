@@ -6,6 +6,8 @@ import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import RangeSlider from 'react-bootstrap-range-slider';
 
 const LogLineObjDetails = (
     {
@@ -29,6 +31,7 @@ const LogLineObjDetails = (
     const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
+    const [keywordSliderValue, setKeywordSliderValue] = useState(5);
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -36,7 +39,7 @@ const LogLineObjDetails = (
     }
 
     const fetchCompletion = async () => {
-        fetchWithTimeout('/api/LogLineDescription/Generate', {
+        fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=' + keywordSliderValue, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -150,6 +153,15 @@ const LogLineObjDetails = (
                                                         } */}
 
                                                         <p className="text-muted">The AI sometimes returns character names and ideas from existing stories. Add some twists of your own to ensure uniqueness.</p>
+
+                                                        <RangeSlider
+                                                            value={keywordSliderValue}
+                                                            onChange={changeEvent => setKeywordSliderValue(changeEvent.target.value)}
+                                                            min={0}
+                                                            max={9}
+                                                            step={1}
+                                                            size="lg"
+                                                        />
 
                                                         {
                                                             AILogLineDescription && AILogLineDescription.length > 0 &&
