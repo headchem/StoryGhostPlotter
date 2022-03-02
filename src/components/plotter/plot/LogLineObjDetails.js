@@ -2,20 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { FaGhost } from 'react-icons/fa'
 import Accordion from 'react-bootstrap/Accordion';
 import Spinner from 'react-bootstrap/Spinner';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
-import RangeSlider from 'react-bootstrap-range-slider';
+//import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+//import RangeSlider from 'react-bootstrap-range-slider';
 
 const LogLineObjDetails = (
     {
         userInfo,
         //AILogLineTitle,
-        AILogLineDescription,
+        AILogLineDescriptions,
         //onAILogLineTitleChange,
-        onAILogLineDescriptionChange,
+        onAILogLineDescriptionsChange,
         curFocusElName,
         genres,
         problemTemplate,
@@ -31,7 +33,7 @@ const LogLineObjDetails = (
     const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
-    const [keywordSliderValue, setKeywordSliderValue] = useState(5);
+    //const [keywordSliderValue, setKeywordSliderValue] = useState(5);
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -39,7 +41,7 @@ const LogLineObjDetails = (
     }
 
     const fetchCompletion = async () => {
-        fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=' + keywordSliderValue, {
+        fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=2', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -63,8 +65,8 @@ const LogLineObjDetails = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            //onAILogLineTitleChange(data['title'])
-            onAILogLineDescriptionChange(data['completion'])
+            //const lastItem = [...data].pop()
+            onAILogLineDescriptionsChange(data)
         }).catch(function (error) {
             console.warn(error);
             console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
@@ -126,8 +128,6 @@ const LogLineObjDetails = (
         }
     }
 
-    // onAILogLineDescriptionChange('the ai value here')
-
     return (
         <div>
             {
@@ -136,7 +136,7 @@ const LogLineObjDetails = (
             {
                 descIsLoading === false && <>
                     {
-                        curFocusElName === 'logLineDescription' &&
+                        (curFocusElName === 'logLineDescription' || curFocusElName === 'keywords') &&
                         <>
                             <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
                                 <Accordion.Item eventKey="0">
@@ -153,20 +153,37 @@ const LogLineObjDetails = (
                                                         } */}
 
                                                         <p className="text-muted">The AI sometimes returns character names and ideas from existing stories. Add some twists of your own to ensure uniqueness.</p>
-
-                                                        <RangeSlider
+                                                        <hr />
+                                                        {/* <RangeSlider
                                                             value={keywordSliderValue}
                                                             onChange={changeEvent => setKeywordSliderValue(changeEvent.target.value)}
                                                             min={0}
                                                             max={9}
                                                             step={1}
                                                             size="lg"
-                                                        />
+                                                        /> */}
 
                                                         {
-                                                            AILogLineDescription && AILogLineDescription.length > 0 &&
-                                                            <p>{AILogLineDescription}</p>
+                                                            AILogLineDescriptions && AILogLineDescriptions['finetuned'] &&
+                                                            <>
 
+                                                                <Tabs defaultActiveKey="finetune" className="mb-3">
+                                                                    <Tab eventKey="finetune" title="Original">
+                                                                        <p>{AILogLineDescriptions['finetuned']['completion']}</p>
+                                                                    </Tab>
+
+                                                                    {
+                                                                        AILogLineDescriptions['keywords'] &&
+
+
+                                                                        <Tab eventKey="keywords" title="With Keywords">
+                                                                            <p>{AILogLineDescriptions['keywords']['completion']}</p>
+                                                                        </Tab>
+                                                                    }
+
+                                                                </Tabs>
+
+                                                            </>
                                                         }
 
                                                         <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
@@ -218,7 +235,7 @@ const LogLineObjDetails = (
                     {
                         curFocusElName === 'dramatic question' && dramaticQuestionDescObj && <DramaticQuestionDescription dramaticQuestionDescObj={dramaticQuestionDescObj} />
                     }
-                    {
+                    {/* {
                         curFocusElName === 'keywords' &&
                         <>
                             <p>Enter 3-5 core concepts this story relies upon. For example:</p>
@@ -230,7 +247,7 @@ const LogLineObjDetails = (
                                 <li>shame</li>
                             </ul>
                         </>
-                    }
+                    } */}
                 </>
             }
         </div>

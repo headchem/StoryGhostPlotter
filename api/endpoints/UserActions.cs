@@ -14,6 +14,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using StoryGhost.Util;
 using StoryGhost.Models;
+using StoryGhost.Models.Completions;
 
 
 
@@ -237,8 +238,7 @@ public class UserActions
         var plotPatchOps = new List<PatchOperation>();
 
         var newLogLineDescription = plot.LogLineDescription;
-        var newAILogLineDescription = plot.AILogLineDescription;
-        //var newAILogLineTitle = plot.AILogLineTitle;
+        var newAILogLineDescriptions = plot.AILogLineDescriptions;
         var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
         var newGenres = plot.Genres;
@@ -257,10 +257,10 @@ public class UserActions
         //     plotPatchOps.Add(PatchOperation.Set("/AILogLineTitle", newAILogLineTitle));
         // }
 
-        if (!string.IsNullOrWhiteSpace(newAILogLineDescription) && newAILogLineDescription != curPlotObj.AILogLineDescription)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/AILogLineDescription", newAILogLineDescription));
-        }
+        // if (!string.IsNullOrWhiteSpace(newAILogLineDescription) && newAILogLineDescription != curPlotObj.AILogLineDescription)
+        // {
+        //     plotPatchOps.Add(PatchOperation.Set("/AILogLineDescription", newAILogLineDescription));
+        // }
 
         if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
         {
@@ -291,6 +291,12 @@ public class UserActions
         if (newIsPublic != curPlotObj.IsPublic)
         {
             plotPatchOps.Add(PatchOperation.Set("/isPublic", newIsPublic));
+        }
+
+        var aiCompletionsComparer = new ObjectsComparer.Comparer<Dictionary<string, LogLineResponse>>();
+        if (aiCompletionsComparer.Compare(newAILogLineDescriptions, curPlotObj.AILogLineDescriptions) == false)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/AILogLineDescriptions", newAILogLineDescriptions));
         }
 
         var seqComparer = new ObjectsComparer.Comparer<List<UserSequence>>();

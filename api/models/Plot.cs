@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using StoryGhost.Models.Completions;
 
 namespace StoryGhost.Models;
 
@@ -17,7 +18,8 @@ public class Plot
 
     public string LogLineDescription { get; set; }
 
-    public string AILogLineDescription { get; set; }
+    [JsonPropertyName("AILogLineDescriptions")]
+    public Dictionary<string, LogLineResponse> AILogLineDescriptions { get; set; }
     public string AILogLineTitle { get; set; }
 
     [JsonPropertyName("title")]
@@ -44,5 +46,6 @@ public class Plot
     public bool IsDeleted { get; set; }
     public bool IsPublic { get; set; }
 
+    [JsonPropertyName("sequences")]
     public List<UserSequence> Sequences { get; set; }
 }

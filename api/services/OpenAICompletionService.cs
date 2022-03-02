@@ -43,6 +43,8 @@ public class OpenAICompletionService : ICompletionService
             direction = enhanceAmt;
         }
 
+        if (enhanceAmt == 0) return; // nothing to enhance
+
         var lower = keyword.ToLower();
         var capitalized = "";
 
@@ -59,14 +61,20 @@ public class OpenAICompletionService : ICompletionService
         if (GPTTokens.Tokens.ContainsKey(lower))
         {
             var tokenId = GPTTokens.Tokens[lower].ToString();
-            logitBias.Add(tokenId, direction);
+            if (logitBias.ContainsKey(tokenId) == false)
+            {
+                logitBias.Add(tokenId, direction);
+            }
         }
 
         // no space
         if (GPTTokens.Tokens.ContainsKey(capitalized))
         {
             var tokenId = GPTTokens.Tokens[capitalized].ToString();
-            logitBias.Add(tokenId, direction);
+            if (logitBias.ContainsKey(tokenId) == false)
+            {
+                logitBias.Add(tokenId, direction);
+            }
         }
 
         // with space
@@ -74,7 +82,10 @@ public class OpenAICompletionService : ICompletionService
         if (GPTTokens.Tokens.ContainsKey(lowerWithSpace))
         {
             var tokenId = GPTTokens.Tokens[lowerWithSpace].ToString();
-            logitBias.Add(tokenId, direction);
+            if (logitBias.ContainsKey(tokenId) == false)
+            {
+                logitBias.Add(tokenId, direction);
+            }
         }
 
         // with space
@@ -82,11 +93,37 @@ public class OpenAICompletionService : ICompletionService
         if (GPTTokens.Tokens.ContainsKey(capitalizedWithSpace))
         {
             var tokenId = GPTTokens.Tokens[capitalizedWithSpace].ToString();
-            logitBias.Add(tokenId, direction);
+            if (logitBias.ContainsKey(tokenId) == false)
+            {
+                logitBias.Add(tokenId, direction);
+            }
         }
     }
 
-    public async Task<LogLineResponse> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
+    public async Task<Dictionary<string, LogLineResponse>> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
+    {
+        var finetunedCompletion = await getFinetunedLogLineCompletion(plot, keywordsLogitBias);
+
+        //var finetunedCompletion = new LogLineResponse { Completion = "Without warning, a massive alien ship explodes in the atmosphere above the majestic Canadian wilderness, unleashing a hundred-foot wave of destruction that forever alters life in the northern forests." };
+
+        if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
+        {
+            return new Dictionary<string, LogLineResponse> { ["finetuned"] = finetunedCompletion };
+        }
+
+        // feed the initial log line completion into "instruct" which asks it to infuse the keywords into a new rewritten log line
+        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias);
+
+        var results = new Dictionary<string, LogLineResponse>
+        {
+            ["finetuned"] = finetunedCompletion,
+            ["keywords"] = keywordInfusedCompletion
+        };
+
+        return results;
+    }
+
+    private async Task<LogLineResponse> getFinetunedLogLineCompletion(Plot plot, int keywordsLogitBias)
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
@@ -110,10 +147,10 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             FrequencyPenalty = 0.0,
         };
 
-        var logitBiasRatio = keywordsLogitBias / 9.0;
+        //var logitBiasRatio = keywordsLogitBias / 9.0;
 
-        openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-        openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
 
         if (plot.Keywords != null && plot.Keywords.Count > 0)
         {
@@ -137,24 +174,65 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        //var completionTitle = "";
-        //var completionDescription = "";
+        var result = new LogLineResponse
+        {
+            Prompt = prompt,
+            Completion = completion
+        };
 
-        // var completionParts = completion.Split(" --- ");
-        // if (completionParts.Length > 1)
-        // { // it should always have 2 parts, but we check just in case
-        //     completionDescription = completionParts[0];
-        //     completionTitle = completionParts[1];
-        // }
-        // else
-        // {
-        //     completionDescription = completion;
-        // }
+        return result;
+    }
+
+    private async Task<LogLineResponse> getInstructKeywordsLogLineCompletion(string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
+    {
+        var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
+
+        var prompt = finetunedLogLineCompletion.Trim() + "\n\n" + $"Creatively rewrite the above plot teaser to focus on: {keywordStr}. It MUST include ALL {plot.Keywords.Count} of these concepts. Try to add a twist of irony while preserving the original tone and structure." + "\n\n" + "New reworked plot log line (limit to 1 paragraph, and don't just list the keywords at the end):";
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            //Model = "text-curie-001", //,
+            MaxTokens = 150, // longest log line prompt was 167 tokens,
+            Temperature = 1.0,
+            TopP = 1.0,
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0,
+            FrequencyPenalty = 0.0,
+        };
+
+        if (plot.Keywords != null && plot.Keywords.Count > 0)
+        {
+            openAIRequest.LogitBias = new Dictionary<string, int>();
+
+            foreach (var keyword in plot.Keywords)
+            {
+                addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
+            }
+        }
+
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync("engines/text-curie-001/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
+        try
+        {
+            response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+        }
+        catch (HttpRequestException ex)
+        {
+            var test = ex.ToString();
+        }
+
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
         var result = new LogLineResponse
         {
             Prompt = prompt,
-            //Title = completionTitle,
             Completion = completion
         };
 

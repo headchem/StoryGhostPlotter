@@ -23,7 +23,7 @@ const PlotHome = (
 ) => {
 
     const [logLineDescription, setLogLineDescription] = useState('')
-    const [AILogLineDescription, setAILogLineDescription] = useState('')
+    const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
     const [title, setTitle] = useState('')
     const [genres, setGenres] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
@@ -47,7 +47,14 @@ const PlotHome = (
 
     const populatePlot = (data) => {
         setLogLineDescription(data['logLineDescription'])
-        setAILogLineDescription(data['aiLogLineDescription'])
+
+        // let AILogLineDescriptionsDict = {};
+
+        // for (var key in data['aiLogLineDescriptions']) {
+        //     AILogLineDescriptionsDict[key] = data['aiLogLineDescriptions'][key]
+        // }
+
+        setAILogLineDescriptions(data['aiLogLineDescriptions'])
         setTitle(data['title'])
         setGenres(data['genres'])
         setProblemTemplate(data['problemTemplate'])
@@ -319,7 +326,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescription, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -332,6 +339,14 @@ const PlotHome = (
         const plotId = searchParams.get("id")
         //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genres: ${genres}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
 
+        // let AILogLineDescriptionsDict = {};
+
+        // for (var key in AILogLineDescriptions) {
+        //     AILogLineDescriptionsDict[key] = AILogLineDescriptions[key]['completion']
+        // }
+
+        // console.log(AILogLineDescriptionsDict)
+
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
             headers: {
@@ -339,7 +354,7 @@ const PlotHome = (
             },
             body: JSON.stringify({
                 'logLineDescription': logLineDescription,
-                'AILogLineDescription': AILogLineDescription,
+                'AILogLineDescriptions': AILogLineDescriptions,
                 'title': title,
                 'genres': genres,
                 'problemTemplate': problemTemplate,
@@ -398,8 +413,8 @@ const PlotHome = (
     //     setAILogLineTitle(val)
     // }
 
-    const onAILogLineDescriptionChange = (val) => {
-        setAILogLineDescription(val)
+    const onAILogLineDescriptionsChange = (val) => {
+        setAILogLineDescriptions(val)
     }
 
     const goToViewPlot = () => {
@@ -527,8 +542,8 @@ const PlotHome = (
                         <div className='col-md-5'>
                             <LogLineObjDetails
                                 userInfo={userInfo}
-                                onAILogLineDescriptionChange={onAILogLineDescriptionChange}
-                                AILogLineDescription={AILogLineDescription}
+                                onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
+                                AILogLineDescriptions={AILogLineDescriptions}
                                 curFocusElName={curFocusElName}
                                 genres={genres}
                                 problemTemplate={problemTemplate}
@@ -546,45 +561,43 @@ const PlotHome = (
                     }
                     {
                         logLineIncomplete === false &&
-                        <>
-                            <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
-                                <Tab eventKey="characters" title="Characters">
-                                    <CharacterList
-                                        characters={characters}
-                                        userInfo={userInfo}
-                                        archetypeOptions={archetypeOptions}
-                                        onFocusChange={onFocusChange}
-                                        updateCharacterName={updateCharacterName}
-                                        updateCharacterArchetype={updateCharacterArchetype}
-                                        updateCharacterDescription={updateCharacterDescription}
-                                        updateAICharacterDescription={updateAICharacterDescription}
-                                        insertCharacter={insertCharacter}
-                                        deleteCharacter={deleteCharacter}
-                                        genres={genres}
-                                        problemTemplate={problemTemplate}
-                                        keywords={keywords}
-                                        dramaticQuestion={dramaticQuestion}
-                                    />
-                                </Tab>
-                                <Tab eventKey="sequences" title="Sequence of Events">
-                                    <SequenceList
-                                        sequences={sequences}
-                                        userInfo={userInfo}
-                                        onFocusChange={onFocusChange}
-                                        updateSequenceText={updateSequenceText}
-                                        updateAISequenceText={updateAISequenceText}
-                                        insertSequence={insertSequence}
-                                        deleteSequence={deleteSequence}
-                                        genres={genres}
-                                        problemTemplate={problemTemplate}
-                                        keywords={keywords}
-                                        characters={characters}
-                                        dramaticQuestion={dramaticQuestion}
-                                    />
-                                </Tab>
-                            </Tabs>
+                        <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
+                            <Tab eventKey="characters" title="Characters">
+                                <CharacterList
+                                    characters={characters}
+                                    userInfo={userInfo}
+                                    archetypeOptions={archetypeOptions}
+                                    onFocusChange={onFocusChange}
+                                    updateCharacterName={updateCharacterName}
+                                    updateCharacterArchetype={updateCharacterArchetype}
+                                    updateCharacterDescription={updateCharacterDescription}
+                                    updateAICharacterDescription={updateAICharacterDescription}
+                                    insertCharacter={insertCharacter}
+                                    deleteCharacter={deleteCharacter}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    dramaticQuestion={dramaticQuestion}
+                                />
+                            </Tab>
+                            <Tab eventKey="sequences" title="Sequence of Events">
+                                <SequenceList
+                                    sequences={sequences}
+                                    userInfo={userInfo}
+                                    onFocusChange={onFocusChange}
+                                    updateSequenceText={updateSequenceText}
+                                    updateAISequenceText={updateAISequenceText}
+                                    insertSequence={insertSequence}
+                                    deleteSequence={deleteSequence}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    dramaticQuestion={dramaticQuestion}
+                                />
+                            </Tab>
+                        </Tabs>
 
-                        </>
                     }
                     <div className='row mb-4 pt-5 border-top'>
                         <div className='col-8'>
