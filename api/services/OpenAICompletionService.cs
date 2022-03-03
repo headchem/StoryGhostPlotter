@@ -112,7 +112,7 @@ public class OpenAICompletionService : ICompletionService
         }
 
         // feed the initial log line completion into "instruct" which asks it to infuse the keywords into a new rewritten log line
-        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias);
+        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias-3);
 
         var results = new Dictionary<string, LogLineResponse>
         {
@@ -140,7 +140,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Prompt = prompt,
             Model = "curie:ft-personal-2022-02-27-23-31-57", //,
             MaxTokens = 150, // longest log line prompt was 167 tokens,
-            Temperature = 0.9,
+            Temperature = 0.95,
             TopP = 1.0,
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0,
@@ -187,12 +187,11 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
     {
         var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
 
-        var prompt = finetunedLogLineCompletion.Trim() + "\n\n" + $"Creatively rewrite the above plot teaser to focus on: {keywordStr}. It MUST include ALL {plot.Keywords.Count} of these concepts. Try to add a twist of irony while preserving the original tone and structure." + "\n\n" + "New reworked plot log line (limit to 1 paragraph, and don't just list the keywords at the end):";
+        var prompt = finetunedLogLineCompletion.Trim() + "\n\n" + $"You are an expert screenplay writer, summarizing the log line of an award-winning plot. Creatively rewrite the above plot teaser to focus on: {keywordStr}. It MUST include ALL {plot.Keywords.Count} of these concepts. Add a twist of irony while preserving the movie log line tone and structure." + "\n\n" + "New reworked plot log line (limit to 1 paragraph, and don't just list the keywords at the end):";
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            //Model = "text-curie-001", //,
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 1.0,
             TopP = 1.0,
@@ -214,7 +213,10 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("engines/text-curie-001/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
+        var engine = "text-curie-001";
+        //var engine = "text-davinci-001";
+
+        var response = await _httpClient.PostAsync($"engines/{engine}/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
         try
         {
             response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success

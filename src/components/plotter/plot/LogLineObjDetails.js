@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { FaGhost } from 'react-icons/fa'
+import { FaGhost, FaCog } from 'react-icons/fa'
 import Accordion from 'react-bootstrap/Accordion';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Carousel from 'react-bootstrap/Carousel'
 import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
@@ -41,7 +42,7 @@ const LogLineObjDetails = (
     }
 
     const fetchCompletion = async () => {
-        fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=2', {
+        fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=4', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -52,9 +53,6 @@ const LogLineObjDetails = (
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                // 'heroArchetype': heroArchetype,
-                // 'enemyArchetype': enemyArchetype,
-                // 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
                 'sequences': sequences,
                 'characters': characters
@@ -66,13 +64,24 @@ const LogLineObjDetails = (
             return Promise.reject(response);
         }).then(function (data) {
             //const lastItem = [...data].pop()
-            onAILogLineDescriptionsChange(data)
+            // clone existing AILogLineDescriptions and append the new data item returned
+
+            if (AILogLineDescriptions) {
+                onAILogLineDescriptionsChange([...AILogLineDescriptions, data])
+            } else {
+                onAILogLineDescriptionsChange([data])
+            }
+
         }).catch(function (error) {
             console.warn(error);
             console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
         }).finally(function () {
             setIsCompletionLoading(false)
         });
+    }
+
+    const onDeleteBrainstorm = (idxToDelete) => {
+        onAILogLineDescriptionsChange(AILogLineDescriptions.filter((obj, objIdx) => objIdx !== idxToDelete))
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
@@ -147,46 +156,35 @@ const LogLineObjDetails = (
                                                 {
                                                     userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
-                                                        {/* {
-                                                            AILogLineTitle && AILogLineTitle.length > 0 &&
-                                                            <h4>{AILogLineTitle}</h4>
-                                                        } */}
-
-                                                        <p className="text-muted">The AI sometimes returns character names and ideas from existing stories. Add some twists of your own to ensure uniqueness.</p>
+                                                        <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                                         <hr />
-                                                        {/* <RangeSlider
-                                                            value={keywordSliderValue}
-                                                            onChange={changeEvent => setKeywordSliderValue(changeEvent.target.value)}
-                                                            min={0}
-                                                            max={9}
-                                                            step={1}
-                                                            size="lg"
-                                                        /> */}
 
-                                                        {
-                                                            AILogLineDescriptions && AILogLineDescriptions['finetuned'] &&
-                                                            <>
+                                                        <Carousel variant="dark" interval={null} indicators={true} defaultActiveindex={AILogLineDescriptions.length-1}>
+                                                            {
+                                                                AILogLineDescriptions && AILogLineDescriptions.length > 0 && AILogLineDescriptions.map((obj, idx) =>
+                                                                    <Carousel.Item key={'carousel-' + idx}>
+                                                                        {
+                                                                            <Tabs defaultActiveKey="finetune" className="mb-3">
+                                                                                <Tab eventKey="finetune" title="Original (genres)">
+                                                                                    <p>{obj['finetuned']['completion']}</p>
+                                                                                </Tab>
+                                                                                {
+                                                                                    obj['keywords'] &&
+                                                                                    <Tab eventKey="keywords" title="With keywords">
+                                                                                        <p>{obj['keywords']['completion']}</p>
+                                                                                    </Tab>
+                                                                                }
+                                                                                <Tab eventKey="manage" title={<FaCog />}>
+                                                                                    <button className="btn btn-danger mt-2 mb-4" onClick={() => onDeleteBrainstorm(idx)}>delete this brainstorm</button>
+                                                                                </Tab>
+                                                                            </Tabs>
+                                                                        }
+                                                                    </Carousel.Item>
+                                                                )
+                                                            }
+                                                        </Carousel>
 
-                                                                <Tabs defaultActiveKey="finetune" className="mb-3">
-                                                                    <Tab eventKey="finetune" title="Original">
-                                                                        <p>{AILogLineDescriptions['finetuned']['completion']}</p>
-                                                                    </Tab>
-
-                                                                    {
-                                                                        AILogLineDescriptions['keywords'] &&
-
-
-                                                                        <Tab eventKey="keywords" title="With Keywords">
-                                                                            <p>{AILogLineDescriptions['keywords']['completion']}</p>
-                                                                        </Tab>
-                                                                    }
-
-                                                                </Tabs>
-
-                                                            </>
-                                                        }
-
-                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
+                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
                                                             {
                                                                 isCompletionLoading === true &&
                                                                 <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -195,8 +193,10 @@ const LogLineObjDetails = (
                                                                 isCompletionLoading === false &&
                                                                 <FaGhost />
                                                             }
-                                                            <span> Brainstorm with AI</span>
+                                                            <span> New AI Brainstorm</span>
                                                         </button>
+
+
 
                                                     </>
                                                 }
@@ -215,7 +215,7 @@ const LogLineObjDetails = (
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
                                         <p>
-                                            Write a 2-sentence teaser to get people interested in the story.
+                                            Write 1-3 sentences that tease the plot. Try to interweave two iteresting ideas, and add a dash of irony.
                                         </p>
                                     </Accordion.Body>
                                 </Accordion.Item>

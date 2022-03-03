@@ -38,10 +38,6 @@
     width: 100%;
 }
 
-.generate {
-    float: right;
-}
-
 .lock {
     float: right;
 }
@@ -78,3 +74,15 @@
 .btn-no-border {
     border: none;
 }
+
+.carousel-inner {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+  }
+
+  .carousel-control-prev, .carousel-control-next {
+      top: 0.5em;
+      bottom: auto;
+      width: auto;
+  }
