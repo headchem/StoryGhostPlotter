@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 //import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Spinner from 'react-bootstrap/Spinner';
+//import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Nav from 'react-bootstrap/Nav'
 //import { useSearchParams } from "react-router-dom";
 import ArchetypeDescription from './ArchetypeDescription'
-import { FaGhost, FaMinusCircle } from 'react-icons/fa'
+import { FaGhost, FaMinusCircle, FaArrowsAltH } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -135,7 +140,132 @@ const Character = ({
                         </div>
                     </div>
                     <div className='row'>
-                        <div className='col-md-11'>
+                        {/* <Tabs defaultActiveKey="closeminded" className="mb-3">
+                            <Tab eventKey="closeminded" title="Closeminded-Imaginative">
+                                <p>grid goes here for Closeminded-Imaginative</p>
+                            </Tab>
+                            <Tab eventKey="disciplined" title="Disciplines-Spontaneous">
+                                <p>grid goes here for Disciplines-Spontaneous</p>
+                            </Tab>
+                            <Tab eventKey="introvert" title="Introvert-Extrovert">
+                                <p>grid goes here for Introvert-Extrovert</p>
+                            </Tab>
+                            <Tab eventKey="cold" title="Cold-Empathetic">
+                                <p>grid goes here for Cold-Empathetic</p>
+                            </Tab>
+                            <Tab eventKey="unflappable" title="Unflappable-Anxious">
+                                <p>grid goes here for Unflappable-Anxious</p>
+                            </Tab>
+                        </Tabs> */}
+
+
+                        <Tab.Container id="left-tabs-example" defaultActiveKey="closeminded">
+                            <Row>
+                                <Col sm={4}>
+                                    <Nav variant="pills" className="flex-column">
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="closeminded">Closeminded-Imaginative</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="disciplined">Disciplined-Spontaneous</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="introvert">Introvert-Extrovert</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="cold">Cold-Empathetic</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="unflappable">Unflappable-Anxious</Nav.Link>
+                                        </Nav.Item>
+                                    </Nav>
+                                </Col>
+                                <Col sm={8}>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey="closeminded">
+                                            <div className='row'>
+                                                <div className='col-md-12'>
+                                                    <table className='big5-table w-100 text-center'>
+                                                        <th colspan='5'>Closedminded <FaArrowsAltH /> Imaginative</th>
+                                                        <tr className='big5-aspect-label rotate-90'>
+                                                            <td rowspan='6' className='rotate-180'>Fuddy-duddy <FaArrowsAltH /> Idea-averse</td>
+                                                        </tr>
+                                                        <tr className='big5-aspect-label rotate-270'>
+                                                            <td rowspan='6'>Artsy <FaArrowsAltH /> Brainstormer</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>X</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>X</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                            <td></td>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                            <td></td>
+                                                            <td>X</td>
+                                                            <td>X</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>X</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>X</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col-md-12'>
+                                                    <p>Archetype description goes here.</p>
+                                                    <p>Big 5: Moderate Unflappable: Resilient, Controlled, Stress-free, Calm, Unemotional, Hardy, Secure, Self-satisfied</p>
+                                                    <p>Big 5 Aspect: Full Impervious: Emotionally stable, Impervious, Maintain composure, Not easily annoyed</p>
+                                                </div>
+                                            </div>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="disciplined">
+                                            <p>grid goes here for Disciplined-Spontaneous</p>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="introvert">
+                                            <p>grid goes here for Introvert-Extrovert</p>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="cold">
+                                            <p>grid goes here for Cold-Empathetic</p>
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="unflappable">
+                                            <p>grid goes here for Unflappable-Anxious</p>
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                </Col>
+                            </Row>
+                        </Tab.Container>
+
+                        {/* <div className='col-md-5'>
+                            <label htmlFor="customRange1" className="form-label">A <FaArrowsAltH/> B</label>
+                            <input type="range" className="form-range" id="customRange1" min="-2" max="2" step="1" defaultValue={0} />
+                        </div>
+                        <div className='col-md-7'>
+                            <p>Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .</p>
+                        </div> */}
+                    </div>
+                    <div className='row'>
+                        <div className='col-md-12'>
                             <LimitedTextArea
                                 className="form-control"
                                 value={character.description}
