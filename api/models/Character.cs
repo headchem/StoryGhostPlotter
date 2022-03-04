@@ -13,4 +13,6 @@ public class Character
 
     [JsonPropertyName("aiText")]
     public string AIText { get; set; }
+
+    public Personality Personality { get; set; }
 }

@@ -10,7 +10,8 @@ import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 //import { useSearchParams } from "react-router-dom";
 import ArchetypeDescription from './ArchetypeDescription'
-import { FaGhost, FaMinusCircle, FaArrowsAltH } from 'react-icons/fa'
+import Personality from './Personality'
+import { FaGhost, FaMinusCircle } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -35,6 +36,7 @@ const Character = ({
     updateAICharacterDescription,
     deleteCharacter,
     //allowed
+    updateCharacterPersonality,
 }) => {
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
@@ -112,6 +114,94 @@ const Character = ({
         updateCharacterArchetype(character.id, event.target.value)
     }
 
+    const getPersonalityDescription = (closeminded_to_imaginative, closeminded_to_imaginative_aspect, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect, introvert_to_extrovert, introvert_to_extrovert_aspect, cold_to_empathetic, cold_to_empathetic_aspect, unflappable_to_anxious, unflappable_to_anxious_aspect) => {
+
+        const getOneWordDesc = (neutral_point, bigFiveAmount, aspectAmount, bigFiveNegAspectNeg, bigFiveNegAspectNeutral, bigFiveNegAspectPos, bigFiveTrueNeutral, bigFivePosAspectNeg, bigFivePosAspectNeutral, bigFivePosAspectPos) => {
+            if (bigFiveAmount < neutral_point * -1) {
+                if (aspectAmount < neutral_point * -1) {
+                    return bigFiveNegAspectNeg;
+                } else if (aspectAmount > neutral_point) {
+                    return bigFiveNegAspectPos;
+                } else {
+                    return bigFiveNegAspectNeutral;
+                }
+            } else if (bigFiveAmount > neutral_point) {
+                if (aspectAmount < neutral_point * -1) {
+                    return bigFivePosAspectNeg;
+                } else if (aspectAmount > neutral_point) {
+                    return bigFivePosAspectPos;
+                } else {
+                    return bigFivePosAspectNeutral;
+                }
+            } else {
+                return bigFiveTrueNeutral;
+            }
+        }
+
+        var neutral_point = 0.2;
+
+        let closeminded_to_imaginative_desc = getOneWordDesc(neutral_point, closeminded_to_imaginative, closeminded_to_imaginative_aspect,
+            'fuddy duddy', 'generally closeminded', 'mentally resistant',
+            'moderate',
+            'artsy', 'generally imaginative', 'brainstormer');
+
+        let disciplined_to_spontaneous_desc = getOneWordDesc(neutral_point, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect,
+            'industrious', 'generally disciplined', 'orderly',
+            'dynamic',
+            'head in the clouds', 'generally spontaneous', 'sloppy');
+
+        let introvert_to_extrovert_desc = getOneWordDesc(neutral_point, introvert_to_extrovert, introvert_to_extrovert_aspect,
+            'glum', 'generally introverted', 'submissive',
+            'ambivert',
+            'gung-ho', 'generally extroverted', 'bossy');
+
+        let cold_to_empathetic_desc = getOneWordDesc(neutral_point, cold_to_empathetic, cold_to_empathetic_aspect,
+            'unfeeling', 'generally cold', 'rude',
+            'negotiator',
+            'compassionate', 'generally empathetic', 'polite');
+
+        let unflappable_to_anxious_desc = getOneWordDesc(neutral_point, unflappable_to_anxious, unflappable_to_anxious_aspect,
+            'emotionally impervious', 'generally unflappable', 'relaxed',
+            'responsive to stress',
+            'volatile', 'generally anxious', 'vulnerable');
+
+        return [closeminded_to_imaginative_desc, disciplined_to_spontaneous_desc, introvert_to_extrovert_desc, cold_to_empathetic_desc, unflappable_to_anxious_desc];
+    }
+
+    const characterPersonality = character['personality']
+
+    const closemindedToImaginativePrimary = !characterPersonality ? 0.0 : characterPersonality['closemindedToImaginative']['primary']
+    const closemindedToImaginativeAspect = !characterPersonality ? 0.0 : characterPersonality['closemindedToImaginative']['aspect']
+
+    const disciplinedToSpontaneousPrimary = !characterPersonality ? 0.0 : characterPersonality['disciplinedToSpontaneous']['primary']
+    const disciplinedToSpontaneousAspect = !characterPersonality ? 0.0 : characterPersonality['disciplinedToSpontaneous']['aspect']
+
+    const introvertToExtrovertPrimary = !characterPersonality ? 0.0 : characterPersonality['introvertToExtrovert']['primary']
+    const introvertToExtrovertAspect = !characterPersonality ? 0.0 : characterPersonality['introvertToExtrovert']['aspect']
+
+    const coldToEmpatheticPrimary = !characterPersonality ? 0.0 : characterPersonality['coldToEmpathetic']['primary']
+    const coldToEmpatheticAspect = !characterPersonality ? 0.0 : characterPersonality['coldToEmpathetic']['aspect']
+
+    const unflappableToAnxiousPrimary = !characterPersonality ? 0.0 : characterPersonality['unflappableToAnxious']['primary']
+    const unflappableToAnxiousAspect = !characterPersonality ? 0.0 : characterPersonality['unflappableToAnxious']['aspect']
+
+    const personalityStrs = getPersonalityDescription(
+        closemindedToImaginativePrimary,
+        closemindedToImaginativeAspect,
+        disciplinedToSpontaneousPrimary,
+        disciplinedToSpontaneousAspect,
+        introvertToExtrovertPrimary,
+        introvertToExtrovertAspect,
+        coldToEmpatheticPrimary,
+        coldToEmpatheticAspect,
+        unflappableToAnxiousPrimary,
+        unflappableToAnxiousAspect,
+    )
+
+    const personalitySummary = personalityStrs.slice(0, 4).join(', ') + ' and ' + personalityStrs[4]
+
+    const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
+
     return (
         <>
             <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
@@ -135,135 +225,121 @@ const Character = ({
                         <div className='col-md-1'>
                             {
                                 character.id !== characters[0].id &&
-                                <button onClick={onDeleteCharacter} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
+                                <button onClick={onDeleteCharacter} className='btn btn-outline-danger float-end btn-no-border' title='delete character'><FaMinusCircle /></button>
                             }
                         </div>
                     </div>
-                    <div className='row'>
-                        {/* <Tabs defaultActiveKey="closeminded" className="mb-3">
-                            <Tab eventKey="closeminded" title="Closeminded-Imaginative">
-                                <p>grid goes here for Closeminded-Imaginative</p>
-                            </Tab>
-                            <Tab eventKey="disciplined" title="Disciplines-Spontaneous">
-                                <p>grid goes here for Disciplines-Spontaneous</p>
-                            </Tab>
-                            <Tab eventKey="introvert" title="Introvert-Extrovert">
-                                <p>grid goes here for Introvert-Extrovert</p>
-                            </Tab>
-                            <Tab eventKey="cold" title="Cold-Empathetic">
-                                <p>grid goes here for Cold-Empathetic</p>
-                            </Tab>
-                            <Tab eventKey="unflappable" title="Unflappable-Anxious">
-                                <p>grid goes here for Unflappable-Anxious</p>
-                            </Tab>
-                        </Tabs> */}
+
+                    <Accordion defaultActiveKey={['0']} alwaysOpen>
+
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Personality</Accordion.Header>
+                            <Accordion.Body>
+                                <div className='row'>
+                                    <Tab.Container id="left-tabs-example" defaultActiveKey="closeminded">
+                                        <Row>
+                                            <Col sm={5}>
+                                                <Nav variant="pills" className="flex-column">
+                                                    <Nav.Item>
+                                                        <Nav.Link eventKey="closeminded">Closeminded - Imaginative</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link eventKey="disciplined">Disciplined - Spontaneous</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link eventKey="introvert">Introvert - Extrovert</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link eventKey="cold">Cold - Empathetic</Nav.Link>
+                                                    </Nav.Item>
+                                                    <Nav.Item>
+                                                        <Nav.Link eventKey="unflappable">Unflappable - Anxious</Nav.Link>
+                                                    </Nav.Item>
+                                                </Nav>
+                                            </Col>
+                                            <Col sm={7}>
+                                                <Tab.Content>
+                                                    <Tab.Pane eventKey="closeminded">
+                                                        <Personality
+                                                            personalityKey='closemindedToImaginative'
+                                                            primaryLeft='closeminded'
+                                                            primaryRight='imaginative'
+                                                            primaryLeftAspectTop='fuddy-duddy'
+                                                            primaryLeftAspectBottom='idea-averse'
+                                                            primaryRightAspectTop='artsy'
+                                                            primaryRightAspectBottom='brainstormer'
+                                                            character={character}
+                                                            onChange={updateCharacterPersonality}
+                                                        />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="disciplined">
+                                                        <Personality
+                                                            personalityKey='disciplinedToSpontaneous'
+                                                            primaryLeft='disciplined'
+                                                            primaryRight='spontaneous'
+                                                            primaryLeftAspectTop='industrious'
+                                                            primaryLeftAspectBottom='orderly'
+                                                            primaryRightAspectTop='head in the clouds'
+                                                            primaryRightAspectBottom='sloppy'
+                                                            character={character}
+                                                            onChange={updateCharacterPersonality}
+                                                        />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="introvert">
+                                                        <Personality
+                                                            personalityKey='introvertToExtrovert'
+                                                            primaryLeft='introvert'
+                                                            primaryRight='extrovert'
+                                                            primaryLeftAspectTop='glum'
+                                                            primaryLeftAspectBottom='submissive'
+                                                            primaryRightAspectTop='gung-ho'
+                                                            primaryRightAspectBottom='bossy'
+                                                            character={character}
+                                                            onChange={updateCharacterPersonality}
+                                                        />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="cold">
+                                                        <Personality
+                                                            personalityKey='coldToEmpathetic'
+                                                            primaryLeft='cold'
+                                                            primaryRight='empathetic'
+                                                            primaryLeftAspectTop='unfeeling'
+                                                            primaryLeftAspectBottom='rude'
+                                                            primaryRightAspectTop='compassionate'
+                                                            primaryRightAspectBottom='polite'
+                                                            character={character}
+                                                            onChange={updateCharacterPersonality}
+                                                        />
+                                                    </Tab.Pane>
+                                                    <Tab.Pane eventKey="unflappable">
+                                                        <Personality
+                                                            personalityKey='unflappableToAnxious'
+                                                            primaryLeft='unflappable'
+                                                            primaryRight='anxious'
+                                                            primaryLeftAspectTop='impervious'
+                                                            primaryLeftAspectBottom='relaxed'
+                                                            primaryRightAspectTop='volatile'
+                                                            primaryRightAspectBottom='vulnerable'
+                                                            character={character}
+                                                            onChange={updateCharacterPersonality}
+                                                        />
+                                                    </Tab.Pane>
+                                                </Tab.Content>
+                                            </Col>
+                                        </Row>
+                                    </Tab.Container>
+                                </div>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
 
 
-                        <Tab.Container id="left-tabs-example" defaultActiveKey="closeminded">
-                            <Row>
-                                <Col sm={4}>
-                                    <Nav variant="pills" className="flex-column">
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="closeminded">Closeminded-Imaginative</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="disciplined">Disciplined-Spontaneous</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="introvert">Introvert-Extrovert</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="cold">Cold-Empathetic</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="unflappable">Unflappable-Anxious</Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                </Col>
-                                <Col sm={8}>
-                                    <Tab.Content>
-                                        <Tab.Pane eventKey="closeminded">
-                                            <div className='row'>
-                                                <div className='col-md-12'>
-                                                    <table className='big5-table w-100 text-center'>
-                                                        <th colspan='5'>Closedminded <FaArrowsAltH /> Imaginative</th>
-                                                        <tr className='big5-aspect-label rotate-90'>
-                                                            <td rowspan='6' className='rotate-180'>Fuddy-duddy <FaArrowsAltH /> Idea-averse</td>
-                                                        </tr>
-                                                        <tr className='big5-aspect-label rotate-270'>
-                                                            <td rowspan='6'>Artsy <FaArrowsAltH /> Brainstormer</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>X</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td>X</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                            <td></td>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                            <td></td>
-                                                            <td>X</td>
-                                                            <td>X</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>X</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td>X</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className='col-md-12'>
-                                                    <p>Archetype description goes here.</p>
-                                                    <p>Big 5: Moderate Unflappable: Resilient, Controlled, Stress-free, Calm, Unemotional, Hardy, Secure, Self-satisfied</p>
-                                                    <p>Big 5 Aspect: Full Impervious: Emotionally stable, Impervious, Maintain composure, Not easily annoyed</p>
-                                                </div>
-                                            </div>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="disciplined">
-                                            <p>grid goes here for Disciplined-Spontaneous</p>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="introvert">
-                                            <p>grid goes here for Introvert-Extrovert</p>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="cold">
-                                            <p>grid goes here for Cold-Empathetic</p>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="unflappable">
-                                            <p>grid goes here for Unflappable-Anxious</p>
-                                        </Tab.Pane>
-                                    </Tab.Content>
-                                </Col>
-                            </Row>
-                        </Tab.Container>
-
-                        {/* <div className='col-md-5'>
-                            <label htmlFor="customRange1" className="form-label">A <FaArrowsAltH/> B</label>
-                            <input type="range" className="form-range" id="customRange1" min="-2" max="2" step="1" defaultValue={0} />
+                    <div className='row mt-3'>
+                        <div className='col-12'>
+                            <p><span className='fw-bold'>{characterArchetypeCapitalized}</span> {character.name} has a personality of <span className='fw-bold'>{personalitySummary}.</span></p>
                         </div>
-                        <div className='col-md-7'>
-                            <p>Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .Big 5 desc goes here .</p>
-                        </div> */}
                     </div>
+
                     <div className='row'>
                         <div className='col-md-12'>
                             <LimitedTextArea

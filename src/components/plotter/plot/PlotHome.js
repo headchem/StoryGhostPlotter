@@ -194,6 +194,32 @@ const PlotHome = (
         )
     }
 
+    const updateCharacterPersonality = (id, personalityKey, primary, aspect) => {
+        const curCharacter = characters.filter((character) => character.id === id)[0]
+
+        //if ('personality' in curCharacter === false) {
+        if (!curCharacter['personality']) {
+            curCharacter['personality'] = {
+                'closemindedToImaginative': { 'primary': 0.0, 'aspect': 0.0 },
+                'disciplinedToSpontaneous': { 'primary': 0.0, 'aspect': 0.0 },
+                'introvertToExtrovert': { 'primary': 0.0, 'aspect': 0.0 },
+                'coldToEmpathetic': { 'primary': 0.0, 'aspect': 0.0 },
+                'unflappableToAnxious': { 'primary': 0.0, 'aspect': 0.0 },
+            }
+        }
+
+        const newPersonality = Object.assign({}, curCharacter['personality']);
+
+        newPersonality[personalityKey]['primary'] = primary
+        newPersonality[personalityKey]['aspect'] = aspect
+
+        const newCharacters = characters.map(
+            (character) => character.id === id ? { ...character, personality: newPersonality } : character
+        )
+
+        setCharacters(newCharacters)
+    }
+
 
     // IMPORTANT! When updating properties in sequences, you MUST update all of the properties in a single call to setSequences. If you do then one after the other, some changes will get overridden because the update is asynchronous and it starts from the same unaltered state as the baseline before making the property change. That baseline probably hasn't been updated if you call setSequences(firstChange) then setSequences(secondChange) one after the other
     const insertSequence = (curSequenceName, newSequenceName) => {
@@ -235,7 +261,14 @@ const PlotHome = (
         const newCharacter = {
             id: uuid(),
             name: '',
-            description: ''
+            description: '',
+            'personality': {
+                'closemindedToImaginative': { 'primary': 0.0, 'aspect': 0.0 },
+                'disciplinedToSpontaneous': { 'primary': 0.0, 'aspect': 0.0 },
+                'introvertToExtrovert': { 'primary': 0.0, 'aspect': 0.0 },
+                'coldToEmpathetic': { 'primary': 0.0, 'aspect': 0.0 },
+                'unflappableToAnxious': { 'primary': 0.0, 'aspect': 0.0 },
+            }
         }
 
         setCharacters([...characters, newCharacter]) // set characters to all the existing characters, plus add the new one
@@ -572,6 +605,7 @@ const PlotHome = (
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
                                     updateAICharacterDescription={updateAICharacterDescription}
+                                    updateCharacterPersonality={updateCharacterPersonality}
                                     insertCharacter={insertCharacter}
                                     deleteCharacter={deleteCharacter}
                                     genres={genres}

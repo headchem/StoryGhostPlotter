@@ -12,6 +12,7 @@ const CharacterList = ({
     updateCharacterArchetype,
     updateCharacterDescription,
     updateAICharacterDescription,
+    updateCharacterPersonality,
     insertCharacter,
     deleteCharacter,
     genres,
@@ -46,7 +47,7 @@ const CharacterList = ({
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
                                     updateAICharacterDescription={updateAICharacterDescription}
-
+                                    updateCharacterPersonality={updateCharacterPersonality}
                                     deleteCharacter={deleteCharacter}
 
                                     genres={genres}
