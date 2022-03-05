@@ -10,6 +10,8 @@ const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, classNam
         [limit, setValue]
     )
 
+    const txtValue = !value ? '' : value
+
     return (
         <>
             <textarea
@@ -24,7 +26,7 @@ const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, classNam
             {
                 showCount === true &&
                 <p className="char-count" title="seek brevity, this is a technical maximum">
-                    {value.length}/{limit} ({curTokenCount} tokens)
+                    {txtValue.length}/{limit} ({curTokenCount} tokens)
                 </p>
             }
 

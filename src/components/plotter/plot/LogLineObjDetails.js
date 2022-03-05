@@ -137,6 +137,8 @@ const LogLineObjDetails = (
         }
     }
 
+    const startingPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length-1
+
     return (
         <div>
             {
@@ -159,7 +161,7 @@ const LogLineObjDetails = (
                                                         <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                                         <hr />
 
-                                                        <Carousel variant="dark" interval={null} indicators={true} defaultActiveIndex={AILogLineDescriptions.length-1}>
+                                                        <Carousel variant="dark" interval={null} indicators={true} defaultActiveIndex={startingPage}>
                                                             {
                                                                 AILogLineDescriptions && AILogLineDescriptions.length > 0 && AILogLineDescriptions.map((obj, idx) =>
                                                                     <Carousel.Item key={'carousel-' + idx}>
