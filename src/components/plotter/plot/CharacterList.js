@@ -9,6 +9,7 @@ const CharacterList = ({
     archetypeOptions,
     onFocusChange,
     updateCharacterName,
+    updateCharacterIsHero,
     updateCharacterArchetype,
     updateCharacterDescription,
     updateAICharacterDescription,
@@ -44,6 +45,7 @@ const CharacterList = ({
                                     characters={characters}
                                     onFocusChange={() => onFocusChange('character')}
                                     updateCharacterName={updateCharacterName}
+                                    updateCharacterIsHero={updateCharacterIsHero}
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
                                     updateAICharacterDescription={updateAICharacterDescription}

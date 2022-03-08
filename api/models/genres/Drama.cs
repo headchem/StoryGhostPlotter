@@ -19,15 +19,22 @@ public class Drama : IGenre
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                OpeningImage = "Tension is in the air.",
-                IncitingIncident = "An intensely stressful situation arises for the main character.",
-                Midpoint = "The main character overcomes some adversity for a brief reprieve from the stresses in their life."
+                Events = new AdviceSequence
+                {
+                    OpeningImage = "Tension is in the air.",
+                    IncitingIncident = "An intensely stressful situation arises for the main character.",
+                    Midpoint = "The main character overcomes some adversity for a brief reprieve from the stresses in their life."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

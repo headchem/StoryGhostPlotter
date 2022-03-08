@@ -15,4 +15,6 @@ public class Character
     public string AIText { get; set; }
 
     public Personality Personality { get; set; }
+
+    public bool IsHero { get; set; }
 }

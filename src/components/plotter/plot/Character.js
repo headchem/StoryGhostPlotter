@@ -31,11 +31,11 @@ const Character = ({
     characters,
 
     updateCharacterName,
+    updateCharacterIsHero,
     updateCharacterArchetype,
     updateCharacterDescription,
     updateAICharacterDescription,
     deleteCharacter,
-    //allowed
     updateCharacterPersonality,
 }) => {
 
@@ -333,6 +333,10 @@ const Character = ({
                         </Accordion.Item>
                     </Accordion>
 
+                    <div title="you may only designate one character as the protagonist">
+                        <label htmlFor={character.id + '_is_protagonist'}>Is Protagonist?</label>
+                        <input id={character.id + '_is_protagonist'} type="checkbox" checked={character.isHero} value={character.isHero} onChange={(e) => updateCharacterIsHero(character.id, e.currentTarget.checked)} />
+                    </div>
 
                     <div className='row mt-3'>
                         <div className='col-12'>
@@ -342,7 +346,9 @@ const Character = ({
 
                     <div className='row'>
                         <div className='col-md-12'>
+                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes (optional)</label>
                             <LimitedTextArea
+                                id={character.id + '_desc'}
                                 className="form-control"
                                 value={character.description}
                                 setValue={(newValue) => updateCharacterDescription(character.id, newValue)}

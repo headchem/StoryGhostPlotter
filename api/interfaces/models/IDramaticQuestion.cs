@@ -21,7 +21,7 @@ public interface IDramaticQuestion
     /// <summary>Occurs fourth. Primary value at stake.</summary>
     public string Positive { get; }
 
-    public AdviceSequence AdviceSequence { get; }
+    public SequenceAdvices AdviceSequence { get; }
 
     public string GetLogLineContribution(long seed, IProblemTemplate problemTemplate);
 }

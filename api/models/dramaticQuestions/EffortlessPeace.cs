@@ -13,17 +13,24 @@ public class EffortlessPeace : IDramaticQuestion
     public string Negation { get { return "Exertion leading to strife"; } }
     public string Positive { get { return "Effortless peace"; } }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                ThemeStated = $"Subtly pose the dramatic question of \"{Description}\". The Hero doesn't have the experience or context yet to understand this theme of {Name.ToLower()}.",
-                Debate = $"The main character shows {Contrary.ToLower()}.",
-                FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
-                DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
-                Climax = $"The main character shows {Positive.ToLower()}."
+                Events = new AdviceSequence
+                {
+                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\". The Hero doesn't have the experience or context yet to understand this theme of {Name.ToLower()}.",
+                    Debate = $"The main character shows {Contrary.ToLower()}.",
+                    FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
+                    DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
+                    Climax = $"The main character shows {Positive.ToLower()}."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

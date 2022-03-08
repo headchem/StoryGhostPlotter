@@ -19,16 +19,23 @@ public class MonsterInTheHouse : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = "Both Hero and Enemy are confined to a small space, forcing them to interact.",
-                IncitingIncident = "The Hero commits a sin that results in the awakening of a monster.",
-                DarkNightOfTheSoul = "The Hero realizes the sin they committed and repents.",
-                Climax = "The monster vanquishes those who have sinned, but spares those who have repented."
+                Events = new AdviceSequence
+                {
+                    Setup = "Both Hero and Enemy are confined to a small space, forcing them to interact.",
+                    IncitingIncident = "The Hero commits a sin that results in the awakening of a monster.",
+                    DarkNightOfTheSoul = "The Hero realizes the sin they committed and repents.",
+                    Climax = "The monster vanquishes those who have sinned, but spares those who have repented."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

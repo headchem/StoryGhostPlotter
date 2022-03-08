@@ -14,6 +14,7 @@ import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com
 const Sequence = ({
     userInfo,
     onFocusChange,
+    curFocusElName,
 
     genres,
     problemTemplate,
@@ -24,7 +25,8 @@ const Sequence = ({
     sequence,
     sequences,
 
-    updateSequenceText,
+    updateContextText,
+    updateEventsText,
     updateAIText,
     insertSequence,
     deleteSequence,
@@ -111,12 +113,22 @@ const Sequence = ({
     }
 
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    const [commonAdvice, setCommonAdvice] = useState('')
-    const [genresAdvice, setGenresAdvice] = useState('')
-    const [problemTemplateAdvice, setProblemTemplateAdvice] = useState('')
-    const [dramaticQuestionAdvice, setDramaticQuestionAdvice] = useState('')
+
+    const [contextCommonAdvice, setContextCommonAdvice] = useState('')
+    const [contextGenresAdvice, setContextGenresAdvice] = useState('')
+    const [contextProblemTemplateAdvice, setContextProblemTemplateAdvice] = useState('')
+    const [contextDramaticQuestionAdvice, setContextDramaticQuestionAdvice] = useState('')
+    const [contextHeroArchetypeAdvice, setContextHeroArchetypeAdvice] = useState('')
+
+    const [eventsCommonAdvice, setEventsCommonAdvice] = useState('')
+    const [eventsGenresAdvice, setEventsGenresAdvice] = useState('')
+    const [eventsProblemTemplateAdvice, setEventsProblemTemplateAdvice] = useState('')
+    const [eventsDramaticQuestionAdvice, setEventsDramaticQuestionAdvice] = useState('')
+    const [eventsHeroArchetypeAdvice, setEventsHeroArchetypeAdvice] = useState('')
+
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
-    const [sequenceTokenCount, setSequenceTokenCount] = useState(0)
+    const [sequenceEventsTokenCount, setSequenceEventsTokenCount] = useState(0)
+    const [sequenceContextTokenCount, setSequenceContextTokenCount] = useState(0)
 
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
@@ -149,9 +161,6 @@ const Sequence = ({
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                // 'heroArchetype': heroArchetype,
-                // 'enemyArchetype': enemyArchetype,
-                // 'primalStakes': primalStakes,
                 'dramaticQuestion': dramaticQuestion,
                 'sequences': sequences,
                 'characters': characters
@@ -172,13 +181,21 @@ const Sequence = ({
     }
 
     const updateTokenCount = () => {
-        const tokens = encode(sequence.text)
-        setSequenceTokenCount(tokens.length)
+        const seqText = sequence.text ? sequence.text : ''
+        const contextText = sequence.context ? sequence.context : ''
+
+        const eventsTokens = encode(seqText)
+        const contextTokens = encode(contextText)
+        setSequenceEventsTokenCount(eventsTokens.length)
+        setSequenceContextTokenCount(contextTokens.length)
     }
 
     const fetchAdvice = async () => {
 
         //console.log('GET ADVICE')
+
+        let heroCharacter = characters.filter((character) => character.isHero === true);
+        heroCharacter = heroCharacter.length > 0 ? heroCharacter[0] : null;
 
         fetch('/api/Sequence/Advice?sequenceName=' + sequence.sequenceName, {
             method: 'POST',
@@ -189,11 +206,10 @@ const Sequence = ({
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                'heroArchetype': 'Orphan', // TODO: get this from 
-                // 'enemyArchetype': enemyArchetype,
-                // 'primalStakes': primalStakes,
+                'heroArchetype': (heroCharacter ? heroCharacter.archetype : ''),
                 'dramaticQuestion': dramaticQuestion,
-                'text': sequence.text
+                'text': sequence.text,
+                'context': sequence.context
             })
         }).then(function (response) {
             if (response.ok) {
@@ -201,13 +217,20 @@ const Sequence = ({
             }
             return Promise.reject(response);
         }).then(function (data) {
-            setCommonAdvice(data['common'])
-            setGenresAdvice(data['genres'])
-            setProblemTemplateAdvice(data['problemTemplate'])
-            // setHeroArchetypeAdvice(data['heroArchetype'])
-            // setEnemyArchetypeAdvice(data['enemyArchetype'])
-            // setPrimalStakesAdvice(data['primalStakes'])
-            setDramaticQuestionAdvice(data['dramaticQuestion'])
+            const eventsAdvice = data['events']
+            const contextAdvice = data['context']
+
+            setContextCommonAdvice(contextAdvice['common'])
+            setContextGenresAdvice(contextAdvice['genres'])
+            setContextProblemTemplateAdvice(contextAdvice['problemTemplate'])
+            setContextDramaticQuestionAdvice(contextAdvice['dramaticQuestion'])
+            setContextHeroArchetypeAdvice(contextAdvice['heroArchetype'])
+
+            setEventsCommonAdvice(eventsAdvice['common'])
+            setEventsGenresAdvice(eventsAdvice['genres'])
+            setEventsProblemTemplateAdvice(eventsAdvice['problemTemplate'])
+            setEventsDramaticQuestionAdvice(eventsAdvice['dramaticQuestion'])
+            setEventsHeroArchetypeAdvice(eventsAdvice['heroArchetype'])
         }).catch(function (error) {
             console.warn(error);
         }).finally(function () {
@@ -215,8 +238,6 @@ const Sequence = ({
         });
 
     }
-
-
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
@@ -230,7 +251,7 @@ const Sequence = ({
         //}
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sequence]);
+    }, [sequence, characters]);
 
     const isFirstAdviceRun = useRef(true)
 
@@ -260,7 +281,7 @@ const Sequence = ({
             allowed={allowed}
             onInsertSequence={onInsertSequence}
         />
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     ), [allowed]);
 
 
@@ -278,23 +299,41 @@ const Sequence = ({
 
     return (
         <>
-            <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
+            <div className='row border-top mt-3 pt-3'>
                 <div className='col-md-7'>
-                    <p className='sequence-name'>{sequence.sequenceName}</p>
+                    <h4>{sequence.sequenceName}</h4>
 
                     {
                         sequence.sequenceName !== 'Opening Image' &&
                         <button onClick={onDeleteSequence} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
                     }
-                    <LimitedTextArea
-                        className="form-control"
-                        value={sequence.text}
-                        setValue={(newValue) => updateSequenceText(sequence.sequenceName, newValue)}
-                        rows={textLimits[sequence.sequenceName]['rows']}
-                        limit={textLimits[sequence.sequenceName]['max']}
-                        curTokenCount={sequenceTokenCount}
-                        showCount={true}
-                    />
+
+                    <div onFocus={() => onFocusChange('sequence_context')}>
+                        <label htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context</label>
+                        <LimitedTextArea
+                            id={sequence.sequenceName + '_context_textarea'}
+                            className="form-control"
+                            value={sequence.context}
+                            setValue={(newValue) => updateContextText(sequence.sequenceName, newValue)}
+                            //rows={textLimits[sequence.sequenceName]['rows']}
+                            //limit={textLimits[sequence.sequenceName]['max']}
+                            curTokenCount={sequenceContextTokenCount}
+                            showCount={true}
+                        />
+                    </div>
+                    <div onFocus={() => onFocusChange('sequence_events')}>
+                        <label htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
+                        <LimitedTextArea
+                            id={sequence.sequenceName + '_events_textarea'}
+                            className="form-control"
+                            value={sequence.text}
+                            setValue={(newValue) => updateEventsText(sequence.sequenceName, newValue)}
+                            rows={textLimits[sequence.sequenceName]['rows']}
+                            limit={textLimits[sequence.sequenceName]['max']}
+                            curTokenCount={sequenceEventsTokenCount}
+                            showCount={true}
+                        />
+                    </div>
 
                 </div>
                 <div className='col-md-5'>
@@ -321,7 +360,7 @@ const Sequence = ({
                                                         }
                                                         {
                                                             brainstormDisabled() === false &&
-                                                            <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
+                                                            <button disabled={isCompletionLoading} title='This will add a new brainstorm - existing brainstorms will remain' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
                                                                 {
                                                                     isCompletionLoading === true &&
                                                                     <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -349,14 +388,24 @@ const Sequence = ({
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
+                                        <h5>Background Context Advice</h5>
                                         <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                                            <span title="common advice">{commonAdvice} </span>
-                                            <span title="genres advice">{genresAdvice} </span>
-                                            <span title="problem template advice">{problemTemplateAdvice} </span>
-                                            {/* <span title="hero archetype advice">{heroArchetypeAdvice} </span>
-                                            <span title="enemy archetype advice">{enemyArchetypeAdvice} </span>
-                                            <span title="primal stakes advice">{primalStakesAdvice} </span> */}
-                                            <span title="dramatic question advice">{dramaticQuestionAdvice}</span>
+                                            <span title="common advice">{contextCommonAdvice} </span>
+                                            <span title="genres advice">{contextGenresAdvice} </span>
+                                            <span title="problem template advice">{contextProblemTemplateAdvice} </span>
+                                            <span title="dramatic question advice">{contextDramaticQuestionAdvice}</span>
+                                            <span title="hero archetype advice">{contextHeroArchetypeAdvice} </span>
+                                        </p>
+
+                                        <hr />
+
+                                        <h5>Visible Events Advice</h5>
+                                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
+                                            <span title="common advice">{eventsCommonAdvice} </span>
+                                            <span title="genres advice">{eventsGenresAdvice} </span>
+                                            <span title="problem template advice">{eventsProblemTemplateAdvice} </span>
+                                            <span title="dramatic question advice">{eventsDramaticQuestionAdvice}</span>
+                                            <span title="hero archetype advice">{eventsHeroArchetypeAdvice} </span>
                                         </p>
                                     </Accordion.Body>
                                 </Accordion.Item>

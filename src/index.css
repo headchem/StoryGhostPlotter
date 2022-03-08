@@ -50,10 +50,6 @@
     opacity: 0.7;
 }
 
-.sequence-name {
-    float: left;
-}
-
 .user-plot-row:nth-child(even) {
     background-color: #f2f2f2;
 }

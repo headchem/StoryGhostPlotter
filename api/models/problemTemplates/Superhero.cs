@@ -19,18 +19,25 @@ public class Superhero : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = "The extraordinary Hero finds themselves in an ordinary world, surrounded by tiny minds.",
-                IncitingIncident = "A tiny-minded Enemy is jealous and afraid of the Hero's powers. The Hero is misunderstood and feels shunned.",
-                Midpoint = "The tiny-minded Enemy begrudgingly acknowledges the Hero's extraordinary powers.",
-                AllHopeIsLost = "The Hero is unappreciated and betrayed by those they respected and trusted.",
-                DarkNightOfTheSoul = "The Hero realizes they have a responsibility to use their powers to do what is right, even if they are forever shunned.",
-                Climax = "The Hero attains acceptance and appreciation for saving an undeserving world."
+                Events = new AdviceSequence
+                {
+                    Setup = "The extraordinary Hero finds themselves in an ordinary world, surrounded by tiny minds.",
+                    IncitingIncident = "A tiny-minded Enemy is jealous and afraid of the Hero's powers. The Hero is misunderstood and feels shunned.",
+                    Midpoint = "The tiny-minded Enemy begrudgingly acknowledges the Hero's extraordinary powers.",
+                    AllHopeIsLost = "The Hero is unappreciated and betrayed by those they respected and trusted.",
+                    DarkNightOfTheSoul = "The Hero realizes they have a responsibility to use their powers to do what is right, even if they are forever shunned.",
+                    Climax = "The Hero attains acceptance and appreciation for saving an undeserving world."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

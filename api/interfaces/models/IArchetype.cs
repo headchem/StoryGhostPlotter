@@ -22,7 +22,7 @@ public interface IArchetype
     public string WandererResponse { get; }
     public string WarriorResponse { get; }
 
-    public AdviceSequence HeroAdviceSequence { get; }
+    public SequenceAdvices HeroAdviceSequence { get; }
 
     
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion);

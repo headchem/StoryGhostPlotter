@@ -19,16 +19,23 @@ public class GoldenFleece : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                BreakIntoTwo = "The Hero goes \"on the road\" with a naive understanding of the destination they think they want to reach.",
-                FunAndGames = "Seemingly disconnected episodes each help the Hero grow, even if little progress is made on the \"road\".",
-                DarkNightOfTheSoul = "The Hero realizes the real treasure is their own personal growth.",
-                BreakIntoThree = "Fully leveraging how the Hero has grown, a plan is hatched to attain the physical treasure."
+                Events = new AdviceSequence
+                {
+                    BreakIntoTwo = "The Hero goes \"on the road\" with a naive understanding of the destination they think they want to reach.",
+                    FunAndGames = "Seemingly disconnected episodes each help the Hero grow, even if little progress is made on the \"road\".",
+                    DarkNightOfTheSoul = "The Hero realizes the real treasure is their own personal growth.",
+                    BreakIntoThree = "Fully leveraging how the Hero has grown, a plan is hatched to attain the physical treasure."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

@@ -12,7 +12,7 @@ public interface IProblemTemplate
     public string Description { get; }
     public List<string> Keywords { get; }
 
-    public AdviceSequence AdviceSequence { get; }
+    public SequenceAdvices AdviceSequence { get; }
 
     public Adjectives OrphanAdjectives { get; }
     public Adjectives WandererAdjectives { get; }

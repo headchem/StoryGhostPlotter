@@ -19,20 +19,27 @@ public class FoolTriumphant : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = "The underdog Hero appears to be the Village Idiot, but there is a spark of wisdom within them.",
-                IncitingIncident = "A bigger, more powerful, \"establishment\" Enemy is cruel to the Hero and discounts them due to the Hero's uniqueness.",
-                BreakIntoTwo = "The Hero decides they have had enough of society deeming them to be a loser because of their uniqueness.",
-                FunAndGames = "The Hero has a friendly accomplice who watches in disbelief as the Hero takes on the Enemy.",
-                Midpoint = "The Hero suceeds at shaming the Enemy establishment that shunned them.",
-                BadGuysCloseIn = "The Hero may have succeeded, but they did so by sacrificing or downplaying their uniqueness.",
-                DarkNightOfTheSoul = "The Hero admits they have become no better than the Enemy establishment that shunned them in the first place.",
-                Climax = "The Hero embraces their uniqueness and uses it to overcome the Problem."
+                Events = new AdviceSequence
+                {
+                    Setup = "The underdog Hero appears to be the Village Idiot, but there is a spark of wisdom within them.",
+                    IncitingIncident = "A bigger, more powerful, \"establishment\" Enemy is cruel to the Hero and discounts them due to the Hero's uniqueness.",
+                    BreakIntoTwo = "The Hero decides they have had enough of society deeming them to be a loser because of their uniqueness.",
+                    FunAndGames = "The Hero has a friendly accomplice who watches in disbelief as the Hero takes on the Enemy.",
+                    Midpoint = "The Hero suceeds at shaming the Enemy establishment that shunned them.",
+                    BadGuysCloseIn = "The Hero may have succeeded, but they did so by sacrificing or downplaying their uniqueness.",
+                    DarkNightOfTheSoul = "The Hero admits they have become no better than the Enemy establishment that shunned them in the first place.",
+                    Climax = "The Hero embraces their uniqueness and uses it to overcome the Problem."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

@@ -19,15 +19,22 @@ public class Fantasy : IGenre
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                OpeningImage = "Briefly show a physical or symbolic element that demonstrates this is a fantasy setting.",
-                Setup = "Show the fantasy setting in action, and how it permeates the everyday lives of the characters.",
-                FunAndGames = "Show the wildest and most extreme aspects of the fantasy setting, and how the characters treat it as mundane, having grown used to it."
+                Events = new AdviceSequence
+                {
+                    OpeningImage = "Briefly show a physical or symbolic element that demonstrates this is a fantasy setting.",
+                    Setup = "Show the fantasy setting in action, and how it permeates the everyday lives of the characters.",
+                    FunAndGames = "Show the wildest and most extreme aspects of the fantasy setting, and how the characters treat it as mundane, having grown used to it."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

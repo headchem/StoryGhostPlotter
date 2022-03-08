@@ -65,18 +65,25 @@ public class Outlaw : IArchetype
     public string Motto { get { return "Rules are made to be broken."; } }
 
 
-    public AdviceSequence HeroAdviceSequence
+    public SequenceAdvices HeroAdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = $"The main character wants to {OrphanDesires.ToLower()} Show their talents of {Factory.GetKeywordsSentence("", Talents)}",
-                Debate = $"The main character wants to {WandererResponse.ToLower()}",
-                FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
-                BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
-                AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
-                DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
+                Events = new AdviceSequence
+                {
+                    Setup = $"The main character wants to {OrphanDesires.ToLower()} Show their talents of {Factory.GetKeywordsSentence("", Talents)}",
+                    Debate = $"The main character wants to {WandererResponse.ToLower()}",
+                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
+                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
+                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

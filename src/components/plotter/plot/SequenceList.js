@@ -4,7 +4,9 @@ const SequenceList = ({
     sequences,
     userInfo,
     onFocusChange,
-    updateSequenceText,
+    curFocusElName,
+    updateSequenceContextText,
+    updateSequenceEventsText,
     updateAISequenceText,
     insertSequence,
     deleteSequence,
@@ -136,8 +138,11 @@ const SequenceList = ({
                             userInfo={userInfo}
                             sequence={sequence}
                             sequences={sequences}
-                            onFocusChange={() => onFocusChange('sequence')}
-                            updateSequenceText={updateSequenceText}
+                            //onFocusChange={() => onFocusChange('sequence')}
+                            onFocusChange={onFocusChange}
+                            curFocusElName={curFocusElName}
+                            updateContextText={updateSequenceContextText}
+                            updateSequenceText={updateSequenceEventsText}
                             updateAIText={updateAISequenceText}
 
                             insertSequence={insertSequence}

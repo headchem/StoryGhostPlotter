@@ -19,19 +19,26 @@ public class Institutionalized : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = "The Hero shares a strong bond with their (Enemy) group.",
-                IncitingIncident = "The Group pursues a goal that goes against what the Hero believes in.",
-                FunAndGames = "The Hero tries out life separate from the group.",
-                FirstPinchPoint = "The Hero is oblivious to a symbolic reminder that being separate from the group is not the same as being an individual.",
-                BadGuysCloseIn = "The Hero feels independent, but the group is pulling them back in.",
-                AllHopeIsLost = "The Hero contemplates giving up their individualism for the sake of being accepted by the group.",
-                Climax = "The Hero finds a way to hold true to their own identity, while honoring and affecting positive change on the group."
+                Events = new AdviceSequence
+                {
+                    Setup = "The Hero shares a strong bond with their (Enemy) group.",
+                    IncitingIncident = "The Group pursues a goal that goes against what the Hero believes in.",
+                    FunAndGames = "The Hero tries out life separate from the group.",
+                    FirstPinchPoint = "The Hero is oblivious to a symbolic reminder that being separate from the group is not the same as being an individual.",
+                    BadGuysCloseIn = "The Hero feels independent, but the group is pulling them back in.",
+                    AllHopeIsLost = "The Hero contemplates giving up their individualism for the sake of being accepted by the group.",
+                    Climax = "The Hero finds a way to hold true to their own identity, while honoring and affecting positive change on the group."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

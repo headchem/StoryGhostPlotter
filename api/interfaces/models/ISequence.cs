@@ -7,7 +7,8 @@ namespace StoryGhost.Interfaces;
 public interface ISequence
 {
     public string Name { get; }
-    public string Description { get; }
+    public string EventsDescription { get; }
+    public string ContextDescription { get; }
 
-    public AdviceComponents GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion);
+    public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion);
 }

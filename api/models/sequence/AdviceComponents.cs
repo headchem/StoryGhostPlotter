@@ -6,7 +6,6 @@ namespace StoryGhost.Models;
 
 public class AdviceComponents
 {
-    //[JsonPropertyName("sequenceName")]
     public string Common { get; set; }
     public string Genres { get; set; }
     public string ProblemTemplate { get; set; }

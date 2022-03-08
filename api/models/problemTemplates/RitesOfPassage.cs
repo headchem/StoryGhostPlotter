@@ -19,17 +19,24 @@ public class RitesOfPassage : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                ThemeStated = "A vague outside force will bring pain and torment the Hero.",
-                IncitingIncident = "The outside force brings misery and misfortune upon the Hero, and the Hero struggles to name it.",
-                FunAndGames = "The unseen force continues to sneak up on the Hero, while the beleaguered Hero is distracted with shallower problems.",
-                Midpoint = "The Hero temporarily contains the invisible force, and falsely believes they are in control.",
-                Climax = "The Hero is victorious by accepting their own humanity, surrendering and being at peace with the invisible forces of life they can't control."
+                Events = new AdviceSequence
+                {
+                    ThemeStated = "A vague outside force will bring pain and torment the Hero.",
+                    IncitingIncident = "The outside force brings misery and misfortune upon the Hero, and the Hero struggles to name it.",
+                    FunAndGames = "The unseen force continues to sneak up on the Hero, while the beleaguered Hero is distracted with shallower problems.",
+                    Midpoint = "The Hero temporarily contains the invisible force, and falsely believes they are in control.",
+                    Climax = "The Hero is victorious by accepting their own humanity, surrendering and being at peace with the invisible forces of life they can't control."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

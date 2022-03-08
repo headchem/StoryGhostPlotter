@@ -13,17 +13,24 @@ public class Bravery : IDramaticQuestion
     public string Negation { get { return "Cowardice perceived as bravery"; } }
     public string Positive { get { return "Bravery"; } }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
-            { // LEFT OFF: map the 4 stages to specific sequences, or ranges of sequences to help me describe them in more detail
-                ThemeStated = $"Subtly pose the dramatic question of \"{Description}\". The Hero doesn't have the experience or context yet to understand this theme of {Name.ToLower()}.",
-                Debate = $"The main character shows {Contrary.ToLower()}.",
-                FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
-                DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
-                Climax = $"The main character shows {Positive.ToLower()}."
+            return new SequenceAdvices
+            {
+                Events = new AdviceSequence
+                { // LEFT OFF: map the 4 stages to specific sequences, or ranges of sequences to help me describe them in more detail
+                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\". The Hero doesn't have the experience or context yet to understand this theme of {Name.ToLower()}.",
+                    Debate = $"The main character shows {Contrary.ToLower()}.",
+                    FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
+                    DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
+                    Climax = $"The main character shows {Positive.ToLower()}."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

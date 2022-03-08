@@ -19,16 +19,23 @@ public class UnexpectedProblem : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                Setup = "The Hero is an ordinary person. The Enemy is larger than life.",
-                Midpoint = "The larger-than-life Enemy is forced to take notice of the ordinary Hero.",
-                AllHopeIsLost = "The Enemy reminds the ordinary Hero that they are powerless and should know their place.",
-                DarkNightOfTheSoul = "The Hero finds something within themselves - something every average person has - that might allow them to defeat the Enemy."
+                Events = new AdviceSequence
+                {
+                    Setup = "The Hero is an ordinary person. The Enemy is larger than life.",
+                    Midpoint = "The larger-than-life Enemy is forced to take notice of the ordinary Hero.",
+                    AllHopeIsLost = "The Enemy reminds the ordinary Hero that they are powerless and should know their place.",
+                    DarkNightOfTheSoul = "The Hero finds something within themselves - something every average person has - that might allow them to defeat the Enemy."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

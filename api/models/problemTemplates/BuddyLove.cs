@@ -19,19 +19,26 @@ public class BuddyLove : IProblemTemplate
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                ThemeStated = "This is a relationship story in disguise.",
-                Setup = "The Hero and their Buddy/Enemy don't get along.",
-                IncitingIncident = "The permanent continuation of their relationship is threatened.",
-                FunAndGames = "Hero and Buddy/Enemy grow closer, oblivious to the flaws in their relationship.",
-                AllHopeIsLost = "Hero and Buddy/Enemy have a big fight and declare the relationship is over.",
-                BreakIntoThree = "Both Hero and Buddy/Enemy realize they are two halves of a whole, and they need to surrender their egos and repair the relationship.",
-                Climax = "Hero and Buddy/Enemy transform each other and create an even better relationship than they had before."
+                Events = new AdviceSequence
+                {
+                    ThemeStated = "This is a relationship story in disguise.",
+                    Setup = "The Hero and their Buddy/Enemy don't get along.",
+                    IncitingIncident = "The permanent continuation of their relationship is threatened.",
+                    FunAndGames = "Hero and Buddy/Enemy grow closer, oblivious to the flaws in their relationship.",
+                    AllHopeIsLost = "Hero and Buddy/Enemy have a big fight and declare the relationship is over.",
+                    BreakIntoThree = "Both Hero and Buddy/Enemy realize they are two halves of a whole, and they need to surrender their egos and repair the relationship.",
+                    Climax = "Hero and Buddy/Enemy transform each other and create an even better relationship than they had before."
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

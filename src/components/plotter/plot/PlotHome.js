@@ -146,7 +146,15 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const updateSequenceText = (sequenceName, text) => {
+    const updateSequenceContextText = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, context: text } : sequence
+            )
+        )
+    }
+
+    const updateSequenceEventsText = (sequenceName, text) => {
         setSequences(
             sequences.map(
                 (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, text: text } : sequence
@@ -168,6 +176,28 @@ const PlotHome = (
                 (character) => character.id === id ? { ...character, name: newCharacterName } : character
             )
         )
+    }
+
+    const updateCharacterIsHero = (id, isHero) => {
+        if (isHero === false) { // set all characters to false
+            setCharacters(
+                characters.map(
+                    (character) => character.id === id ? { ...character, isHero: false } : {...character, isHero: false}
+                )
+            )
+        } else {
+            // first set all characters to false
+            const newCharacters = characters.map(
+                (character) => character.id === id ? { ...character, isHero: false } : {...character, isHero: false}
+            )
+
+            // second set just the new character to the protagonist
+            setCharacters(
+                newCharacters.map(
+                    (character) => character.id === id ? { ...character, isHero: isHero } : character
+                )
+            )
+        }
     }
 
     const updateCharacterDescription = (id, description) => {
@@ -339,7 +369,7 @@ const PlotHome = (
 
     const updateTotalTokens = () => {
         if (!sequences || sequences.length === 0) return
-        const allText = sequences.map(s => s.text).join(" ") + characters.map(s => s.description).join(" ") + logLineDescription
+        const allText = sequences.map(s => s.text).join(" ") + sequences.map(s => s.context).join(" ") + logLineDescription + characters.map(s => s.description).join(" ")
         //console.log(allText)
         const numTokens = encode(allText).length
         setTotalTokens(numTokens)
@@ -602,6 +632,7 @@ const PlotHome = (
                                     archetypeOptions={archetypeOptions}
                                     onFocusChange={onFocusChange}
                                     updateCharacterName={updateCharacterName}
+                                    updateCharacterIsHero={updateCharacterIsHero}
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
                                     updateAICharacterDescription={updateAICharacterDescription}
@@ -619,7 +650,9 @@ const PlotHome = (
                                     sequences={sequences}
                                     userInfo={userInfo}
                                     onFocusChange={onFocusChange}
-                                    updateSequenceText={updateSequenceText}
+                                    curFocusElName={curFocusElName}
+                                    updateSequenceContextText={updateSequenceContextText}
+                                    updateSequenceEventsText={updateSequenceEventsText}
                                     updateAISequenceText={updateAISequenceText}
                                     insertSequence={insertSequence}
                                     deleteSequence={deleteSequence}

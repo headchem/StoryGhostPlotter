@@ -113,6 +113,8 @@ public static class Factory
     /// <summary><c>archetype</c> may be either Id or Name and is not case sensitive.</summary>
     public static IArchetype GetArchetype(string archetype)
     {
+        if (string.IsNullOrWhiteSpace(archetype)) return new Blank();
+
         archetype = archetype.ToLower().Trim();
 
         IArchetype archetypeObj = GetArchetypes().Where(a => a.Id.ToLower() == archetype || a.Id.ToLower() == archetype.Replace(" ", "")).FirstOrDefault();

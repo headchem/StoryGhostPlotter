@@ -19,13 +19,20 @@ public class Action : IGenre
         }
     }
 
-    public AdviceSequence AdviceSequence
+    public SequenceAdvices AdviceSequence
     {
         get
         {
-            return new AdviceSequence
+            return new SequenceAdvices
             {
-                // TODO
+                Events = new AdviceSequence
+                {
+                    // TODO
+                },
+                Context = new AdviceSequence
+                {
+
+                }
             };
         }
     }

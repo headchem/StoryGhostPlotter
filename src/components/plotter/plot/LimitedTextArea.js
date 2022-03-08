@@ -20,7 +20,7 @@ const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, classNam
                 rows={rows}
                 cols={cols}
                 onChange={e => setTruncatedContent(e.target.value)}
-                value={value}
+                value={value ? value : ''}
                 onFocus={onFocus}
             />
             {
