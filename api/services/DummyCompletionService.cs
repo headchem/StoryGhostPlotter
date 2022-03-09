@@ -49,16 +49,16 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story)
-    {
-        var prompt = "TODO character archetype prompt goes here...";
+    // public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story)
+    // {
+    //     var prompt = "TODO character archetype prompt goes here...";
 
-        var result = new SequenceResponse();
+    //     var result = new SequenceResponse();
 
-        result.Prompt = prompt;
-        result.Completion = "AI CHARACTER completion goes here...";
+    //     result.Prompt = prompt;
+    //     result.Completion = "AI CHARACTER completion goes here...";
 
-        return result;
-    }
+    //     return result;
+    // }
 
 }

@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class FirstPinchPoint : ISequence
 {
     public string Name { get { return "First Pinch Point"; } }
-    public string EventsDescription { get { return "Unbeknownst to the Hero, an event demonstrates to the audience how the problem is still looming."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return ""; } }
+    public string ContextDescription { get { return "Unbeknownst to the Hero, an event demonstrates to the audience how the problem is still looming."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

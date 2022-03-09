@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class DarkNightOfTheSoul : ISequence
 {
     public string Name { get { return "Dark Night Of The Soul"; } }
-    public string EventsDescription { get { return "The Hero wallows in hopelessness and mourns what has \"died\". The death of something old makes way for something new to be born, but the fertile ground remains unseeded for now."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return "The Hero wallows in hopelessness and mourns what has \"died\"."; } }
+    public string ContextDescription { get { return "The death of something old makes way for something new to be born within the Hero, but that fertile ground remains unseeded for now."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

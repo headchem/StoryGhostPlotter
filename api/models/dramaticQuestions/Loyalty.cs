@@ -22,7 +22,7 @@ public class Loyalty : IDramaticQuestion
             {
                 Events = new AdviceSequence
                 {
-                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\". The Hero doesn't have the experience or context yet to understand this theme of {Name.ToLower()}.",
+                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\".",
                     Debate = $"The main character shows {Contrary.ToLower()}.",
                     FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
                     DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
@@ -30,7 +30,7 @@ public class Loyalty : IDramaticQuestion
                 },
                 Context = new AdviceSequence
                 {
-
+                    ThemeStated = $"The main character doesn't have the experience or context yet to understand the theme of {Name.ToLower()}."
                 }
             };
         }

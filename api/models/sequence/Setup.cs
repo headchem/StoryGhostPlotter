@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class Setup : ISequence
 {
     public string Name { get { return "Setup"; } }
-    public string EventsDescription { get { return "Introduce the Hero in more detail. Establish what they value - what's at stake for them to lose? Foreshadow the rest of story. End with the Hero realizing they can't keep living this way, but they're not sure what else to do."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return "Introduce the Hero in more detail. Establish what they value - what's at stake for them to lose? End with the Hero realizing they can't keep living this way, but they're not sure what else to do."; } }
+    public string ContextDescription { get { return "Foreshadow a future event of the story (come back and edit it in once you know how the plot unfolds)."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

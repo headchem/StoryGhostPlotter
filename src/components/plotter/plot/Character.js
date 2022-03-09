@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 //import Popover from 'react-bootstrap/Popover';
 import Accordion from 'react-bootstrap/Accordion';
 //import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-import Spinner from 'react-bootstrap/Spinner';
 //import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
@@ -10,8 +9,9 @@ import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
 //import { useSearchParams } from "react-router-dom";
 import ArchetypeDescription from './ArchetypeDescription'
+import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
-import { FaGhost, FaMinusCircle } from 'react-icons/fa'
+import { FaMinusCircle } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -39,53 +39,10 @@ const Character = ({
     updateCharacterPersonality,
 }) => {
 
-    const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    //const [commonAdvice, setCommonAdvice] = useState('')
-
-
     const [descriptionTokenCount, setDescriptionTokenCount] = useState(0)
-
-    const onGenerateCompletion = async () => {
-        setIsCompletionLoading(true)
-        fetchCompletion(character.archetype)
-    }
 
     const onDeleteCharacter = () => {
         deleteCharacter(character.id)
-    }
-
-    const fetchCompletion = async (archetype) => {
-        fetchWithTimeout('/api/Character/Generate?archetype=' + archetype, {
-            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'seed': 123,
-                'genres': genres,
-                'problemTemplate': problemTemplate,
-                'keywords': keywords,
-                // 'heroArchetype': heroArchetype,
-                // 'enemyArchetype': enemyArchetype,
-                // 'primalStakes': primalStakes,
-                'dramaticQuestion': dramaticQuestion,
-                //'sequences': sequences,
-                'characters': characters
-            })
-        }).then(function (response) {
-            if (response.ok) {
-                return response.json();
-            }
-            return Promise.reject(response);
-        }).then(function (data) {
-            updateAICharacterDescription(character.id, data['completion'])
-        }).catch(function (error) {
-            console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
-        }).finally(function () {
-            setIsCompletionLoading(false)
-        });
     }
 
     const updateTokenCount = () => {
@@ -208,19 +165,25 @@ const Character = ({
 
                 <div className='col-md-7'>
                     <div className='row pb-3'>
-                        <div className='col-md-7'>
+                        <div className='col-md-5'>
                             <input type='text' className='fs-5 form-control' placeholder='Character Name' required onChange={onCharacterNameChange} defaultValue={character.name} />
 
                         </div>
-                        <div className='col-md-4'>
+                        <div className='col-md-3'>
                             <select required className='fs-5 form-select form-inline' defaultValue={character.archetype} onChange={onArchetypeChange} onFocus={() => onFocusChange('archetype')}>
-                                <option key="blank" value="" disabled selected>Archetype</option>
+                                {/* <option key="blank" value="" disabled>Archetype</option> */}
                                 {
                                     archetypeOptions.map(function (o) {
                                         return <option key={o.value} value={o.value}>{o.label}</option>
                                     })
                                 }
                             </select>
+                        </div>
+                        <div className='col-md-3 pt-2 fs-5'>
+                            <div className='form-check' title="you may only designate one character as the protagonist">
+                                <input className='form-check-input' id={character.id + '_is_protagonist'} type="checkbox" checked={character.isHero} value={character.isHero} onChange={(e) => updateCharacterIsHero(character.id, e.currentTarget.checked)} />
+                                <label className='form-check-label' htmlFor={character.id + '_is_protagonist'}>Is Protagonist?</label>
+                            </div>
                         </div>
                         <div className='col-md-1'>
                             {
@@ -333,11 +296,6 @@ const Character = ({
                         </Accordion.Item>
                     </Accordion>
 
-                    <div title="you may only designate one character as the protagonist">
-                        <label htmlFor={character.id + '_is_protagonist'}>Is Protagonist?</label>
-                        <input id={character.id + '_is_protagonist'} type="checkbox" checked={character.isHero} value={character.isHero} onChange={(e) => updateCharacterIsHero(character.id, e.currentTarget.checked)} />
-                    </div>
-
                     <div className='row mt-3'>
                         <div className='col-12'>
                             <p><span className='fw-bold'>{characterArchetypeCapitalized}</span> {character.name} has a personality of <span className='fw-bold'>{personalitySummary}.</span></p>
@@ -365,41 +323,16 @@ const Character = ({
                 <div className='col-md-5'>
                     {
                         <>
-                            <Accordion defaultActiveKey={['1']} alwaysOpen>
+                            <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
                                 <Accordion.Item eventKey="0">
-                                    <Accordion.Header>Brainstorm with AI</Accordion.Header>
+                                    <Accordion.Header>Character Analysis</Accordion.Header>
                                     <Accordion.Body>
                                         {
                                             <div className='row'>
-                                                {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
-                                                    <>
-                                                        {
-                                                            character.aiText && character.aiText.length > 0 &&
-                                                            <p>{character.aiText}</p>
-                                                        }
-
-                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="generate btn btn-info mt-2 text-right" onClick={onGenerateCompletion}>
-                                                            {
-                                                                isCompletionLoading === true &&
-                                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                                                            }
-                                                            {
-                                                                isCompletionLoading === false &&
-                                                                <FaGhost />
-                                                            }
-                                                            <span> Brainstorm with AI</span>
-                                                        </button>
-
-                                                    </>
-                                                }
-                                                {
-                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                                                    <>
-                                                        <p>Sign up for our premium plan to ask the AI to brainstorm ideas for this sequence.</p>
-                                                    </>
-                                                }
-
+                                                <CharacterAnalysis
+                                                    character={character}
+                                                    characters={characters}
+                                                />
                                             </div>
                                         }
                                     </Accordion.Body>

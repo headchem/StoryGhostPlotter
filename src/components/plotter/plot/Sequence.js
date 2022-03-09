@@ -126,6 +126,9 @@ const Sequence = ({
     const [eventsDramaticQuestionAdvice, setEventsDramaticQuestionAdvice] = useState('')
     const [eventsHeroArchetypeAdvice, setEventsHeroArchetypeAdvice] = useState('')
 
+    const [contextAdviceIsEmpty, setContextAdviceIsEmpty] = useState(true)
+    const [eventsAdviceIsEmpty, setEventsAdviceIsEmpty] = useState(true)
+
     const [isAdviceLoading, setIsAdviceLoading] = useState(false)
     const [sequenceEventsTokenCount, setSequenceEventsTokenCount] = useState(0)
     const [sequenceContextTokenCount, setSequenceContextTokenCount] = useState(0)
@@ -220,11 +223,22 @@ const Sequence = ({
             const eventsAdvice = data['events']
             const contextAdvice = data['context']
 
+            const combinedContext = contextAdvice['common'] + contextAdvice['genres'] + contextAdvice['problemTemplate'] + contextAdvice['dramaticQuestion'] + contextAdvice['heroArchetype']
+            const combinedContextTrimmed = combinedContext.replace(/\s/g, '').trim()
+
+            setContextAdviceIsEmpty(combinedContextTrimmed.length === 0)
+
+
             setContextCommonAdvice(contextAdvice['common'])
             setContextGenresAdvice(contextAdvice['genres'])
             setContextProblemTemplateAdvice(contextAdvice['problemTemplate'])
             setContextDramaticQuestionAdvice(contextAdvice['dramaticQuestion'])
             setContextHeroArchetypeAdvice(contextAdvice['heroArchetype'])
+
+            const combinedEvents = eventsAdvice['common'] + eventsAdvice['genres'] + eventsAdvice['problemTemplate'] + eventsAdvice['dramaticQuestion'] + eventsAdvice['heroArchetype']
+            const combinedEventsTrimmed = combinedEvents.replace(/\s/g, '').trim()
+
+            setEventsAdviceIsEmpty(combinedEventsTrimmed.length === 0)
 
             setEventsCommonAdvice(eventsAdvice['common'])
             setEventsGenresAdvice(eventsAdvice['genres'])
@@ -388,25 +402,40 @@ const Sequence = ({
                                 <Accordion.Item eventKey="1">
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
-                                        <h5>Background Context Advice</h5>
-                                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                                            <span title="common advice">{contextCommonAdvice} </span>
-                                            <span title="genres advice">{contextGenresAdvice} </span>
-                                            <span title="problem template advice">{contextProblemTemplateAdvice} </span>
-                                            <span title="dramatic question advice">{contextDramaticQuestionAdvice}</span>
-                                            <span title="hero archetype advice">{contextHeroArchetypeAdvice} </span>
-                                        </p>
+                                        {
+                                            contextAdviceIsEmpty === false &&
+                                            <>
+                                                <h5 title="Info hidden from the reader, or character backstories that inform the visible events">Background Context</h5>
+                                                <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
+                                                    <span title="common advice">{contextCommonAdvice} </span>
+                                                    <span title="genres advice">{contextGenresAdvice} </span>
+                                                    <span title="problem template advice">{contextProblemTemplateAdvice} </span>
+                                                    <span title="dramatic question advice">{contextDramaticQuestionAdvice}</span>
+                                                    <span title="hero archetype advice">{contextHeroArchetypeAdvice} </span>
+                                                </p>
+                                            </>
+                                        }
+                                        {
+                                            contextAdviceIsEmpty === false && eventsAdviceIsEmpty === false &&
+                                            <hr title="given the context above, therefore the events below transpired..." />
+                                        }
+                                        {
+                                            eventsAdviceIsEmpty === false &&
+                                            <>
+                                                <h5 title="string events together with 'therefore' instead of 'and then'">Events</h5>
+                                                <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
+                                                    <span title="common advice">{eventsCommonAdvice} </span>
+                                                    <span title="genres advice">{eventsGenresAdvice} </span>
+                                                    <span title="problem template advice">{eventsProblemTemplateAdvice} </span>
+                                                    <span title="dramatic question advice">{eventsDramaticQuestionAdvice}</span>
+                                                    <span title="hero archetype advice">{eventsHeroArchetypeAdvice} </span>
+                                                </p>
+                                            </>
+                                        }
 
-                                        <hr />
 
-                                        <h5>Visible Events Advice</h5>
-                                        <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                                            <span title="common advice">{eventsCommonAdvice} </span>
-                                            <span title="genres advice">{eventsGenresAdvice} </span>
-                                            <span title="problem template advice">{eventsProblemTemplateAdvice} </span>
-                                            <span title="dramatic question advice">{eventsDramaticQuestionAdvice}</span>
-                                            <span title="hero archetype advice">{eventsHeroArchetypeAdvice} </span>
-                                        </p>
+
+
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>

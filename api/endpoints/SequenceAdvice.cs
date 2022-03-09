@@ -21,6 +21,18 @@ public static class SequenceAdvice
 
         var adviceObj = sequenceObj.GetAdvice(sequenceRequest.Genres, sequenceRequest.ProblemTemplate, sequenceRequest.HeroArchetype, sequenceRequest.DramaticQuestion);
 
+        // swap nulls for empty strings to make it easier on the js UI
+
+        adviceObj.Context.Common = adviceObj.Context.Common ?? "";
+        adviceObj.Context.DramaticQuestion = adviceObj.Context.DramaticQuestion ?? "";
+        adviceObj.Context.HeroArchetype = adviceObj.Context.HeroArchetype ?? "";
+        adviceObj.Context.ProblemTemplate = adviceObj.Context.ProblemTemplate ?? "";
+
+        adviceObj.Events.Common = adviceObj.Events.Common ?? "";
+        adviceObj.Events.DramaticQuestion = adviceObj.Events.DramaticQuestion ?? "";
+        adviceObj.Events.HeroArchetype = adviceObj.Events.HeroArchetype ?? "";
+        adviceObj.Events.ProblemTemplate = adviceObj.Events.ProblemTemplate ?? "";
+
         return new OkObjectResult(adviceObj);
     }
 }

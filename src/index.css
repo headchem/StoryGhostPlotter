@@ -127,3 +127,15 @@
 .btn-circle.btn-lg * {
     vertical-align:-7%;
 }
+
+.personality_diff_low {
+    color: green;
+}
+
+.personality_diff_medium {
+    color: orange;
+}
+
+.personality_diff_high {
+    color: red;
+}

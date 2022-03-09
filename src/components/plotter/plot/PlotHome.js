@@ -526,7 +526,7 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="keywords" className="form-label">Keywords</label>
+                                    <label htmlFor="keywords" className="form-label">Keywords</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <div style={{ width: '100%' }}>
@@ -543,7 +543,7 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="logLineDesc" className="form-label">Log Line</label>
+                                    <label htmlFor="logLineDesc" className="form-label">Log Line</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <LimitedTextArea
@@ -562,7 +562,7 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="title" className="form-label">Title</label>
+                                    <label htmlFor="title" className="form-label">Title</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
@@ -571,11 +571,11 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="problemTemplate" className="form-label">Problem Template</label>
+                                    <label htmlFor="problemTemplate" className="form-label">Problem Template</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <select id='problemTemplate' required className='fs-5 form-select' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
-                                        <option key="blank" value="" disabled selected>Problem Template</option>
+                                        {/* <option key="blank" value="" disabled>Problem Template</option> */}
                                         {
                                             problemTemplateOptions.map(function (o) {
                                                 return <option key={o.value} value={o.value}>{o.label}</option>
@@ -587,11 +587,11 @@ const PlotHome = (
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label for="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
+                                    <label htmlFor="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <select id='dramaticQuestion' required className='fs-5 form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
-                                        <option key="blank" value="" disabled selected>Dramatic Question</option>
+                                        {/* <option key="blank" value="" disabled>Dramatic Question</option> */}
                                         {
                                             dramaticQuestionOptions.map(function (o) {
                                                 return <option key={o.value} value={o.value}>{o.label}</option>

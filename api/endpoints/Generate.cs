@@ -73,26 +73,26 @@ public class Generate
         return new OkObjectResult(result);
     }
 
-    [FunctionName("GenerateCharacter")]
-    public async Task<IActionResult> GenerateCharacter([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/Generate")] Plot plot, HttpRequest req, ILogger log)
-    {
-        var user = StaticWebAppsAuth.Parse(req);
+    // [FunctionName("GenerateCharacter")]
+    // public async Task<IActionResult> GenerateCharacter([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/Generate")] Plot plot, HttpRequest req, ILogger log)
+    // {
+    //     var user = StaticWebAppsAuth.Parse(req);
 
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+    //     if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+    //     var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
-        {
-            //log.LogInformation("An example of an Information level message");
-        }
+    //     using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+    //     {
+    //         //log.LogInformation("An example of an Information level message");
+    //     }
 
-        var archetype = req.Query["archetype"][0];
+    //     var archetype = req.Query["archetype"][0];
 
-        var result = await _completionService.GetCharacterCompletion(archetype, plot);
+    //     var result = await _completionService.GetCharacterCompletion(archetype, plot);
 
-        // TODO: log token usage by OpenAI to current user container
+    //     // TODO: log token usage by OpenAI to current user container
         
-        return new OkObjectResult(result);
-    }
+    //     return new OkObjectResult(result);
+    // }
 }
