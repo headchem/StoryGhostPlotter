@@ -12,7 +12,6 @@ import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
 import { FaMinusCircle } from 'react-icons/fa'
-import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
