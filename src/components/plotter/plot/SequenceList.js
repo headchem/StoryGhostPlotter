@@ -142,7 +142,7 @@ const SequenceList = ({
                             onFocusChange={onFocusChange}
                             curFocusElName={curFocusElName}
                             updateContextText={updateSequenceContextText}
-                            updateSequenceText={updateSequenceEventsText}
+                            updateEventsText={updateSequenceEventsText}
                             updateAIText={updateAISequenceText}
 
                             insertSequence={insertSequence}
