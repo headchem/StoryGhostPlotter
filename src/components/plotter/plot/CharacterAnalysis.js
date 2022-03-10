@@ -109,7 +109,7 @@ const CharacterAnalysis = ({
         }
 
         return <li key={'char_analysis_' + otherCharacter.id} className={className} title={title}>
-            <strong>{otherCharacter.name}</strong> ({otherCharacter.archetype}) {getDiffDesc(dist)} personality difference ({dist.toFixed(2)})
+            <strong>{otherCharacter.name}</strong> ({otherCharacter.archetype}) {getDiffDesc(dist)} personality difference ({dist.toFixed(1)})
         </li>
     })
 

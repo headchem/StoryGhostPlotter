@@ -15,7 +15,6 @@ import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
-
 const Character = ({
     userInfo,
     onFocusChange,
@@ -170,7 +169,7 @@ const Character = ({
                         </div>
                         <div className='col-md-3'>
                             <select required className='fs-5 form-select form-inline' defaultValue={character.archetype} onChange={onArchetypeChange} onFocus={() => onFocusChange('archetype')}>
-                                {/* <option key="blank" value="" disabled>Archetype</option> */}
+                                <option key="blank" value="" selected disabled>Archetype</option>
                                 {
                                     archetypeOptions.map(function (o) {
                                         return <option key={o.value} value={o.value}>{o.label}</option>

@@ -323,20 +323,20 @@ const Sequence = ({
                     }
 
                     <div onFocus={() => onFocusChange('sequence_context')}>
-                        <label htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context</label>
+                        <label title="hidden information, character backstories, or worldbuilding that drives the visible events" htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context (optional)</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_context_textarea'}
                             className="form-control"
                             value={sequence.context}
                             setValue={(newValue) => updateContextText(sequence.sequenceName, newValue)}
-                            //rows={textLimits[sequence.sequenceName]['rows']}
-                            //limit={textLimits[sequence.sequenceName]['max']}
+                            rows={3}
+                            limit={400}
                             curTokenCount={sequenceContextTokenCount}
                             showCount={true}
                         />
                     </div>
                     <div onFocus={() => onFocusChange('sequence_events')}>
-                        <label htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
+                        <label title="concrete events and interactions visible to the reader/viewer" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_events_textarea'}
                             className="form-control"

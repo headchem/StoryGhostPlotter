@@ -290,7 +290,7 @@ const PlotHome = (
 
         const newCharacter = {
             id: uuid(),
-            name: '',
+            name: 'UNNAMED',
             description: '',
             'personality': {
                 'closemindedToImaginative': { 'primary': 0.0, 'aspect': 0.0 },
@@ -575,7 +575,7 @@ const PlotHome = (
                                 </div>
                                 <div className='col-md-9'>
                                     <select id='problemTemplate' required className='fs-5 form-select' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
-                                        {/* <option key="blank" value="" disabled>Problem Template</option> */}
+                                        <option key="blank" value=""  selected disabled>Problem Template</option>
                                         {
                                             problemTemplateOptions.map(function (o) {
                                                 return <option key={o.value} value={o.value}>{o.label}</option>
@@ -591,7 +591,7 @@ const PlotHome = (
                                 </div>
                                 <div className='col-md-9'>
                                     <select id='dramaticQuestion' required className='fs-5 form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
-                                        {/* <option key="blank" value="" disabled>Dramatic Question</option> */}
+                                        <option key="blank" value="" selected disabled>Dramatic Question</option>
                                         {
                                             dramaticQuestionOptions.map(function (o) {
                                                 return <option key={o.value} value={o.value}>{o.label}</option>
