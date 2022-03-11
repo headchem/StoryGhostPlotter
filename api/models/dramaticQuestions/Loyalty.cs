@@ -25,7 +25,7 @@ public class Loyalty : IDramaticQuestion
                     ThemeStated = $"Subtly pose the dramatic question of \"{Description}\".",
                     Debate = $"The main character shows {Contrary.ToLower()}.",
                     FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
-                    DarkNightOfTheSoul = $"The main character shows {Negation.ToLower()}.",
+                    BadGuysCloseIn = $"The main character shows {Negation.ToLower()}.",
                     Climax = $"The main character shows {Positive.ToLower()}."
                 },
                 Context = new AdviceSequence

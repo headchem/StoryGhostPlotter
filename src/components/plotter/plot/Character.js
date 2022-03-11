@@ -302,7 +302,7 @@ const Character = ({
 
                     <div className='row'>
                         <div className='col-md-12'>
-                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes (optional)</label>
+                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes <span className="text-muted">(optional)</span></label>
                             <LimitedTextArea
                                 id={character.id + '_desc'}
                                 className="form-control"
