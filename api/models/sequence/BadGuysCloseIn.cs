@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class BadGuysCloseIn : ISequence
 {
     public string Name { get { return "Bad Guys Close In"; } }
-    public string EventsDescription { get { return "In-fighting, doubt and jealousy tear the Hero's team apart. The Enemy is temporarily defeated, but they are regrouping for an even stronger attack. The subplot interweaves with the main plot, building tension without resolution."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return "In-fighting, doubt and jealousy tear the Hero's team apart. The Enemy is temporarily defeated, but they are more motivated now and are regrouping for an even stronger attack."; } }
+    public string ContextDescription { get { return "The subplot interweaves with the main plot, building tension without resolution. How does the Enemy/Problem currently feel about the Hero?"; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

@@ -323,7 +323,7 @@ const Sequence = ({
                     }
 
                     <div onFocus={() => onFocusChange('sequence_context')}>
-                        <label title="hidden information, character backstories, or worldbuilding that drives the visible events" htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context (optional)</label>
+                        <label title="hidden information, character backstories, or worldbuilding that drives the visible events" htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context <span className="text-muted">(optional)</span></label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_context_textarea'}
                             className="form-control"
@@ -336,7 +336,7 @@ const Sequence = ({
                         />
                     </div>
                     <div onFocus={() => onFocusChange('sequence_events')}>
-                        <label title="concrete events and interactions visible to the reader/viewer" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
+                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_events_textarea'}
                             className="form-control"

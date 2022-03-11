@@ -10,7 +10,7 @@ public class Catalyst : ISequence
 {
     public string Name { get { return "Catalyst"; } }
     public string EventsDescription { get { return "Introduce the Problem through an Inciting Incident that irreversibly shatters the Hero's status quo."; } }
-    public string ContextDescription { get { return "The Hero isn't sure what to make of this catalytic event, but it is ultimately what they need to grow."; } }
+    public string ContextDescription { get { return "If this event didn't happen, the story would turn out completely differently (and be more boring). The Hero isn't sure what to make of this catalytic event, but it is ultimately what they need to grow."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

@@ -10,7 +10,7 @@ public class AllHopeIsLost : ISequence
 {
     public string Name { get { return "All Hope Is Lost"; } }
     public string EventsDescription { get { return "The Hero suffers a crushing defeat, and victory over the Problem now appears impossible. All progress has been lost, and anything good left has no meaning. Something (perhaps emotional or symbolic) or someone dies."; } }
-    public string ContextDescription { get { return ""; } }
+    public string ContextDescription { get { return "The Hero is ready to give up."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

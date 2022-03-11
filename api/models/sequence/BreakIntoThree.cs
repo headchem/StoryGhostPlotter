@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class BreakIntoThree : ISequence
 {
     public string Name { get { return "Break Into Three"; } }
-    public string EventsDescription { get { return "The Hero answers the Dramatic Question with lessons learned from the characters in the subplot. The Hero's recent Ego Death is synthesized with a final injection of hidden information to reveal the key to defeat the Problem. But a new twist threatens all! The Hero plans one last desperate attempt to defeat the Problem."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return "The Hero's recent Ego Death is synthesized with a final injection of hidden information to reveal the key to defeat the Problem. But a new twist threatens all! The Hero plans one last desperate attempt to defeat the Problem."; } }
+    public string ContextDescription { get { return "The Hero answers the Dramatic Question with lessons learned from the characters in the subplot, demonstrating they have what it takes to overcome their flaws."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

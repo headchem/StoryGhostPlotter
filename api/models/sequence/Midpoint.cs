@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class Midpoint : ISequence
 {
     public string Name { get { return "Midpoint"; } }
-    public string EventsDescription { get { return "Hidden info about the Problem or a character is revealed, recontextualizing the situation, further raising the stakes for the Hero. The Hero, or their perfectly in sync team, wins a victory, but it's a false victory because the Hero still lacks personal growth."; } }
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return "Hidden info about the Problem or a character is revealed, recontextualizing the situation, further raising the stakes for the Hero. The Hero, or their perfectly in sync team, wins a victory, but a negative twist makes it a hollow victory."; } }
+    public string ContextDescription { get { return "The Hero's flaws are still present - only temporarily masked."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

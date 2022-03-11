@@ -9,8 +9,8 @@ namespace StoryGhost.Models.Sequences;
 public class ThemeStated : ISequence
 {
     public string Name { get { return "Theme Stated"; } }
-    public string EventsDescription { get { return ""; } } // this is covered by the Dramatic Question description
-    public string ContextDescription { get { return ""; } }
+    public string EventsDescription { get { return ""; } } // this is mostly covered by the Dramatic Question description
+    public string ContextDescription { get { return "The Hero has a personal flaw that makes this theme especially difficult for them."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {
