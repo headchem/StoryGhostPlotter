@@ -105,43 +105,49 @@ const PlotHome = (
 
         const plotId = searchParams.get("id")
 
-        Promise.all([
-            fetch('/api/LogLine/LogLineOptions'),
-            fetch('/api/GetPlot?id=' + plotId)
-        ]).then(function (responses) {
-            if (responses[1].ok === false) {
-                setIsNotFound(true)
-            } else {
-                // Get a JSON object from each of the responses
-                return Promise.all(responses.map(function (response) {
-                    return response.json();
-                }));
-            }
-        }).then(function (data) {
-            const logLineOptionsData = data[0]
-            populateLogLineOptions(logLineOptionsData)
+        console.log('plotId: ' + plotId)
 
-            const plotData = data[1]
+        // if plotId is empty, this is most likely due to auth redirect stripping the query vars. In this case, redirect back to the main plot home page
+        if (!plotId || plotId === '') {
+            navigate('/plots')
+        } else {
+            Promise.all([
+                fetch('/api/LogLine/LogLineOptions'),
+                fetch('/api/GetPlot?id=' + plotId)
+            ]).then(function (responses) {
+                if (responses[1].ok === false) {
+                    setIsNotFound(true)
+                } else {
+                    // Get a JSON object from each of the responses
+                    return Promise.all(responses.map(function (response) {
+                        return response.json();
+                    }));
+                }
+            }).then(function (data) {
+                const logLineOptionsData = data[0]
+                populateLogLineOptions(logLineOptionsData)
 
-            // this is required to kickstart a newly created plot
-            if (!plotData.sequences || plotData.sequences.length === 0) {
+                const plotData = data[1]
 
-                plotData.sequences = [
-                    {
-                        sequenceName: 'Opening Image',
-                        text: ''
-                    }
-                ]
-            }
+                // this is required to kickstart a newly created plot
+                if (!plotData.sequences || plotData.sequences.length === 0) {
 
-            populatePlot(plotData)
+                    plotData.sequences = [
+                        {
+                            sequenceName: 'Opening Image',
+                            text: ''
+                        }
+                    ]
+                }
 
-        }).catch(function (error) {
-            console.log(error);
-        }).finally(function () {
-            setPlotLoading(false)
-        });
+                populatePlot(plotData)
 
+            }).catch(function (error) {
+                console.log(error);
+            }).finally(function () {
+                setPlotLoading(false)
+            });
+        }
         return () => (isSubscribed = false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -182,13 +188,13 @@ const PlotHome = (
         if (isHero === false) { // set all characters to false
             setCharacters(
                 characters.map(
-                    (character) => character.id === id ? { ...character, isHero: false } : {...character, isHero: false}
+                    (character) => character.id === id ? { ...character, isHero: false } : { ...character, isHero: false }
                 )
             )
         } else {
             // first set all characters to false
             const newCharacters = characters.map(
-                (character) => character.id === id ? { ...character, isHero: false } : {...character, isHero: false}
+                (character) => character.id === id ? { ...character, isHero: false } : { ...character, isHero: false }
             )
 
             // second set just the new character to the protagonist
@@ -575,7 +581,7 @@ const PlotHome = (
                                 </div>
                                 <div className='col-md-9'>
                                     <select id='problemTemplate' required className='fs-5 form-select' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
-                                        <option key="blank" value=""  selected disabled>Problem Template</option>
+                                        <option key="blank" value="" selected disabled>Problem Template</option>
                                         {
                                             problemTemplateOptions.map(function (o) {
                                                 return <option key={o.value} value={o.value}>{o.label}</option>
