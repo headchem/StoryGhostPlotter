@@ -11,7 +11,7 @@ import Nav from 'react-bootstrap/Nav'
 import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
-import { FaMinusCircle, FaTrash, FaCheck } from 'react-icons/fa'
+import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
