@@ -16,10 +16,6 @@ const CharacterList = ({
     updateCharacterPersonality,
     insertCharacter,
     deleteCharacter,
-    genres,
-    problemTemplate,
-    keywords,
-    dramaticQuestion
 }) => {
 
 
@@ -51,11 +47,6 @@ const CharacterList = ({
                                     updateAICharacterDescription={updateAICharacterDescription}
                                     updateCharacterPersonality={updateCharacterPersonality}
                                     deleteCharacter={deleteCharacter}
-
-                                    genres={genres}
-                                    problemTemplate={problemTemplate}
-                                    keywords={keywords}
-                                    dramaticQuestion={dramaticQuestion}
                                 />
                             ))
                     }

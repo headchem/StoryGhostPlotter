@@ -655,10 +655,6 @@ const PlotHome = (
                                     updateCharacterPersonality={updateCharacterPersonality}
                                     insertCharacter={insertCharacter}
                                     deleteCharacter={deleteCharacter}
-                                    genres={genres}
-                                    problemTemplate={problemTemplate}
-                                    keywords={keywords}
-                                    dramaticQuestion={dramaticQuestion}
                                 />
                             </Tab>
                             <Tab eventKey="sequences" title="Sequence of Events">

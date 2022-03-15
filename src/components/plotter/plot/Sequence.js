@@ -136,6 +136,8 @@ const Sequence = ({
     const [sequenceEventsTokenCount, setSequenceEventsTokenCount] = useState(0)
     const [sequenceContextTokenCount, setSequenceContextTokenCount] = useState(0)
 
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+
     const onGenerateCompletion = async () => {
         setIsCompletionLoading(true)
         fetchCompletion(sequence.sequenceName)
@@ -327,7 +329,21 @@ const Sequence = ({
 
                     {
                         sequence.sequenceName !== 'Opening Image' &&
-                        <button onClick={onDeleteSequence} className='btn btn-outline-danger float-end btn-no-border'><FaMinusCircle /></button>
+                        <div className='float-end'>
+                            {
+                                showConfirmDelete === false &&
+                                <>
+                                    <button onClick={() => setShowConfirmDelete(true)} className='btn btn-outline-danger btn-no-border' title='Delete this sequence. You will be prompted to confirm.'><FaMinusCircle /></button>
+                                </>
+                            }
+                            {
+                                showConfirmDelete === true &&
+                                <>
+                                    <button onClick={onDeleteSequence} className="btn btn-danger">Delete</button>
+                                    <button className='btn btn-link' onClick={() => setShowConfirmDelete(false)}>cancel delete</button>
+                                </>
+                            }
+                        </div>
                     }
 
                     <div onFocus={() => onFocusChange('sequence_context')}>

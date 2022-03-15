@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 
 
 const PlotView = (
@@ -8,8 +10,6 @@ const PlotView = (
         userInfo,
     }
 ) => {
-
-    //console.log(userInfo)
 
     const [title, setTitle] = useState('')
     const [sequences, setSequences] = useState(null)
@@ -78,9 +78,6 @@ const PlotView = (
                     <p>This plot either doesn't exist, or the author has not made it public.</p>
                 </>
             }
-            {/* {
-                userInfo && userInfo.
-            } */}
             {
                 plotLoading === false && isNotFound === false &&
                 <div className='row mb-4'>
@@ -91,18 +88,39 @@ const PlotView = (
                     {
                         userInfo && userInfo.userId === authorUserId && isPublic === false &&
                         <>
-                            <p>Only you the author can see this because you have not set this plot to be public.</p>
+                            <p>Only you, the author, can see this because you have not set this plot to be public.</p>
                         </>
                     }
                     <h1 className='pb-4'>{title}</h1>
                     {
                         sequences &&
                         <>
-                            {
-                                sequences.map((sequence) => (
-                                    <p key={sequence.sequenceName} className='fs-5'>{sequence.text}</p>
-                                ))
-                            }
+                            <Tabs defaultActiveKey="all" className="mb-3">
+                                <Tab eventKey="all" title="All">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <span key={sequence.sequenceName}>
+                                                <p className='fs-5 text-muted'>{sequence.context}</p>
+                                                <p className='fs-5'>{sequence.text}</p>
+                                            </span>
+                                        ))
+                                    }
+                                </Tab>
+                                <Tab eventKey="sequences" title="Sequence of Events">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <p key={sequence.sequenceName} className='fs-5'>{sequence.text}</p>
+                                        ))
+                                    }
+                                </Tab>
+                                <Tab eventKey="context" title="Background Context and Characterization">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <p key={sequence.sequenceName} className='fs-5'>{sequence.context}</p>
+                                        ))
+                                    }
+                                </Tab>
+                            </Tabs>
                         </>
                     }
                 </div>

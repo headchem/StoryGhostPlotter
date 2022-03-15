@@ -11,7 +11,7 @@ import Nav from 'react-bootstrap/Nav'
 import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
-import { FaMinusCircle } from 'react-icons/fa'
+import { FaMinusCircle, FaTrash, FaCheck } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
 
@@ -20,10 +20,7 @@ const Character = ({
     onFocusChange,
 
     archetypeOptions,
-    genres,
-    problemTemplate,
-    keywords,
-    dramaticQuestion,
+
 
     character,
     characters,
@@ -38,6 +35,8 @@ const Character = ({
 }) => {
 
     const [descriptionTokenCount, setDescriptionTokenCount] = useState(0)
+
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
     const onDeleteCharacter = () => {
         deleteCharacter(character.id)
@@ -186,7 +185,21 @@ const Character = ({
                         <div className='col-md-1'>
                             {
                                 character.id !== characters[0].id &&
-                                <button onClick={onDeleteCharacter} className='btn btn-outline-danger float-end btn-no-border' title='delete character'><FaMinusCircle /></button>
+                                <>
+                                    {
+                                        showConfirmDelete === false &&
+                                        <>
+                                            <button onClick={() => setShowConfirmDelete(true)} className='btn btn-outline-danger float-end btn-no-border' title='Delete this character. You will wil br prompted to confirm'><FaMinusCircle /></button>
+                                        </>
+                                    }
+                                    {
+                                        showConfirmDelete === true &&
+                                        <>
+                                            <button className='btn btn-link p-0' onClick={() => setShowConfirmDelete(false)}>cancel</button>
+                                            <button onClick={onDeleteCharacter} className="btn btn-danger"><FaTrash /></button>
+                                        </>
+                                    }
+                                </>
                             }
                         </div>
                     </div>
