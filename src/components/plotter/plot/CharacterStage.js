@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import { FaLock, FaLockOpen, FaCaretRight, FaGhost } from 'react-icons/fa'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import LimitedTextArea from './LimitedTextArea'
@@ -33,6 +34,8 @@ const CharacterStage = ({
     martyrSummary,
     martyrFull,
 }) => {
+
+    const navigate = useNavigate()
 
     const [summaryGenerateVisible, setSummaryGenerateVisible] = useState(true)
     const [summaryLockVisible, setSummaryLockVisible] = useState(true)
@@ -71,8 +74,12 @@ const CharacterStage = ({
                 'martyrFull': martyrFull
             })
         }).then(function (response) {
-            if (response.ok) {
-                return response.json();
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
             }
             return Promise.reject(response);
         }).then(function (data) {
@@ -182,7 +189,7 @@ const CharacterStage = ({
 
                         {
                             summaryLocked === false &&
-                            <LimitedTextArea  className="form-control" value={summary} setValue={setSummary} rows={5} limit={500} />
+                            <LimitedTextArea className="form-control" value={summary} setValue={setSummary} rows={5} limit={500} />
                             // <textarea className="form-control" value={summary} onChange={e => setSummary(e.target.value)} rows={5}></textarea>
                         }
                         {
@@ -241,7 +248,7 @@ const CharacterStage = ({
                                 {
                                     fullLocked === false &&
                                     // <textarea className="form-control" value={full} onChange={e => setFull(e.target.value)} rows={10}></textarea>
-                                    <LimitedTextArea  className="form-control" value={full} setValue={setFull} rows={10} limit={2000} />
+                                    <LimitedTextArea className="form-control" value={full} setValue={setFull} rows={10} limit={2000} />
                                 }
                                 {
                                     fullLocked === true &&

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react'
+import { useNavigate } from "react-router-dom";
 //import Popover from 'react-bootstrap/Popover';
 import Accordion from 'react-bootstrap/Accordion';
 //import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
@@ -32,6 +33,8 @@ const Sequence = ({
     deleteSequence,
     allowed
 }) => {
+
+    const navigate = useNavigate()
 
     const textLimits = {
         'Opening Image': {
@@ -169,8 +172,12 @@ const Sequence = ({
                 'characters': characters
             })
         }).then(function (response) {
-            if (response.ok) {
-                return response.json();
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
             }
             return Promise.reject(response);
         }).then(function (data) {
@@ -194,9 +201,6 @@ const Sequence = ({
     }
 
     const fetchAdvice = async () => {
-
-        //console.log('GET ADVICE')
-
         let heroCharacter = characters.filter((character) => character.isHero === true);
         heroCharacter = heroCharacter.length > 0 ? heroCharacter[0] : null;
 
@@ -215,8 +219,12 @@ const Sequence = ({
                 'context': sequence.context
             })
         }).then(function (response) {
-            if (response.ok) {
-                return response.json();
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
             }
             return Promise.reject(response);
         }).then(function (data) {

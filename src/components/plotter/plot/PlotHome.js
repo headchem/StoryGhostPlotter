@@ -115,13 +115,18 @@ const PlotHome = (
                 fetch('/api/LogLine/LogLineOptions'),
                 fetch('/api/GetPlot?id=' + plotId)
             ]).then(function (responses) {
-                if (responses[1].ok === false) {
-                    setIsNotFound(true)
+                if (responses[1].status === 401 || responses[1].status === 403) {
+                    navigate('/plots')
                 } else {
-                    // Get a JSON object from each of the responses
-                    return Promise.all(responses.map(function (response) {
-                        return response.json();
-                    }));
+
+                    if (responses[1].ok === false) {
+                        setIsNotFound(true)
+                    } else {
+                        // Get a JSON object from each of the responses
+                        return Promise.all(responses.map(function (response) {
+                            return response.json();
+                        }));
+                    }
                 }
             }).then(function (data) {
                 const logLineOptionsData = data[0]
@@ -435,15 +440,20 @@ const PlotHome = (
             })
         })
             .then((response) => {
-                if (response.ok) {
-                    // Do something
-                    if (response.status === 204) {
-                        setLastSaveSuccess(Date.now())
+                if (response.status === 401 || response.status === 403) {
+                    navigate('/plots')
+                } else {
+
+                    if (response.ok) {
+                        // Do something
+                        if (response.status === 204) {
+                            setLastSaveSuccess(Date.now())
+                        } else {
+                            console.error('error saving: ' + response.status);
+                        }
                     } else {
                         console.error('error saving: ' + response.status);
                     }
-                } else {
-                    console.error('error saving: ' + response.status);
                 }
             })
             .catch(error => {

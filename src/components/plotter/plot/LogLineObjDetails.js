@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 import { FaGhost, FaCog } from 'react-icons/fa'
 import Accordion from 'react-bootstrap/Accordion';
 import Spinner from 'react-bootstrap/Spinner';
@@ -29,6 +30,8 @@ const LogLineObjDetails = (
     }
 ) => {
 
+    const navigate = useNavigate()
+    
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
     const [genresDescObjs, setGenresDescObjs] = useState(null)
@@ -58,8 +61,12 @@ const LogLineObjDetails = (
                 'characters': characters
             })
         }).then(function (response) {
-            if (response.ok) {
-                return response.json();
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
             }
             return Promise.reject(response);
         }).then(function (data) {
@@ -116,8 +123,12 @@ const LogLineObjDetails = (
 
             fetch(url)
                 .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
+                    if (response.status === 401 || response.status === 403) {
+                        navigate('/plots')
+                    } else {
+                        if (response.ok) {
+                            return response.json();
+                        }
                     }
                     return Promise.reject(response);
                 }).then(function (data) {
@@ -137,7 +148,7 @@ const LogLineObjDetails = (
         }
     }
 
-    const startingPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length-1
+    const startingPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length - 1
 
     return (
         <div>

@@ -17,8 +17,12 @@ const UserHome = ({ userInfo }) => {
         const loadPlots = async () => {
 
             fetch('/api/User').then(function (response) {
-                if (response.ok) {
-                    return response.json();
+                if (response.status === 401 || response.status === 403) {
+                    window.location.reload();
+                } else {
+                    if (response.ok) {
+                        return response.json();
+                    }
                 }
                 return Promise.reject(response);
             }).then(function (data) {
@@ -92,10 +96,10 @@ const UserHome = ({ userInfo }) => {
                             {plotList}
                         </>
                     }
-                    {
+                    {/* {
                         plotList.length === 0 &&
                         <p>No plots have been created yet.</p>
-                    }
+                    } */}
                 </>
             }
 

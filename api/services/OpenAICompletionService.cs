@@ -104,8 +104,6 @@ public class OpenAICompletionService : ICompletionService
     {
         var finetunedCompletion = await getFinetunedLogLineCompletion(plot, keywordsLogitBias);
 
-        //var finetunedCompletion = new LogLineResponse { Completion = "Without warning, a massive alien ship explodes in the atmosphere above the majestic Canadian wilderness, unleashing a hundred-foot wave of destruction that forever alters life in the northern forests." };
-
         if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
         {
             return new Dictionary<string, LogLineResponse> { ["finetuned"] = finetunedCompletion };
@@ -143,7 +141,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Temperature = 0.95,
             TopP = 1.0,
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
-            PresencePenalty = 0.0,
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
             FrequencyPenalty = 0.0,
         };
 

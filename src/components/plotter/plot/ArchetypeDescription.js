@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 
 const ArchetypeDescription = ({ archetype }) => {
 
+    const navigate = useNavigate()
     const [archetypeDescObj, setArchetypeDescObj] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         fetchArchetype()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [archetype]);
 
     const fetchArchetype = async () => {
@@ -16,14 +18,16 @@ const ArchetypeDescription = ({ archetype }) => {
 
         setIsLoading(true)
 
-        //console.log('GET ADVICE')
-
         const url = '/api/LogLine/ArchetypeDescription?archetype=' + archetype
 
         fetch(url)
             .then(function (response) {
-                if (response.ok) {
-                    return response.json();
+                if (response.status === 401 || response.status === 403) {
+                    navigate('/plots')
+                } else {
+                    if (response.ok) {
+                        return response.json();
+                    }
                 }
                 return Promise.reject(response);
             }).then(function (data) {
