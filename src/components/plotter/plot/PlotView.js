@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
 
 
 const PlotView = (
@@ -75,7 +73,7 @@ const PlotView = (
             {
                 isNotFound === true &&
                 <>
-                    <p>This plot either doesn't exist, or the author has not made it public.</p>
+                    <p>This plot either doesn't exist, or the author has not made it public. If you are the author, ensure you are logged in.</p>
                 </>
             }
             {
@@ -95,32 +93,14 @@ const PlotView = (
                     {
                         sequences &&
                         <>
-                            <Tabs defaultActiveKey="all" className="mb-3">
-                                <Tab eventKey="all" title="All">
-                                    {
-                                        sequences.map((sequence) => (
-                                            <span key={sequence.sequenceName}>
-                                                <p className='fs-5 text-muted'>{sequence.context}</p>
-                                                <p className='fs-5'>{sequence.text}</p>
-                                            </span>
-                                        ))
-                                    }
-                                </Tab>
-                                <Tab eventKey="sequences" title="Sequence of Events">
-                                    {
-                                        sequences.map((sequence) => (
-                                            <p key={sequence.sequenceName} className='fs-5'>{sequence.text}</p>
-                                        ))
-                                    }
-                                </Tab>
-                                <Tab eventKey="context" title="Background Context and Characterization">
-                                    {
-                                        sequences.map((sequence) => (
-                                            <p key={sequence.sequenceName} className='fs-5'>{sequence.context}</p>
-                                        ))
-                                    }
-                                </Tab>
-                            </Tabs>
+                            {
+                                sequences.map((sequence) => (
+                                    <span key={sequence.sequenceName}>
+                                        <p className='d-none fs-5 text-muted'>{sequence.context}</p>
+                                        <p className='fs-5'>{sequence.text}</p>
+                                    </span>
+                                ))
+                            }
                         </>
                     }
                 </div>

@@ -95,29 +95,29 @@ const Character = ({
         var neutral_point = 0.2;
 
         let closeminded_to_imaginative_desc = getOneWordDesc(neutral_point, closeminded_to_imaginative, closeminded_to_imaginative_aspect,
-            'fuddy duddy', 'generally closeminded', 'mentally resistant',
+            'a closeminded fuddy duddy', 'generally closeminded', 'closeminded and mentally resistant',
             'moderate',
-            'artsy', 'generally imaginative', 'brainstormer');
+            'imaginative and artsy', 'generally imaginative', 'an imaginative brainstormer');
 
         let disciplined_to_spontaneous_desc = getOneWordDesc(neutral_point, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect,
-            'industrious', 'generally disciplined', 'orderly',
+            'disciplined and industrious', 'generally disciplined', 'disciplined and orderly',
             'dynamic',
-            'head in the clouds', 'generally spontaneous', 'sloppy');
+            'spontaneous with their head in the clouds', 'generally spontaneous', 'spontaneous and sloppy');
 
         let introvert_to_extrovert_desc = getOneWordDesc(neutral_point, introvert_to_extrovert, introvert_to_extrovert_aspect,
-            'glum', 'generally introverted', 'submissive',
+            'introverted and glum', 'generally introverted', 'introverted and submissive',
             'ambivert',
-            'gung-ho', 'generally extroverted', 'bossy');
+            'extroverted and gung-ho', 'generally extroverted', 'extroverted and bossy');
 
         let cold_to_empathetic_desc = getOneWordDesc(neutral_point, cold_to_empathetic, cold_to_empathetic_aspect,
-            'unfeeling', 'generally cold', 'rude',
+            'cold and unfeeling', 'generally cold', 'cold and rude',
             'negotiator',
-            'compassionate', 'generally empathetic', 'polite');
+            'empathetic and compassionate', 'generally empathetic', 'empathetic and polite');
 
         let unflappable_to_anxious_desc = getOneWordDesc(neutral_point, unflappable_to_anxious, unflappable_to_anxious_aspect,
-            'emotionally impervious', 'generally unflappable', 'relaxed',
+            'unflappable and emotionally impervious', 'generally unflappable', 'unflappable and relaxed',
             'responsive to stress',
-            'volatile', 'generally anxious', 'vulnerable');
+            'anxious and volatile', 'generally anxious', 'anxious and vulnerable');
 
         return [closeminded_to_imaginative_desc, disciplined_to_spontaneous_desc, introvert_to_extrovert_desc, cold_to_empathetic_desc, unflappable_to_anxious_desc];
     }
@@ -152,7 +152,8 @@ const Character = ({
         unflappableToAnxiousAspect,
     )
 
-    const personalitySummary = personalityStrs.slice(0, 4).join(', ') + ' and ' + personalityStrs[4]
+    //const personalitySummary = personalityStrs.slice(0, 4).join(', ') + ' and ' + personalityStrs[4]
+    const personalitySummary = personalityStrs.slice(0, 5).join(', ')
 
     const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
 
@@ -309,20 +310,20 @@ const Character = ({
 
                     <div className='row mt-3'>
                         <div className='col-12'>
-                            <p><span className='fw-bold'>{characterArchetypeCapitalized}</span> {character.name} has a personality of <span className='fw-bold'>{personalitySummary}.</span></p>
+                            <p>{characterArchetypeCapitalized}-type {character.name} is {personalitySummary}.</p>
                         </div>
                     </div>
 
                     <div className='row'>
                         <div className='col-md-12'>
-                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes <span className="text-muted">(optional)</span></label>
+                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes</label>
                             <LimitedTextArea
                                 id={character.id + '_desc'}
                                 className="form-control"
                                 value={character.description}
                                 setValue={(newValue) => updateCharacterDescription(character.id, newValue)}
-                                rows={2}
-                                limit={200}
+                                rows={5}
+                                limit={400}
                                 curTokenCount={descriptionTokenCount}
                                 showCount={true}
                             />

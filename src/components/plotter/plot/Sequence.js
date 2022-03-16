@@ -346,7 +346,7 @@ const Sequence = ({
                         </div>
                     }
 
-                    <div onFocus={() => onFocusChange('sequence_context')}>
+                    <div className='d-none' onFocus={() => onFocusChange('sequence_context')}>
                         <label title="hidden information, character backstories, or worldbuilding that drives the visible events" htmlFor={sequence.sequenceName + '_context_textarea'} className="form-label w-100">Background context <span className="text-muted">(optional)</span></label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_context_textarea'}

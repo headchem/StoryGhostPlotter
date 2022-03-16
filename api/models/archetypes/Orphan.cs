@@ -58,7 +58,7 @@ public class Orphan : IArchetype
         get
         {
             return new List<string>{
-                "down-to-earth person", "realist", "diligent worker", "solid citizen", "good neighbor"
+                "down-to-earth", "realist", "diligent worker", "solid citizen", "good neighbor"
             };
         }
     }
