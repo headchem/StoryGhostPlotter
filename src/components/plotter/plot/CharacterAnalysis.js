@@ -38,6 +38,8 @@ const CharacterAnalysis = ({
     const otherCharacters = characters.filter((ch) => ch.id !== character.id)
 
     const getVector = (ch) => {
+        if (!ch['personality']) return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
         const closemindedToImaginativePrimary = ch['personality']['closemindedToImaginative']['primary']
         const coldToEmpatheticPrimary = ch['personality']['coldToEmpathetic']['primary']
         const disciplinedToSpontaneousPrimary = ch['personality']['disciplinedToSpontaneous']['primary']

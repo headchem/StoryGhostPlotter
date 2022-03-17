@@ -105,7 +105,7 @@ const PlotHome = (
 
         const plotId = searchParams.get("id")
 
-        console.log('plotId: ' + plotId)
+        //console.log('plotId: ' + plotId)
 
         // if plotId is empty, this is most likely due to auth redirect stripping the query vars. In this case, redirect back to the main plot home page
         if (!plotId || plotId === '') {
