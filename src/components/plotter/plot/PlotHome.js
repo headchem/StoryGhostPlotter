@@ -391,7 +391,7 @@ const PlotHome = (
         const timeout = setTimeout(() => {
             savePlot()
 
-            const logLineTokens = encode(logLineDescription)
+            const logLineTokens = encode(logLineDescription ?? '')
             setLogLineDescriptionTokenCount(logLineTokens.length)
             updateTotalTokens()
 
