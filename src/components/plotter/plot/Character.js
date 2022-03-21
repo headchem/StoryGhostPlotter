@@ -316,7 +316,7 @@ const Character = ({
 
                     <div className='row'>
                         <div className='col-md-12'>
-                            <label htmlFor={character.id + '_desc'} className="form-label">Character notes</label>
+                            <label htmlFor={character.id + '_desc'} className="form-label" title="1-3 sentences of backstory context that explains and exemplifies their personality.">Character notes</label>
                             <LimitedTextArea
                                 id={character.id + '_desc'}
                                 className="form-control"

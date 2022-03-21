@@ -61,7 +61,6 @@ const CharacterList = ({
                         className='btn btn-outline-primary btn-block'
                         onClick={onInsertCharacter}
                     ><FaPlusCircle /> New Character</button>
-                    <p className='mt-3'>Add new characters in order of importance.</p>
                 </div>
             </div>
         </>
