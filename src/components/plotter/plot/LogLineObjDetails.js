@@ -31,7 +31,7 @@ const LogLineObjDetails = (
 ) => {
 
     const navigate = useNavigate()
-    
+
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
     const [genresDescObjs, setGenresDescObjs] = useState(null)
@@ -228,7 +228,10 @@ const LogLineObjDetails = (
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
                                         <p>
-                                            Write 1-3 sentences that tease the plot. Try to interweave two iteresting ideas, and add a dash of irony.
+                                            Write 1-3 sentences that tease the hero's transformation via the plot events. Try to interweave two iteresting ideas. Add irony where the primary conflict also happens to intersect with the hero's biggest character flaws. For example:
+                                        </p>
+                                        <p>
+                                            When [FLAWED HERO], is [CHALLENGED BY PIVOTAL EVENT], they must [DO ACTION]. But when [UNEXPECTED TWIST], they must [OVERCOME PERSONAL FLAW], or [LOSE PRIMAL STAKES].
                                         </p>
                                     </Accordion.Body>
                                 </Accordion.Item>
