@@ -1,5 +1,5 @@
 {
-  "name": "hello",
+  "name": "storyghost",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,8 +14,8 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "^5.0.0",
     "react-select": "^5.2.1",
-    "uuidv4": "^6.2.12",
-    "sass": "^1.49.9"
+    "sass": "^1.49.9",
+    "uuidv4": "^6.2.12"
   },
   "scripts": {
     "start": "react-scripts start",

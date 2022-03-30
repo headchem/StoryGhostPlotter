@@ -360,7 +360,7 @@ const Sequence = ({
                         />
                     </div>
                     <div onFocus={() => onFocusChange('sequence_events')}>
-                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100">Visible Events</label>
+                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100 d-none">Visible Events</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_events_textarea'}
                             className="form-control"

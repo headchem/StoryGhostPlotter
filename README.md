@@ -1,3 +1,14 @@
+Debug -> Attach to .NET Functions -> click play button
+npm run build
+cd .\build\
+swa start
+navigate to http://localhost:4280
+
+-change code-
+npm run build
+swa start
+-refresh-
+
 You can only install one version of Azure Function Runtime per computer, so may have to switch back to v4 here:
 	https://github.com/Azure/azure-functions-core-tools/releases (download the x64 .msi)
 
