@@ -30,7 +30,7 @@ public class CreateFinetuningDataset
         _db = db;
     }
 
-    [FunctionName("CreateLogLineFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    [FunctionName("CreateLogLineFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different (SGAdmin)
     public async Task<IActionResult> CreateLogLineFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SGAdmin/CreateLogLineFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
@@ -56,7 +56,7 @@ public class CreateFinetuningDataset
         foreach (var row in rows)
         {
             var prompt = string.Join(", ", row.Genres);
-            var completion = row.Overview;// + " --- " + row.Title; // my theory is that putting the title at the end will force the model to come up with a more creative title, since it has seen a bunch of creative words before it. Otherwise, I feel like it was memorizing famous titles and then outputting known plot summaries of those titles. I think this will work because GPT-3 only reads "forward" so it can't know about the title until the very end.
+            var completion = row.Overview;// + " --- " + row.Title; // my theory is that putting the title at the end will force the model to come up with a more creative title, since it has seen a bunch of creative words before it. Otherwise, I feel like it was memorizing famous titles and then outputting known plot summaries of those titles. I think this will work because GPT-3 only reads "forward" so it can't know about the title until the very end. UPDATE: this didn't work, and it just repeated well known titles instead of coming up new ones
 
             finetuningRows.Add(getFinetuningRow(prompt, completion));
         }
@@ -83,6 +83,50 @@ public class CreateFinetuningDataset
             return await reader.ReadToEndAsync();
         }
     }
+
+    [FunctionName("CreateCharacterFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateCharacterFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateCharacterFinetuningDataset")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var finetuningRows = new List<FinetuningRow>();
+
+        var plots = await getTrainingPlots();
+
+        foreach (var plot in plots)
+        {
+            // get single Plot
+            var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+            var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
+            var plotObj = plotResponse.Resource;
+
+            if (plotObj.Characters != null)
+            {
+                foreach (var character in plotObj.Characters)
+                {
+                    if (string.IsNullOrWhiteSpace(character.Description)) continue;
+
+                    var prompt = PersonalityDescription.GetCharacterPrompt(character);
+                    var completion = character.Description;
+
+                    finetuningRows.Add(getFinetuningRow(prompt, completion));
+                }
+            }
+        }
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
+
+        var results = new
+        {
+            Text = resultText
+        };
+
+        return new OkObjectResult(results);
+    }
+
+    
 
     [FunctionName("CreateSequenceFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
     public async Task<IActionResult> CreateSequenceFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceFinetuningDataset")] HttpRequest req, ILogger log)

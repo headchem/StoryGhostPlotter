@@ -25,23 +25,23 @@ public class DummyCompletionService : ICompletionService
         _httpClient = httpClient;
     }
 
-    public async Task<Dictionary<string, LogLineResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordsLogitBias)
     {
         var prompt = "TODO log line desc prompt goes here...";
 
-        var result = new LogLineResponse();
+        var result = new CompletionResponse();
 
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
-        return new Dictionary<string, LogLineResponse> { ["finetuned"] = result };
+        return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
     }
 
-    public async Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
         var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
-        var result = new SequenceResponse();
+        var result = new CompletionResponse();
 
         result.Prompt = prompt;
         result.Completion = "AI SEQUENCE completion goes here...";
@@ -49,16 +49,16 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    // public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story)
-    // {
-    //     var prompt = "TODO character archetype prompt goes here...";
+    public async Task<CompletionResponse> GetCharacterCompletion(Character character)
+    {
+        var prompt = "TODO character archetype prompt goes here...";
 
-    //     var result = new SequenceResponse();
+        var result = new CompletionResponse();
 
-    //     result.Prompt = prompt;
-    //     result.Completion = "AI CHARACTER completion goes here...";
+        result.Prompt = prompt;
+        result.Completion = "AI CHARACTER completion goes here...";
 
-    //     return result;
-    // }
+        return result;
+    }
 
 }

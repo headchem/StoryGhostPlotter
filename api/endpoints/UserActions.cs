@@ -293,7 +293,7 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/isPublic", newIsPublic));
         }
 
-        var aiCompletionsComparer = new ObjectsComparer.Comparer<List<Dictionary<string, LogLineResponse>>>();
+        var aiCompletionsComparer = new ObjectsComparer.Comparer<List<Dictionary<string, CompletionResponse>>>();
         if (aiCompletionsComparer.Compare(newAILogLineDescriptions, curPlotObj.AILogLineDescriptions) == false)
         {
             plotPatchOps.Add(PatchOperation.Set("/AILogLineDescriptions", newAILogLineDescriptions));

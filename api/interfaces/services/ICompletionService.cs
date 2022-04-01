@@ -8,8 +8,8 @@ namespace StoryGhost.Interfaces;
 
 public interface ICompletionService
 {
-    public Task<Dictionary<string, LogLineResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordLogitBias);
-    public Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story);
+    public Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordLogitBias);
+    public Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story);
 
-    //public Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story);
+    public Task<CompletionResponse> GetCharacterCompletion(Character character);
 }

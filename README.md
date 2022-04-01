@@ -1,3 +1,5 @@
+Known working with VS Code plugin "Azure Static Web Apps v0.9.1" upgrading to v0.10.0 broke the local react dev server for debugging
+
 Debug -> Attach to .NET Functions -> click play button
 npm run build
 cd .\build\
@@ -67,7 +69,8 @@ FINETUNING
 	openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.02
 		ABOVE did not stay on topic... maybe it didn't learn enough
 	openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-	
+ ** CHARACTERS: openai api fine_tunes.create -t "sg_finetune\characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05

@@ -100,19 +100,19 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<Dictionary<string, LogLineResponse>> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
     {
         var finetunedCompletion = await getFinetunedLogLineCompletion(plot, keywordsLogitBias);
 
         if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
         {
-            return new Dictionary<string, LogLineResponse> { ["finetuned"] = finetunedCompletion };
+            return new Dictionary<string, CompletionResponse> { ["finetuned"] = finetunedCompletion };
         }
 
         // feed the initial log line completion into "instruct" which asks it to infuse the keywords into a new rewritten log line
-        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias-3);
+        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias - 3);
 
-        var results = new Dictionary<string, LogLineResponse>
+        var results = new Dictionary<string, CompletionResponse>
         {
             ["finetuned"] = finetunedCompletion,
             ["keywords"] = keywordInfusedCompletion
@@ -121,7 +121,7 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    private async Task<LogLineResponse> getFinetunedLogLineCompletion(Plot plot, int keywordsLogitBias)
+    private async Task<CompletionResponse> getFinetunedLogLineCompletion(Plot plot, int keywordsLogitBias)
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
@@ -143,6 +143,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
             FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
         };
 
         //var logitBiasRatio = keywordsLogitBias / 9.0;
@@ -152,7 +153,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
 
         if (plot.Keywords != null && plot.Keywords.Count > 0)
         {
-            openAIRequest.LogitBias = new Dictionary<string, int>();
+            //openAIRequest.LogitBias = new Dictionary<string, int>();
 
             foreach (var keyword in plot.Keywords)
             {
@@ -164,7 +165,13 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PostAsync("completions", content);
-        response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
+        }
 
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
@@ -172,7 +179,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        var result = new LogLineResponse
+        var result = new CompletionResponse
         {
             Prompt = prompt,
             Completion = completion
@@ -181,7 +188,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    private async Task<LogLineResponse> getInstructKeywordsLogLineCompletion(string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
+    private async Task<CompletionResponse> getInstructKeywordsLogLineCompletion(string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
     {
         var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
 
@@ -230,7 +237,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        var result = new LogLineResponse
+        var result = new CompletionResponse
         {
             Prompt = prompt,
             Completion = completion
@@ -239,9 +246,9 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    public async Task<SequenceResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story)
     {
-        return new SequenceResponse
+        return new CompletionResponse
         {
             Prompt = "prompt goes here",
             Completion = "AI Sequence completion goes here..."
@@ -287,7 +294,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var result = new SequenceResponse();
+        var result = new CompletionResponse();
 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
@@ -298,15 +305,63 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    // public async Task<SequenceResponse> GetCharacterCompletion(string archetype, Plot story)
-    // {
-    //     var prompt = "TODO character archetype prompt goes here...";
+    public async Task<CompletionResponse> GetCharacterCompletion(Character character)
+    {
+        var result = await getFinetunedCharacterCompletion(character);
 
-    //     var result = new SequenceResponse();
+        return result;
+    }
 
-    //     result.Prompt = prompt;
-    //     result.Completion = "AI CHARACTER completion goes here...";
+    private async Task<CompletionResponse> getFinetunedCharacterCompletion(Character character)
+    {
+        var prompt = PersonalityDescription.GetCharacterPrompt(character);
 
-    //     return result;
-    // }
+        /*
+davinci:ft-personal-2022-04-01-06-22-16 ---- openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+        */
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            Model = "davinci:ft-personal-2022-04-01-06-22-16", //,
+            MaxTokens = 150, // longest log line prompt was 167 tokens,
+            Temperature = 0.95,
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
+        };
+
+        //var logitBiasRatio = keywordsLogitBias / 9.0;
+
+        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync("completions", content);
+        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
+        }
+
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
+        var result = new CompletionResponse
+        {
+            Prompt = prompt,
+            Completion = completion
+        };
+
+        return result;
+    }
 }

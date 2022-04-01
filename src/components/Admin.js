@@ -4,21 +4,10 @@ import React, { useState } from 'react'
 
 const Admin = () => {
 
-    const [finetuningData, setFinetuningData] = useState(null)
-
     const [logLineFile, setLogLineFile] = useState(null)
     const [logLineJSONL, setLogLineJSONL] = useState(null)
 
-    // const [orphanSummary, setOrphanSummary] = useState('')
-    // const [orphanFull, setOrphanFull] = useState('')
-    // const [wandererSummary, setWandererSummary] = useState('')
-    // const [wandererFull, setWandererFull] = useState('')
-    // const [warriorSummary, setWarriorSummary] = useState('')
-    // const [warriorFull, setWarriorFull] = useState('')
-    // const [martyrSummary, setMartyrSummary] = useState('')
-    // const [martyrFull, setMartyrFull] = useState('')
-
-    // const [longestWordCount, setLongestWordCount] = useState(0)
+    const [characterJSONL, setCharacterJSONL] = useState(null)
 
     const onLogLineChangeFile = e => {
         setLogLineFile(e.target.files[0]);
@@ -28,35 +17,20 @@ const Admin = () => {
         return str.replaceAll('\n', '\\n').replaceAll('"', '\\"')
     }
 
-    // OpenAI has specific requirements for the format: https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset
-    const objToString = (arr) => {
-        var strArr = arr.map(function (row) {
-            //const wordCount = row['prompt'].split(' ').length + row['completion'].split(' ').length;
+    const getCharacterFinetuningData = () => {
 
-            // if (wordCount > longestWordCount) {
-            //     setLongestWordCount(wordCount)
-            // }
-
-            return '{"prompt":"' + clean(row['prompt']) + '", "completion":"' + clean(row['completion']) + '"}'
-        })
-
-        return strArr.join('\n')
-    }
-
-    const getFinetuningData = () => {
-        //const formData = new FormData()
-        //formData.append('myFile', file)
-
-        fetch('/api/SGAdmin/CreateSequenceFinetuningDataset', {
-            method: 'GET',
+        fetch('/api/SGAdmin/CreateCharacterFinetuningDataset', {
+            method: 'GET'
         })
             .then(response => response.json())
             .then(data => {
-                setFinetuningData(data)
+                console.log(data)
+                setCharacterJSONL(data['text'])
             })
             .catch(error => {
                 console.error(error)
             })
+
     }
 
     const uploadLogLineFile = () => {
@@ -79,7 +53,7 @@ const Admin = () => {
 
     return (
         <div>
-            <p>Admin page</p>
+            <p>Export Top_10000_Movies from Google Sheets as CSV, then upload that file here.</p>
 
             <input
                 type="file"
@@ -88,23 +62,15 @@ const Admin = () => {
 
             <button onClick={uploadLogLineFile}>Upload Log Line Data</button>
             <label htmlFor="logLineFinetune" className="fs-3">Log Line Finetune</label>
-            <textarea className="form-control" id="logLineFinetune" rows="3" defaultValue={logLineJSONL}></textarea>
+            <textarea className="form-control" id="logLineFinetune" rows="6" defaultValue={logLineJSONL}></textarea>
 
+            <hr />
 
-            <hr/>
+            <button onClick={getCharacterFinetuningData}>Get Character Log Line Data</button>
+            <label htmlFor="characterFinetune" className="fs-3">Character Finetune</label>
+            <textarea className="form-control" id="characterFinetune" rows="6" defaultValue={characterJSONL}></textarea>
 
-            <button onClick={getFinetuningData}>Get Data</button>
-
-            {
-                finetuningData && Object.keys(finetuningData).map((sequenceName) => (
-                    <>
-                        <div key={sequenceName} className="form-group mt-4">
-                            <label htmlFor={sequenceName + '_textarea'} className="fs-3">{sequenceName}</label>
-                            <textarea className="form-control" id={sequenceName + '_textarea'} rows="3" defaultValue={objToString(finetuningData[sequenceName])}></textarea>
-                        </div>
-                    </>
-                ))
-            }
+            <hr />
 
             <Link to="/">Back to Home</Link>
         </div>

@@ -325,7 +325,7 @@ const Sequence = ({
         <>
             <div className='row border-top mt-3 pt-3'>
                 <div className='col-md-7'>
-                    <h4>{sequence.sequenceName}</h4>
+                    <h4 className="float-start">{sequence.sequenceName}</h4>
 
                     {
                         sequence.sequenceName !== 'Opening Image' &&
@@ -359,7 +359,7 @@ const Sequence = ({
                             showCount={true}
                         />
                     </div>
-                    <div onFocus={() => onFocusChange('sequence_events')}>
+                    <div className="float-start w-100 pt-3" onFocus={() => onFocusChange('sequence_events')}>
                         <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100 d-none">Visible Events</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_events_textarea'}
