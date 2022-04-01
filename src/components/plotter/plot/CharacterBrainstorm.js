@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { FaGhost, FaCog } from 'react-icons/fa'
-import Accordion from 'react-bootstrap/Accordion';
+import { FaGhost } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
-import Carousel from 'react-bootstrap/Carousel'
-import GenresDescription from './GenresDescription'
-import ProblemTemplateDescription from './ProblemTemplateDescription'
-import DramaticQuestionDescription from './DramaticQuestionDescription'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
-//import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
-//import RangeSlider from 'react-bootstrap-range-slider';
 
 const CharacterBrainstorm = (
     {
