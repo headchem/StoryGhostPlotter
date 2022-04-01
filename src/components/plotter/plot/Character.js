@@ -11,6 +11,7 @@ import Nav from 'react-bootstrap/Nav'
 import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
+import CharacterBrainstorm from './CharacterBrainstorm'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
@@ -353,6 +354,12 @@ const Character = ({
                                     <Accordion.Header>Advice</Accordion.Header>
                                     <Accordion.Body>
                                         <ArchetypeDescription archetype={character.archetype} />
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="2">
+                                    <Accordion.Header>Brainstorm with AI</Accordion.Header>
+                                    <Accordion.Body>
+                                        <CharacterBrainstorm character={character} />
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
