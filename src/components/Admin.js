@@ -13,10 +13,6 @@ const Admin = () => {
         setLogLineFile(e.target.files[0]);
     };
 
-    const clean = (str) => {
-        return str.replaceAll('\n', '\\n').replaceAll('"', '\\"')
-    }
-
     const getCharacterFinetuningData = () => {
 
         fetch('/api/SGAdmin/CreateCharacterFinetuningDataset', {
