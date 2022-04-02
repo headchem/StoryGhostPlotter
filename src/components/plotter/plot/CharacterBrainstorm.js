@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { FaGhost } from 'react-icons/fa'
-import Spinner from 'react-bootstrap/Spinner';
 import { fetchWithTimeout } from '../../../util/FetchUtil'
+import AICompletions from './AICompletions'
+
 
 const CharacterBrainstorm = (
     {
         userInfo,
-        character
+        character,
+        updateAICharacterCompletion
     }
 ) => {
 
     const navigate = useNavigate()
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    const [completionText, setCompletionText] = useState(false)
+    //const [completionText, setCompletionText] = useState(false)
 
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
@@ -35,9 +36,12 @@ const CharacterBrainstorm = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            console.log(data)
-            setCompletionText(data['completion'])
-
+            if (!character['aiCompletions']) {
+                updateAICharacterCompletion(character.id, [data['completion']])
+            } else {
+                const newCompletionList = [...character['aiCompletions'], data['completion']] // set newCompletionList to all existing character.AICompletions plus add the new one
+                updateAICharacterCompletion(character.id, newCompletionList)
+            }
         }).catch(function (error) {
             console.warn(error);
             console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
@@ -46,23 +50,19 @@ const CharacterBrainstorm = (
         });
     }
 
-    return (
-        <div>
-            {
-                isCompletionLoading === true && <Spinner animation="border" variant="secondary" />
-            }
-            {
-                isCompletionLoading === false &&
-                <>
-                    <p>{completionText}</p>
-                    <button disabled={isCompletionLoading} type="button" className="btn btn-info mt-2" onClick={fetchCompletion}>
-                        <FaGhost />
-                        <span> New AI Brainstorm</span>
-                    </button>
-                </>
-            }
+    const onDeleteBrainstorm = (idxToDelete) => {
+        const newBrainstormList = character['aiCompletions'].filter((obj, objIdx) => objIdx !== idxToDelete)
+        updateAICharacterCompletion(character.id, newBrainstormList)
+    }
 
-        </div>
+    return (
+        <AICompletions
+            userInfo={userInfo}
+            isLoading={isCompletionLoading}
+            onGenerateCompletion={fetchCompletion}
+            completions={character['aiCompletions']}
+            onDeleteBrainstorm={onDeleteBrainstorm}
+        />
     )
 }
 

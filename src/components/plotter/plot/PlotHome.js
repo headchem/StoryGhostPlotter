@@ -219,10 +219,10 @@ const PlotHome = (
         )
     }
 
-    const updateAICharacterDescription = (id, description) => {
+    const updateAICharacterCompletion = (id, completionList) => {
         setCharacters(
             characters.map(
-                (character) => character.id === id ? { ...character, aiText: description } : character
+                (character) => character.id === id ? { ...character, aiCompletions: completionList } : character
             )
         )
     }
@@ -651,7 +651,7 @@ const PlotHome = (
                                     updateCharacterIsHero={updateCharacterIsHero}
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
-                                    updateAICharacterDescription={updateAICharacterDescription}
+                                    updateAICharacterCompletion={updateAICharacterCompletion}
                                     updateCharacterPersonality={updateCharacterPersonality}
                                     insertCharacter={insertCharacter}
                                     deleteCharacter={deleteCharacter}

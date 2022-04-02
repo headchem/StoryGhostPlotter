@@ -11,8 +11,7 @@ public class Character
     public string Archetype { get; set; }
     public string Description { get; set; }
 
-    [JsonPropertyName("aiText")]
-    public string AIText { get; set; }
+    public List<string> AICompletions { get; set; }
 
     public Personality Personality { get; set; }
 

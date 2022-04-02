@@ -30,7 +30,7 @@ const Character = ({
     updateCharacterIsHero,
     updateCharacterArchetype,
     updateCharacterDescription,
-    updateAICharacterDescription,
+    updateAICharacterCompletion,
     deleteCharacter,
     updateCharacterPersonality,
 }) => {
@@ -359,7 +359,11 @@ const Character = ({
                                 <Accordion.Item eventKey="2">
                                     <Accordion.Header>Brainstorm with AI</Accordion.Header>
                                     <Accordion.Body>
-                                        <CharacterBrainstorm character={character} />
+                                        <CharacterBrainstorm
+                                            userInfo={userInfo}
+                                            character={character}
+                                            updateAICharacterCompletion={updateAICharacterCompletion}
+                                        />
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>

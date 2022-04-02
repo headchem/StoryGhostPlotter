@@ -12,7 +12,7 @@ const CharacterList = ({
     updateCharacterIsHero,
     updateCharacterArchetype,
     updateCharacterDescription,
-    updateAICharacterDescription,
+    updateAICharacterCompletion,
     updateCharacterPersonality,
     insertCharacter,
     deleteCharacter,
@@ -44,7 +44,7 @@ const CharacterList = ({
                                     updateCharacterIsHero={updateCharacterIsHero}
                                     updateCharacterArchetype={updateCharacterArchetype}
                                     updateCharacterDescription={updateCharacterDescription}
-                                    updateAICharacterDescription={updateAICharacterDescription}
+                                    updateAICharacterCompletion={updateAICharacterCompletion}
                                     updateCharacterPersonality={updateCharacterPersonality}
                                     deleteCharacter={deleteCharacter}
                                 />
