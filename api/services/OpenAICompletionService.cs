@@ -327,11 +327,11 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             Prompt = prompt,
             Model = "davinci:ft-personal-2022-04-05-06-09-25", 
             MaxTokens = 150, // longest character description completion was 88 tokens,
-            Temperature = 0.95,
+            Temperature = 0.99,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
-            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
-            FrequencyPenalty = 0.0,
+            PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.2,
             LogitBias = new Dictionary<string, int>()
         };
 
