@@ -12,7 +12,6 @@ const AICompletions = (
         completions,
         onDeleteBrainstorm,
         onGenerateCompletion,
-        //startingPage
     }
 ) => {
 

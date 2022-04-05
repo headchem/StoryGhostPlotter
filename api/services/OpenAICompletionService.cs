@@ -314,7 +314,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
 
     private async Task<CompletionResponse> getFinetunedCharacterCompletion(Character character)
     {
-        var prompt = PersonalityDescription.GetCharacterPrompt(character);
+        var prompt = PersonalityDescription.GetCharacterPrompt(character) + CreateFinetuningDataset.PromptSuffix;
 
         /*
 davinci:ft-personal-2022-04-01-06-22-16 ---- openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035

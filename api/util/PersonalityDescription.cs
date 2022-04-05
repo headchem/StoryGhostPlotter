@@ -20,7 +20,7 @@ public static class PersonalityDescription
 
         var archetypeName = character.Archetype[0].ToString().ToUpper() + character.Archetype.Substring(1);
 
-        return archetypeName + "-type " + character.Name + " is " + personalityDescription + CreateFinetuningDataset.PromptSuffix;
+        return archetypeName + "-type " + character.Name + " is " + personalityDescription;// + CreateFinetuningDataset.PromptSuffix;
     }
 
     public static string GetDescription(Personality personality)
