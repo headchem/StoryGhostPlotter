@@ -169,7 +169,7 @@ public static class Factory
     /// <summary><c>sequenceName</c> is case sensitive.</summary>
     public static ISequence GetSequence(string sequenceName)
     {
-        ISequence sequenceObj = GetSequences().Where(s => s.Name == sequenceName).First();
+        ISequence sequenceObj = GetSequences().Where(s => s.Name == sequenceName).FirstOrDefault();
 
         return sequenceObj;
     }

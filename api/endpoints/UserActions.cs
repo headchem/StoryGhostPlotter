@@ -246,6 +246,7 @@ public class UserActions
         var newProblemTemplate = plot.ProblemTemplate;
         var newSequences = plot.Sequences;
         var newIsPublic = plot.IsPublic;
+        var newSequenceCompletions = plot.SequenceCompletions;
 
         if (!string.IsNullOrWhiteSpace(newLogLineDescription) && newLogLineDescription != curPlotObj.LogLineDescription)
         {
@@ -309,6 +310,12 @@ public class UserActions
         if (characterComparer.Compare(newCharacters, curPlotObj.Characters) == false)
         {
             plotPatchOps.Add(PatchOperation.Set("/characters", newCharacters));
+        }
+
+        var sequenceCompletionsComparer = new ObjectsComparer.Comparer<SequenceCompletions>();
+        if (sequenceCompletionsComparer.Compare(newSequenceCompletions, curPlotObj.SequenceCompletions) == false)
+        {
+            plotPatchOps.Add(PatchOperation.Set("/sequenceCompletions", newSequenceCompletions));
         }
 
         if (plotPatchOps.Count > 0)

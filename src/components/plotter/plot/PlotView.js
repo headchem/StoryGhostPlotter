@@ -96,8 +96,7 @@ const PlotView = (
                             {
                                 sequences.map((sequence) => (
                                     <span key={sequence.sequenceName}>
-                                        <p className='d-none fs-5 text-muted'>{sequence.context}</p>
-                                        <p className='fs-5'>{sequence.text}</p>
+                                        <p className='fs-5' title={sequence.sequenceName}>{sequence.text}</p>
                                     </span>
                                 ))
                             }

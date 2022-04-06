@@ -17,6 +17,10 @@ public static class SequenceAdvice
 
         var sequenceObj = Factory.GetSequence(sequenceName);
 
+        if (sequenceObj == null) {
+            return new OkObjectResult(new AdviceComponentsWrapper());
+        }
+
         // TODO: use sequenceRequest.Text for something, maybe do emotional analysis on it, or use to render images.
 
         var adviceObj = sequenceObj.GetAdvice(sequenceRequest.Genres, sequenceRequest.ProblemTemplate, sequenceRequest.HeroArchetype, sequenceRequest.DramaticQuestion);

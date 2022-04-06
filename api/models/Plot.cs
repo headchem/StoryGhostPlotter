@@ -48,4 +48,6 @@ public class Plot
 
     [JsonPropertyName("sequences")]
     public List<UserSequence> Sequences { get; set; }
+
+    public SequenceCompletions SequenceCompletions { get; set; }
 }

@@ -13,7 +13,7 @@ public class Orphan : IArchetype
     public string Description { get { return "The Orphan has metaphorically skipped childhood. They are unpretentious, street smart, and empathize with the struggle of others. They fear exploitation and being singled out from the crowd. They are prone to a victim mentality and must parent themselves."; } }
     public string SourceOfMotivation { get { return SourceOfMotivationEnum.Themselves; } }
     public string OrphanDesires { get { return "To belong, regain safety, connect with others."; } }
-    public string WandererResponse { get { return "Be victimized by it."; } }
+    public string WandererResponse { get { return "Be victimized by the problem."; } }
     public string WarriorResponse { get { return "Develop ordinary solid virtues, be down to earth, process and feel pain fully."; } }
     public List<string> GreatestFears
     {

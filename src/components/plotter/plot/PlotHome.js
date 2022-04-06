@@ -32,6 +32,7 @@ const PlotHome = (
     const [sequences, setSequences] = useState(null)
     const [characters, setCharacters] = useState(null)
     const [isPublic, setIsPublic] = useState(false)
+    const [sequenceCompletions, setSequenceCompletions] = useState(null)
     const [isPublicCheckboxId] = useState(useUniqueId('isPublicCheckbox'))
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
@@ -61,8 +62,9 @@ const PlotHome = (
         setKeywords(data['keywords'] ?? [])
         setDramaticQuestion(data['dramaticQuestion'])
         setSequences(data['sequences'])
+        setSequenceCompletions(data['sequenceCompletions'])
 
-        // set default protagonist if arr is blank
+        // set default protagonist if array is blank
         if (!data['characters'] || data['characters'].length === 0) {
             data['characters'] = [{
                 id: uuid(),
@@ -337,6 +339,7 @@ const PlotHome = (
 
 
     const [curFocusElName, setCurFocusElName] = useState('')
+    const [lastFocusedSequenceName, setLastFocusedSequenceName] = useState('')
 
 
 
@@ -400,7 +403,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic, sequenceCompletions]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -436,7 +439,8 @@ const PlotHome = (
                 'dramaticQuestion': dramaticQuestion,
                 'sequences': sequences,
                 'characters': characters,
-                'isPublic': isPublic
+                'isPublic': isPublic,
+                'sequenceCompletions': sequenceCompletions
             })
         })
             .then((response) => {
@@ -661,8 +665,9 @@ const PlotHome = (
                                 <SequenceList
                                     sequences={sequences}
                                     userInfo={userInfo}
-                                    onFocusChange={onFocusChange}
-                                    curFocusElName={curFocusElName}
+                                    logLineDescription={logLineDescription}
+                                    setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                    lastFocusedSequenceName={lastFocusedSequenceName}
                                     updateSequenceContextText={updateSequenceContextText}
                                     updateSequenceEventsText={updateSequenceEventsText}
                                     updateAISequenceText={updateAISequenceText}
@@ -673,6 +678,8 @@ const PlotHome = (
                                     keywords={keywords}
                                     characters={characters}
                                     dramaticQuestion={dramaticQuestion}
+                                    sequenceCompletions={sequenceCompletions}
+                                    setSequenceCompletions={setSequenceCompletions}
                                 />
                             </Tab>
                         </Tabs>

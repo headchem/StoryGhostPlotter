@@ -13,6 +13,7 @@ using StoryGhost.Interfaces;
 using System.Net;
 using Newtonsoft.Json;
 using Microsoft.Azure.Documents;
+using StoryGhost.Models.Completions;
 
 namespace StoryGhost.Generate;
 
@@ -89,13 +90,18 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
         }
 
-        var sequenceName = req.Query["sequenceName"][0];
+        var part = req.Query["part"][0];
 
-        var result = await _completionService.GetSequenceCompletion(sequenceName, plot);
+        //var result = await _completionService.GetSequenceCompletion(sequenceName, plot);
 
         // TODO: log token usage by OpenAI to current user container
 
-        return new OkObjectResult(result);
+        var temp = new CompletionResponse{
+            Prompt = "prompt goes here",
+            Completion = "test completion here"
+        };
+
+        return new OkObjectResult(temp);
     }
 
     // [FunctionName("GenerateCharacter")]
