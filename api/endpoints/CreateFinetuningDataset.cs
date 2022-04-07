@@ -126,7 +126,7 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
-    
+
 
     [FunctionName("CreateSequenceFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
     public async Task<IActionResult> CreateSequenceFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceFinetuningDataset")] HttpRequest req, ILogger log)
@@ -134,6 +134,8 @@ public class CreateFinetuningDataset
         var user = StaticWebAppsAuth.Parse(req);
 
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var part = req.Query["part"][0];
 
         // try
         // {
@@ -172,8 +174,12 @@ public class CreateFinetuningDataset
         // {
         //     return new BadRequestObjectResult(ex);
         // }
+        var results = new
+        {
+            Text = "TODO"
+        };
 
-        return new OkObjectResult("TODO");
+        return new OkObjectResult(results);
     }
 
     private async Task<List<Plot>> getTrainingPlots()

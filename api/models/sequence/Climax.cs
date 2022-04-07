@@ -10,7 +10,7 @@ public class Climax : ISequence
 {
     public string Name { get { return "Climax"; } }
     public string EventsDescription { get { return "A fortuitous revelation/twist inspires the Hero. In a final showdown, the Hero overcomes their weaknesses and shadow side, as they enact an ingenious plan. The Hero incorporates the answer to the Dramatic Question into their fight against the Problem."; } }
-    public string ContextDescription { get { return "The fortuitous twist should be created by the characters themselves in the subplot, not an act of God. Try to make it orthagonal to the negative twist at the midpoint."; } }
+    public string ContextDescription { get { return "A fortuitous twist should be created by the characters themselves in the subplot - not by an act of God. Try to make it orthagonal to the negative twist at the midpoint."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)
     {

@@ -8,10 +8,30 @@ const Admin = () => {
     const [logLineJSONL, setLogLineJSONL] = useState(null)
 
     const [characterJSONL, setCharacterJSONL] = useState(null)
+    const [sequenceJSONL, setSequenceJSONL] = useState(null)
+    const [sequencePart, setSequencePart] = useState('')
 
     const onLogLineChangeFile = e => {
         setLogLineFile(e.target.files[0]);
     };
+
+    const uploadLogLineFile = () => {
+        const formData = new FormData()
+        formData.append('logLineFile', logLineFile)
+
+        fetch('/api/SGAdmin/CreateLogLineFinetuningDataset', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setLogLineJSONL(data['text'])
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
 
     const getCharacterFinetuningData = () => {
 
@@ -26,21 +46,21 @@ const Admin = () => {
             .catch(error => {
                 console.error(error)
             })
-
     }
 
-    const uploadLogLineFile = () => {
-        const formData = new FormData()
-        formData.append('logLineFile', logLineFile)
+    const onSequencePartChange = (event) => {
+        setSequencePart(event.target.value)
+    }
 
-        fetch('/api/SGAdmin/CreateLogLineFinetuningDataset', {
-            method: 'POST',
-            body: formData
+    const getSequenceFinetuningData = () => {
+
+        fetch('/api/SGAdmin/CreateSequenceFinetuningDataset?part=' + sequencePart, {
+            method: 'GET'
         })
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setLogLineJSONL(data['text'])
+                setSequenceJSONL(data['text'])
             })
             .catch(error => {
                 console.error(error)
@@ -62,11 +82,20 @@ const Admin = () => {
 
             <hr />
 
-            <button onClick={getCharacterFinetuningData}>Get Character Log Line Data</button>
+            <button onClick={getCharacterFinetuningData}>Get Character Data</button>
             <label htmlFor="characterFinetune" className="fs-3">Character Finetune</label>
             <textarea className="form-control" id="characterFinetune" rows="6" defaultValue={characterJSONL}></textarea>
 
             <hr />
+
+            <select id='sequencePart' required className='fs-5 form-select' defaultValue={sequencePart} onChange={onSequencePartChange}>
+                <option value="start" selected>Start</option>
+                <option value="middle" selected>Middle</option>
+                <option value="ending" selected>Ending</option>
+            </select>
+            <button onClick={getSequenceFinetuningData}>Get Sequence Data</button>
+            <label htmlFor="sequenceFinetune" className="fs-3">Sequence Finetune</label>
+            <textarea className="form-control" id="sequenceFinetune" rows="6" defaultValue={sequenceJSONL}></textarea>
 
             <Link to="/">Back to Home</Link>
         </div>
