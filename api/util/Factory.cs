@@ -55,7 +55,7 @@ public static class Factory
 
             results.Add(genreObj);
         }
-        
+
         return results;
     }
 
@@ -199,6 +199,52 @@ public static class Factory
         };
     }
 
+    public static string GetSequencePartPrompt(string part, Plot plot, string promptSequenceText)
+    {
+        var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
+        var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
+        var genres = Factory.GetGenres(plot.Genres);
+
+        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
+        var heroCharacterContribution = "";
+
+        if (heroCharacter != null)
+        {
+            var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
+            heroCharacterContribution = PersonalityDescription.GetCharacterPrompt(heroCharacter) + $". {heroCharacter.Name} is the protagonist of the story.";
+            //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
+            heroCharacterContribution += $" Additional character description: {heroCharacter.Description}";
+        }
+
+        var nonHeroCharacters = plot.Characters.Where(c => c.IsHero == false).ToList();
+        var nonHeroCharacterContributions = "";
+
+        foreach (var character in nonHeroCharacters)
+        {
+            var archetype = Factory.GetArchetype(character.Archetype);
+            nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $" {character.Name} is a supporting character in this story.";
+            //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
+            nonHeroCharacterContributions += $" Additional character description: {character.Description}";
+        }
+
+        nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
+
+        // not enough space in the later sequences to fit prompt in 2048 tokens, so we omit non-hero characters. Hopefully, the existing story has already sufficiently set up the characters by this point.
+        if (part == "ending")
+        {
+            nonHeroCharacterContributions = "";
+        }
+
+        var genreContribution = "This story has the genres of: " + string.Join(", ", plot.Genres) + ".";
+
+        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
+        var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
+
+        var problemTemplateContribution = $"The problem template is \"{plot.ProblemTemplate}\" which can be described as: {problemTemplate.Description}";
+
+        return problemTemplateContribution + " " + dramaticQuestionLogLineContribution + " " + keywordsContribution + ". " + genreContribution + " " + heroCharacterContribution + " " + nonHeroCharacterContributions + " The overarching log line, or plot teaser, for this story is: " + plot.LogLineDescription + "\n\n" + promptSequenceText.Trim();
+    }
+
     // private static string getCharacterStage(string sequenceName)
     // {
     //     return sequenceName switch
@@ -216,51 +262,51 @@ public static class Factory
     // }
 
     /// <summary>Given a <c>Story</c>, will return the prompt for the given <c>sequenceName</c></summary>
-    public static string GetSequencePrompt(string sequenceName, Plot plot)
-    {
-        // get LogLine objects
-        var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
-        //var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
-        //var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
-        var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
-        //var genre = Factory.GetGenre(plot.Genre);
+    // public static string GetSequencePrompt(string sequenceName, Plot plot)
+    // {
+    //     // get LogLine objects
+    //     var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
+    //     //var heroArchetype = Factory.GetArchetype(plot.HeroArchetype);
+    //     //var enemyArchetype = Factory.GetArchetype(plot.EnemyArchetype);
+    //     var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
+    //     //var genre = Factory.GetGenre(plot.Genre);
 
-        //var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, dramaticQuestion);
-        var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
+    //     //var genreContribution = genre.GetLogLineContribution(plot.Seed, problemTemplate, dramaticQuestion);
+    //     var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
 
-        var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
+    //     var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
 
-        var consolidatedContributions = $"{keywordsContribution}. {dramaticQuestionLogLineContribution}";
+    //     var consolidatedContributions = $"{keywordsContribution}. {dramaticQuestionLogLineContribution}";
 
-        consolidatedContributions += "\n\n";
+    //     consolidatedContributions += "\n\n";
 
-        if (sequenceName != "Opening Image")
-        {
-            // given the sequenceName, append all previous sequence texts with appropriate prefixes
-            consolidatedContributions += GetPreviousSequences(sequenceName, plot);
-            consolidatedContributions += "\n\n";
-        }
+    //     if (sequenceName != "Opening Image")
+    //     {
+    //         // given the sequenceName, append all previous sequence texts with appropriate prefixes
+    //         consolidatedContributions += GetPreviousSequences(sequenceName, plot);
+    //         consolidatedContributions += "\n\n";
+    //     }
 
-        consolidatedContributions += sequenceName.ToUpper() + ":";
+    //     consolidatedContributions += sequenceName.ToUpper() + ":";
 
-        // var primalStakesCharacterStageContribution = primalStakes.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
-        // var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
-        // var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
+    //     // var primalStakesCharacterStageContribution = primalStakes.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, heroArchetype, enemyArchetype, dramaticQuestion);
+    //     // var problemTemplateCharacterStageContribution = problemTemplate.GetCharacterStageContribution(req.Seed, characterStage, genre, heroArchetype, enemyArchetype, primalStakes, dramaticQuestion);
+    //     // var heroArchetypeCharacterStageContribution = heroArchetype.GetCharacterStageContribution(req.Seed, characterStage, genre, problemTemplate, enemyArchetype, primalStakes, dramaticQuestion);
 
-        // if (completionType != "orphanSummary")
-        // {
-        //     var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(completionType, req);
+    //     // if (completionType != "orphanSummary")
+    //     // {
+    //     //     var previousEvents = "\n\nHere is a summary of the previous events in this story:\n\n" + getPreviousEvents(completionType, req);
 
-        //     consolidatedContributions += previousEvents;
-        // }
+    //     //     consolidatedContributions += previousEvents;
+    //     // }
 
-        //consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
-        //consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
+    //     //consolidatedContributions += $"\n\n{problemTemplateCharacterStageContribution} {heroArchetypeCharacterStageContribution} {primalStakesCharacterStageContribution}";
+    //     //consolidatedContributions += "\n\n" + getRequestToAI(completionType, req);
 
-        consolidatedContributions += CreateFinetuningDataset.CompletionStopSequence; //"\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
+    //     consolidatedContributions += CreateFinetuningDataset.CompletionStopSequence; //"\n\n###\n\n"; // OpenAI suggests ending each prompt with a fixed separator
 
-        return consolidatedContributions;
-    }
+    //     return consolidatedContributions;
+    // }
 
     public static string GetKeywordsSentence(string prefix, List<string> keywords)
     {

@@ -137,49 +137,115 @@ public class CreateFinetuningDataset
 
         var part = req.Query["part"][0];
 
-        // try
-        // {
-        //     var plots = await getTrainingPlots();
+        var finetuningRows = new List<FinetuningRow>();
 
-        //     var results = new Dictionary<string, List<FinetuningRow>>();
+        var plots = await getTrainingPlots();
 
-        //     var sequenceNames = new List<string>{
-        //         "Opening Image",
-        //         "Setup",
-        //         "Theme Stated",
-        //         "Setup (Continued)",
-        //         "Catalyst",
-        //         "Debate",
-        //         "Break Into Two",
-        //         "Fun And Games",
-        //         "First Pinch Point",
-        //         "Midpoint",
-        //         "Bad Guys Close In",
-        //         "Second Pinch Point",
-        //         "All Hope Is Lost",
-        //         "Dark Night Of The Soul",
-        //         "Break Into Three",
-        //         "Climax",
-        //         "Cooldown"
-        //     };
+        foreach (var plot in plots)
+        {
+            // get single Plot
+            var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+            var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
+            var plotObj = plotResponse.Resource;
 
-        //     foreach (var sequenceName in sequenceNames)
-        //     {
-        //         results[sequenceName] = getRows(sequenceName, plots);
-        //     }
+            var (completionStartSequenceName, completionEndSequenceName) = getStartAndEndSequenceNames(part);
+            var completionPartSequences = getSequencesBetween(plotObj.Sequences, completionStartSequenceName, completionEndSequenceName);
 
-        //     return new OkObjectResult(results);
-        // }
-        // catch (Exception ex)
-        // {
-        //     return new BadRequestObjectResult(ex);
-        // }
+            var completionText = sequencesToText(completionPartSequences);
+
+            var promptSequenceText = GetPromptSequenceText(part, plotObj);
+
+            var prompt = Factory.GetSequencePartPrompt(part, plotObj, promptSequenceText);// "prompt for " + part + "\n\n" + promptSequenceText.Trim();
+            var completion = completionText.Trim();
+
+            finetuningRows.Add(getFinetuningRow(prompt, completion));
+        }
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
+
         var results = new
         {
-            Text = "TODO"
+            Text = resultText
         };
 
         return new OkObjectResult(results);
+    }
+
+    public static string GetPromptSequenceText(string part, Plot plotObj)
+    {
+        var promptSequenceText = "";
+
+        if (part == "middle")
+        {
+            var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
+            var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
+
+            promptSequenceText = sequencesToText(promptPartSequences);
+        }
+        else if (part == "ending")
+        {
+            var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
+            var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
+
+            var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
+            var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
+            var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
+
+            promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
+        }
+
+        return promptSequenceText;
+    }
+
+    private static string sequencesToText(List<UserSequence> sequences)
+    {
+        var results = "";
+
+        foreach (var sequence in sequences)
+        {
+            results += $"{sequence.SequenceName.ToUpper()}: {sequence.Text}\n\n";
+        }
+
+        return results;
+    }
+
+    private static (string, string) getStartAndEndSequenceNames(string part)
+    {
+        return part switch
+        {
+            "start" => ("", "Fun And Games"),
+            "middle" => ("Fun And Games", "Dark Night Of The Soul"),
+            "ending" => ("Dark Night Of The Soul", "Cooldown"),
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(part)),
+        };
+    }
+
+    // pass in startSequenceInclusive="" to start from very beginning (Opening Image)
+    private static List<UserSequence> getSequencesBetween(List<UserSequence> allSequences, string startSequenceExclusive, string endSequenceInclusive)
+    {
+        var results = new List<UserSequence>();
+
+        var foundStart = false;
+
+        foreach (var sequence in allSequences)
+        {
+            if (foundStart || string.IsNullOrWhiteSpace(startSequenceExclusive))
+            {
+                results.Add(sequence);
+            }
+
+            if (string.IsNullOrWhiteSpace(startSequenceExclusive) || sequence.SequenceName == startSequenceExclusive)
+            {
+                foundStart = true;
+            }
+
+            if (sequence.SequenceName == endSequenceInclusive)
+            {
+                return results;
+            }
+        }
+
+        return null;
     }
 
     private async Task<List<Plot>> getTrainingPlots()

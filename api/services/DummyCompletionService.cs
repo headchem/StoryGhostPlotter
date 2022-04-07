@@ -12,6 +12,7 @@ using StoryGhost.Models;
 using StoryGhost.Models.Completions;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
+using StoryGhost.Util;
 
 namespace StoryGhost.Services;
 
@@ -37,9 +38,12 @@ public class DummyCompletionService : ICompletionService
         return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string part, Plot story)
     {
-        var prompt = Factory.GetSequencePrompt(sequenceName, story);
+        //var prompt = Factory.GetSequencePrompt(sequenceName, story);
+
+        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(part, story);
+        var prompt = Factory.GetSequencePartPrompt(part, story, promptSequenceText);
 
         var result = new CompletionResponse();
 

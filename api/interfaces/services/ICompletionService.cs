@@ -9,7 +9,7 @@ namespace StoryGhost.Interfaces;
 public interface ICompletionService
 {
     public Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordLogitBias);
-    public Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story);
+    public Task<CompletionResponse> GetSequenceCompletion(string part, Plot story);
 
     public Task<CompletionResponse> GetCharacterCompletion(Character character);
 }

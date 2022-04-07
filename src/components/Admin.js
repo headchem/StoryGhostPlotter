@@ -9,7 +9,7 @@ const Admin = () => {
 
     const [characterJSONL, setCharacterJSONL] = useState(null)
     const [sequenceJSONL, setSequenceJSONL] = useState(null)
-    const [sequencePart, setSequencePart] = useState('')
+    const [sequencePart, setSequencePart] = useState('start')
 
     const onLogLineChangeFile = e => {
         setLogLineFile(e.target.files[0]);

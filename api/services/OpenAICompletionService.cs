@@ -246,63 +246,66 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string sequenceName, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string part, Plot story)
     {
+        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(part, story);
+        var prompt = Factory.GetSequencePartPrompt(part, story, promptSequenceText);
+
         return new CompletionResponse
         {
-            Prompt = "prompt goes here",
+            Prompt = prompt,
             Completion = "AI Sequence completion goes here..."
         };
 
-        var prompt = Factory.GetSequencePrompt(sequenceName, story);
+        // var prompt = "";//Factory.GetSequencePrompt(sequenceName, story);
 
-        //var models = getModels();
+        // //var models = getModels();
 
-        // set sensible defaults based on how long we expect average completions for summary and full
-        var maxCompletionLength = 1;
-        var temperature = 1.0;
+        // // set sensible defaults based on how long we expect average completions for summary and full
+        // var maxCompletionLength = 1;
+        // var temperature = 1.0;
 
-        // if (story.CompletionType.ToLower().Contains("summary"))
+        // // if (story.CompletionType.ToLower().Contains("summary"))
+        // // {
+        // //     maxCompletionLength = 160; // average 80 tokens on training data
+        // //     temperature = 0.85;
+        // // }
+        // // else if (story.CompletionType.ToLower().Contains("full"))
+        // // {
+        // //     maxCompletionLength = 400; // average 295 tokens on training data
+        // //     temperature = 0.9;
+        // // }
+
+        // var openAIRequest = new OpenAICompletionsRequest
         // {
-        //     maxCompletionLength = 160; // average 80 tokens on training data
-        //     temperature = 0.85;
-        // }
-        // else if (story.CompletionType.ToLower().Contains("full"))
-        // {
-        //     maxCompletionLength = 400; // average 295 tokens on training data
-        //     temperature = 0.9;
-        // }
+        //     Prompt = prompt,
+        //     //Model = models[story.CompletionType], // TODO, update completion type with new sequence/beat structure
+        //     MaxTokens = maxCompletionLength,
+        //     Temperature = temperature,
+        //     Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
+        // };
 
-        var openAIRequest = new OpenAICompletionsRequest
-        {
-            Prompt = prompt,
-            //Model = models[story.CompletionType], // TODO, update completion type with new sequence/beat structure
-            MaxTokens = maxCompletionLength,
-            Temperature = temperature,
-            Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
-        };
+        // var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
+        // var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-        var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        // //var apiResponse = await _httpClient.GetFromJsonAsync<OpenAICompletionsResponse>("repos/dotnet/AspNetCore.Docs/branches");
 
-        //var apiResponse = await _httpClient.GetFromJsonAsync<OpenAICompletionsResponse>("repos/dotnet/AspNetCore.Docs/branches");
+        // //using var response = await _httpClient.PostAsync("v1/completions", content);
+        // var response = await _httpClient.PostAsync("completions", content);
+        // response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
 
-        //using var response = await _httpClient.PostAsync("v1/completions", content);
-        var response = await _httpClient.PostAsync("completions", content);
-        response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+        // var apiResponse = await response.Content.ReadAsStringAsync();
+        // var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+        // var result = new CompletionResponse();
 
-        var result = new CompletionResponse();
+        // var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        // var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        // result.Prompt = prompt;
+        // result.Completion = completion;
 
-        result.Prompt = prompt;
-        result.Completion = completion;
-
-        return result;
+        // return result;
     }
 
     public async Task<CompletionResponse> GetCharacterCompletion(Character character)
@@ -325,7 +328,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = "davinci:ft-personal-2022-04-05-06-09-25", 
+            Model = "davinci:ft-personal-2022-04-05-06-09-25",
             MaxTokens = 150, // longest character description completion was 88 tokens,
             Temperature = 0.99,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
