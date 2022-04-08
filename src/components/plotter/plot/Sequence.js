@@ -1,29 +1,29 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import Accordion from 'react-bootstrap/Accordion';
 import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
-
+import SequenceAdvice from './SequenceAdvice'
+import SequenceBrainstorm from './SequenceBrainstorm'
 
 const Sequence = ({
     userInfo,
-    setLastFocusedSequenceName,
-    lastFocusedSequenceName,
 
     genres,
     problemTemplate,
     keywords,
     characters,
     dramaticQuestion,
+    logLineDescription,
 
     sequence,
     sequences,
 
-    updateContextText,
     updateEventsText,
-    updateAIText,
     insertSequence,
     deleteSequence,
+    updateSequenceCompletions,
     allowed
 }) => {
 
@@ -164,7 +164,7 @@ const Sequence = ({
     return (
         <>
             <div className='row border-top mt-3 pt-3'>
-                <div className='col'>
+                <div className='col-md-7'>
                     {/* <div className='col-md-7'> */}
                     <h4 className="float-start">{sequence.sequenceName}</h4>
                     {
@@ -186,7 +186,7 @@ const Sequence = ({
                         </div>
                     }
 
-                    <div className="float-start w-100 pt-3" onFocus={() => setLastFocusedSequenceName(sequence.sequenceName)}>
+                    <div className="float-start w-100 pt-3">
                         <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100 d-none">Visible Events</label>
                         <LimitedTextArea
                             id={sequence.sequenceName + '_events_textarea'}
@@ -199,6 +199,66 @@ const Sequence = ({
                             showCount={true}
                         />
                     </div>
+
+                </div>
+                <div className='col-md-5'>
+
+                    <Accordion defaultActiveKey={[]} alwaysOpen>
+
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Advice</Accordion.Header>
+                            <Accordion.Body>
+                                <SequenceAdvice
+                                    userInfo={userInfo}
+                                    sequenceName={sequence.sequenceName}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    dramaticQuestion={dramaticQuestion}
+                                    //sequence={sequence}
+                                    sequences={sequences}
+                                />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Brainstorm with AI</Accordion.Header>
+                            <Accordion.Body>
+                                {
+                                    <div className='row'>
+                                        <div className='col'>
+                                            <p>Based on the log line, characters, and previous events, ask the AI to brainstorm for {sequence.sequenceName}.</p>
+                                            {
+                                                userInfo && userInfo.userRoles.includes('customer') &&
+
+                                                <SequenceBrainstorm
+                                                    userInfo={userInfo}
+                                                    logLineDescription={logLineDescription}
+                                                    genres={genres}
+                                                    problemTemplate={problemTemplate}
+                                                    dramaticQuestion={dramaticQuestion}
+                                                    keywords={keywords}
+                                                    sequences={sequences}
+                                                    characters={characters}
+                                                    completions={!sequence['completions'] ? [] : sequence['completions']}
+                                                    targetSequence={sequence.sequenceName}
+                                                    updateSequenceCompletions={updateSequenceCompletions}
+                                                />
+                                            }
+                                            {
+                                                (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                                                <>
+                                                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
+                                                </>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </Accordion.Body>
+                        </Accordion.Item>
+
+                    </Accordion>
+
 
                 </div>
             </div>

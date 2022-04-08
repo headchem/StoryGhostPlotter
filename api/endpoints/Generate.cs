@@ -90,18 +90,13 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
         }
 
-        var part = req.Query["part"][0];
+        var targetSequence = req.Query["targetSequence"][0];
 
-        //var result = await _completionService.GetSequenceCompletion(sequenceName, plot);
+        var result = await _completionService.GetSequenceCompletion(targetSequence, plot);
 
         // TODO: log token usage by OpenAI to current user container
 
-        var temp = new CompletionResponse{
-            Prompt = "prompt goes here",
-            Completion = "test completion here"
-        };
-
-        return new OkObjectResult(temp);
+        return new OkObjectResult(result);
     }
 
     // [FunctionName("GenerateCharacter")]

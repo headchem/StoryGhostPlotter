@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const SequenceAdvice = ({
     userInfo,
-    lastFocusedSequenceName,
+    sequenceName,
 
     genres,
     problemTemplate,
@@ -43,9 +43,9 @@ const SequenceAdvice = ({
         let heroCharacter = characters.filter((character) => character.isHero === true);
         heroCharacter = heroCharacter.length > 0 ? heroCharacter[0] : null;
 
-        if (lastFocusedSequenceName === '') return
+        if (sequenceName === '') return
 
-        fetch('/api/Sequence/Advice?sequenceName=' + lastFocusedSequenceName, {
+        fetch('/api/Sequence/Advice?sequenceName=' + sequenceName, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,44 +104,18 @@ const SequenceAdvice = ({
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        //if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
         const timeout = setTimeout(() => {
             getAdvice()
         }, 500) // timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        //}
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lastFocusedSequenceName, genres, problemTemplate, dramaticQuestion, characters]); // sequence,
-
-    // const isFirstAdviceRun = useRef(true)
-
-    // // BOTH of the useEffect below are to kick off getAdvice, once for LogLine changes, and another for new sequences being added
-
-    // // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    // useEffect(() => {
-
-    //     // run advice immediately, then debounce all subsequent requests
-    //     if (isFirstAdviceRun.current) {
-    //         isFirstAdviceRun.current = false
-    //         getAdvice()
-    //         return
-    //     }
-
-    //     const timeout = setTimeout(() => {
-    //         getAdvice()
-    //     }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
-
-    //     return () => clearTimeout(timeout) //clear timeout (delete function execution)
-
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [genres, problemTemplate, dramaticQuestion]);
-
+    }, [genres, problemTemplate, dramaticQuestion, characters]); // sequence,
 
     return (
         <>
-            <h3>Advice for {lastFocusedSequenceName}</h3>
+            <h3>Advice for {sequenceName}</h3>
             {
                 contextAdviceIsEmpty === false &&
                 <>

@@ -246,66 +246,72 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string part, Plot story)
+    public string getSequenceModel(string targetSequence)
     {
-        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(part, story);
-        var prompt = Factory.GetSequencePartPrompt(part, story, promptSequenceText);
+        /*
+        davinci:ft-personal-2022-04-07-21-55-23 ---- openai api fine_tunes.create -t "sequenceStart.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+        */
 
-        return new CompletionResponse
+        return targetSequence switch
+        {
+            "Opening Image" => "TODO this one and all the rest...",
+            "start" => "davinci:ft-personal-2022-04-07-21-55-23",
+            "middle" => "TODO",
+            "warrior" => "TODO",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
+        };
+    }
+
+    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
+    {
+        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(targetSequence, story);
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText);
+
+        var model = getSequenceModel(targetSequence);
+
+        var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Completion = "AI Sequence completion goes here..."
+            Model = model,
+            MaxTokens = 128,
+            Temperature = 0.7, // .5 started to repeat, .99 was way too rambling
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.2,
+            LogitBias = new Dictionary<string, int>()
         };
 
-        // var prompt = "";//Factory.GetSequencePrompt(sequenceName, story);
+        //var logitBiasRatio = keywordsLogitBias / 9.0;
 
-        // //var models = getModels();
+        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
+        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
 
-        // // set sensible defaults based on how long we expect average completions for summary and full
-        // var maxCompletionLength = 1;
-        // var temperature = 1.0;
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-        // // if (story.CompletionType.ToLower().Contains("summary"))
-        // // {
-        // //     maxCompletionLength = 160; // average 80 tokens on training data
-        // //     temperature = 0.85;
-        // // }
-        // // else if (story.CompletionType.ToLower().Contains("full"))
-        // // {
-        // //     maxCompletionLength = 400; // average 295 tokens on training data
-        // //     temperature = 0.9;
-        // // }
+        var response = await _httpClient.PostAsync("completions", content);
+        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
 
-        // var openAIRequest = new OpenAICompletionsRequest
-        // {
-        //     Prompt = prompt,
-        //     //Model = models[story.CompletionType], // TODO, update completion type with new sequence/beat structure
-        //     MaxTokens = maxCompletionLength,
-        //     Temperature = temperature,
-        //     Stop = CreateFinetuningDataset.CompletionStopSequence // IMPORTANT: this must match exactly what we used during finetuning
-        // };
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
+        }
 
-        // var jsonString = System.Text.Json.JsonSerializer.Serialize(openAIRequest);
-        // var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        // //var apiResponse = await _httpClient.GetFromJsonAsync<OpenAICompletionsResponse>("repos/dotnet/AspNetCore.Docs/branches");
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        // //using var response = await _httpClient.PostAsync("v1/completions", content);
-        // var response = await _httpClient.PostAsync("completions", content);
-        // response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
+        var result = new CompletionResponse
+        {
+            Prompt = prompt,
+            Completion = completion
+        };
 
-        // var apiResponse = await response.Content.ReadAsStringAsync();
-        // var resultDeserialized = System.Text.Json.JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        // var result = new CompletionResponse();
-
-        // var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        // var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
-        // result.Prompt = prompt;
-        // result.Completion = completion;
-
-        // return result;
+        return result;
     }
 
     public async Task<CompletionResponse> GetCharacterCompletion(Character character)

@@ -171,28 +171,28 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
-    public static string GetPromptSequenceText(string part, Plot plotObj)
+    public static string GetPromptSequenceText(string targetSequence, Plot plotObj)
     {
-        var promptSequenceText = "";
+        var promptSequenceText = "TODO based on targetSequence: " + targetSequence;
 
-        if (part == "middle")
-        {
-            var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
-            var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
+        // if (part == "middle")
+        // {
+        //     var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
+        //     var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
 
-            promptSequenceText = sequencesToText(promptPartSequences);
-        }
-        else if (part == "ending")
-        {
-            var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
-            var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
+        //     promptSequenceText = sequencesToText(promptPartSequences);
+        // }
+        // else if (part == "ending")
+        // {
+        //     var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
+        //     var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
 
-            var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
-            var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
-            var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
+        //     var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
+        //     var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
+        //     var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
 
-            promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
-        }
+        //     promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
+        // }
 
         return promptSequenceText;
     }

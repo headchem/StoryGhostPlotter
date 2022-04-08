@@ -199,7 +199,7 @@ public static class Factory
         };
     }
 
-    public static string GetSequencePartPrompt(string part, Plot plot, string promptSequenceText)
+    public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText)
     {
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
@@ -230,7 +230,7 @@ public static class Factory
         nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
 
         // not enough space in the later sequences to fit prompt in 2048 tokens, so we omit non-hero characters. Hopefully, the existing story has already sufficiently set up the characters by this point.
-        if (part == "ending")
+        if (targetSequence == "Cooldown") // TODO: add others as needed?
         {
             nonHeroCharacterContributions = "";
         }

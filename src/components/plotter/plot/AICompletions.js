@@ -32,7 +32,7 @@ const AICompletions = (
                                     {
                                         <Tabs defaultActiveKey="finetune" className="mb-3">
                                             <Tab eventKey="finetune" title="Brainstorms">
-                                                <p>{completion}</p>
+                                                <p style={{whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto"}}>{completion}</p>
                                             </Tab>
                                             <Tab eventKey="manage" title={<FaCog />}>
                                                 <button className="btn btn-danger mt-2 mb-4" onClick={() => onDeleteBrainstorm(idx)}>delete this brainstorm</button>

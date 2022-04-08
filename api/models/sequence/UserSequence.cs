@@ -12,9 +12,8 @@ public class UserSequence
     [JsonPropertyName("text")]
     public string Text { get; set; }
 
-    [JsonPropertyName("aiText")]
-    /// <summary>Includes both the AI-generated Context as well as Sequence events</summary>
-    public string AIText { get; set; }
+    [JsonPropertyName("completions")]
+    public List<string> Completions { get; set; }
 
     [JsonPropertyName("context")]
     public string Context { get; set; }

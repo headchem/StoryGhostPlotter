@@ -14,11 +14,17 @@ const SequenceBrainstorm = (
         keywords,
         sequences,
         characters,
-        updateSequenceCompletions,
         completions,
-        part
+        targetSequence,
+        updateSequenceCompletions
     }
 ) => {
+
+    const availableModels = [
+        'Opening Image',
+        'Setup',
+        'Theme Stated'
+    ]
 
     const navigate = useNavigate()
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
@@ -29,14 +35,14 @@ const SequenceBrainstorm = (
 
         //console.log('fetch completion with all the inputs')
 
-        fetchWithTimeout('/api/Sequence/Generate?part=' + part, {
+        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                logLineDescription:logLineDescription,
+                logLineDescription: logLineDescription,
                 genres: genres,
                 problemTemplate: problemTemplate,
                 dramaticQuestion: dramaticQuestion,
@@ -57,10 +63,10 @@ const SequenceBrainstorm = (
             console.log('save this data:')
             console.log(data)
             if (!completions || completions.length === 0) {
-                updateSequenceCompletions([data['completion']])
+                updateSequenceCompletions(targetSequence, [data['completion']])
             } else {
                 const newCompletionList = [...completions, data['completion']]
-                updateSequenceCompletions(newCompletionList)
+                updateSequenceCompletions(targetSequence, newCompletionList)
             }
         }).catch(function (error) {
             console.warn(error);
@@ -78,13 +84,23 @@ const SequenceBrainstorm = (
     }
 
     return (
-        <AICompletions
-            userInfo={userInfo}
-            isLoading={isCompletionLoading}
-            onGenerateCompletion={fetchCompletion}
-            completions={completions}
-            onDeleteBrainstorm={onDeleteBrainstorm}
-        />
+        <>
+            {
+                availableModels.indexOf(targetSequence) > -1 &&
+                <AICompletions
+                    userInfo={userInfo}
+                    isLoading={isCompletionLoading}
+                    onGenerateCompletion={fetchCompletion}
+                    completions={completions}
+                    onDeleteBrainstorm={onDeleteBrainstorm}
+                />
+            }
+            {
+                availableModels.indexOf(targetSequence) === -1 &&
+                <p>AI model unavailable for this sequence.</p>
+            }
+        </>
+
     )
 }
 

@@ -38,17 +38,17 @@ public class DummyCompletionService : ICompletionService
         return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string part, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
     {
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
-        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(part, story);
-        var prompt = Factory.GetSequencePartPrompt(part, story, promptSequenceText);
+        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(targetSequence, story);
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText);
 
         var result = new CompletionResponse();
 
         result.Prompt = prompt;
-        result.Completion = "AI SEQUENCE completion goes here...";
+        result.Completion = "AI SEQUENCE completion for " + targetSequence + " goes here...";
 
         return result;
     }
