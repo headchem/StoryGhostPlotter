@@ -11,6 +11,4 @@ public class AdviceComponents
     public string ProblemTemplate { get; set; }
     public string HeroArchetype { get; set; }
     public string DramaticQuestion { get; set; }
-
-
 }

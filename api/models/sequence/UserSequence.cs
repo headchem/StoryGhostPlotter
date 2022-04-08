@@ -15,7 +15,7 @@ public class UserSequence
     [JsonPropertyName("completions")]
     public List<string> Completions { get; set; }
 
-    [JsonPropertyName("context")]
-    public string Context { get; set; }
+    // [JsonPropertyName("context")]
+    // public string Context { get; set; }
 
 }

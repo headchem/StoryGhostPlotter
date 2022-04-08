@@ -70,7 +70,8 @@ FINETUNING
 		ABOVE did not stay on topic... maybe it didn't learn enough
 	openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
  ** CHARACTERS: openai api fine_tunes.create -t "sg_finetune\characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
- ** SEQUENCES: openai api fine_tunes.create -t "sequenceStart.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+ ** SEQUENCES: 
+ openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.04
  *** "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  *** "Aim for at least ~500 examples"
  *** default n_epochs=4, default learning_rate_multiplier=0.05

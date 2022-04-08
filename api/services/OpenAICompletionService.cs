@@ -249,15 +249,14 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
     public string getSequenceModel(string targetSequence)
     {
         /*
-        davinci:ft-personal-2022-04-07-21-55-23 ---- openai api fine_tunes.create -t "sequenceStart.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+        davinci:ft-personal-2022-04-08-03-46-12 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
+        davinci:ft-personal-2022-04-08-06-30-02 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.04
         */
 
         return targetSequence switch
         {
-            "Opening Image" => "TODO this one and all the rest...",
-            "start" => "davinci:ft-personal-2022-04-07-21-55-23",
-            "middle" => "TODO",
-            "warrior" => "TODO",
+            "Opening Image" => "davinci:ft-personal-2022-04-08-06-30-02",
+            
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
     }
@@ -274,11 +273,11 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Prompt = prompt,
             Model = model,
             MaxTokens = 128,
-            Temperature = 0.7, // .5 started to repeat, .99 was way too rambling
+            Temperature = 0.8, // .5 started to repeat, .99 was way too rambling
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
-            PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
-            FrequencyPenalty = 0.2,
+            PresencePenalty = 0.1, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.1,
             LogitBias = new Dictionary<string, int>()
         };
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using StoryGhost.Interfaces;
 using StoryGhost.Models.Genres;
 using StoryGhost.Models.ProblemTemplates;
@@ -199,8 +200,11 @@ public static class Factory
         };
     }
 
+    /// <summary>returns a prompt tailored for the targetSequence given the plot and preceding sequence text</summary>
     public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText)
     {
+        var sequence = GetSequence(targetSequence);
+        var sequenceText = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
         var genres = Factory.GetGenres(plot.Genres);
@@ -214,6 +218,8 @@ public static class Factory
             heroCharacterContribution = PersonalityDescription.GetCharacterPrompt(heroCharacter) + $". {heroCharacter.Name} is the protagonist of the story.";
             //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
             heroCharacterContribution += $" Additional character description: {heroCharacter.Description}";
+        } else {
+            throw new Exception("All plots must have a designated protagonist.");
         }
 
         var nonHeroCharacters = plot.Characters.Where(c => c.IsHero == false).ToList();
@@ -230,10 +236,10 @@ public static class Factory
         nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
 
         // not enough space in the later sequences to fit prompt in 2048 tokens, so we omit non-hero characters. Hopefully, the existing story has already sufficiently set up the characters by this point.
-        if (targetSequence == "Break Into Three" || targetSequence == "Climax" || targetSequence == "Cooldown") // TODO: add others as needed?
-        {
-            nonHeroCharacterContributions = "";
-        }
+        // if (targetSequence == "Break Into Three" || targetSequence == "Climax" || targetSequence == "Cooldown") // TODO: add others as needed?
+        // {
+        //     nonHeroCharacterContributions = "";
+        // }
 
         var genreContribution = "This story has the genres of: " + string.Join(", ", plot.Genres) + ".";
 
@@ -242,7 +248,45 @@ public static class Factory
 
         var problemTemplateContribution = $"The problem template is \"{plot.ProblemTemplate}\" which can be described as: {problemTemplate.Description}";
 
-        return problemTemplateContribution + " " + dramaticQuestionLogLineContribution + " " + keywordsContribution + ". " + genreContribution + " " + heroCharacterContribution + " " + nonHeroCharacterContributions + " The overarching log line, or plot teaser, for this story is: " + plot.LogLineDescription + "\n\n" + promptSequenceText.Trim();
+        var sequenceAdvice = sequence.ContextDescription + " " + sequence.EventsDescription;
+
+        var adviceWrapper = Factory.GetSequenceAdvice(sequence, new SequenceAdviceRequest
+        {
+            Genres = plot.Genres,
+            ProblemTemplate = plot.ProblemTemplate,
+            HeroArchetype = heroCharacter.Archetype,
+            DramaticQuestion = plot.DramaticQuestion,
+            Text = sequenceText.Text
+        });
+
+        var prompt = "";
+
+        if (targetSequence == "Opening Image")
+        {
+            prompt = plot.LogLineDescription + " " + genreContribution + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + promptSequenceText.Trim();
+        }
+        else if (targetSequence == "Setup")
+        {
+            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + "The protagonist's backstory is: " + heroCharacterContribution + "\n\n" + promptSequenceText.Trim();
+        }
+        else if (targetSequence == "Theme Stated")
+        {
+            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + "The protagonist's backstory is: " + heroCharacterContribution + "\n\n" + promptSequenceText.Trim();
+        }
+
+        return condenseSpaces(prompt);
+
+        //return problemTemplateContribution + " " + dramaticQuestionLogLineContribution + " " + keywordsContribution + ". " + genreContribution + " " + heroCharacterContribution + " " + nonHeroCharacterContributions + " The overarching log line, or plot teaser, for this story is: " + plot.LogLineDescription + "\n\n" + promptSequenceText.Trim();
+    }
+
+    private static string condenseSpaces(string input) {
+        //return input; // temp...
+        return Regex.Replace(input, @"\s+", " ");
+    }
+
+    private static string renderAdviceComponents(AdviceComponents advice)
+    {
+        return (advice.Common + " " + advice.Genres + " " + advice.ProblemTemplate + " " + advice.DramaticQuestion + " " + advice.HeroArchetype).Trim();
     }
 
     // private static string getCharacterStage(string sequenceName)
@@ -366,5 +410,24 @@ public static class Factory
     //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(completionType)),
     //     };
     // }
+
+    public static AdviceComponentsWrapper GetSequenceAdvice(ISequence sequenceObj, SequenceAdviceRequest sequenceRequest)
+    {
+        var adviceObj = sequenceObj.GetAdvice(sequenceRequest.Genres, sequenceRequest.ProblemTemplate, sequenceRequest.HeroArchetype, sequenceRequest.DramaticQuestion);
+
+        // swap nulls for empty strings to make it easier on the js UI
+
+        adviceObj.Context.Common = adviceObj.Context.Common ?? "";
+        adviceObj.Context.DramaticQuestion = adviceObj.Context.DramaticQuestion ?? "";
+        adviceObj.Context.HeroArchetype = adviceObj.Context.HeroArchetype ?? "";
+        adviceObj.Context.ProblemTemplate = adviceObj.Context.ProblemTemplate ?? "";
+
+        adviceObj.Events.Common = adviceObj.Events.Common ?? "";
+        adviceObj.Events.DramaticQuestion = adviceObj.Events.DramaticQuestion ?? "";
+        adviceObj.Events.HeroArchetype = adviceObj.Events.HeroArchetype ?? "";
+        adviceObj.Events.ProblemTemplate = adviceObj.Events.ProblemTemplate ?? "";
+
+        return adviceObj;
+    }
 
 }
