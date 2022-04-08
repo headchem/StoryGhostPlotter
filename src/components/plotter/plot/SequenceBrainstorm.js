@@ -78,9 +78,8 @@ const SequenceBrainstorm = (
 
     const onDeleteBrainstorm = (idxToDelete) => {
         const newBrainstormList = completions.filter((obj, objIdx) => objIdx !== idxToDelete)
-        updateSequenceCompletions(newBrainstormList)
 
-        console.log('delete brainstorm: ' + idxToDelete)
+        updateSequenceCompletions(targetSequence, newBrainstormList)
     }
 
     return (

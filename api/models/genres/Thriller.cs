@@ -27,7 +27,7 @@ public class Thriller : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Danger and intrigue permeate the mood of this setting.",
                 },
                 Context = new AdviceSequence
                 {

@@ -27,7 +27,7 @@ public class Comedy : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Establish a quirky or humorous tone.",
                 },
                 Context = new AdviceSequence
                 {

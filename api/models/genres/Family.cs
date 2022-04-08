@@ -31,7 +31,7 @@ public class Family : IGenre
                 },
                 Context = new AdviceSequence
                 {
-
+                    OpeningImage = "The setting is lighthearted in tone.",
                 }
             };
         }

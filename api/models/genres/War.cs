@@ -27,7 +27,7 @@ public class War : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Set a militaristic tone."
                 },
                 Context = new AdviceSequence
                 {

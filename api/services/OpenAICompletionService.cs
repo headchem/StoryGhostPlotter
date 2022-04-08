@@ -249,13 +249,12 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
     public string getSequenceModel(string targetSequence)
     {
         /*
-        davinci:ft-personal-2022-04-08-03-46-12 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
-        davinci:ft-personal-2022-04-08-06-30-02 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.04
+        davinci:ft-personal-2022-04-08-19-28-03 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 4 --learning_rate_multiplier 0.1
         */
 
         return targetSequence switch
         {
-            "Opening Image" => "davinci:ft-personal-2022-04-08-06-30-02",
+            "Opening Image" => "davinci:ft-personal-2022-04-08-19-28-03",
             
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
@@ -264,7 +263,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
     public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
     {
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
-        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText);
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
 
         var model = getSequenceModel(targetSequence);
 
@@ -273,7 +272,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Prompt = prompt,
             Model = model,
             MaxTokens = 128,
-            Temperature = 0.8, // .5 started to repeat, .99 was way too rambling
+            Temperature = 0.8, // on davinci --n_epochs 4 --learning_rate_multiplier 0.1, 0.65=good, 0.99=bad, 0.8=good
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.1, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?

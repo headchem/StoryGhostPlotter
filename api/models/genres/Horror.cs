@@ -27,7 +27,7 @@ public class Horror : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Symbolize a safe and happy mood, but with horror lurking under the surface.",
                 },
                 Context = new AdviceSequence
                 {

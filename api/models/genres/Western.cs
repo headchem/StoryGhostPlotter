@@ -27,7 +27,7 @@ public class Western : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Show it's the wild west."
                 },
                 Context = new AdviceSequence
                 {

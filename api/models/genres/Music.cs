@@ -27,7 +27,7 @@ public class Music : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Involve music in establishing the mood of the setting.",
                 },
                 Context = new AdviceSequence
                 {

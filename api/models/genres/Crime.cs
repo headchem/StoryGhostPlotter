@@ -14,7 +14,7 @@ public class Crime : IGenre
         get
         {
             return new List<string>{
-                "TODO keywords"
+                "crime", "detective", "danger", "secrets", "hunt"
             };
         }
     }
@@ -27,7 +27,7 @@ public class Crime : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    // TODO
+                    OpeningImage = "Hint that bad people lurk in a dangerous world.",
                 },
                 Context = new AdviceSequence
                 {

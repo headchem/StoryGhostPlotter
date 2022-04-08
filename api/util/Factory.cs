@@ -241,7 +241,7 @@ public static class Factory
         //     nonHeroCharacterContributions = "";
         // }
 
-        var genreContribution = "This story has the genres of: " + string.Join(", ", plot.Genres) + ".";
+        //var genreContribution = "This story has the genres of: " + string.Join(", ", plot.Genres) + ".";
 
         var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
         var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
@@ -263,7 +263,7 @@ public static class Factory
 
         if (targetSequence == "Opening Image")
         {
-            prompt = plot.LogLineDescription + " " + genreContribution + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + promptSequenceText.Trim();
+            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events);
         }
         else if (targetSequence == "Setup")
         {

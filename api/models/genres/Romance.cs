@@ -27,6 +27,7 @@ public class Romance : IGenre
             {
                 Events = new AdviceSequence
                 {
+                    OpeningImage = "Breifly depict something symbolic of relationships and love.",
                     Setup = "Establish the complicated emotional (possibly romantic?) connections between the main characters.",
                     Debate = "Things get complicated as the emotional connections between characters shift.",
                     Midpoint = "The main character achieves what they think is the romantic connection they deeply desired, but it's fleeting.",
