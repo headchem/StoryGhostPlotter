@@ -135,7 +135,7 @@ public class CreateFinetuningDataset
 
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
-        var part = req.Query["part"][0];
+        var targetSequence = req.Query["targetSequence"][0];
 
         var finetuningRows = new List<FinetuningRow>();
 
@@ -148,14 +148,13 @@ public class CreateFinetuningDataset
             var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
             var plotObj = plotResponse.Resource;
 
-            var (completionStartSequenceName, completionEndSequenceName) = getStartAndEndSequenceNames(part);
-            var completionPartSequences = getSequencesBetween(plotObj.Sequences, completionStartSequenceName, completionEndSequenceName);
+            //var (completionStartSequenceName, completionEndSequenceName) = getStartAndEndSequenceNames(part);
+            //var completionPartSequences = getSequencesBetween(plotObj.Sequences, completionStartSequenceName, completionEndSequenceName);
 
-            var completionText = sequencesToText(completionPartSequences);
+            var promptSequenceText = GetSequenceTextUpTo(targetSequence, plotObj);
+            var completionText = plotObj.Sequences.Where(s => s.SequenceName == targetSequence).First().Text;
 
-            var promptSequenceText = GetPromptSequenceText(part, plotObj);
-
-            var prompt = Factory.GetSequencePartPrompt(part, plotObj, promptSequenceText);// "prompt for " + part + "\n\n" + promptSequenceText.Trim();
+            var prompt = Factory.GetSequencePartPrompt(targetSequence, plotObj, promptSequenceText);// "prompt for " + part + "\n\n" + promptSequenceText.Trim();
             var completion = completionText.Trim();
 
             finetuningRows.Add(getFinetuningRow(prompt, completion));
@@ -171,82 +170,94 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
-    public static string GetPromptSequenceText(string targetSequence, Plot plotObj)
+    /// <summary>Given a targetSequence, return all sequence text up to but not including the target sequence.</summary>
+    public static string GetSequenceTextUpTo(string targetSequenceExclusive, Plot plot)
     {
-        var promptSequenceText = "TODO based on targetSequence: " + targetSequence;
+        var result = "";
 
-        // if (part == "middle")
-        // {
-        //     var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
-        //     var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
+        foreach (var sequence in plot.Sequences)
+        {
+            if (sequence.SequenceName == targetSequenceExclusive) return result;
 
-        //     promptSequenceText = sequencesToText(promptPartSequences);
-        // }
-        // else if (part == "ending")
-        // {
-        //     var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
-        //     var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
+            result += sequenceToText(sequence);
+        }
 
-        //     var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
-        //     var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
-        //     var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
-
-        //     promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
-        // }
-
-        return promptSequenceText;
+        throw new Exception($"Incorrect targetSequenceExclusive: \"{targetSequenceExclusive}\"");
     }
 
-    private static string sequencesToText(List<UserSequence> sequences)
+    // public static string GetPromptSequenceText(string targetSequenceExclusive, Plot plotObj)
+    // {
+    //     var promptSequenceText = "TODO based on targetSequenceExclusive: " + targetSequenceExclusive;
+
+    //     // if (part == "middle")
+    //     // {
+    //     //     var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
+    //     //     var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
+
+    //     //     promptSequenceText = sequencesToText(promptPartSequences);
+    //     // }
+    //     // else if (part == "ending")
+    //     // {
+    //     //     var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
+    //     //     var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
+
+    //     //     var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
+    //     //     var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
+    //     //     var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
+
+    //     //     promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
+    //     // }
+
+    //     return promptSequenceText;
+    // }
+
+    private static string sequenceToText(UserSequence sequence)
     {
         var results = "";
 
-        foreach (var sequence in sequences)
-        {
-            results += $"{sequence.SequenceName.ToUpper()}: {sequence.Text}\n\n";
-        }
+        results += $"{sequence.SequenceName.ToUpper()}: {sequence.Text}\n\n";
 
         return results;
     }
 
-    private static (string, string) getStartAndEndSequenceNames(string part)
-    {
-        return part switch
-        {
-            "start" => ("", "Fun And Games"),
-            "middle" => ("Fun And Games", "Dark Night Of The Soul"),
-            "ending" => ("Dark Night Of The Soul", "Cooldown"),
-            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(part)),
-        };
-    }
+    // private static (string, string) getStartAndEndSequenceNames(string part)
+    // {
+    //     return part switch
+    //     {
+    //         "start" => ("", "Fun And Games"),
+    //         "middle" => ("Fun And Games", "Dark Night Of The Soul"),
+    //         "ending" => ("Dark Night Of The Soul", "Cooldown"),
+    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(part)),
+    //     };
+    // }
 
     // pass in startSequenceInclusive="" to start from very beginning (Opening Image)
-    private static List<UserSequence> getSequencesBetween(List<UserSequence> allSequences, string startSequenceExclusive, string endSequenceInclusive)
-    {
-        var results = new List<UserSequence>();
+    // private static List<UserSequence> getSequencesBetween(List<UserSequence> allSequences, string startSequenceExclusive, string endSequenceInclusive)
+    // {
+    //     var results = new List<UserSequence>();
 
-        var foundStart = false;
+    //     var foundStart = false;
 
-        foreach (var sequence in allSequences)
-        {
-            if (foundStart || string.IsNullOrWhiteSpace(startSequenceExclusive))
-            {
-                results.Add(sequence);
-            }
+    //     foreach (var sequence in allSequences)
+    //     {
+    //         if (foundStart || string.IsNullOrWhiteSpace(startSequenceExclusive))
+    //         {
+    //             results.Add(sequence);
+    //         }
 
-            if (string.IsNullOrWhiteSpace(startSequenceExclusive) || sequence.SequenceName == startSequenceExclusive)
-            {
-                foundStart = true;
-            }
+    //         if (string.IsNullOrWhiteSpace(startSequenceExclusive) || sequence.SequenceName == startSequenceExclusive)
+    //         {
+    //             foundStart = true;
+    //         }
 
-            if (sequence.SequenceName == endSequenceInclusive)
-            {
-                return results;
-            }
-        }
+    //         if (sequence.SequenceName == endSequenceInclusive)
+    //         {
+    //             return results;
+    //         }
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
     private async Task<List<Plot>> getTrainingPlots()
     {

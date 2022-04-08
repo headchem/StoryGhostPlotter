@@ -42,7 +42,7 @@ public class DummyCompletionService : ICompletionService
     {
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
-        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(targetSequence, story);
+        var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText);
 
         var result = new CompletionResponse();

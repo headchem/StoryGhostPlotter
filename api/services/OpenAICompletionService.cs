@@ -264,7 +264,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
 
     public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
     {
-        var promptSequenceText = CreateFinetuningDataset.GetPromptSequenceText(targetSequence, story);
+        var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText);
 
         var model = getSequenceModel(targetSequence);
