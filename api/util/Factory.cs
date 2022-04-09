@@ -270,6 +270,8 @@ public static class Factory
         else if (targetSequence == "Theme Stated")
         {
             prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " The protagonist has character flaws: " + heroShadowSide + " The following events lead up to posing the thematic question: " + promptSequenceText.Trim();
+        } else if (targetSequence == "Catalyst") {
+            prompt = "Plot teaser: " + plot.LogLineDescription + $" Advice for {targetSequence}: " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " " + nonHeroCharacterContributions + "\n\n" + promptSequenceText.Trim();
         }
 
         return cleanPrompt(prompt);

@@ -23,7 +23,8 @@ const SequenceBrainstorm = (
     const availableModels = [
         'Opening Image',
         'Setup',
-        'Theme Stated'
+        'Theme Stated',
+        'Catalyst'
     ]
 
     const navigate = useNavigate()
