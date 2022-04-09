@@ -21,7 +21,7 @@ public class Bravery : IDramaticQuestion
             {
                 Events = new AdviceSequence
                 { // LEFT OFF: map the 4 stages to specific sequences, or ranges of sequences to help me describe them in more detail
-                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\".",
+                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\"",
                     Debate = $"The main character shows {Contrary.ToLower()}.",
                     FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
                     BadGuysCloseIn = $"The main character shows {Negation.ToLower()}.",

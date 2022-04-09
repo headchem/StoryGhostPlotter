@@ -27,7 +27,8 @@ public class War : IGenre
             {
                 Events = new AdviceSequence
                 {
-                    OpeningImage = "Set a militaristic tone."
+                    OpeningImage = "Set a militaristic tone.",
+                    Setup = "Elaborate on the war-like conflict and how it impacts the protagonist."
                 },
                 Context = new AdviceSequence
                 {

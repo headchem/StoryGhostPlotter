@@ -52,7 +52,7 @@ public class Creator : IArchetype
             };
         }
     }
-    public string ShadowSide { get { return "The Creator is an obsessive workaholic, jumping from one half-baked idea to the next, as a distraction from their inner emptiness."; } }
+    public string ShadowSide { get { return "They are an obsessive workaholic, jumping from one half-baked idea to the next, as a distraction from their inner emptiness."; } }
     public List<string> Examples
     {
         get
@@ -73,16 +73,16 @@ public class Creator : IArchetype
             {
                 Events = new AdviceSequence
                 {
-                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}",
-                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
-                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
-                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}.",
+                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}.",
+                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide.TrimEnd('.')}.",
+                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}.",
                 },
                 Context = new AdviceSequence
                 {
-                    Setup = $"The main character wants to {OrphanDesires.ToLower()}",
-                    Debate = $"The main character wants to {WandererResponse.ToLower()}",
-                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
+                    Setup = $"The main character wants to {OrphanDesires.ToLower().TrimEnd('.')}.",
+                    Debate = $"The main character wants to {WandererResponse.ToLower().TrimEnd('.')}.",
+                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower().TrimEnd('.')}."
                 }
             };
         }
@@ -92,7 +92,7 @@ public class Creator : IArchetype
     {
         return characterStage switch
         {
-            "orphan" => $"The main character's only motivation is to enact their vision, proclaim their identity, create things of enduring value. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}",
+            "orphan" => $"The main character's only motivation is to enact their vision, proclaim their identity, create things of enduring value. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contrary.ToLower()}.",
             "wanderer" => $"The main character attempts to claim problem as a personal failing. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Contradiction.ToLower()}.",
             "warrior" => $"Despite all the main character's sucesses at bringing their ideas to life, the problem still persists. They interact with the theme of {dramaticQuestion.Name.ToLower()} by demonstrating {dramaticQuestion.Negation.ToLower()}.",
             "martyr" => $"Finally, the main character demonstrates {dramaticQuestion.Positive.ToLower()} and overcomes the problem through self-acceptance and skillfully creating without the need for external validation.",

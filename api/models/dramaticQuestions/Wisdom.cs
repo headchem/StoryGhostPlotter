@@ -22,7 +22,7 @@ public class Wisdom : IDramaticQuestion
             {
                 Events = new AdviceSequence
                 {
-                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\".",
+                    ThemeStated = $"Subtly pose the dramatic question of \"{Description}\"",
                     Debate = $"The main character shows {Contrary.ToLower()}.",
                     FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
                     BadGuysCloseIn = $"The main character shows {Negation.ToLower()}.",

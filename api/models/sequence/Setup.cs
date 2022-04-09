@@ -9,7 +9,7 @@ namespace StoryGhost.Models.Sequences;
 public class Setup : ISequence
 {
     public string Name { get { return "Setup"; } }
-    public string EventsDescription { get { return "Introduce the Hero's personality and backstory in more detail. Show what they value - what's at stake for them to lose? End with the Hero realizing they can't keep living this way, but they're not sure what else to do."; } }
+    public string EventsDescription { get { return "Introduce the Hero's personality, backstory, and supporting characters in more detail. Show what they value - what's at stake for them to lose? End with the Hero realizing they can't keep living this way, but they're not sure what else to do."; } }
     public string ContextDescription { get { return "Foreshadow a future event of the story (edit it in later once you know how the plot unfolds). The Hero already has some of the skills that will be required for them to triumph during the Climax."; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)

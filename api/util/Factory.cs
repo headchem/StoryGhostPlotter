@@ -211,14 +211,20 @@ public static class Factory
 
         var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
         var heroCharacterContribution = "";
+        var heroPersonalityDescription = "";
+        var heroShadowSide = "";
 
         if (heroCharacter != null)
         {
             var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
-            heroCharacterContribution = PersonalityDescription.GetCharacterPrompt(heroCharacter) + $". {heroCharacter.Name} is the protagonist of the story.";
+            heroShadowSide = heroArchetype.ShadowSide;
+            heroPersonalityDescription = PersonalityDescription.GetCharacterPrompt(heroCharacter);
+            heroCharacterContribution = heroPersonalityDescription + $". {heroCharacter.Name} is the protagonist of the story.";
             //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
             heroCharacterContribution += $" Additional character description: {heroCharacter.Description}";
-        } else {
+        }
+        else
+        {
             throw new Exception("All plots must have a designated protagonist.");
         }
 
@@ -228,20 +234,12 @@ public static class Factory
         foreach (var character in nonHeroCharacters)
         {
             var archetype = Factory.GetArchetype(character.Archetype);
-            nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $" {character.Name} is a supporting character in this story.";
+            nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $". {character.Name} is a supporting character in this story.";
             //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
             nonHeroCharacterContributions += $" Additional character description: {character.Description}";
         }
 
         nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
-
-        // not enough space in the later sequences to fit prompt in 2048 tokens, so we omit non-hero characters. Hopefully, the existing story has already sufficiently set up the characters by this point.
-        // if (targetSequence == "Break Into Three" || targetSequence == "Climax" || targetSequence == "Cooldown") // TODO: add others as needed?
-        // {
-        //     nonHeroCharacterContributions = "";
-        // }
-
-        //var genreContribution = "This story has the genres of: " + string.Join(", ", plot.Genres) + ".";
 
         var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
         var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
@@ -267,21 +265,25 @@ public static class Factory
         }
         else if (targetSequence == "Setup")
         {
-            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + "The protagonist's backstory is: " + heroCharacterContribution + "\n\n" + promptSequenceText.Trim();
+            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " " + nonHeroCharacterContributions + "\n\n" + promptSequenceText.Trim();
         }
         else if (targetSequence == "Theme Stated")
         {
-            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + "The protagonist's backstory is: " + heroCharacterContribution + "\n\n" + promptSequenceText.Trim();
+            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " The protagonist has character flaws: " + heroShadowSide + " The following events lead up to posing the thematic question: " + promptSequenceText.Trim();
         }
 
-        return condenseSpaces(prompt);
+        return cleanPrompt(prompt);
 
         //return problemTemplateContribution + " " + dramaticQuestionLogLineContribution + " " + keywordsContribution + ". " + genreContribution + " " + heroCharacterContribution + " " + nonHeroCharacterContributions + " The overarching log line, or plot teaser, for this story is: " + plot.LogLineDescription + "\n\n" + promptSequenceText.Trim();
     }
 
-    private static string condenseSpaces(string input) {
-        //return input; // temp...
-        return Regex.Replace(input, @"\s+", " ");
+    private static string cleanPrompt(string input)
+    {
+        input = input.Replace(". . ", ". ");
+        input = input.Replace(".\n\n. ", ". ");
+        input = Regex.Replace(input, @"\s+", " ");
+
+        return input;
     }
 
     private static string renderAdviceComponents(AdviceComponents advice)

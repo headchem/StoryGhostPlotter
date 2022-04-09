@@ -52,7 +52,7 @@ public class Warrior : IArchetype
             };
         }
     }
-    public string ShadowSide { get { return "The Warrior becomes the villain when they use their battle skills for personal gain, disregarding the good of the group. They are willing to compromise their principles to win. Constantly feeling embattled, they are on on edge and ready to fight at even the smallest percieved slight."; } }
+    public string ShadowSide { get { return "They can become the villain when they use their battle skills for personal gain, disregarding the good of the group. They are willing to compromise their principles to win. Constantly feeling embattled, they are on on edge and ready to fight at even the smallest percieved slight."; } }
     public List<string> Examples
     {
         get
@@ -74,16 +74,16 @@ public class Warrior : IArchetype
             {
                 Events = new AdviceSequence
                 {
-                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}",
-                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
-                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
-                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}.",
+                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}.",
+                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide.TrimEnd('.')}.",
+                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}.",
                 },
                 Context = new AdviceSequence
                 {
-                    Setup = $"The main character wants to {OrphanDesires.ToLower()}",
-                    Debate = $"The main character wants to {WandererResponse.ToLower()}",
-                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
+                    Setup = $"The main character wants to {OrphanDesires.ToLower().TrimEnd('.')}.",
+                    Debate = $"The main character wants to {WandererResponse.ToLower().TrimEnd('.')}.",
+                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower().TrimEnd('.')}."
                 }
             };
         }

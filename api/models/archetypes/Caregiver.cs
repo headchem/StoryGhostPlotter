@@ -52,7 +52,7 @@ public class Caregiver : IArchetype
             };
         }
     }
-    public string ShadowSide { get { return "The Caretaker is prone to controling those they help by making them feel guilty. They compulsively rescue, manipulating and smothering those they rescue."; } }
+    public string ShadowSide { get { return "They are prone to controling those they help by making them feel guilty. They compulsively rescue, manipulating and smothering those they rescue."; } }
     public List<string> Examples
     {
         get
@@ -73,16 +73,16 @@ public class Caregiver : IArchetype
             {
                 Events = new AdviceSequence
                 {
-                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}",
-                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}",
-                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide}",
-                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}",
+                    Setup = $"Show the main character's talents of {Factory.GetKeywordsSentence("", Talents)}.",
+                    FunAndGames = $"The main character struggles with their weaknesses of: {Factory.GetKeywordsSentence("", Weaknesses)}.",
+                    BadGuysCloseIn = $"The main character struggles with their addictive quality of {AddictiveQuality.ToLower()} and addictions of: {Factory.GetKeywordsSentence("", Addictions)}. They show their shadow side of: {ShadowSide.TrimEnd('.')}.",
+                    AllHopeIsLost = $"The main character's worst fears come true: {Factory.GetKeywordsSentence("", GreatestFears)}.",
                 },
                 Context = new AdviceSequence
                 {
-                    Setup = $"The main character wants to {OrphanDesires.ToLower()}",
-                    Debate = $"The main character wants to {WandererResponse.ToLower()}",
-                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower()}"
+                    Setup = $"The main character wants to {OrphanDesires.ToLower().TrimEnd('.')}.",
+                    Debate = $"The main character wants to {WandererResponse.ToLower().TrimEnd('.')}.",
+                    DarkNightOfTheSoul = $"The main character wants to {WarriorResponse.ToLower().TrimEnd('.')}."
                 }
             };
         }

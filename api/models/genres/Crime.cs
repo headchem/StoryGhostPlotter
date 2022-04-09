@@ -28,6 +28,7 @@ public class Crime : IGenre
                 Events = new AdviceSequence
                 {
                     OpeningImage = "Hint that bad people lurk in a dangerous world.",
+                    Setup = "Establish a calm setting that an upcoming crime will shatter.",
                 },
                 Context = new AdviceSequence
                 {

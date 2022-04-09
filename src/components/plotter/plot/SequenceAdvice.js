@@ -124,7 +124,7 @@ const SequenceAdvice = ({
                         <span title="common advice">{contextCommonAdvice} </span>
                         <span title="genres advice">{contextGenresAdvice} </span>
                         <span title="problem template advice">{contextProblemTemplateAdvice} </span>
-                        <span title="dramatic question advice">{contextDramaticQuestionAdvice}</span>
+                        <span title="dramatic question advice">{contextDramaticQuestionAdvice} </span>
                         <span title="hero archetype advice">{contextHeroArchetypeAdvice} </span>
                     </p>
                 </>
@@ -141,7 +141,7 @@ const SequenceAdvice = ({
                         <span title="common advice">{eventsCommonAdvice} </span>
                         <span title="genres advice">{eventsGenresAdvice} </span>
                         <span title="problem template advice">{eventsProblemTemplateAdvice} </span>
-                        <span title="dramatic question advice">{eventsDramaticQuestionAdvice}</span>
+                        <span title="dramatic question advice">{eventsDramaticQuestionAdvice} </span>
                         <span title="hero archetype advice">{eventsHeroArchetypeAdvice} </span>
                     </p>
                 </>

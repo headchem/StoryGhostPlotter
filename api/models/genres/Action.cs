@@ -28,7 +28,7 @@ public class Action : IGenre
                 Events = new AdviceSequence
                 {
                     OpeningImage = "Hint at this taking place in an exciting and bombastic setting.",
-                    // Setup = "Show the fantasy setting in action, and how it permeates the everyday lives of the characters.",
+                    // Setup = "The characters exist in an action-packed setting.",
                     // FunAndGames = "Show the wildest and most extreme aspects of the fantasy setting, and how the characters treat it as mundane, having grown used to it."
                 },
                 Context = new AdviceSequence

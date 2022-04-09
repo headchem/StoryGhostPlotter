@@ -246,33 +246,51 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         return result;
     }
 
-    public string getSequenceModel(string targetSequence)
+    public OpenAICompletionSettings getSequenceModelSettings(string targetSequence)
     {
-        /*
-        davinci:ft-personal-2022-04-08-19-28-03 ---- openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 4 --learning_rate_multiplier 0.1
-        */
-
         return targetSequence switch
         {
-            "Opening Image" => "davinci:ft-personal-2022-04-08-19-28-03",
-            
+            "Opening Image" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "OpeningImage.jsonl" -m davinci --n_epochs 4 --learning_rate_multiplier 0.1
+                ModelName = "davinci:ft-personal-2022-04-08-19-28-03",
+                MaxTokens = 128,
+                Temperature = 0.8 // 0.65=good, 0.99=bad, 0.8=good
+            },
+            "Setup" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "Setup.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-09-02-17-30",
+                MaxTokens = 256,
+                Temperature = 0.75 // 0.7=feels more "setup-y?" best yet, 0.8=better, 0.9 a little wild
+            },
+            "Theme Stated" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "ThemeStated.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-09-01-40-21",
+                MaxTokens = 128,
+                Temperature = 0.85 // 0.8=so-so, 0.99 better but a little wild
+            },
+
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
     }
+
+
 
     public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
     {
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
 
-        var model = getSequenceModel(targetSequence);
+        var modelSettings = getSequenceModelSettings(targetSequence);
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = model,
-            MaxTokens = 128,
-            Temperature = 0.8, // on davinci --n_epochs 4 --learning_rate_multiplier 0.1, 0.65=good, 0.99=bad, 0.8=good
+            Model = modelSettings.ModelName,
+            MaxTokens = modelSettings.MaxTokens,
+            Temperature = modelSettings.Temperature,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.1, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -373,4 +391,11 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         return result;
     }
+}
+
+public class OpenAICompletionSettings
+{
+    public string ModelName { get; set; }
+    public int MaxTokens { get; set; }
+    public double Temperature { get; set; }
 }

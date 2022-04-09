@@ -85,7 +85,7 @@ FINETUNING
  * The documentation also states for conditional generation: "aim for at least ~500 examples" and "Using Lower learning rate and only 1-2 epochs tends to work better for these use cases"
  * My prompts all start with "Here is a summary of an award winning story: " When fine tuning, is that style of prompt still useful to start every row of example data? ANSWER: with a small number of examples, the repeated prompt language is useful, but as I get closer to 100 examples, it may no longer be necessary
 
- * DELETE A MODEL: openai api models.delete -i davinci:ft-personal-2022-01-14-07-09-45
+ * DELETE A MODEL: openai api models.delete -i davinci:ft-personal-2022-04-08-23-41-48
 
 IDEAS:
 

@@ -28,6 +28,7 @@ public class History : IGenre
                 Events = new AdviceSequence
                 {
                     OpeningImage = "Show some aspect of the setting that makes it clear this takes place in a historical era.",
+                    Setup = "Show aspects of the historical setting that impact the protagonist's life."
                 },
                 Context = new AdviceSequence
                 {
