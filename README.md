@@ -1,3 +1,22 @@
+Git process:
+
+git checkout -b feat-my-cool-feature
+<make your code changes>
+git commit -m "your message"
+git push origin feat-brainstorm   --- this pushes the branch to remote, but doesn't set the upstream as the default because it's a short-lived branch
+This immediately kicks off a GitHub Action to deploy a new Azure environment for this branch
+in the browser, navigate to GitHub -> Pull Requests -> New Pull Request
+change the second dropdown so that the arrow points from the new branch on the right into the "main" branch on the left
+Click "Create pull request" and fill out the details, then click "Create pull request"
+Click "Merge pull request" fill out any comments
+Delete the branch on GitHub
+This immediately kicks off a GitHub Action to deploy this to PROD Azure
+git switch branch main
+git pull   --- brings down changes, including the newly merged branch
+git branch -d feat-my-cool-feature   --- this deletes the local branch, which catches it up to GitHub's branches
+
+TODO: Tags - watch IAmTimCorey video "Intro to GitHub" minute 57
+
 Known working with VS Code plugin "Azure Static Web Apps v0.9.1" upgrading to v0.10.0 broke the local react dev server for debugging
 
 Debug -> Attach to .NET Functions -> click play button

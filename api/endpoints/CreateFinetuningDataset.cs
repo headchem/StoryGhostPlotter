@@ -185,32 +185,6 @@ public class CreateFinetuningDataset
         throw new Exception($"Incorrect targetSequenceExclusive: \"{targetSequenceExclusive}\"");
     }
 
-    // public static string GetPromptSequenceText(string targetSequenceExclusive, Plot plotObj)
-    // {
-    //     var promptSequenceText = "TODO based on targetSequenceExclusive: " + targetSequenceExclusive;
-
-    //     // if (part == "middle")
-    //     // {
-    //     //     var (promptStartSequenceName, promptEndSequenceName) = getStartAndEndSequenceNames("start");
-    //     //     var promptPartSequences = getSequencesBetween(plotObj.Sequences, promptStartSequenceName, promptEndSequenceName);
-
-    //     //     promptSequenceText = sequencesToText(promptPartSequences);
-    //     // }
-    //     // else if (part == "ending")
-    //     // {
-    //     //     var (startPromptStartSequenceName, startPromptEndSequenceName) = getStartAndEndSequenceNames("start");
-    //     //     var (middlePromptStartSequenceName, middlePromptEndSequenceName) = getStartAndEndSequenceNames("middle");
-
-    //     //     var startPromptPartSequences = getSequencesBetween(plotObj.Sequences, startPromptStartSequenceName, startPromptEndSequenceName);
-    //     //     var middlePromptPartSequences = getSequencesBetween(plotObj.Sequences, middlePromptStartSequenceName, middlePromptEndSequenceName);
-    //     //     var promptPartSequences = startPromptPartSequences.Concat(middlePromptPartSequences);
-
-    //     //     promptSequenceText = sequencesToText(startPromptPartSequences) + sequencesToText(middlePromptPartSequences);
-    //     // }
-
-    //     return promptSequenceText;
-    // }
-
     private static string sequenceToText(UserSequence sequence)
     {
         var results = "";
@@ -219,45 +193,6 @@ public class CreateFinetuningDataset
 
         return results;
     }
-
-    // private static (string, string) getStartAndEndSequenceNames(string part)
-    // {
-    //     return part switch
-    //     {
-    //         "start" => ("", "Fun And Games"),
-    //         "middle" => ("Fun And Games", "Dark Night Of The Soul"),
-    //         "ending" => ("Dark Night Of The Soul", "Cooldown"),
-    //         _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(part)),
-    //     };
-    // }
-
-    // pass in startSequenceInclusive="" to start from very beginning (Opening Image)
-    // private static List<UserSequence> getSequencesBetween(List<UserSequence> allSequences, string startSequenceExclusive, string endSequenceInclusive)
-    // {
-    //     var results = new List<UserSequence>();
-
-    //     var foundStart = false;
-
-    //     foreach (var sequence in allSequences)
-    //     {
-    //         if (foundStart || string.IsNullOrWhiteSpace(startSequenceExclusive))
-    //         {
-    //             results.Add(sequence);
-    //         }
-
-    //         if (string.IsNullOrWhiteSpace(startSequenceExclusive) || sequence.SequenceName == startSequenceExclusive)
-    //         {
-    //             foundStart = true;
-    //         }
-
-    //         if (sequence.SequenceName == endSequenceInclusive)
-    //         {
-    //             return results;
-    //         }
-    //     }
-
-    //     return null;
-    // }
 
     private async Task<List<Plot>> getTrainingPlots()
     {
@@ -286,43 +221,6 @@ public class CreateFinetuningDataset
         return results;
     }
 
-    // private List<FinetuningRow> getRows(string sequenceName, List<Plot> plots)
-    // {
-    //     var results = new List<FinetuningRow>();
-
-    //     foreach (var plot in plots)
-    //     {
-    //         var row = getSequencePromptAndCompletion(sequenceName, plot);
-
-    //         if (row != null)
-    //         {
-    //             results.Add(row);
-    //         }
-    //     }
-
-    //     return results;
-    // }
-
-    // private FinetuningRow getSequencePromptAndCompletion(string sequenceName, Plot plot)
-    // {
-    //     var curSeqObj = plot.Sequences.Where(seq => seq.SequenceName == sequenceName).FirstOrDefault();
-
-    //     // not all plots have all sequence types
-    //     if (curSeqObj == null)
-    //     {
-    //         return null;
-    //     }
-
-    //     var row = new FinetuningRow();
-
-    //     //row.SequenceName = sequenceName;
-    //     row.Prompt = Factory.GetSequencePrompt(sequenceName, plot);
-
-    //     // According to OpenAI guidelines: "Each completion should start with a whitespace due to our tokenization, which tokenizes most words with a preceding whitespace. Each completion should end with a fixed stop sequence to inform the model when the completion ends. A stop sequence could be \n, ###, or any other token that does not appear in any completion." HOWEVER, a YouTube video from OpenAI said that the preceeding space before completions wasn't needed for open-ended generation tasks.
-    //     row.Completion = " " + curSeqObj.Text + StopSequence;
-
-    //     return row;
-    // }
 
     private string clean(string inStr)
     {
