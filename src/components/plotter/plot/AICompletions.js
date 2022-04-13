@@ -1,9 +1,9 @@
-import React from 'react'
-import { FaGhost, FaCog } from 'react-icons/fa'
+import React, { useState, useEffect } from 'react'
+import { FaGhost, FaTrash } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Carousel from 'react-bootstrap/Carousel'
+import DeleteTab from './DeleteTab'
 
 const AICompletions = (
     {
@@ -14,8 +14,14 @@ const AICompletions = (
         onGenerateCompletion,
     }
 ) => {
+    const [currentTab, setCurrentTab] = useState("tab-0");
 
-    const startingPage = !completions ? 0 : completions.length - 1
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
+    useEffect(() => {
+        const lastTab = !completions ? 0 : completions.length - 1
+        setCurrentTab('tab-' + lastTab)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [completions]);
 
     return (
         <>
@@ -25,26 +31,22 @@ const AICompletions = (
                     <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                     <hr />
 
-                    <Carousel variant="dark" interval={null} indicators={true} defaultActiveIndex={startingPage}>
+                    <Tabs
+                        className="mb-3"
+                        defaultActiveKey="tab-0"
+                        activeKey={currentTab}
+                        onSelect={(key) => setCurrentTab(key)}
+                    >
                         {
                             completions && completions.length > 0 && completions.map((completion, idx) =>
-                                <Carousel.Item key={'carousel-' + idx}>
-                                    {
-                                        <Tabs defaultActiveKey="finetune" className="mb-3">
-                                            <Tab eventKey="finetune" title="Brainstorms">
-                                                <p style={{whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto"}}>{completion}</p>
-                                            </Tab>
-                                            <Tab eventKey="manage" title={<FaCog />}>
-                                                <button className="btn btn-danger mt-2 mb-4" onClick={() => onDeleteBrainstorm(idx)}>delete this brainstorm</button>
-                                            </Tab>
-                                        </Tabs>
-                                    }
-                                </Carousel.Item>
+                                <Tab key={`tab-` + idx} eventKey={`tab-` + idx} title={<>{idx} <DeleteTab idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} /></>}>
+                                    <p style={{ whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto" }}>{completion}</p>
+                                </Tab>
                             )
                         }
-                    </Carousel>
+                    </Tabs>
 
-                    <button disabled={isLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                    <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
                         {
                             isLoading === true &&
                             <Spinner size="sm" as="span" animation="border" variant="secondary" />
