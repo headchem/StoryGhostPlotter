@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
-import Spinner from 'react-bootstrap/Spinner';
 
 
 const DeleteTab = (

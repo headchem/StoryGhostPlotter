@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaGhost, FaTrash } from 'react-icons/fa'
+import { FaGhost } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
