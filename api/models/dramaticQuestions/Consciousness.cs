@@ -22,6 +22,7 @@ public class Consciousness : IDramaticQuestion
                 Events = new AdviceSequence
                 {
                     ThemeStated = $"Subtly pose the dramatic question of \"{Description}\"",
+                    BStory = $"A love interest or mentor will challenge and nurture the protagonist in their spiritual journey to embrace the theme of {Name.ToLower()}.",
                     Debate = $"The main character shows {Contrary.ToLower()}.",
                     FunAndGames = $"The main character shows {Contradiction.ToLower()}.",
                     BadGuysCloseIn = $"The main character shows {Negation.ToLower()}.",
@@ -29,7 +30,7 @@ public class Consciousness : IDramaticQuestion
                 },
                 Context = new AdviceSequence
                 {
-                    ThemeStated = $"The main character doesn't have the experience or context yet to understand the theme of {Name.ToLower()}."
+                    ThemeStated = $"The main character doesn't have the experience or context yet to understand the theme of {Name.ToLower()}.",
                 }
             };
         }

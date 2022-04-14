@@ -25,7 +25,8 @@ const SequenceBrainstorm = (
         'Setup',
         'Theme Stated',
         'Catalyst',
-        'Debate'
+        'Debate',
+        'B Story'
     ]
 
     const navigate = useNavigate()

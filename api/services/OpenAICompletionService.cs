@@ -276,14 +276,21 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
                 // openai api fine_tunes.create -t "Catalyst.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-09-04-57-46",
                 MaxTokens = 128,
-                Temperature = 0.85 // 0.8=so-so, 0.99 better but a little wild
+                Temperature = 0.85
             },
             "Debate" => new OpenAICompletionSettings
             {
                 // openai api fine_tunes.create -t "Catalyst.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-13-04-57-07",
                 MaxTokens = 128,
-                Temperature = 0.85 // 0.8=so-so, 0.99 better but a little wild
+                Temperature = 0.85
+            },
+            "B Story" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "Catalyst.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-14-05-27-37",
+                MaxTokens = 128,
+                Temperature = 0.85 // 0.85=repeated prompt sometimes, 
             },
 
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),

@@ -257,36 +257,26 @@ public static class Factory
             Text = sequenceText.Text
         });
 
+
+        promptSequenceText = promptSequenceText.Trim();
+
         var prompt = "";
 
-        if (targetSequence == "Opening Image")
+        prompt = targetSequence switch
         {
-            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events);
-        }
-        else if (targetSequence == "Setup")
-        {
-            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " " + nonHeroCharacterContributions + "\n\n" + promptSequenceText.Trim();
-        }
-        else if (targetSequence == "Theme Stated")
-        {
-            prompt = plot.LogLineDescription + " " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " The protagonist has character flaws: " + heroShadowSide + " The following events lead up to posing the thematic question: " + promptSequenceText.Trim();
-        }
-        else if (targetSequence == "Catalyst")
-        {
-            prompt = "Plot teaser: " + plot.LogLineDescription + $" Advice for {targetSequence}: " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " " + nonHeroCharacterContributions + "\n\n" + promptSequenceText.Trim();
-        }
-        else if (targetSequence == "Debate")
-        {
-            prompt = "Plot teaser: " + plot.LogLineDescription + $" Advice for {targetSequence}: " + renderAdviceComponents(adviceWrapper.Context) + " " + renderAdviceComponents(adviceWrapper.Events) + "\n\n" + ". The protagonist's backstory is: " + heroCharacterContribution + " " + nonHeroCharacterContributions + "\n\n" + promptSequenceText.Trim();
-        }
-        else
-        {
-            throw new Exception("Undefined prompt for sequence logic in Factory.GetSequencePartPrompt");
-        }
+            "Opening Image" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
+            "Setup" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{promptSequenceText}",
+            "Theme Stated" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} The protagonist has character flaws: {heroShadowSide} The following events lead up to posing the thematic question: {promptSequenceText}",
+            "Catalyst" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "Debate" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "B Story" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "Break Into Two" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
+        };
 
         return cleanPrompt(prompt);
-
-        //return problemTemplateContribution + " " + dramaticQuestionLogLineContribution + " " + keywordsContribution + ". " + genreContribution + " " + heroCharacterContribution + " " + nonHeroCharacterContributions + " The overarching log line, or plot teaser, for this story is: " + plot.LogLineDescription + "\n\n" + promptSequenceText.Trim();
     }
 
     private static string cleanPrompt(string input)
