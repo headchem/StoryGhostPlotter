@@ -280,17 +280,31 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             },
             "Debate" => new OpenAICompletionSettings
             {
-                // openai api fine_tunes.create -t "Catalyst.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                // openai api fine_tunes.create -t "Debate.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-13-04-57-07",
                 MaxTokens = 128,
                 Temperature = 0.85
             },
             "B Story" => new OpenAICompletionSettings
             {
-                // openai api fine_tunes.create -t "Catalyst.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                // openai api fine_tunes.create -t "BStory.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-14-05-27-37",
                 MaxTokens = 128,
                 Temperature = 0.85 // 0.85=repeated prompt sometimes, 
+            },
+            "Break Into Two" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "BreakIntoTwo.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-15-03-09-25",
+                MaxTokens = 128,
+                Temperature = 0.85 // 0.85=repeated prompt sometimes, 
+            },
+            "Fun And Games" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "FunAndGames.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-15-03-26-01",
+                MaxTokens = 256,
+                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
             },
 
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
