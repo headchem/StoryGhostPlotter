@@ -306,6 +306,20 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
                 MaxTokens = 256,
                 Temperature = 0.9 // 0.85=repeated prompt sometimes, 
             },
+            "Midpoint" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "Midpoint.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-03-53-22",
+                MaxTokens = 128,
+                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
+            },
+            "Bad Guys Close In" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "BadGuysCloseIn.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-04-24-17",
+                MaxTokens = 256,
+                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
+            },
 
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };

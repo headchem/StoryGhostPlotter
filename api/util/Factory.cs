@@ -273,6 +273,7 @@ public static class Factory
             "Break Into Two" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "Bad Guys Close In" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
 
