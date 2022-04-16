@@ -30,7 +30,12 @@ const SequenceBrainstorm = (
         'Break Into Two',
         'Fun And Games',
         'Midpoint',
-        'Bad Guys Close In'
+        'Bad Guys Close In',
+        'All Hope Is Lost',
+        'Dark Night Of The Soul',
+        'Break Into Three',
+        'Climax',
+        'Cooldown'
     ]
 
     const navigate = useNavigate()

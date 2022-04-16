@@ -297,28 +297,63 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
                 // openai api fine_tunes.create -t "BreakIntoTwo.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-15-03-09-25",
                 MaxTokens = 128,
-                Temperature = 0.85 // 0.85=repeated prompt sometimes, 
+                Temperature = 0.85
             },
             "Fun And Games" => new OpenAICompletionSettings
             {
                 // openai api fine_tunes.create -t "FunAndGames.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-15-03-26-01",
                 MaxTokens = 256,
-                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
+                Temperature = 0.9
             },
             "Midpoint" => new OpenAICompletionSettings
             {
                 // openai api fine_tunes.create -t "Midpoint.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-16-03-53-22",
                 MaxTokens = 128,
-                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
+                Temperature = 0.9
             },
             "Bad Guys Close In" => new OpenAICompletionSettings
             {
                 // openai api fine_tunes.create -t "BadGuysCloseIn.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
                 ModelName = "davinci:ft-personal-2022-04-16-04-24-17",
                 MaxTokens = 256,
-                Temperature = 0.9 // 0.85=repeated prompt sometimes, 
+                Temperature = 0.9
+            },
+            "All Hope Is Lost" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "AllHopeIsLost.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-15-06-49",
+                MaxTokens = 128,
+                Temperature = 0.9
+            },
+            "Dark Night Of The Soul" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "DarkNightOfTheSoul.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-15-43-20",
+                MaxTokens = 256,
+                Temperature = 0.9
+            },
+            "Break Into Three" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "BreakIntoThree.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-16-18-55",
+                MaxTokens = 128,
+                Temperature = 0.9
+            },
+            "Climax" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "Climax.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-16-36-56",
+                MaxTokens = 256,
+                Temperature = 0.8 // 0.9=too off topic
+            },
+            "Cooldown" => new OpenAICompletionSettings
+            {
+                // openai api fine_tunes.create -t "Cooldown.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.08
+                ModelName = "davinci:ft-personal-2022-04-16-16-52-36",
+                MaxTokens = 128,
+                Temperature = 0.8
             },
 
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),

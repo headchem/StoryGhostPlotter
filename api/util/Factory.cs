@@ -274,6 +274,11 @@ public static class Factory
             "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "Bad Guys Close In" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
+            "All Hope Is Lost" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
+            "Dark Night Of The Soul" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
+            "Break Into Three" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
+            "Climax" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
+            "Cooldown" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
 
