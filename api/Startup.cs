@@ -47,11 +47,27 @@ namespace MyNamespace
                 })
                     .SetHandlerLifetime(TimeSpan.FromSeconds(500))
                     .AddPolicyHandler(combinedExpLongPolicy);
+
+                builder.Services.AddHttpClient<IEncodingService, EncodingService>(c =>
+                {
+                    c.BaseAddress = new System.Uri("https://sg-gpt-encoder.azurewebsites.net/api/");
+                    c.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
+                    c.DefaultRequestHeaders.Add("Accept", "application/json");
+                })
+                    .SetHandlerLifetime(TimeSpan.FromSeconds(500))
+                    .AddPolicyHandler(combinedExpLongPolicy);
             }
             else
             {
                 // use below for testing the UI without using up real completions
                 builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
+
+                builder.Services.AddHttpClient<IEncodingService, EncodingService>(c =>
+                {
+                    c.BaseAddress = new System.Uri("https://sg-gpt-encoder.azurewebsites.net/api/");
+                    c.Timeout = TimeSpan.FromMinutes(1); // default is 100 sec
+                    c.DefaultRequestHeaders.Add("Accept", "application/json");
+                });
             }
 
             builder.Services.AddApplicationInsightsTelemetry();
