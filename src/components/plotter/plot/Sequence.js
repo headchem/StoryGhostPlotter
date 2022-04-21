@@ -3,7 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
-import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
+import { getTokenCount } from "../../../util/Tokenizer";
 import SequenceAdvice from './SequenceAdvice'
 import SequenceBrainstorm from './SequenceBrainstorm'
 
@@ -119,11 +119,11 @@ const Sequence = ({
         deleteSequence(sequence.sequenceName)
     }
 
-    const updateTokenCount = () => {
+    const updateTokenCount = async () => {
         const seqText = sequence.text ? sequence.text : ''
 
-        const eventsTokens = encode(seqText)
-        setSequenceEventsTokenCount(eventsTokens.length)
+        const eventsTokenCount = await getTokenCount(seqText)
+        setSequenceEventsTokenCount(eventsTokenCount)
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block

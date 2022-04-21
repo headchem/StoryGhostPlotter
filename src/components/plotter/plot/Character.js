@@ -14,7 +14,7 @@ import Personality from './Personality'
 import CharacterBrainstorm from './CharacterBrainstorm'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
-import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
+import { getTokenCount } from "../../../util/Tokenizer";
 
 const Character = ({
     userInfo,
@@ -43,9 +43,9 @@ const Character = ({
         deleteCharacter(character.id)
     }
 
-    const updateTokenCount = () => {
-        const tokens = encode(character.description)
-        setDescriptionTokenCount(tokens.length)
+    const updateTokenCount = async () => {
+        const tokenCount = await getTokenCount(character.description)
+        setDescriptionTokenCount(tokenCount)
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block

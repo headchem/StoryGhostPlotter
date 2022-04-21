@@ -14,7 +14,7 @@ import LogLineObjDetails from './LogLineObjDetails'
 
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
-import { encode } from "../../../util/tokenizer/mod"; // FROM https://github.com/josephrocca/gpt-2-3-tokenizer
+import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (
     {
@@ -371,21 +371,21 @@ const PlotHome = (
 
     const [totalTokens, setTotalTokens] = useState(0)
 
-    const updateTotalTokens = () => {
+    const updateTotalTokens = async () => {
         if (!sequences || sequences.length === 0) return
         const allText = sequences.map(s => s.text).join(" ") + sequences.map(s => s.context).join(" ") + logLineDescription + characters.map(s => s.description).join(" ")
         //console.log(allText)
-        const numTokens = encode(allText).length
+        const numTokens = await getTokenCount(allText)
         setTotalTokens(numTokens)
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        const timeout = setTimeout(() => {
+        const timeout = setTimeout(async () => {
             savePlot()
 
-            const logLineTokens = encode(logLineDescription ?? '')
-            setLogLineDescriptionTokenCount(logLineTokens.length)
+            const logLineTokenCount = await getTokenCount(logLineDescription ?? '')
+            setLogLineDescriptionTokenCount(logLineTokenCount)
             updateTotalTokens()
 
         }, 2000) //ms timeout to execute this function if timeout will be not cleared
