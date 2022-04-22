@@ -47,7 +47,7 @@ const SequenceBrainstorm = (
 
         //console.log('fetch completion with all the inputs')
 
-        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence, {
+        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence + '&temperature=1.0', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
