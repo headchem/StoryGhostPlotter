@@ -38,7 +38,7 @@ public class DummyCompletionService : ICompletionService
         return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story)
     {
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 

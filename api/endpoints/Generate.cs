@@ -91,8 +91,10 @@ public class Generate
         }
 
         var targetSequence = req.Query["targetSequence"][0];
+        var temperature = double.Parse(req.Query["temperature"][0]);
+        var maxTokens = 256;
 
-        var result = await _completionService.GetSequenceCompletion(targetSequence, plot);
+        var result = await _completionService.GetSequenceCompletion(targetSequence, maxTokens, temperature, plot);
 
         // TODO: log token usage by OpenAI to current user container
 

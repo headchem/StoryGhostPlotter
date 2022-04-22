@@ -264,9 +264,9 @@ public static class Factory
 
         prompt = targetSequence switch
         {
-            "Opening Image" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
-            "Setup" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{promptSequenceText}",
-            "Theme Stated" => $"{plot.LogLineDescription} {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} The protagonist has character flaws: {heroShadowSide} The following events lead up to posing the thematic question: {promptSequenceText}",
+            "Opening Image" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
+            "Setup" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{promptSequenceText}",
+            "Theme Stated" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} The protagonist has character flaws: {heroShadowSide} The following events lead up to posing the thematic question: {promptSequenceText}",
             "Catalyst" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "Debate" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
             "B Story" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
@@ -282,7 +282,16 @@ public static class Factory
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
 
-        return cleanPrompt(prompt);
+        prompt = cleanPrompt(prompt);
+
+        if (targetSequence == "Opening Image")
+        {
+            prompt += $" As an award-winning literary author, creatively write the events of the {targetSequence.ToUpper()} moment per the given advice.";
+        } else {
+            prompt += $" As an award-winning literary author, creatively write the events of the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with previous events.";
+        }
+
+        return prompt;
     }
 
     private static string cleanPrompt(string input)
@@ -290,6 +299,7 @@ public static class Factory
         input = input.Replace(". . ", ". ");
         input = input.Replace(".\n\n. ", ". ");
         input = Regex.Replace(input, @"\s+", " ");
+        input = input.Trim();
 
         return input;
     }

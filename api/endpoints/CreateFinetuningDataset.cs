@@ -135,8 +135,6 @@ public class CreateFinetuningDataset
 
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
-        var targetSequence = req.Query["targetSequence"][0];
-
         var finetuningRows = new List<FinetuningRow>();
 
         var plots = await getTrainingPlots();
@@ -148,17 +146,15 @@ public class CreateFinetuningDataset
             var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
             var plotObj = plotResponse.Resource;
 
-            //var (completionStartSequenceName, completionEndSequenceName) = getStartAndEndSequenceNames(part);
-            //var completionPartSequences = getSequencesBetween(plotObj.Sequences, completionStartSequenceName, completionEndSequenceName);
+            foreach (var targetSequence in allFinetuningSequenceNames)
+            {
+                var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence);
 
-            var promptSequenceText = GetSequenceTextUpTo(targetSequence, plotObj);
-            var completionText = plotObj.Sequences.Where(s => s.SequenceName == targetSequence).First().Text;
-
-            var prompt = Factory.GetSequencePartPrompt(targetSequence, plotObj, promptSequenceText);// "prompt for " + part + "\n\n" + promptSequenceText.Trim();
-            var completion = completionText.Trim();
-
-            finetuningRows.Add(getFinetuningRow(prompt, completion));
+                finetuningRows.Add(getFinetuningRow(prompt, completion));
+            }
         }
+
+        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
 
         var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
 
@@ -168,6 +164,36 @@ public class CreateFinetuningDataset
         };
 
         return new OkObjectResult(results);
+    }
+
+    // not all sequences will have a finetuning model - for example First Pinch Point. Not all stories have this sequence, so there aren't enough data points to train a model
+    private List<string> allFinetuningSequenceNames = new List<string>{
+        "Opening Image",
+        "Setup",
+        "Theme Stated",
+        "Catalyst",
+        "Debate",
+        "B Story",
+        "Break Into Two",
+        "Fun And Games",
+        "Midpoint",
+        "Bad Guys Close In",
+        "All Hope Is Lost",
+        "Dark Night Of The Soul",
+        "Break Into Three",
+        "Climax",
+        "Cooldown",
+    };
+
+    private (string, string) getSequencePromptAndCompletion(Plot plot, string targetSequence)
+    {
+        var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot);
+        var completionText = plot.Sequences.Where(s => s.SequenceName == targetSequence).First().Text;
+
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText);
+        var completion = targetSequence.ToUpper() + ": " + completionText.Trim();
+
+        return (prompt, completion);
     }
 
     /// <summary>Given a targetSequence, return all sequence text up to but not including the target sequence.</summary>
@@ -245,6 +271,7 @@ public class CreateFinetuningDataset
     private FinetuningRow getFinetuningRow(string prompt, string completion)
     {
         prompt = clean(prompt) + PromptSuffix; // Having a separator string appended to the end of the prompt makes it clearer to the fine-tuned model where the completion should begin. See https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset for more detail and examples.
+
         completion = " " + clean(completion) + CompletionStopSequence;
 
         return new FinetuningRow
