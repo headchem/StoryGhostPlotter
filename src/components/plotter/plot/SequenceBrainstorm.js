@@ -39,15 +39,14 @@ const SequenceBrainstorm = (
     ]
 
     const navigate = useNavigate()
+
+    const [temperature, setTemperature] = useState(0.9)
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    //const [completionText, setCompletionText] = useState(false)
 
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        //console.log('fetch completion with all the inputs')
-
-        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence + '&temperature=1.0', {
+        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence + '&temperature=' + temperature, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -104,6 +103,9 @@ const SequenceBrainstorm = (
                     onGenerateCompletion={fetchCompletion}
                     completions={completions}
                     onDeleteBrainstorm={onDeleteBrainstorm}
+                    showTemperature={true}
+                    temperature={temperature}
+                    setTemperature={setTemperature}
                 />
             }
             {

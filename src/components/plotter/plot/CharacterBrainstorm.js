@@ -62,6 +62,7 @@ const CharacterBrainstorm = (
             onGenerateCompletion={fetchCompletion}
             completions={character['aiCompletions']}
             onDeleteBrainstorm={onDeleteBrainstorm}
+            showTemperature={false}
         />
     )
 }
