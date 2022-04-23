@@ -496,6 +496,8 @@ const PlotHome = (
         navigate('/view?' + createSearchParams(params))
     }
 
+    const hideSequences = (characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
+
     return (
         <>
             {
@@ -651,22 +653,29 @@ const PlotHome = (
                                 />
                             </Tab>
                             <Tab eventKey="sequences" title="Sequence of Events">
-                                <SequenceList
-                                    sequences={sequences}
-                                    userInfo={userInfo}
-                                    logLineDescription={logLineDescription}
-                                    setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                    lastFocusedSequenceName={lastFocusedSequenceName}
-                                    updateSequenceEventsText={updateSequenceEventsText}
-                                    insertSequence={insertSequence}
-                                    deleteSequence={deleteSequence}
-                                    genres={genres}
-                                    problemTemplate={problemTemplate}
-                                    keywords={keywords}
-                                    characters={characters}
-                                    dramaticQuestion={dramaticQuestion}
-                                    updateSequenceCompletions={updateSequenceCompletions}
-                                />
+                                {
+                                    hideSequences === true &&
+                                    <p>You must have a protagonist character, and all characters must have a name.</p>
+                                }
+                                {
+                                    hideSequences === false &&
+                                    <SequenceList
+                                        sequences={sequences}
+                                        userInfo={userInfo}
+                                        logLineDescription={logLineDescription}
+                                        setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                        lastFocusedSequenceName={lastFocusedSequenceName}
+                                        updateSequenceEventsText={updateSequenceEventsText}
+                                        insertSequence={insertSequence}
+                                        deleteSequence={deleteSequence}
+                                        genres={genres}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        characters={characters}
+                                        dramaticQuestion={dramaticQuestion}
+                                        updateSequenceCompletions={updateSequenceCompletions}
+                                    />
+                                }
                             </Tab>
                         </Tabs>
 
