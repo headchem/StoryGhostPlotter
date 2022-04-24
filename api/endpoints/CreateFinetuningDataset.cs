@@ -188,6 +188,11 @@ public class CreateFinetuningDataset
     private (string, string) getSequencePromptAndCompletion(Plot plot, string targetSequence)
     {
         var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot);
+
+        if (string.IsNullOrWhiteSpace(promptSequenceText)) {
+            throw new Exception($"Incomplete story, empty sequence was found in \"{plot.Title}\" at target sequence \"{targetSequence}\".");
+        }
+
         var completionText = plot.Sequences.Where(s => s.SequenceName == targetSequence).First().Text;
 
         var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText);

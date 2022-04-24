@@ -25,6 +25,7 @@ const PlotHome = (
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
     const [title, setTitle] = useState('')
+    const [AITitles, setAITitles] = useState(null)
     const [genres, setGenres] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
@@ -56,6 +57,7 @@ const PlotHome = (
 
         setAILogLineDescriptions(data['aiLogLineDescriptions'])
         setTitle(data['title'])
+        setAITitles(data['aiTitles'])
         setGenres(data['genres'])
         setProblemTemplate(data['problemTemplate'])
         setKeywords(data['keywords'] ?? [])
@@ -367,7 +369,7 @@ const PlotHome = (
         checkLogLineIsComplete()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
+    }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
 
     const [totalTokens, setTotalTokens] = useState(0)
 
@@ -393,7 +395,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
 
     const savePlot = () => {
         if (isNotFound === true) return;
@@ -422,6 +424,7 @@ const PlotHome = (
             body: JSON.stringify({
                 'logLineDescription': logLineDescription,
                 'AILogLineDescriptions': AILogLineDescriptions,
+                'AITitles': AITitles,
                 'title': title,
                 'genres': genres,
                 'problemTemplate': problemTemplate,
@@ -496,7 +499,7 @@ const PlotHome = (
         navigate('/view?' + createSearchParams(params))
     }
 
-    const hideSequences = (characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
+    const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
 
     return (
         <>
@@ -616,8 +619,11 @@ const PlotHome = (
                         <div className='col-md-5'>
                             <LogLineObjDetails
                                 userInfo={userInfo}
+                                logLineDescription={logLineDescription}
                                 onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
                                 AILogLineDescriptions={AILogLineDescriptions}
+                                AITitles={AITitles}
+                                setAITitles={setAITitles}
                                 curFocusElName={curFocusElName}
                                 genres={genres}
                                 problemTemplate={problemTemplate}

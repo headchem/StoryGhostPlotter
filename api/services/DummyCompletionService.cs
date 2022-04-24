@@ -65,4 +65,15 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
+    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription) {
+        
+        return new List<string>{
+            "Title 1",
+            "Title 2",
+            "Title 3",
+            "Title 4",
+            "Title 5"
+        };
+    }
+
 }

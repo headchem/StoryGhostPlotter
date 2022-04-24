@@ -20,7 +20,9 @@ public class Plot
 
     [JsonPropertyName("AILogLineDescriptions")]
     public List<Dictionary<string, CompletionResponse>> AILogLineDescriptions { get; set; }
-    public string AILogLineTitle { get; set; }
+
+    [JsonPropertyName("AITitles")]
+    public List<string> AITitles { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; }

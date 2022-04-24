@@ -16,8 +16,9 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const LogLineObjDetails = (
     {
         userInfo,
-        //AILogLineTitle,
+        logLineDescription,
         AILogLineDescriptions,
+        AITitles,
         //onAILogLineTitleChange,
         onAILogLineDescriptionsChange,
         curFocusElName,
@@ -26,25 +27,32 @@ const LogLineObjDetails = (
         dramaticQuestion,
         keywords,
         sequences,
-        characters
+        characters,
+        setAITitles
     }
 ) => {
 
     const navigate = useNavigate()
 
-    const [isCompletionLoading, setIsCompletionLoading] = useState(false)
+    const [isLogLineDescriptionCompletionLoading, setIsLogLineDescriptionCompletionLoading] = useState(false)
+    const [isTitlesCompletionLoading, setIsTitlesCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
     const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
     //const [keywordSliderValue, setKeywordSliderValue] = useState(5);
 
-    const onGenerateCompletion = async () => {
-        setIsCompletionLoading(true)
-        fetchCompletion()
+    const onGenerateLogLineCompletion = async () => {
+        setIsLogLineDescriptionCompletionLoading(true)
+        fetchLogLineDescriptionCompletion()
     }
 
-    const fetchCompletion = async () => {
+    const onGenerateTitlesCompletion = async () => {
+        setIsTitlesCompletionLoading(true)
+        fetchTitlesCompletion()
+    }
+
+    const fetchLogLineDescriptionCompletion = async () => {
         fetchWithTimeout('/api/LogLineDescription/Generate?keywordsImpact=4', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
@@ -83,7 +91,43 @@ const LogLineObjDetails = (
             console.warn(error);
             console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
         }).finally(function () {
-            setIsCompletionLoading(false)
+            setIsLogLineDescriptionCompletionLoading(false)
+        });
+    }
+
+    const fetchTitlesCompletion = async () => {
+        fetchWithTimeout('/api/Titles/Generate', {
+            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'seed': 123,
+                'genres': genres,
+                'logLineDescription': logLineDescription,
+                'problemTemplate': problemTemplate,
+                'keywords': keywords,
+                'dramaticQuestion': dramaticQuestion,
+                'sequences': sequences,
+                'characters': characters
+            })
+        }).then(function (response) {
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
+            }
+            return Promise.reject(response);
+        }).then(function (data) {
+            setAITitles(data)
+        }).catch(function (error) {
+            console.warn(error);
+            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+        }).finally(function () {
+            setIsTitlesCompletionLoading(false)
         });
     }
 
@@ -150,6 +194,10 @@ const LogLineObjDetails = (
 
     const startingPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length - 1
 
+    const aiTitlesListItems = (AITitles ?? []).map((t, idx) =>
+        <li key={idx}>{t}</li>
+    )
+
     return (
         <div>
             {
@@ -197,13 +245,13 @@ const LogLineObjDetails = (
                                                             }
                                                         </Carousel>
 
-                                                        <button disabled={isCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                                                        <button disabled={isLogLineDescriptionCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
                                                             {
-                                                                isCompletionLoading === true &&
+                                                                isLogLineDescriptionCompletionLoading === true &&
                                                                 <Spinner size="sm" as="span" animation="border" variant="secondary" />
                                                             }
                                                             {
-                                                                isCompletionLoading === false &&
+                                                                isLogLineDescriptionCompletionLoading === false &&
                                                                 <FaGhost />
                                                             }
                                                             <span> New AI Brainstorm</span>
@@ -240,7 +288,26 @@ const LogLineObjDetails = (
                     }
                     {
                         curFocusElName === 'title' &&
-                        <p id="titleHelp">A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
+                        <>
+                            <p id="titleHelp">A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
+                            <ul>
+                                {
+                                    aiTitlesListItems
+                                }
+                            </ul>
+                            <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
+                            <button disabled={isTitlesCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
+                                {
+                                    isTitlesCompletionLoading === true &&
+                                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                }
+                                {
+                                    isTitlesCompletionLoading === false &&
+                                    <FaGhost />
+                                }
+                                <span> New AI Brainstorm</span>
+                            </button>
+                        </>
                     }
                     {
                         curFocusElName === 'genres' && genresDescObjs !== null && <GenresDescription genresDescObjs={genresDescObjs} />

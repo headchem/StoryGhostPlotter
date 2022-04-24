@@ -203,6 +203,7 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0,
             FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
         };
 
         if (plot.Keywords != null && plot.Keywords.Count > 0)
@@ -222,13 +223,11 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         //var engine = "text-davinci-001";
 
         var response = await _httpClient.PostAsync($"engines/{engine}/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
-        try
+
+        if (response.IsSuccessStatusCode == false)
         {
-            response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
-        }
-        catch (HttpRequestException ex)
-        {
-            var test = ex.ToString();
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
         }
 
         var apiResponse = await response.Content.ReadAsStringAsync();
@@ -369,6 +368,65 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
         };
 
         return result;
+    }
+
+    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription)
+    {
+        var prompt = $"Genres: {string.Join(", ", genres)}";
+        prompt += $"\n\nStory synopsis: {logLineDescription.Trim()}";
+        prompt += $"\n\nWrite 5 movie titles for this story, ranked from best to worst:\n\n1.";
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            MaxTokens = 50, // average movie title is max of 16 tokens but typically must less
+            Temperature = 1.0,
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = "",
+            PresencePenalty = 0.9, // helped avoid same-y titles from being generated
+            FrequencyPenalty = 0.9,
+            LogitBias = new Dictionary<string, int>()
+        };
+
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        var engine = "text-curie-001";
+
+        var response = await _httpClient.PostAsync($"engines/{engine}/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
+
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
+        }
+
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
+        var results = new List<string>();
+
+        foreach(var line in completion.Split("\n")) {
+            var lineCleaned = line.Trim();
+            lineCleaned = lineCleaned.Replace("\"", "");
+            lineCleaned = lineCleaned.Replace("1.", "");
+            lineCleaned = lineCleaned.Replace("2.", "");
+            lineCleaned = lineCleaned.Replace("3.", "");
+            lineCleaned = lineCleaned.Replace("4.", "");
+            lineCleaned = lineCleaned.Replace("5.", "");
+            lineCleaned = lineCleaned.Replace("6.", "");
+            lineCleaned = lineCleaned.Replace("7.", "");
+            lineCleaned = lineCleaned.Trim();
+
+            if (!string.IsNullOrWhiteSpace(lineCleaned)) {
+                results.Add(lineCleaned);
+            }
+        }
+
+        return results;
     }
 }
 
