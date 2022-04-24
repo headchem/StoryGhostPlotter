@@ -51,6 +51,27 @@ public class Generate
         return new OkObjectResult(result);
     }
 
+    [FunctionName("GenerateTitles")]
+    public async Task<IActionResult> GenerateTitles([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Titles/Generate")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        {
+            //log.LogInformation("An example of an Information level message");
+        }
+
+        var result = await _completionService.GetTitles(plot.Genres, plot.LogLineDescription);
+
+        // TODO: log token usage by OpenAI to current user container
+
+        return new OkObjectResult(result);
+    }
+
     [FunctionName("GenerateCharacterDescription")]
     public async Task<IActionResult> GenerateCharacterDescription([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/Generate")] Character character, HttpRequest req, ILogger log)
     {

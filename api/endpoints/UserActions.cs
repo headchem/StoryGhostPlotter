@@ -239,6 +239,7 @@ public class UserActions
 
         var newLogLineDescription = plot.LogLineDescription;
         var newAILogLineDescriptions = plot.AILogLineDescriptions;
+        var newAITitles = plot.AITitles;
         var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
         var newGenres = plot.Genres;
@@ -262,9 +263,14 @@ public class UserActions
             plotPatchOps.Add(PatchOperation.Set("/dramaticQuestion", newDramaticQuestion));
         }
 
-        if (newGenres != null && curPlotObj.Genres != null && string.Join(',', newGenres) != string.Join(',', curPlotObj.Genres))
+        if (newGenres != null && string.Join(',', newGenres) != string.Join(',', curPlotObj.Genres ?? new List<string>()))
         {
             plotPatchOps.Add(PatchOperation.Set("/genres", newGenres));
+        }
+
+        if (newAITitles != null && string.Join(',', newAITitles) != string.Join(',', curPlotObj.AITitles ?? new List<string>()))
+        {
+            plotPatchOps.Add(PatchOperation.Set("/AITitles", newAITitles));
         }
 
         // if keywords exists on both ends, update it
