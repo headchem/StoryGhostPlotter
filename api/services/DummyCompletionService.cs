@@ -76,4 +76,8 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
+    public async Task<List<UserSequence>> GenerateAllSequences(Plot story) {
+        return new List<UserSequence>();
+    }
+
 }
