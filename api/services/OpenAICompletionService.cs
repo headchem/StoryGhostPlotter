@@ -439,18 +439,15 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
         return results;
     }
 
-    public async Task<List<UserSequence>> GenerateAllSequences(Plot story)
+    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
     {
-        var sequenceList = getRandomSequenceList();
-
-        // TEMP for TESTING, TODO remove!
-        sequenceList = sequenceList.Take(2).ToList();
+        var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
 
         var results = new List<UserSequence>();
 
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.85, story);
+            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.75, story);
             var sequence = new UserSequence
             {
                 SequenceName = targetSequence,
@@ -466,7 +463,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
     }
 
     // returns a list of target sequence names in a random plausible order. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
-    private List<string> getRandomSequenceList()
+    private List<string> getRandomSequenceList(string upToTargetSequenceExclusive)
     {
         // all sequences end with this order
         var ending = new List<string>{
@@ -554,7 +551,24 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         randomList = randomList.Concat(ending).ToList();
 
+        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
+
         return randomList;
+    }
+
+    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive) {
+        // "All" is a special signal to return all sequences including Cooldown
+        if (upToTargetSequenceExclusive == "All") return sequences;
+
+        var results = new List<string>();
+
+        foreach(var sequence in sequences) {
+            if (sequence == upToTargetSequenceExclusive) return results;
+
+            results.Add(sequence);
+        }
+
+        return results;
     }
 }
 

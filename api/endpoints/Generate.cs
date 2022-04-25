@@ -136,7 +136,9 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
         }
 
-        var result = await _completionService.GenerateAllSequences(plot);
+        var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
+
+        var result = await _completionService.GenerateAllSequences(plot, upToTargetSequenceExclusive);
 
         // TODO: log token usage by OpenAI to current user container
 

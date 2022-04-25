@@ -24,6 +24,7 @@ const SequenceList = ({
 
     const [showConfirmReplaceAll, setShowConfirmReplaceAll] = useState(false)
     const [isReplaceAllLoading, setIsReplaceAllLoading] = useState(false)
+    const [upToTargetSequenceExclusive, setUpToTargetSequenceExclusive] = useState('Fun And Games')
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
@@ -135,10 +136,9 @@ const SequenceList = ({
     }
 
     const generateAll = () => {
-        console.log('generate all')
         setIsReplaceAllLoading(true)
 
-        fetchWithTimeout('/api/Sequence/GenerateAll', {
+        fetchWithTimeout('/api/Sequence/GenerateAll?upToTargetSequenceExclusive=' + upToTargetSequenceExclusive, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -179,7 +179,7 @@ const SequenceList = ({
     return (
         <>
             <div className='row'>
-                <div className="col alert alert-warning" role="alert">
+                <div className="alert alert-warning" role="alert">
                     {
                         isReplaceAllLoading === true &&
                         <>
@@ -192,7 +192,24 @@ const SequenceList = ({
                         <>
                             {
                                 showConfirmReplaceAll === false &&
-                                <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
+                                <div className="row g-3 align-items-center">
+                                    <div className='col-auto'>
+                                        <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
+                                    </div>
+                                    <div className='col-auto'>
+                                        <label htmlFor='gen-up-to' className='col-form-label'>Generate sequences up to: </label>
+                                    </div>
+                                    <div className="col-auto">
+                                        <select id="gen-up-to" required className='form-select form-inline form-control' defaultValue={upToTargetSequenceExclusive} onChange={(e) => { setUpToTargetSequenceExclusive(e.target.value) }}>
+                                            <option value="Fun And Games">Fun And Games</option>
+                                            <option value="Break Into Three">Break Into Three</option>
+                                            <option value="All">Complete Story</option>
+                                        </select>
+                                    </div>
+
+
+
+                                </div>
                             }
                             {
                                 showConfirmReplaceAll === true &&

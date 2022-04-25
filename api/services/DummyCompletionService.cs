@@ -76,7 +76,7 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<List<UserSequence>> GenerateAllSequences(Plot story) {
+    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive) {
         return new List<UserSequence>();
     }
 
