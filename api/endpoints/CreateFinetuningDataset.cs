@@ -213,7 +213,8 @@ public class CreateFinetuningDataset
             result += sequenceToText(sequence);
         }
 
-        throw new Exception($"Incorrect targetSequenceExclusive: \"{targetSequenceExclusive}\"");
+        //throw new Exception($"Incorrect targetSequenceExclusive: \"{targetSequenceExclusive}\"");
+        return result;
     }
 
     private static string sequenceToText(UserSequence sequence)

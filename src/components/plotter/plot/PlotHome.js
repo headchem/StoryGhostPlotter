@@ -680,6 +680,7 @@ const PlotHome = (
                                         characters={characters}
                                         dramaticQuestion={dramaticQuestion}
                                         updateSequenceCompletions={updateSequenceCompletions}
+                                        setSequences={setSequences}
                                     />
                                 }
                             </Tab>

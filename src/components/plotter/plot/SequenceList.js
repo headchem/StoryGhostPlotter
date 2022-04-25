@@ -1,4 +1,8 @@
+import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import Sequence from './Sequence'
+import { fetchWithTimeout } from '../../../util/FetchUtil'
+import Spinner from 'react-bootstrap/Spinner';
 
 const SequenceList = ({
     sequences,
@@ -12,8 +16,14 @@ const SequenceList = ({
     keywords,
     characters,
     dramaticQuestion,
-    updateSequenceCompletions
+    updateSequenceCompletions,
+    setSequences
 }) => {
+
+    const navigate = useNavigate()
+
+    const [showConfirmReplaceAll, setShowConfirmReplaceAll] = useState(false)
+    const [isReplaceAllLoading, setIsReplaceAllLoading] = useState(false)
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
@@ -124,9 +134,80 @@ const SequenceList = ({
         'Cooldown': 'Climax',
     }
 
+    const generateAll = () => {
+        console.log('generate all')
+        setIsReplaceAllLoading(true)
+
+        fetchWithTimeout('/api/Sequence/GenerateAll', {
+            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                logLineDescription: logLineDescription,
+                genres: genres,
+                problemTemplate: problemTemplate,
+                dramaticQuestion: dramaticQuestion,
+                keywords: keywords,
+                sequences: sequences,
+                characters: characters,
+            })
+        }).then(function (response) {
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
+            }
+            return Promise.reject(response);
+        }).then(function (data) {
+            console.log('save this data:')
+            console.log(data)
+            setSequences(data)
+        }).catch(function (error) {
+            console.warn(error);
+            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+        }).finally(function () {
+            setIsReplaceAllLoading(false)
+            setShowConfirmReplaceAll(false)
+        });
+    }
+
 
     return (
         <>
+            <div className='row'>
+                <div className="col alert alert-warning" role="alert">
+                    {
+                        isReplaceAllLoading === true &&
+                        <>
+                            <Spinner animation="border" variant="secondary" />
+                            <p>This may take 1-2 minutes...</p>
+                        </>
+                    }
+                    {
+                        isReplaceAllLoading === false &&
+                        <>
+                            {
+                                showConfirmReplaceAll === false &&
+                                <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
+                            }
+                            {
+                                showConfirmReplaceAll === true &&
+                                <>
+                                    <p>Are you sure?</p>
+                                    <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
+                                    <button className='btn btn-danger' onClick={generateAll}>Yes, delete all and replace with a new story</button>
+                                </>
+                            }
+
+                            <p className='mt-3'>Caution! This will generate a new complete story, <strong>permanently deleting all existing sequences and sequence brainstorms.</strong> You will be prompted to confirm.</p>
+                        </>
+                    }
+                </div>
+            </div>
             {
                 sequences
                     .map((sequence) => (
@@ -136,7 +217,7 @@ const SequenceList = ({
                             sequence={sequence}
                             sequences={sequences}
                             updateEventsText={updateSequenceEventsText}
-                            
+
                             insertSequence={insertSequence}
                             deleteSequence={deleteSequence}
 

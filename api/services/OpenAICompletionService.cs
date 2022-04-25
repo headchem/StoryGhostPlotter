@@ -292,6 +292,21 @@ public class OpenAICompletionService : ICompletionService
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
+        var allSequences = Factory.GetSequences();
+
+        // remove all of the sequence name prefixes
+        foreach (var seq in allSequences)
+        {
+            var replaceStr = (seq.Name + ":").ToUpper();
+            completion = completion.Trim();
+
+            if (completion.StartsWith(replaceStr))
+            {
+                completion = completion.Replace(replaceStr, "");
+                completion = completion.Trim();
+            }
+        }
+
         var result = new CompletionResponse
         {
             Prompt = prompt,
@@ -428,6 +443,9 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
     {
         var sequenceList = getRandomSequenceList();
 
+        // TEMP for TESTING, TODO remove!
+        sequenceList = sequenceList.Take(2).ToList();
+
         var results = new List<UserSequence>();
 
         foreach (var targetSequence in sequenceList)
@@ -441,6 +459,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             };
 
             results.Add(sequence);
+            story.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
         }
 
         return results;

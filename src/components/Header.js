@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 const Header = ({ userInfo }) => {
     //const providers = ['twitter', 'github', 'aad'];
-    const providers = ['aad'];
+    //const providers = ['aad'];
+    const providers = { 'aad': 'Microsoft' }
     const redirect = window.location.pathname;
 
 
@@ -38,10 +39,10 @@ const Header = ({ userInfo }) => {
                                     </button>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButtonAuth">
                                         {
-                                            providers.map((provider) => (
-                                                <li key={provider}>
-                                                    <a className="dropdown-item" href={`/.auth/login/${provider}?post_login_redirect_uri=${redirect}`}>
-                                                        {provider}
+                                            Object.keys(providers).map((providerKey) => (
+                                                <li key={providerKey}>
+                                                    <a className="dropdown-item" href={`/.auth/login/${providerKey}?post_login_redirect_uri=${redirect}`}>
+                                                        {providers[providerKey]}
                                                     </a>
                                                 </li>
                                             ))}
