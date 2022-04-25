@@ -4,8 +4,11 @@ git checkout -b feat-my-cool-feature
 <make your code changes>
 git commit -m "your message"
 git push origin feat-brainstorm   --- this pushes the branch to remote, but doesn't set the upstream as the default because it's a short-lived branch
-in the browser, navigate to GitHub -> Pull Requests -> New Pull Request
-change the second dropdown so that the arrow points from the new branch on the right into the "main" branch on the left
+Either:
+	in the browser, navigate to GitHub -> Pull Requests -> New Pull Request
+	change the second dropdown so that the arrow points from the new branch on the right into the "main" branch on the left
+	OR
+	On the repo main page, click "Compare & pull request" which is a shortcut to the above manual approach
 Click "Create pull request" and fill out the details, then click "Create pull request"
 	This immediately kicks off a GitHub Action to deploy a new Azure environment for this branch. Optionally test out on the live site by going to the Azure portal, navigate to the Static Web App -> Environments. You should see a new item until "Preview Deployments" with your branch name.
 Click "Merge pull request" fill out any comments, then "Confirm merge"

@@ -125,18 +125,11 @@ public class OpenAICompletionService : ICompletionService
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
-        /*
-DELETED: "babbage:ft-personal-2022-02-25-07-36-34" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --learning_rate_multiplier 0.02
-"babbage:ft-personal-2022-02-26-07-23-02" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.1
-"babbage:ft-personal-2022-02-27-22-34-14" = openai api fine_tunes.create -t "logline.jsonl" -m babbage --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.2
-DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 1 --batch_size 64 --learning_rate_multiplier 0.02
-"curie:ft-personal-2022-02-27-23-31-57" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-        */
-
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = "curie:ft-personal-2022-02-27-23-31-57", //,
+            // "curie:ft-personal-2022-02-27-23-31-57" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
+            Model = "curie:ft-personal-2022-02-27-23-31-57",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
@@ -299,6 +292,21 @@ DELETED: "curie:ft-personal-2022-02-27-23-06-32" = openai api fine_tunes.create 
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
+        var allSequences = Factory.GetSequences();
+
+        // remove all of the sequence name prefixes
+        foreach (var seq in allSequences)
+        {
+            var replaceStr = (seq.Name + ":").ToUpper();
+            completion = completion.Trim();
+
+            if (completion.StartsWith(replaceStr))
+            {
+                completion = completion.Replace(replaceStr, "");
+                completion = completion.Trim();
+            }
+        }
+
         var result = new CompletionResponse
         {
             Prompt = prompt,
@@ -409,7 +417,8 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         var results = new List<string>();
 
-        foreach(var line in completion.Split("\n")) {
+        foreach (var line in completion.Split("\n"))
+        {
             var lineCleaned = line.Trim();
             lineCleaned = lineCleaned.Replace("\"", "");
             lineCleaned = lineCleaned.Replace("1.", "");
@@ -421,9 +430,142 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             lineCleaned = lineCleaned.Replace("7.", "");
             lineCleaned = lineCleaned.Trim();
 
-            if (!string.IsNullOrWhiteSpace(lineCleaned)) {
+            if (!string.IsNullOrWhiteSpace(lineCleaned))
+            {
                 results.Add(lineCleaned);
             }
+        }
+
+        return results;
+    }
+
+    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    {
+        var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
+
+        var results = new List<UserSequence>();
+
+        foreach (var targetSequence in sequenceList)
+        {
+            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.75, story);
+            var sequence = new UserSequence
+            {
+                SequenceName = targetSequence,
+                Text = sequenceText.Completion,
+                Completions = new List<string> { sequenceText.Completion }
+            };
+
+            results.Add(sequence);
+            story.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
+        }
+
+        return results;
+    }
+
+    // returns a list of target sequence names in a random plausible order. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
+    private List<string> getRandomSequenceList(string upToTargetSequenceExclusive)
+    {
+        // all sequences end with this order
+        var ending = new List<string>{
+            "Fun And Games",
+            "Midpoint",
+            "Bad Guys Close In",
+            "All Hope Is Lost",
+            "Dark Night Of The Soul",
+            "Break Into Three",
+            "Climax",
+            "Cooldown"
+        };
+
+        var variations = new List<List<string>>{
+            // Aladdin
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Whiplash
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story"
+            },
+
+            // Star Wars
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Iron Man
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "B Story",
+                "Catalyst",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Elf
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story",
+            },
+
+            // Soul
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Theme Stated",
+                "Break Into Two",
+                "B Story",
+            }
+        };
+
+        variations = variations.OrderBy(x => Guid.NewGuid()).ToList();
+
+        var randomList = variations.First();
+
+        randomList = randomList.Concat(ending).ToList();
+
+        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
+
+        return randomList;
+    }
+
+    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive) {
+        // "All" is a special signal to return all sequences including Cooldown
+        if (upToTargetSequenceExclusive == "All") return sequences;
+
+        var results = new List<string>();
+
+        foreach(var sequence in sequences) {
+            if (sequence == upToTargetSequenceExclusive) return results;
+
+            results.Add(sequence);
         }
 
         return results;

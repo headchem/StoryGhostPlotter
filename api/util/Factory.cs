@@ -204,7 +204,6 @@ public static class Factory
     public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText)
     {
         var sequence = GetSequence(targetSequence);
-        var sequenceText = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
         var genres = Factory.GetGenres(plot.Genres);
@@ -253,8 +252,7 @@ public static class Factory
             Genres = plot.Genres,
             ProblemTemplate = plot.ProblemTemplate,
             HeroArchetype = heroCharacter.Archetype,
-            DramaticQuestion = plot.DramaticQuestion,
-            Text = sequenceText.Text
+            DramaticQuestion = plot.DramaticQuestion
         });
 
 

@@ -11,6 +11,6 @@ public interface ICompletionService
     public Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordLogitBias);
     public Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story);
     public Task<CompletionResponse> GetCharacterCompletion(Character character);
-
     public Task<List<string>> GetTitles(List<string> genres, string logLineDescription);
+    public Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive);
 }
