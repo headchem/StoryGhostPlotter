@@ -14,7 +14,7 @@ Click "Create pull request" and fill out the details, then click "Create pull re
 Click "Merge pull request" fill out any comments, then "Confirm merge"
 	This immediately kicks off a GitHub action that DELETES the "Preview Deployment" from Azure
 Click the button "Delete branch" on the success message
-	This immediately kicks off a GitHub Action to deploy this to PROD Azure
+	This immediately kicks off a GitHub Action to deploy this to PROD Azure - confirm this, why would deleting a branch kick this off?
 In the Terminal, do some clean up:
 	git switch main
 	git pull   --- brings down changes, including the newly merged branch

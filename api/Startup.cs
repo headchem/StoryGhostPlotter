@@ -102,6 +102,8 @@ namespace MyNamespace
             // });
 
             // builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
+
+            builder.Services.AddTransient<IKeywordsService, KeywordsService>();
         }
 
 

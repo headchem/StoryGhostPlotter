@@ -238,30 +238,17 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public OpenAICompletionSettings getSequenceModelSettings(string targetSequence, int maxTokens, double temperature)
-    {
-        return new OpenAICompletionSettings
-        {
-            // openai api fine_tunes.create -t "ALL.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.07
-            ModelName = "davinci:ft-personal-2022-04-22-19-10-16",
-            MaxTokens = maxTokens,
-            Temperature = temperature
-        };
-    }
-
     public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story)
     {
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
 
-        var modelSettings = getSequenceModelSettings(targetSequence, maxTokens, temperature);
-
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = modelSettings.ModelName,
-            MaxTokens = modelSettings.MaxTokens,
-            Temperature = modelSettings.Temperature,
+            Model = "davinci:ft-personal-2022-04-22-19-10-16",
+            MaxTokens = maxTokens,
+            Temperature = temperature,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.1, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -269,16 +256,10 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        //var logitBiasRatio = keywordsLogitBias / 9.0;
-
-        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PostAsync("completions", content);
-        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
 
         if (response.IsSuccessStatusCode == false)
         {
@@ -447,7 +428,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.75, story);
+            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.8, story);
             var sequence = new UserSequence
             {
                 SequenceName = targetSequence,
@@ -572,9 +553,3 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
     }
 }
 
-public class OpenAICompletionSettings
-{
-    public string ModelName { get; set; }
-    public int MaxTokens { get; set; }
-    public double Temperature { get; set; }
-}
