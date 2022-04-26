@@ -14,7 +14,41 @@ public class War : IGenre
         get
         {
             return new List<string>{
-                "TODO keywords"
+                "war",
+                "American",
+                "mission",
+                "soldiers",
+                "enemy",
+                "German",
+                "Nazi",
+                "group",
+                "love",
+                "U.S.",
+                "Vietnam",
+                "British",
+                "rescue",
+                "lives",
+                "battle",
+                "team",
+                "army",
+                "lines",
+                "fight",
+                "Army",
+                "forced",
+                "French",
+                "officer",
+                "unit",
+                "country",
+                "Japanese",
+                "military",
+                "Germany",
+                "home",
+                "life",
+                "save",
+                "pilot",
+                "elite",
+                "France",
+                "soldier"
             };
         }
     }

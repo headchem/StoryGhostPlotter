@@ -14,7 +14,26 @@ public class Music : IGenre
         get
         {
             return new List<string>{
-                "TODO keywords"
+                "life",
+                "music",
+                "school",
+                "band",
+                "love",
+                "dreams",
+                "rock",
+                "show",
+                "star",
+                "musical",
+                "dance",
+                "singer",
+                "competition",
+                "help",
+                "dancer",
+                "talent",
+                "group",
+                "home",
+                "musician",
+                "career"
             };
         }
     }

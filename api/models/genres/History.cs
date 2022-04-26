@@ -14,7 +14,36 @@ public class History : IGenre
         get
         {
             return new List<string>{
-                "TODO keywords"
+                "life",
+                "War",
+                "American",
+                "King",
+                "war",
+                "love",
+                "British",
+                "century",
+                "lives",
+                "battle",
+                "team",
+                "U.S.",
+                "fight",
+                "group",
+                "army",
+                "help",
+                "death",
+                "Nazi",
+                "America",
+                "attempt",
+                "England",
+                "forced",
+                "country",
+                "German",
+                "Queen",
+                "history",
+                "English",
+                "would",
+                "save",
+                "escape",
             };
         }
     }

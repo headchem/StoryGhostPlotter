@@ -14,7 +14,37 @@ public class Western : IGenre
         get
         {
             return new List<string>{
-                "TODO keywords"
+                "town",
+                "gang",
+                "outlaw",
+                "West",
+                "help",
+                "Civil War",
+                "rancher",
+                "life",
+                "Mexico",
+                "sheriff",
+                "Mexican",
+                "notorious",
+                "forced",
+                "group",
+                "American",
+                "Texas",
+                "mysterious",
+                "gold",
+                "local",
+                "save",
+                "land",
+                "brothers",
+                "farm",
+                "job",
+                "Army",
+                "home",
+                "ranch",
+                "Apache",
+                "frontier",
+                "posse",
+                "fight",
             };
         }
     }

@@ -14,7 +14,29 @@ public class Sports : IGenre
         get
         {
             return new List<string>{
-                "game", "losing", "winning", "overcome", "skill"
+                "game", "losing", "winning", "overcome", "skill",
+
+                "team",
+                "school",
+                "coach",
+                "player",
+                "life",
+                "game",
+                "college",
+                "match",
+                "love",
+                "home",
+                "save",
+                "help",
+                "play",
+                "championship",
+                "star",
+                "join",
+                "pro",
+                "dreams",
+                "playing",
+                "skills",
+                "champion"
             };
         }
     }

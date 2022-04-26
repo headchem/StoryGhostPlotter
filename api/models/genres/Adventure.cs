@@ -14,6 +14,8 @@ public class Adventure : IGenre
         get
         {
             return new List<string>{
+                "danger", "excitement", "action", "travel", "quests", "discovery",
+
                 "man",
                 "woman",
                 "father",

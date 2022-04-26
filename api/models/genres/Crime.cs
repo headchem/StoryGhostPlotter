@@ -14,10 +14,11 @@ public class Crime : IGenre
         get
         {
             return new List<string>{
+                "crime", "detective", "danger", "secrets", "hunt",
+
                 "life",
                 "young",
                 "police",
-                "crime",
                 "drug",
                 "killer",
                 "murder",
@@ -29,7 +30,6 @@ public class Crime : IGenre
                 "cop",
                 "heist",
                 "prison",
-                "detective",
                 "death",
                 "time",
                 "case",
