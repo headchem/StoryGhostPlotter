@@ -14,13 +14,18 @@ public class LogLineRow
     public double VoteAverage { get; set; }
     public int VoteCount { get; set; }
     public string GenreNoSports { get; set; }
-    public string Genre { get; set; }
     public List<string> Genres
     {
         get
         {
             // randomizes the order of the genres
-            return Genre.Replace("[", "").Replace("]", "").Split(',').ToList().Select(g => g.Replace("'", "").Trim()).ToList().Where(g => g != "TV Movie").OrderBy(a => Guid.NewGuid()).ToList();
+            var genres = GenreNoSports.Replace("[", "").Replace("]", "").Split(',').ToList().Select(g => g.Replace("'", "").Trim()).ToList().Where(g => g != "TV Movie").OrderBy(a => Guid.NewGuid()).ToList();
+
+            if (HasSports == "Yes") {
+                genres.Add("Sports");
+            }
+
+            return genres.Distinct().ToList();
         }
     }
     public string HasSports { get; set; }
