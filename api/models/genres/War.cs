@@ -14,6 +14,9 @@ public class War : IGenre
         get
         {
             return new List<string>{
+                // GPT-3 generated
+                "loyalty", "following orders", "secret mission", "infiltration", "propaganda", "civilian defense", "weapons factory", "aerial dogfight", "storm the beach", "U-boat", "aircraft carrier", "enlistment", "letters home", "ambush", "befriend enemy soldier", "rationing", "desertion", "war crimes", "treaty", "postwar", "purple heart", "parades", "shellshock", "PTSD", "veteran",
+
                 "war",
                 "American",
                 "mission",

@@ -34,13 +34,14 @@ const LogLineObjDetails = (
 
     const navigate = useNavigate()
 
+    const [isKeywordsLoading, setIsKeywordsLoading] = useState(false)
     const [isLogLineDescriptionCompletionLoading, setIsLogLineDescriptionCompletionLoading] = useState(false)
     const [isTitlesCompletionLoading, setIsTitlesCompletionLoading] = useState(false)
     const [descIsLoading, setDescIsLoading] = useState(false)
     const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
-    //const [keywordSliderValue, setKeywordSliderValue] = useState(5);
+    const [aiKeywords, setAIKeywords] = useState([])
 
     const onGenerateLogLineCompletion = async () => {
         setIsLogLineDescriptionCompletionLoading(true)
@@ -50,6 +51,11 @@ const LogLineObjDetails = (
     const onGenerateTitlesCompletion = async () => {
         setIsTitlesCompletionLoading(true)
         fetchTitlesCompletion()
+    }
+
+    const onGenerateKeywords = async () => {
+        setIsKeywordsLoading(true)
+        fetchKeywords()
     }
 
     const fetchLogLineDescriptionCompletion = async () => {
@@ -131,6 +137,32 @@ const LogLineObjDetails = (
         });
     }
 
+    const fetchKeywords = async () => {
+        fetchWithTimeout('/api/Keywords?genres=' + genres.join(',') + '&numKeywords=7', {
+            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
+            }
+            return Promise.reject(response);
+        }).then(function (data) {
+            console.log(data)
+            setAIKeywords(data)
+        }).catch(function (error) {
+            console.warn(error);
+        }).finally(function () {
+            setIsKeywordsLoading(false)
+        });
+    }
+
     const onDeleteBrainstorm = (idxToDelete) => {
         onAILogLineDescriptionsChange(AILogLineDescriptions.filter((obj, objIdx) => objIdx !== idxToDelete))
     }
@@ -198,6 +230,10 @@ const LogLineObjDetails = (
         <li key={idx}>{t}</li>
     )
 
+    const aiKeywordsListItems = (aiKeywords ?? []).map((keyword, idx) =>
+        <li key={idx}>{keyword}</li>
+    )
+
     return (
         <div>
             {
@@ -206,7 +242,7 @@ const LogLineObjDetails = (
             {
                 descIsLoading === false && <>
                     {
-                        (curFocusElName === 'logLineDescription' || curFocusElName === 'keywords') &&
+                        (curFocusElName === 'logLineDescription') &&
                         <>
                             <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
                                 <Accordion.Item eventKey="0">
@@ -245,7 +281,7 @@ const LogLineObjDetails = (
                                                             }
                                                         </Carousel>
 
-                                                        <button disabled={isLogLineDescriptionCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
+                                                        <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
                                                             {
                                                                 isLogLineDescriptionCompletionLoading === true &&
                                                                 <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -296,7 +332,7 @@ const LogLineObjDetails = (
                                 }
                             </ul>
                             <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
-                            <button disabled={isTitlesCompletionLoading} title='This will replace the existing brainstorm' type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
+                            <button disabled={isTitlesCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
                                 {
                                     isTitlesCompletionLoading === true &&
                                     <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -318,19 +354,29 @@ const LogLineObjDetails = (
                     {
                         curFocusElName === 'dramatic question' && dramaticQuestionDescObj && <DramaticQuestionDescription dramaticQuestionDescObj={dramaticQuestionDescObj} />
                     }
-                    {/* {
+                    {
                         curFocusElName === 'keywords' &&
                         <>
-                            <p>Enter 3-5 core concepts this story relies upon. For example:</p>
+                            <p>Genre-appropriate ({genres.join(', ')}) keywords and concepts this story focuses on.</p>
+
                             <ul>
-                                <li>magic ring</li>
-                                <li>spaceship</li>
-                                <li>deception</li>
-                                <li>The Chosen One</li>
-                                <li>shame</li>
+                                {
+                                    aiKeywordsListItems
+                                }
                             </ul>
+                            <button disabled={isKeywordsLoading} title='Generate ' type="button" className="btn btn-info mt-2" onClick={onGenerateKeywords}>
+                                {
+                                    isKeywordsLoading === true &&
+                                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                }
+                                {
+                                    isKeywordsLoading === false &&
+                                    <FaGhost />
+                                }
+                                <span> New Keywords Brainstorm</span>
+                            </button>
                         </>
-                    } */}
+                    }
                 </>
             }
         </div>

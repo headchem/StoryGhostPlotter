@@ -8,5 +8,5 @@ namespace StoryGhost.Interfaces;
 
 public interface IKeywordsService
 {
-    public List<string> GetKeywords(List<string> genres);
+    public List<string> GetKeywords(List<string> genres, int numKeywords);
 }

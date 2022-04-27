@@ -14,6 +14,9 @@ public class History : IGenre
         get
         {
             return new List<string>{
+                // GPT-3 generated
+                "Roman Empire", "Crusades", "Renaissance", "Industrial Revolution", "Cold War", "World War I", "World War II", "tank", "tenches", "hidden manuscript", "Medieval castle", "Spartans", "Roman legion", "Gladiators", "horse and buggy",
+
                 "life",
                 "War",
                 "American",
@@ -29,11 +32,11 @@ public class History : IGenre
                 "fight",
                 "group",
                 "army",
-                "help",
+                //"help",
                 "death",
                 "Nazi",
                 "America",
-                "attempt",
+                //"attempt",
                 "England",
                 "forced",
                 "country",
@@ -41,7 +44,7 @@ public class History : IGenre
                 "Queen",
                 "history",
                 "English",
-                "would",
+                //"would",
                 "save",
                 "escape",
             };

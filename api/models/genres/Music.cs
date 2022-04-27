@@ -14,7 +14,12 @@ public class Music : IGenre
         get
         {
             return new List<string>{
-                "life",
+                "stage", "production",
+
+                // GPT-3 generated
+                "school production", "struggling to learn an instrument", "singing competition", "dance-off", "repairing an instrument", "forming a band", "music festival", "busking", "attending a concert", "music video", "cover band", "nightclub", "record store", "bonding over a song", "musical that mirrors life",
+
+                //"life",
                 "music",
                 "school",
                 "band",
@@ -27,7 +32,7 @@ public class Music : IGenre
                 "dance",
                 "singer",
                 "competition",
-                "help",
+                //"help",
                 "dancer",
                 "talent",
                 "group",

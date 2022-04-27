@@ -14,16 +14,19 @@ public class Western : IGenre
         get
         {
             return new List<string>{
+                "cowboy", "gunslinger", "outlaw", "Wild West", "desert", "mountains", "plains",
+
+                // GPT-3 generated
+                "horseback", "campfire", "cattle rustlers", "gold rush", "steam engine", "farmstead", "train robbery", "sheriff", "deputy", "town jail", "stagecoach", "shootout", "showdown", "posse", "Oregon trail", "cow wrangler", "lasso", "rodeo", "cattle branding", "homesteading", "wagon train", "Native American reservation", "frontier", "cavalry", "Sioux", "Apache",
+
                 "town",
                 "gang",
-                "outlaw",
                 "West",
                 "help",
                 "Civil War",
                 "rancher",
                 "life",
                 "Mexico",
-                "sheriff",
                 "Mexican",
                 "notorious",
                 "forced",
@@ -41,9 +44,6 @@ public class Western : IGenre
                 "Army",
                 "home",
                 "ranch",
-                "Apache",
-                "frontier",
-                "posse",
                 "fight",
             };
         }

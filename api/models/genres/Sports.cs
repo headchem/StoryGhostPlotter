@@ -14,24 +14,26 @@ public class Sports : IGenre
         get
         {
             return new List<string>{
-                "game", "losing", "winning", "overcome", "skill",
+                "game", "losing", "winning", "overcome", "skill", "fan", "persistence",
+
+                // GPT-3 generated
+                "last in the league", "lack of equipment", "fanatic fans", "sports as a distraction from life", "pressure to perform", "coaching misfits", "cheating to win", "underhanded tactics", "sibling rivalry", "coming from behind", "team bonding", "friends and family of pro athletes", "benchwarmer", "lucky charms", "Cinerella story", "redemption", "sportsmanship",
 
                 "team",
                 "school",
                 "coach",
                 "player",
-                "life",
-                "game",
+                //"life",
                 "college",
                 "match",
                 "love",
                 "home",
-                "save",
+                //"save",
                 "help",
                 "play",
                 "championship",
                 "star",
-                "join",
+                //"join",
                 "pro",
                 "dreams",
                 "playing",

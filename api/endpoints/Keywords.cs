@@ -26,13 +26,16 @@ public class Keywords
     public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Keywords")] HttpRequest req, ILogger log)
     {
         string genresStr = req.Query["genres"];
+        string numKeywordsStr = req.Query["numKeywords"];
+        int numKeywords = int.Parse(numKeywordsStr);
+
         List<string> genres = new List<string>();
 
         foreach(var genre in genresStr.Split(',')) {
             genres.Add(genre.Trim());
         }
 
-        var keywords = _keywordsService.GetKeywords(genres);
+        var keywords = _keywordsService.GetKeywords(genres, numKeywords);
 
         return new OkObjectResult(keywords);
     }
