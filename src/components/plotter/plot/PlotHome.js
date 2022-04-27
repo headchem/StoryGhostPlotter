@@ -629,8 +629,6 @@ const PlotHome = (
                                 problemTemplate={problemTemplate}
                                 dramaticQuestion={dramaticQuestion}
                                 keywords={keywords}
-                                sequences={sequences}
-                                characters={characters}
                             />
                         </div>
                     </div>
