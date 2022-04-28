@@ -13,4 +13,5 @@ public interface ICompletionService
     public Task<CompletionResponse> GetCharacterCompletion(Character character);
     public Task<List<string>> GetTitles(List<string> genres, string logLineDescription);
     public Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive);
+    public Task<Plot> GenerateAllLogLine(List<string> genres);
 }

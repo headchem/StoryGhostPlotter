@@ -5,6 +5,9 @@ const Placeholder = (props) => {
 };
 
 const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, options, value, onChange }) => {
+    
+    const multiValues = value.map(keyword => ({ 'label': keyword, 'value': keyword }))
+    
     return (
         <div className='logLineSelectMulti' style={{ width: width }} onFocus={onFocusChange}>
             {
@@ -25,7 +28,8 @@ const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, optio
                         menuPosition="fixed"
                         components={{ Placeholder }}
                         placeholder={placeholder}
-                        defaultValue={value.map(keyword => ({ 'label': keyword, 'value': keyword }))}
+                        defaultValue={multiValues}
+                        value={multiValues}
                         onChange={onChange}
                     />
             }

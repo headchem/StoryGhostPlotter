@@ -13,7 +13,7 @@ const GenresDescription = ({ genresDescObjs }) => {
                     <div key={genreObj.name}>
                         <h2>{genreObj.name}</h2>
                         <p>{genreObj.description}</p>
-                        <figure className="list-to-comma-str">
+                        {/* <figure className="list-to-comma-str">
                             <figcaption>Keywords</figcaption>
                             <ul>
                                 {
@@ -22,7 +22,7 @@ const GenresDescription = ({ genresDescObjs }) => {
                                     )
                                 }
                             </ul>
-                        </figure>
+                        </figure> */}
                     </div>
                 ))
             }

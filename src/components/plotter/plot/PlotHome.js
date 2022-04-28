@@ -14,6 +14,7 @@ import LogLineObjDetails from './LogLineObjDetails'
 
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
+import LogLineBrainstormAll from './LogLineBrainstormAll'
 import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (
@@ -48,13 +49,6 @@ const PlotHome = (
 
     const populatePlot = (data) => {
         setLogLineDescription(data['logLineDescription'])
-
-        // let AILogLineDescriptionsDict = {};
-
-        // for (var key in data['aiLogLineDescriptions']) {
-        //     AILogLineDescriptionsDict[key] = data['aiLogLineDescriptions'][key]
-        // }
-
         setAILogLineDescriptions(data['aiLogLineDescriptions'])
         setTitle(data['title'])
         setAITitles(data['aiTitles'])
@@ -538,9 +532,18 @@ const PlotHome = (
                                 </div>
                             </div>
 
+                            <LogLineBrainstormAll
+                                genres={genres}
+                                setKeywords={setKeywords}
+                                setLogLineDescription={setLogLineDescription}
+                                setTitle={setTitle}
+                                setProblemTemplate={setProblemTemplate}
+                                setDramaticQuestion={setDramaticQuestion}
+                            />
+
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
-                                    <label htmlFor="keywords" className="form-label">Keywords</label>
+                                    <label htmlFor="keywords" className="form-label">Keywords:</label>
                                 </div>
                                 <div className='col-md-9'>
                                     <div style={{ width: '100%' }}>
@@ -579,7 +582,7 @@ const PlotHome = (
                                     <label htmlFor="title" className="form-label">Title</label>
                                 </div>
                                 <div className='col-md-9'>
-                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
+                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} value={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
                                 </div>
                             </div>
 
@@ -588,14 +591,24 @@ const PlotHome = (
                                     <label htmlFor="problemTemplate" className="form-label">Problem Template</label>
                                 </div>
                                 <div className='col-md-9'>
-                                    <select id='problemTemplate' required className='fs-5 form-select' defaultValue={problemTemplate} onChange={onProblemTemplateChange} onFocus={() => onFocusChange('problem template')}>
-                                        <option key="blank" value="" selected disabled>Problem Template</option>
-                                        {
-                                            problemTemplateOptions.map(function (o) {
-                                                return <option key={o.value} value={o.value}>{o.label}</option>
-                                            })
-                                        }
-                                    </select>
+                                    {
+                                        <select
+                                            id='problemTemplate'
+                                            required
+                                            className='fs-5 form-select'
+                                            value={problemTemplate}
+                                            //defaultValue={problemTemplate}
+                                            onChange={onProblemTemplateChange}
+                                            onFocus={() => onFocusChange('problem template')}>
+                                            <option key="blank" value="" disabled>Problem Template</option>
+                                            {
+                                                problemTemplateOptions.map(function (o, idx) {
+                                                    return <option key={idx} value={o.value}>{o.label}</option>
+                                                })
+                                            }
+                                        </select>
+                                    }
+
                                 </div>
                             </div>
 
@@ -604,7 +617,13 @@ const PlotHome = (
                                     <label htmlFor="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
                                 </div>
                                 <div className='col-md-9'>
-                                    <select id='dramaticQuestion' required className='fs-5 form-select dramaticQuestionSelect' defaultValue={dramaticQuestion} onChange={onDramaticQuestionChange} onFocus={() => onFocusChange('dramatic question')}>
+                                    <select
+                                        id='dramaticQuestion'
+                                        required
+                                        className='fs-5 form-select dramaticQuestionSelect'
+                                        value={dramaticQuestion}
+                                        onChange={onDramaticQuestionChange}
+                                        onFocus={() => onFocusChange('dramatic question')}>
                                         <option key="blank" value="" selected disabled>Dramatic Question</option>
                                         {
                                             dramaticQuestionOptions.map(function (o) {

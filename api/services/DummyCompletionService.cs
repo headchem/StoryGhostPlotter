@@ -65,8 +65,8 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription) {
-        
+    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription)
+    {
         return new List<string>{
             "Title 1",
             "Title 2",
@@ -76,8 +76,21 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive) {
+    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    {
         return new List<UserSequence>();
+    }
+
+    public async Task<Plot> GenerateAllLogLine(List<string> genres)
+    {
+        return new Plot
+        {
+            Keywords = new List<string> { "keyword 1", "keyword 2" },
+            Title = "TESTING edit here...",
+            LogLineDescription = "auto gen log line desc goes here",
+            ProblemTemplate = Factory.GetProblemTemplates().OrderBy(x => Guid.NewGuid()).First().Name,
+            DramaticQuestion = Factory.GetDramaticQuestions().OrderBy(x => Guid.NewGuid()).First().Name
+        };
     }
 
 }

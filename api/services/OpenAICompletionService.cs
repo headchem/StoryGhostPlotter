@@ -19,10 +19,12 @@ namespace StoryGhost.Services;
 public class OpenAICompletionService : ICompletionService
 {
     private readonly HttpClient _httpClient;
+    private readonly IKeywordsService _keywordService;
 
-    public OpenAICompletionService(HttpClient httpClient)
+    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService)
     {
         _httpClient = httpClient;
+        _keywordService = keywordsService;
     }
 
     private void addTokenVariationsIfFound(Dictionary<string, int> logitBias, string keyword, int keywordsLogitBias)
@@ -537,13 +539,15 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
         return randomList;
     }
 
-    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive) {
+    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive)
+    {
         // "All" is a special signal to return all sequences including Cooldown
         if (upToTargetSequenceExclusive == "All") return sequences;
 
         var results = new List<string>();
 
-        foreach(var sequence in sequences) {
+        foreach (var sequence in sequences)
+        {
             if (sequence == upToTargetSequenceExclusive) return results;
 
             results.Add(sequence);
@@ -551,5 +555,23 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         return results;
     }
-}
 
+    public async Task<Plot> GenerateAllLogLine(List<string> genres)
+    {
+        var keywords = _keywordService.GetKeywords(genres, 4);
+        var logLineDesc = (await GetLogLineDescriptionCompletion(new Plot{
+            Genres = genres,
+            Keywords = keywords
+        }, 4))["keywords"].Completion;
+        var title = (await GetTitles(genres, logLineDesc)).First();
+
+        return new Plot
+        {
+            Keywords = keywords,
+            LogLineDescription = logLineDesc,
+            Title = title,
+            ProblemTemplate = Factory.GetProblemTemplates().OrderBy(x => Guid.NewGuid()).First().Id,
+            DramaticQuestion = Factory.GetDramaticQuestions().OrderBy(x => Guid.NewGuid()).First().Id
+        };
+    }
+}
