@@ -88,6 +88,21 @@ public class Outlaw : IArchetype
         }
     }
 
+    public ArchetypePersonalityTendencies PersonalityTendencies
+    {
+        get
+        {
+            return new ArchetypePersonalityTendencies
+            {
+                ClosemindedToImaginativeTendency = 0.5,
+                DisciplinedToSpontaneousTendency = 0.66,
+                IntrovertToExtrovertTendency = 0.0,
+                ColdToEmpatheticTendency = -0.33,
+                UnflappableToAnxiousTendency = 0.0
+            };
+        }
+    }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch

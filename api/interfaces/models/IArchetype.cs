@@ -24,6 +24,7 @@ public interface IArchetype
 
     public SequenceAdvices HeroAdviceSequence { get; }
 
-    
+    public ArchetypePersonalityTendencies PersonalityTendencies { get; }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion);
 }

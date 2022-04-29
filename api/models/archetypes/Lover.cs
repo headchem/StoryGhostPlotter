@@ -88,6 +88,21 @@ public class Lover : IArchetype
         }
     }
 
+    public ArchetypePersonalityTendencies PersonalityTendencies
+    {
+        get
+        {
+            return new ArchetypePersonalityTendencies
+            {
+                ClosemindedToImaginativeTendency = 0.0,
+                DisciplinedToSpontaneousTendency = 0.33,
+                IntrovertToExtrovertTendency = 0.5,
+                ColdToEmpatheticTendency = 0.66,
+                UnflappableToAnxiousTendency = 0.0
+            };
+        }
+    }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch

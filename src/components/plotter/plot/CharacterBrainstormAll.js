@@ -58,7 +58,7 @@ const CharacterBrainstormAll = (
     return (
         <div className='row'>
             <div className="alert alert-warning" role="alert">
-                <p>Based on the log line description, problem template, and dramatic question above, ask the AI to generate a list of characters.</p>
+                <p>Based on the log line description, ask the AI to generate a list of characters.</p>
                 
                 <button disabled={isLoading} type="button" className="btn btn-warning" onClick={onGenerate}>
                     {

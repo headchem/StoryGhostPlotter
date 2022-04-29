@@ -88,6 +88,21 @@ public class Sage : IArchetype
         }
     }
 
+    public ArchetypePersonalityTendencies PersonalityTendencies
+    {
+        get
+        {
+            return new ArchetypePersonalityTendencies
+            {
+                ClosemindedToImaginativeTendency = 0.5,
+                DisciplinedToSpontaneousTendency = -0.66,
+                IntrovertToExtrovertTendency = -0.33,
+                ColdToEmpatheticTendency = 0.0,
+                UnflappableToAnxiousTendency = -0.5
+            };
+        }
+    }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch

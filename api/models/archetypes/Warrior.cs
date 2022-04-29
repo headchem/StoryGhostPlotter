@@ -89,6 +89,21 @@ public class Warrior : IArchetype
         }
     }
 
+    public ArchetypePersonalityTendencies PersonalityTendencies
+    {
+        get
+        {
+            return new ArchetypePersonalityTendencies
+            {
+                ClosemindedToImaginativeTendency = 0.0,
+                DisciplinedToSpontaneousTendency = 0.0,
+                IntrovertToExtrovertTendency = 0.0,
+                ColdToEmpatheticTendency = -0.5,
+                UnflappableToAnxiousTendency = 0.33
+            };
+        }
+    }
+
     public string GetCharacterStageContribution(long seed, string characterStage, IGenre genre, IProblemTemplate problemTemplate, IDramaticQuestion dramaticQuestion)
     {
         return characterStage switch

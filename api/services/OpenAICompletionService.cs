@@ -578,64 +578,93 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
     public async Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
-        return new List<Character> {
-            new Character {
+        var characters = new List<Character>();
+
+        var names = await getCharacterNames(LogLineDescription);
+
+        var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+
+        foreach (var name in names)
+        {
+            // foreach Character, choose a random Archetype which removes it from being an option for subsequent characters
+            var archetype = remainingArchetypes[0];
+            remainingArchetypes.Remove(archetype);
+
+            // Randomize Personality based on preferences of the Archetype - find old code that did this - any way to avoid personalities that are too similar to existing characters? Try without for now, maybe the archetype-without-replacement thing will help avoid naturally
+            var personality = getRandomPersonality(archetype);
+
+            // Generate Description for each Character based on Name, Archetype, Personality
+            var characterDescription = $"Description for {name} goes here...";
+
+            characters.Add(new Character
+            {
                 Id = Guid.NewGuid().ToString(),
-                Name = "John",
-                Archetype = "explorer",
-                Personality = new Personality{
-                    ClosemindedToImaginative = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = -0.5
-                    },
-                    DisciplinedToSpontaneous = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = -0.5
-                    },
-                    IntrovertToExtrovert = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = -0.5
-                    },
-                    ColdToEmpathetic = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = -0.5
-                    },
-                    UnflappableToAnxious = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = -0.5
-                    },
-                },
-                Description = "John's description goes here",
-                IsHero = true
-            },
-            new Character {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Rachel",
-                Archetype = "innocent",
-                Personality = new Personality{
-                    ClosemindedToImaginative = new PersonalityComponent{
-                        Primary = 0.5,
-                        Aspect = 0.5
-                    },
-                    DisciplinedToSpontaneous = new PersonalityComponent{
-                        Primary = -0.5,
-                        Aspect = 0.5
-                    },
-                    IntrovertToExtrovert = new PersonalityComponent{
-                        Primary = -1.0,
-                        Aspect = 0.5
-                    },
-                    ColdToEmpathetic = new PersonalityComponent{
-                        Primary = 0.0,
-                        Aspect = 0.5
-                    },
-                    UnflappableToAnxious = new PersonalityComponent{
-                        Primary = 1.0,
-                        Aspect = 0.5
-                    },
-                },
-                Description = "Rachel's description goes here"
-            },
+                Name = name,
+                Archetype = archetype,
+                Personality = personality,
+                Description = characterDescription,
+                IsHero = names.First() == name
+            });
+        }
+
+        return characters;
+    }
+
+    ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>
+    private async Task<List<string>> getCharacterNames(string LogLineDescription)
+    {
+        // Ask GPT-3 to decide who the Hero is according to the LogLineDesc, and make them the first Character in list
+
+        return new List<string>{
+            "John",
+            "Rachel"
+        };
+    }
+
+    private Personality getRandomPersonality(string archetype)
+    {
+        var archetypeObj = Factory.GetArchetype(archetype);
+
+        var personality = new Personality
+        {
+            ClosemindedToImaginative = getPersonalityComponent(archetypeObj.PersonalityTendencies.ClosemindedToImaginativeTendency),
+            DisciplinedToSpontaneous = getPersonalityComponent(archetypeObj.PersonalityTendencies.DisciplinedToSpontaneousTendency),
+            IntrovertToExtrovert = getPersonalityComponent(archetypeObj.PersonalityTendencies.IntrovertToExtrovertTendency),
+            ColdToEmpathetic = getPersonalityComponent(archetypeObj.PersonalityTendencies.ColdToEmpatheticTendency),
+            UnflappableToAnxious = getPersonalityComponent(archetypeObj.PersonalityTendencies.UnflappableToAnxiousTendency)
+        };
+
+        return personality;
+    }
+
+    private PersonalityComponent getPersonalityComponent(double bias)
+    {
+        var rand = new Random();
+        var primary = (rand.NextDouble() * 2.0) - 1.0 + bias;
+        var aspect = (rand.NextDouble() * 2.0) - 1.0 + bias;
+
+        primary = Math.Round(primary * 2, MidpointRounding.AwayFromZero) / 2;
+        aspect = Math.Round(aspect * 2, MidpointRounding.AwayFromZero) / 2;
+
+        primary = Math.Clamp(primary, -1.0, 1.0);
+
+        if (primary == 0)
+        {
+            aspect = 0; // if primary is neautral, then aspect must also be
+        }
+        else if (Math.Abs(primary) == 1.0)
+        {
+            aspect = Math.Clamp(aspect, -1.0, 1.0);
+        }
+        else
+        {
+            aspect = Math.Clamp(aspect, -0.5, 0.5); // if the primary isn't extreme, then the aspect can't be extreme either
+        }
+
+        return new PersonalityComponent
+        {
+            Primary = primary,
+            Aspect = aspect
         };
     }
 }
