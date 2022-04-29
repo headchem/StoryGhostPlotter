@@ -15,6 +15,7 @@ import LogLineObjDetails from './LogLineObjDetails'
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
 import LogLineBrainstormAll from './LogLineBrainstormAll'
+import CharacterBrainstormAll from './CharacterBrainstormAll';
 import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (
@@ -582,7 +583,17 @@ const PlotHome = (
                                     <label htmlFor="title" className="form-label">Title</label>
                                 </div>
                                 <div className='col-md-9'>
-                                    <input type='text' className='fs-5 form-control' placeholder='Plot Title' required onChange={onTitleChange} defaultValue={title} value={title} onFocus={() => onFocusChange('title')} aria-describedby="titleHelp" id="title" />
+                                    <input
+                                        type='text'
+                                        className='fs-5 form-control'
+                                        placeholder='Plot Title'
+                                        required
+                                        onChange={onTitleChange}
+                                        //defaultValue={title}
+                                        value={title}
+                                        onFocus={() => onFocusChange('title')}
+                                        aria-describedby="titleHelp"
+                                        id="title" />
                                 </div>
                             </div>
 
@@ -660,6 +671,15 @@ const PlotHome = (
                         logLineIncomplete === false &&
                         <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
                             <Tab eventKey="characters" title="Characters">
+
+                                <CharacterBrainstormAll
+                                    userInfo={userInfo}
+                                    logLineDescription={logLineDescription}
+                                    problemTemplate={problemTemplate}
+                                    dramaticQuestion={dramaticQuestion}
+                                    setCharacters={setCharacters}
+                                />
+
                                 <CharacterList
                                     characters={characters}
                                     userInfo={userInfo}

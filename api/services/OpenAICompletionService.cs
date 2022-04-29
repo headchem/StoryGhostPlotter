@@ -559,7 +559,8 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
     public async Task<Plot> GenerateAllLogLine(List<string> genres)
     {
         var keywords = _keywordService.GetKeywords(genres, 4);
-        var logLineDesc = (await GetLogLineDescriptionCompletion(new Plot{
+        var logLineDesc = (await GetLogLineDescriptionCompletion(new Plot
+        {
             Genres = genres,
             Keywords = keywords
         }, 4))["keywords"].Completion;
@@ -572,6 +573,69 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             Title = title,
             ProblemTemplate = Factory.GetProblemTemplates().OrderBy(x => Guid.NewGuid()).First().Id,
             DramaticQuestion = Factory.GetDramaticQuestions().OrderBy(x => Guid.NewGuid()).First().Id
+        };
+    }
+
+    public async Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    {
+        return new List<Character> {
+            new Character {
+                Id = Guid.NewGuid().ToString(),
+                Name = "John",
+                Archetype = "explorer",
+                Personality = new Personality{
+                    ClosemindedToImaginative = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = -0.5
+                    },
+                    DisciplinedToSpontaneous = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = -0.5
+                    },
+                    IntrovertToExtrovert = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = -0.5
+                    },
+                    ColdToEmpathetic = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = -0.5
+                    },
+                    UnflappableToAnxious = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = -0.5
+                    },
+                },
+                Description = "John's description goes here",
+                IsHero = true
+            },
+            new Character {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Rachel",
+                Archetype = "innocent",
+                Personality = new Personality{
+                    ClosemindedToImaginative = new PersonalityComponent{
+                        Primary = 0.5,
+                        Aspect = 0.5
+                    },
+                    DisciplinedToSpontaneous = new PersonalityComponent{
+                        Primary = -0.5,
+                        Aspect = 0.5
+                    },
+                    IntrovertToExtrovert = new PersonalityComponent{
+                        Primary = -1.0,
+                        Aspect = 0.5
+                    },
+                    ColdToEmpathetic = new PersonalityComponent{
+                        Primary = 0.0,
+                        Aspect = 0.5
+                    },
+                    UnflappableToAnxious = new PersonalityComponent{
+                        Primary = 1.0,
+                        Aspect = 0.5
+                    },
+                },
+                Description = "Rachel's description goes here"
+            },
         };
     }
 }

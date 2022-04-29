@@ -122,6 +122,49 @@ public class Generate
         return new OkObjectResult(result);
     }
 
+    [FunctionName("GenerateAllLogLine")]
+    public async Task<IActionResult> GenerateAllLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "LogLine/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        {
+            //log.LogInformation("An example of an Information level message");
+        }
+
+        var result = await _completionService.GenerateAllLogLine(plot.Genres);
+
+        // TODO: log token usage by OpenAI to current user container
+
+        return new OkObjectResult(result);
+    }
+
+    [FunctionName("GenerateAllCharacters")]
+    public async Task<IActionResult> GenerateAllCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
+    {
+        // var user = StaticWebAppsAuth.Parse(req);
+
+        // if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        // var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        // using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        // {
+        //     //log.LogInformation("An example of an Information level message");
+        // }
+
+        var result = await _completionService.GenerateAllCharacters(plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
+
+        // TODO: log token usage by OpenAI to current user container
+
+        return new OkObjectResult(result);
+    }
+
+
     [FunctionName("GenerateAllSequences")]
     public async Task<IActionResult> GenerateAllSequences([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
@@ -139,27 +182,6 @@ public class Generate
         var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
 
         var result = await _completionService.GenerateAllSequences(plot, upToTargetSequenceExclusive);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
-    }
-
-    [FunctionName("GenerateAllLogLine")]
-    public async Task<IActionResult> GenerateAllLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "LogLine/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
-    {
-        var user = StaticWebAppsAuth.Parse(req);
-
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
-        {
-            //log.LogInformation("An example of an Information level message");
-        }
-
-        var result = await _completionService.GenerateAllLogLine(plot.Genres);
 
         // TODO: log token usage by OpenAI to current user container
 
