@@ -27,6 +27,34 @@ public class OpenAICompletionService : ICompletionService
         _keywordService = keywordsService;
     }
 
+    private async Task<CompletionResponse> getResponse(string engineURL, OpenAICompletionsRequest openAIRequest)
+    {
+        var jsonString = JsonSerializer.Serialize(openAIRequest);
+        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+        var response = await _httpClient.PostAsync(engineURL, content);
+
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorResponse = await response.Content.ReadAsStringAsync();
+            throw new Exception(errorResponse);
+        }
+
+        var apiResponse = await response.Content.ReadAsStringAsync();
+        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
+
+        var completionObj = resultDeserialized.Choices.FirstOrDefault();
+        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+
+        var result = new CompletionResponse
+        {
+            Prompt = openAIRequest.Prompt,
+            Completion = completion
+        };
+
+        return result;
+    }
+
     private void addTokenVariationsIfFound(Dictionary<string, int> logitBias, string keyword, int keywordsLogitBias)
     {
         var suppressAmt = -100;
@@ -141,44 +169,15 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        //var logitBiasRatio = keywordsLogitBias / 9.0;
-
-        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-
         if (plot.Keywords != null && plot.Keywords.Count > 0)
         {
-            //openAIRequest.LogitBias = new Dictionary<string, int>();
-
             foreach (var keyword in plot.Keywords)
             {
                 addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
             }
         }
 
-        var jsonString = JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync("completions", content);
-        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorResponse);
-        }
-
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
-        var result = new CompletionResponse
-        {
-            Prompt = prompt,
-            Completion = completion
-        };
+        var result = await getResponse("completions", openAIRequest);
 
         return result;
     }
@@ -211,31 +210,7 @@ public class OpenAICompletionService : ICompletionService
             }
         }
 
-        var jsonString = JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-
-        var engine = "text-curie-001";
-        //var engine = "text-davinci-001";
-
-        var response = await _httpClient.PostAsync($"engines/{engine}/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorResponse);
-        }
-
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
-        var result = new CompletionResponse
-        {
-            Prompt = prompt,
-            Completion = completion
-        };
+        var result = await getResponse("engines/text-curie-001/completions", openAIRequest);
 
         return result;
     }
@@ -258,22 +233,7 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var jsonString = JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync("completions", content);
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorResponse);
-        }
-
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        var result = await getResponse("completions", openAIRequest);
 
         var allSequences = Factory.GetSequences();
 
@@ -281,20 +241,14 @@ public class OpenAICompletionService : ICompletionService
         foreach (var seq in allSequences)
         {
             var replaceStr = (seq.Name + ":").ToUpper();
-            completion = completion.Trim();
+            result.Completion = result.Completion.Trim();
 
-            if (completion.StartsWith(replaceStr))
+            if (result.Completion.StartsWith(replaceStr))
             {
-                completion = completion.Replace(replaceStr, "");
-                completion = completion.Trim();
+                result.Completion = result.Completion.Replace(replaceStr, "");
+                result.Completion = result.Completion.Trim();
             }
         }
-
-        var result = new CompletionResponse
-        {
-            Prompt = prompt,
-            Completion = completion
-        };
 
         return result;
     }
@@ -310,15 +264,10 @@ public class OpenAICompletionService : ICompletionService
     {
         var prompt = PersonalityDescription.GetCharacterPrompt(character) + CreateFinetuningDataset.PromptSuffix;
 
-        /*
-DELETED: davinci:ft-personal-2022-04-01-06-22-16 ---- openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
-curie:ft-personal-2022-04-05-05-53-46 ---- openai api fine_tunes.create -t "characters.jsonl" -m curie --n_epochs 3 --learning_rate_multiplier 0.035
-davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
-        */
-
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
+            // openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
             Model = "davinci:ft-personal-2022-04-05-06-09-25",
             MaxTokens = 150, // longest character description completion was 88 tokens,
             Temperature = 0.99,
@@ -329,34 +278,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             LogitBias = new Dictionary<string, int>()
         };
 
-        //var logitBiasRatio = keywordsLogitBias / 9.0;
-
-        //openAIRequest.PresencePenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-        //openAIRequest.FrequencyPenalty = Math.Max(logitBiasRatio * 1.0, 2.0);
-
-        var jsonString = JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync("completions", content);
-        //response.EnsureSuccessStatusCode(); // throws an exception if the response status code is anything but success
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorResponse);
-        }
-
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
-        var result = new CompletionResponse
-        {
-            Prompt = prompt,
-            Completion = completion
-        };
+        var result = await getResponse("completions", openAIRequest);
 
         return result;
     }
@@ -379,25 +301,15 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             LogitBias = new Dictionary<string, int>()
         };
 
-        var jsonString = JsonSerializer.Serialize(openAIRequest);
-        var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        var result = await getResponse("engines/text-curie-001/completions", openAIRequest);
 
-        var engine = "text-curie-001";
+        var results = removeListNumbers(result.Completion);
 
-        var response = await _httpClient.PostAsync($"engines/{engine}/completions", content); // NOTE: when using the standard "instruct" series, the URL path is different than the finetuned model path
+        return results;
+    }
 
-        if (response.IsSuccessStatusCode == false)
-        {
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            throw new Exception(errorResponse);
-        }
-
-        var apiResponse = await response.Content.ReadAsStringAsync();
-        var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
-
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
-
+    private List<string> removeListNumbers(string completion)
+    {
         var results = new List<string>();
 
         foreach (var line in completion.Split("\n"))
@@ -411,6 +323,8 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             lineCleaned = lineCleaned.Replace("5.", "");
             lineCleaned = lineCleaned.Replace("6.", "");
             lineCleaned = lineCleaned.Replace("7.", "");
+            lineCleaned = lineCleaned.Replace("8.", "");
+            lineCleaned = lineCleaned.Replace("9.", "");
             lineCleaned = lineCleaned.Trim();
 
             if (!string.IsNullOrWhiteSpace(lineCleaned))
@@ -578,9 +492,12 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
     public async Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
-        var characters = new List<Character>();
+        var rand = new Random();
 
-        var names = await getCharacterNames(LogLineDescription);
+        var characters = new List<Character>();
+        var numCharacters = (int)rand.NextInt64(2, 5);
+
+        var names = await getCharacterNames(LogLineDescription, numCharacters);
 
         var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
 
@@ -593,32 +510,83 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
             // Randomize Personality based on preferences of the Archetype - find old code that did this - any way to avoid personalities that are too similar to existing characters? Try without for now, maybe the archetype-without-replacement thing will help avoid naturally
             var personality = getRandomPersonality(archetype);
 
-            // Generate Description for each Character based on Name, Archetype, Personality
-            var characterDescription = $"Description for {name} goes here...";
-
-            characters.Add(new Character
+            var character = new Character
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = name,
                 Archetype = archetype,
                 Personality = personality,
-                Description = characterDescription,
+                Description = "",
                 IsHero = names.First() == name
-            });
+            };
+
+            // Generate Description for each Character based on Name, Archetype, Personality
+            var characterDescription = await getFinetunedCharacterCompletion(character);
+
+            character.Description = characterDescription.Completion;
+
+            characters.Add(character);
         }
 
         return characters;
     }
 
     ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>
-    private async Task<List<string>> getCharacterNames(string LogLineDescription)
+    private async Task<List<string>> getCharacterNames(string LogLineDescription, int numCharacters)
     {
         // Ask GPT-3 to decide who the Hero is according to the LogLineDesc, and make them the first Character in list
 
-        return new List<string>{
-            "John",
-            "Rachel"
+        var prompt = LogLineDescription;
+        prompt += $"\n\nList all of the named characters that appear in the above summary, starting with the protagonist:";
+        prompt += $"\n\n1.";
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            MaxTokens = 48,
+            Temperature = 0.0, // low temp seems to work well for NER
+            TopP = 1.0, // some names may be super weird, so we allow all token combinations
+            Stop = "6.", // if it gets this far, we want to stop and only consider the first 5 it finds
+            PresencePenalty = 1.0, // high penalty to avoid repetition of already found names
+            FrequencyPenalty = 1.0,
+            LogitBias = new Dictionary<string, int>()
         };
+
+        // smallest Ada model was accurate enough
+        var result = await getResponse("engines/text-ada-001/completions", openAIRequest);
+
+        var results = removeListNumbers(result.Completion);
+
+        // remove any empty entries
+        results = results.Where(n => string.IsNullOrWhiteSpace(n) == false).ToList();
+
+        // remove any words that don't start with a capital letter, like "the townspeople".
+        results = results.Where(n => char.IsUpper(n[0])).ToList();
+
+        var stopwords = new List<string>{
+            "the ",
+            "himself",
+            "herself",
+            "friends",
+            "family"
+        };
+
+        results = results.Where(name => stopwords.Any(stopword => name.ToLower().StartsWith(stopword.ToLower()) == false)).ToList(); // filter out any that start with known stopwords, ex: "The townspeople"
+
+        // filter results by requiring that the first name appear in the list of known first names (~7000 most popular)
+        results = results.Where(name => CharacterNames.FirstNames.Contains(name.Split(' ')[0])).ToList();
+
+        Random rand = new Random();
+
+        while (results.Count() < numCharacters)
+        {
+            // randomly select more names until we've hit numCharacters
+            var newCharName = CharacterNames.FirstNames.ElementAt(rand.Next(CharacterNames.FirstNames.Count));
+
+            results.Add(newCharName);
+        }
+
+        return results;
     }
 
     private Personality getRandomPersonality(string archetype)
@@ -650,7 +618,7 @@ davinci:ft-personal-2022-04-05-06-09-25 ---- openai api fine_tunes.create -t "ch
 
         if (primary == 0)
         {
-            aspect = 0; // if primary is neautral, then aspect must also be
+            aspect = 0; // if primary is exactly neutral, then aspect must also be in the center
         }
         else if (Math.Abs(primary) == 1.0)
         {
