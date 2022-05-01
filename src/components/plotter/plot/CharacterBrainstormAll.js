@@ -17,14 +17,12 @@ const CharacterBrainstormAll = (
 
     const navigate = useNavigate()
 
+    const [showConfirmReplaceAll, setShowConfirmReplaceAll] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const onGenerate = async () => {
+    const generateAll = async () => {
         setIsLoading(true)
-        fetchAll()
-    }
 
-    const fetchAll = async () => {
         fetchWithTimeout('/api/Character/GenerateAll', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
@@ -52,26 +50,51 @@ const CharacterBrainstormAll = (
             console.warn(error);
         }).finally(function () {
             setIsLoading(false)
+            setShowConfirmReplaceAll(false)
         });
     }
 
     return (
         <div className='row'>
             <div className="alert alert-warning" role="alert">
-                <p>Based on the log line description, ask the AI to generate a list of characters.</p>
-                
-                <button disabled={isLoading} type="button" className="btn btn-warning" onClick={onGenerate}>
-                    {
-                        isLoading === true &&
-                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                    }
-                    {
-                        isLoading === false &&
-                        <FaGhost />
-                    }
-                    <span> Delete and Regenerate All Characters</span>
-                </button>
+                {
+                    isLoading === true &&
+                    <>
+                        <Spinner animation="border" variant="secondary" />
+                        <p>Generating new characters...</p>
+                    </>
+                }
+                {
+                    isLoading === false &&
+                    <>
+                        {
+                            showConfirmReplaceAll === false &&
+                            <>
+                                <p>Based on the log line description, ask the AI to generate a list of characters.</p>
 
+                                <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
+                                    {
+                                        isLoading === true &&
+                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                    }
+                                    {
+                                        isLoading === false &&
+                                        <FaGhost />
+                                    }
+                                    <span> Delete and Regenerate All Characters</span>
+                                </button>
+                            </>
+                        }
+                        {
+                            showConfirmReplaceAll === true &&
+                            <>
+                                <p>Are you sure?</p>
+                                <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
+                                <button className='btn btn-danger' onClick={generateAll}>Yes, delete all characters and replace with new characters</button>
+                            </>
+                        }
+                    </>
+                }
             </div>
         </div>
     )
