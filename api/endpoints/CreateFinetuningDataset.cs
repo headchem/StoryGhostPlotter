@@ -34,7 +34,6 @@ public class CreateFinetuningDataset
     public async Task<IActionResult> CreateLogLineFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SGAdmin/CreateLogLineFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var formdata = await req.ReadFormAsync();
@@ -88,7 +87,6 @@ public class CreateFinetuningDataset
     public async Task<IActionResult> CreateCharacterFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateCharacterFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var finetuningRows = new List<FinetuningRow>();
@@ -126,13 +124,10 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
-
-
     [FunctionName("CreateSequenceFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
     public async Task<IActionResult> CreateSequenceFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var finetuningRows = new List<FinetuningRow>();

@@ -13,17 +13,21 @@ public static class SequenceAdvice
     [FunctionName("SequenceAdvice")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/Advice")] SequenceAdviceRequest sequenceRequest, HttpRequest req, ILogger log)
     {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+
         string sequenceName = req.Query["sequenceName"];
 
         var sequenceObj = Factory.GetSequence(sequenceName);
 
-        if (sequenceObj == null) {
+        if (sequenceObj == null)
+        {
             return new OkObjectResult(new AdviceComponentsWrapper());
         }
 
         // TODO: use sequenceRequest.Text for something, maybe do emotional analysis on it, or use to render images.
         var adviceObj = Factory.GetSequenceAdvice(sequenceObj, sequenceRequest);
-        
+
         return new OkObjectResult(adviceObj);
     }
 }

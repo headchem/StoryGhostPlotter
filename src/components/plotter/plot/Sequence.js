@@ -227,28 +227,29 @@ const Sequence = ({
                                 {
                                     <div className='row'>
                                         <div className='col'>
-                                            <p>Based on the log line, characters, and previous events, ask the AI to brainstorm for {sequence.sequenceName}.</p>
                                             {
                                                 userInfo && userInfo.userRoles.includes('customer') &&
-
-                                                <SequenceBrainstorm
-                                                    userInfo={userInfo}
-                                                    logLineDescription={logLineDescription}
-                                                    genres={genres}
-                                                    problemTemplate={problemTemplate}
-                                                    dramaticQuestion={dramaticQuestion}
-                                                    keywords={keywords}
-                                                    sequences={sequences}
-                                                    characters={characters}
-                                                    completions={!sequence['completions'] ? [] : sequence['completions']}
-                                                    targetSequence={sequence.sequenceName}
-                                                    updateSequenceCompletions={updateSequenceCompletions}
-                                                />
+                                                <>
+                                                    <p>Based on the log line, characters, and previous events, ask the AI to brainstorm for {sequence.sequenceName}.</p>
+                                                    <SequenceBrainstorm
+                                                        userInfo={userInfo}
+                                                        logLineDescription={logLineDescription}
+                                                        genres={genres}
+                                                        problemTemplate={problemTemplate}
+                                                        dramaticQuestion={dramaticQuestion}
+                                                        keywords={keywords}
+                                                        sequences={sequences}
+                                                        characters={characters}
+                                                        completions={!sequence['completions'] ? [] : sequence['completions']}
+                                                        targetSequence={sequence.sequenceName}
+                                                        updateSequenceCompletions={updateSequenceCompletions}
+                                                    />
+                                                </>
                                             }
                                             {
                                                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                 <>
-                                                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
+                                                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas for this sequence.</p>
                                                 </>
                                             }
                                         </div>
@@ -256,10 +257,7 @@ const Sequence = ({
                                 }
                             </Accordion.Body>
                         </Accordion.Item>
-
                     </Accordion>
-
-
                 </div>
             </div>
             <div className='row pb-3 pt-3'>

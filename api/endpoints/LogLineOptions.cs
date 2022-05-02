@@ -17,6 +17,9 @@ public static class LogLineOptions
     [FunctionName("LogLineOptions")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/LogLineOptions")] HttpRequest req, ILogger log)
     {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+
         // key=dropdown type (like "genres", or "archetypes")
         // value=tuple of strings where ("id", "display name")
         var options = new Dictionary<string, List<(string, string)>>();

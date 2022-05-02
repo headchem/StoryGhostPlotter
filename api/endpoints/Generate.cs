@@ -32,7 +32,6 @@ public class Generate
     public async Task<IActionResult> GenerateLogLineDescription([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "LogLineDescription/Generate")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -55,7 +54,6 @@ public class Generate
     public async Task<IActionResult> GenerateTitles([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Titles/Generate")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -76,10 +74,6 @@ public class Generate
     public async Task<IActionResult> GenerateCharacterDescription([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/Generate")] Character character, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
-        // TODO - TEMP, removing check for testing
-
-        /*
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -88,7 +82,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
         }
-        */
+
 
         var result = await _completionService.GetCharacterCompletion(character);
 
@@ -101,7 +95,6 @@ public class Generate
     public async Task<IActionResult> GenerateSequence([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/Generate")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -126,7 +119,6 @@ public class Generate
     public async Task<IActionResult> GenerateAllLogLine([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "LogLine/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -146,9 +138,8 @@ public class Generate
     [FunctionName("GenerateAllCharacters")]
     public async Task<IActionResult> GenerateAllCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
-        // var user = StaticWebAppsAuth.Parse(req);
-
-        // if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         // var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -169,7 +160,6 @@ public class Generate
     public async Task<IActionResult> GenerateAllSequences([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;

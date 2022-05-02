@@ -11,6 +11,9 @@ public static class ProblemTemplateDescription
     [FunctionName("ProblemTemplateDescription")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/ProblemTemplateDescription")] HttpRequest req, ILogger log)
     {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+
         string problemTemplate = req.Query["problemTemplate"];
 
         var problemTemplateObj = Factory.GetProblemTemplate(problemTemplate);

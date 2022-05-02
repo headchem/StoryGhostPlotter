@@ -12,6 +12,9 @@ public static class GenresDescription
     [FunctionName("GenresDescription")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/GenresDescription")] HttpRequest req, ILogger log)
     {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+
         var genres = req.Query["genres"].ToString().Split(',').ToList();
 
         var genresObj = Factory.GetGenres(genres);
