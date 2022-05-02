@@ -129,17 +129,21 @@ const SequenceList = ({
 
     return (
         <>
-            <SequenceBrainstormAll
-                sequences={sequences}
-                userInfo={userInfo}
-                logLineDescription={logLineDescription}
-                genres={genres}
-                problemTemplate={problemTemplate}
-                keywords={keywords}
-                characters={characters}
-                dramaticQuestion={dramaticQuestion}
-                setSequences={setSequences}
-            />
+            {
+                userInfo && userInfo.userRoles.includes('customer') &&
+                <SequenceBrainstormAll
+                    sequences={sequences}
+                    userInfo={userInfo}
+                    logLineDescription={logLineDescription}
+                    genres={genres}
+                    problemTemplate={problemTemplate}
+                    keywords={keywords}
+                    characters={characters}
+                    dramaticQuestion={dramaticQuestion}
+                    setSequences={setSequences}
+                />
+            }
+
             {
                 sequences
                     .map((sequence) => (

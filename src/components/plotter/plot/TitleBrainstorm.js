@@ -62,23 +62,34 @@ const TitleBrainstorm = (
     return (
         <>
             <p id="titleHelp">A few short words that capture something symbolic about the story. Don't worry about getting the perfect title right now - treat it like a draft and come back to it later.</p>
-            <ul>
-                {
-                    aiTitlesListItems
-                }
-            </ul>
-            <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
-            <button disabled={isTitlesCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
-                {
-                    isTitlesCompletionLoading === true &&
-                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                }
-                {
-                    isTitlesCompletionLoading === false &&
-                    <FaGhost />
-                }
-                <span> New AI Brainstorm</span>
-            </button>
+            {
+                userInfo && userInfo.userRoles.includes('customer') &&
+                <>
+                    <ul>
+                        {
+                            aiTitlesListItems
+                        }
+                    </ul>
+                    <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
+                    <button disabled={isTitlesCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
+                        {
+                            isTitlesCompletionLoading === true &&
+                            <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                        }
+                        {
+                            isTitlesCompletionLoading === false &&
+                            <FaGhost />
+                        }
+                        <span> New AI Brainstorm</span>
+                    </button>
+                </>
+            }
+            {
+                (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                <>
+                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
+                </>
+            }
         </>
     )
 }

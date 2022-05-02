@@ -25,10 +25,9 @@ public class Tokenizer
     public async Task<IActionResult> Encode([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Tokenizer/Encode")] EncodeRequest body, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("authenticated")) return new UnauthorizedResult(); // we need non-customer users to be able to count token for text area length validation
 
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         var result = await _encodingService.Encode(body.Text);
 

@@ -1,26 +1,6 @@
 {
     "routes": [
         {
-            "route": "/api/Generate",
-            "allowedRoles": [
-                "admin",
-                "customer"
-            ]
-        },
-        {
-            "route": "/api/LogLine/*",
-            "allowedRoles": [
-                "authenticated"
-            ]
-        },
-        {
-            "route": "/api/SGAdmin/*",
-            "allowedRoles": [
-                "authenticated",
-                "admin"
-            ]
-        },
-        {
             "route": "/.auth/login/github",
             "statusCode": 404
         },

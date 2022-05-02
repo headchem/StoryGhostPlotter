@@ -533,14 +533,18 @@ const PlotHome = (
                                 </div>
                             </div>
 
-                            <LogLineBrainstormAll
-                                genres={genres}
-                                setKeywords={setKeywords}
-                                setLogLineDescription={setLogLineDescription}
-                                setTitle={setTitle}
-                                setProblemTemplate={setProblemTemplate}
-                                setDramaticQuestion={setDramaticQuestion}
-                            />
+                            {
+                                userInfo && userInfo.userRoles.includes('customer') &&
+                                <LogLineBrainstormAll
+                                    genres={genres}
+                                    setKeywords={setKeywords}
+                                    setLogLineDescription={setLogLineDescription}
+                                    setTitle={setTitle}
+                                    setProblemTemplate={setProblemTemplate}
+                                    setDramaticQuestion={setDramaticQuestion}
+                                />
+                            }
+
 
                             <div className='row pb-3'>
                                 <div className='col-md-3'>
@@ -671,14 +675,16 @@ const PlotHome = (
                         logLineIncomplete === false &&
                         <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
                             <Tab eventKey="characters" title="Characters">
-
-                                <CharacterBrainstormAll
-                                    userInfo={userInfo}
-                                    logLineDescription={logLineDescription}
-                                    problemTemplate={problemTemplate}
-                                    dramaticQuestion={dramaticQuestion}
-                                    setCharacters={setCharacters}
-                                />
+                                {
+                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                    <CharacterBrainstormAll
+                                        userInfo={userInfo}
+                                        logLineDescription={logLineDescription}
+                                        problemTemplate={problemTemplate}
+                                        dramaticQuestion={dramaticQuestion}
+                                        setCharacters={setCharacters}
+                                    />
+                                }
 
                                 <CharacterList
                                     characters={characters}
