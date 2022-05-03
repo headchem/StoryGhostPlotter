@@ -1,4 +1,5 @@
 import React from 'react'
+import ControlledTextArea from '../../../util/ControlledTextarea'
 
 const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, className, setValue, showCount, onFocus }) => {
 
@@ -14,14 +15,17 @@ const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, classNam
 
     return (
         <>
-            <textarea
+            <ControlledTextArea
                 id={id}
                 className={className}
                 rows={rows}
                 cols={cols}
                 onChange={e => setTruncatedContent(e.target.value)}
+                //onChange={e => setValue(e.target.value)}
+                // defaultValue={value ? value : ''}
                 value={value ? value : ''}
                 onFocus={onFocus}
+                maxLength={limit}
             />
             {
                 showCount === true &&

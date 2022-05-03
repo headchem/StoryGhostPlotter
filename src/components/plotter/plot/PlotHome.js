@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useDeferredValue } from 'react'
+import React, { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
@@ -494,42 +494,43 @@ const PlotHome = (
 
     const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
 
-    const deferredCharacterList = useDeferredValue(
-        <CharacterList
-            characters={characters}
-            userInfo={userInfo}
-            archetypeOptions={archetypeOptions}
-            onFocusChange={onFocusChange}
-            updateCharacterName={updateCharacterName}
-            updateCharacterIsHero={updateCharacterIsHero}
-            updateCharacterArchetype={updateCharacterArchetype}
-            updateCharacterDescription={updateCharacterDescription}
-            updateAICharacterCompletion={updateAICharacterCompletion}
-            updateCharacterPersonality={updateCharacterPersonality}
-            insertCharacter={insertCharacter}
-            deleteCharacter={deleteCharacter}
-        />
-    );
+    // here we use the new React 18 feature of deferring rending to avoid "sticky" keys when every update to the log line forces a complete rerendering of the CharacterList and SequenceList
+    // const deferredCharacterList = useDeferredValue(
+    //     <CharacterList
+    //         characters={characters}
+    //         userInfo={userInfo}
+    //         archetypeOptions={archetypeOptions}
+    //         onFocusChange={onFocusChange}
+    //         updateCharacterName={updateCharacterName}
+    //         updateCharacterIsHero={updateCharacterIsHero}
+    //         updateCharacterArchetype={updateCharacterArchetype}
+    //         updateCharacterDescription={updateCharacterDescription}
+    //         updateAICharacterCompletion={updateAICharacterCompletion}
+    //         updateCharacterPersonality={updateCharacterPersonality}
+    //         insertCharacter={insertCharacter}
+    //         deleteCharacter={deleteCharacter}
+    //     />
+    // );
 
-    const deferredSequenceList = useDeferredValue(
-        <SequenceList
-            sequences={sequences}
-            userInfo={userInfo}
-            logLineDescription={logLineDescription}
-            setLastFocusedSequenceName={setLastFocusedSequenceName}
-            lastFocusedSequenceName={lastFocusedSequenceName}
-            updateSequenceEventsText={updateSequenceEventsText}
-            insertSequence={insertSequence}
-            deleteSequence={deleteSequence}
-            genres={genres}
-            problemTemplate={problemTemplate}
-            keywords={keywords}
-            characters={characters}
-            dramaticQuestion={dramaticQuestion}
-            updateSequenceCompletions={updateSequenceCompletions}
-            setSequences={setSequences}
-        />
-    );
+    // const deferredSequenceList = useDeferredValue(
+    //     <SequenceList
+    //         sequences={sequences}
+    //         userInfo={userInfo}
+    //         logLineDescription={logLineDescription}
+    //         setLastFocusedSequenceName={setLastFocusedSequenceName}
+    //         lastFocusedSequenceName={lastFocusedSequenceName}
+    //         updateSequenceEventsText={updateSequenceEventsText}
+    //         insertSequence={insertSequence}
+    //         deleteSequence={deleteSequence}
+    //         genres={genres}
+    //         problemTemplate={problemTemplate}
+    //         keywords={keywords}
+    //         characters={characters}
+    //         dramaticQuestion={dramaticQuestion}
+    //         updateSequenceCompletions={updateSequenceCompletions}
+    //         setSequences={setSequences}
+    //     />
+    // );
 
     return (
         <>
@@ -606,7 +607,21 @@ const PlotHome = (
                                 }
 
                                 {
-                                    deferredCharacterList
+                                    //deferredCharacterList
+                                    <CharacterList
+                                        characters={characters}
+                                        userInfo={userInfo}
+                                        archetypeOptions={archetypeOptions}
+                                        onFocusChange={onFocusChange}
+                                        updateCharacterName={updateCharacterName}
+                                        updateCharacterIsHero={updateCharacterIsHero}
+                                        updateCharacterArchetype={updateCharacterArchetype}
+                                        updateCharacterDescription={updateCharacterDescription}
+                                        updateAICharacterCompletion={updateAICharacterCompletion}
+                                        updateCharacterPersonality={updateCharacterPersonality}
+                                        insertCharacter={insertCharacter}
+                                        deleteCharacter={deleteCharacter}
+                                    />
                                 }
                             </Tab>
                             <Tab eventKey="sequences" title="Sequence of Events">
@@ -618,7 +633,24 @@ const PlotHome = (
                                     hideSequences === false &&
                                     <>
                                         {
-                                            deferredSequenceList
+                                            //deferredSequenceList
+                                            <SequenceList
+                                                sequences={sequences}
+                                                userInfo={userInfo}
+                                                logLineDescription={logLineDescription}
+                                                setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                                lastFocusedSequenceName={lastFocusedSequenceName}
+                                                updateSequenceEventsText={updateSequenceEventsText}
+                                                insertSequence={insertSequence}
+                                                deleteSequence={deleteSequence}
+                                                genres={genres}
+                                                problemTemplate={problemTemplate}
+                                                keywords={keywords}
+                                                characters={characters}
+                                                dramaticQuestion={dramaticQuestion}
+                                                updateSequenceCompletions={updateSequenceCompletions}
+                                                setSequences={setSequences}
+                                            />
                                         }
                                     </>
                                 }
