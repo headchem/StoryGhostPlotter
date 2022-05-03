@@ -145,7 +145,7 @@ const SequenceList = ({
             }
 
             {
-                sequences
+                sequences && sequences
                     .map((sequence) => (
                         <Sequence
                             key={sequence.sequenceName}

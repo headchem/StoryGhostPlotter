@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useDeferredValue } from 'react'
 import { v4 as uuid } from 'uuid';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-import Select from 'react-select';
+
+import LogLine from './LogLine'
 
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 
-import LimitedTextArea from './LimitedTextArea'
-import LogLineSelect from './LogLineSelect'
-import LogLineObjDetails from './LogLineObjDetails'
+
 
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
-import LogLineBrainstormAll from './LogLineBrainstormAll'
 import CharacterBrainstormAll from './CharacterBrainstormAll';
 import { getTokenCount } from "../../../util/Tokenizer";
 
@@ -496,6 +494,43 @@ const PlotHome = (
 
     const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
 
+    const deferredCharacterList = useDeferredValue(
+        <CharacterList
+            characters={characters}
+            userInfo={userInfo}
+            archetypeOptions={archetypeOptions}
+            onFocusChange={onFocusChange}
+            updateCharacterName={updateCharacterName}
+            updateCharacterIsHero={updateCharacterIsHero}
+            updateCharacterArchetype={updateCharacterArchetype}
+            updateCharacterDescription={updateCharacterDescription}
+            updateAICharacterCompletion={updateAICharacterCompletion}
+            updateCharacterPersonality={updateCharacterPersonality}
+            insertCharacter={insertCharacter}
+            deleteCharacter={deleteCharacter}
+        />
+    );
+
+    const deferredSequenceList = useDeferredValue(
+        <SequenceList
+            sequences={sequences}
+            userInfo={userInfo}
+            logLineDescription={logLineDescription}
+            setLastFocusedSequenceName={setLastFocusedSequenceName}
+            lastFocusedSequenceName={lastFocusedSequenceName}
+            updateSequenceEventsText={updateSequenceEventsText}
+            insertSequence={insertSequence}
+            deleteSequence={deleteSequence}
+            genres={genres}
+            problemTemplate={problemTemplate}
+            keywords={keywords}
+            characters={characters}
+            dramaticQuestion={dramaticQuestion}
+            updateSequenceCompletions={updateSequenceCompletions}
+            setSequences={setSequences}
+        />
+    );
+
     return (
         <>
             {
@@ -510,161 +545,45 @@ const PlotHome = (
             {
                 plotLoading === false && isNotFound === false &&
                 <>
-
                     <div className='row pb-5'>
-                        <div className='col-md-7 logline'>
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="genres" className="form-label">Genres</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <div style={{ width: '100%' }}>
-                                        <Select
-                                            defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
-                                            isMulti
-                                            name="genres"
-                                            options={genreOptions}
-                                            className="genres-multi-select"
-                                            classNamePrefix="select"
-                                            onChange={onGenresChange}
-                                            onFocus={() => onFocusChange('genres')}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                        <LogLine
+                            userInfo={userInfo}
+                            genreOptions={genreOptions}
+                            genres={genres}
+                            onGenresChange={onGenresChange}
+                            onFocusChange={onFocusChange}
 
-                            {
-                                userInfo && userInfo.userRoles.includes('customer') &&
-                                <LogLineBrainstormAll
-                                    genres={genres}
-                                    setKeywords={setKeywords}
-                                    setLogLineDescription={setLogLineDescription}
-                                    setTitle={setTitle}
-                                    setProblemTemplate={setProblemTemplate}
-                                    setDramaticQuestion={setDramaticQuestion}
-                                />
-                            }
+                            setKeywords={setKeywords}
+                            setLogLineDescription={setLogLineDescription}
+                            setTitle={setTitle}
+                            setProblemTemplate={setProblemTemplate}
+                            setDramaticQuestion={setDramaticQuestion}
 
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            logLineDescription={logLineDescription}
+                            onLogLineDescriptionChange={onLogLineDescriptionChange}
+                            logLineDescriptionTokenCount={logLineDescriptionTokenCount} // move inward?
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="keywords" className="form-label">Keywords:</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <div style={{ width: '100%' }}>
-                                        <LogLineSelect
-                                            placeholder='Keywords'
-                                            isMultiSelect={true}
-                                            onFocusChange={() => onFocusChange('keywords')}
-                                            value={keywords}
-                                            onChange={onKeywordsChange}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            onTitleChange={onTitleChange}
+                            title={title}
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="logLineDesc" className="form-label">Log Line</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <LimitedTextArea
-                                        id='logLineDesc'
-                                        className="form-control"
-                                        value={logLineDescription}
-                                        setValue={(newValue) => onLogLineDescriptionChange(newValue)}
-                                        rows={4}
-                                        limit={700}
-                                        curTokenCount={logLineDescriptionTokenCount}
-                                        showCount={true}
-                                        onFocus={() => onFocusChange('logLineDescription')}
-                                    />
-                                </div>
-                            </div>
+                            problemTemplate={problemTemplate}
+                            onProblemTemplateChange={onProblemTemplateChange}
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="title" className="form-label">Title</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <input
-                                        type='text'
-                                        className='fs-5 form-control'
-                                        placeholder='Plot Title'
-                                        required
-                                        onChange={onTitleChange}
-                                        //defaultValue={title}
-                                        value={title}
-                                        onFocus={() => onFocusChange('title')}
-                                        aria-describedby="titleHelp"
-                                        id="title" />
-                                </div>
-                            </div>
+                            problemTemplateOptions={problemTemplateOptions}
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="problemTemplate" className="form-label">Problem Template</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    {
-                                        <select
-                                            id='problemTemplate'
-                                            required
-                                            className='fs-5 form-select'
-                                            value={problemTemplate}
-                                            //defaultValue={problemTemplate}
-                                            onChange={onProblemTemplateChange}
-                                            onFocus={() => onFocusChange('problem template')}>
-                                            <option key="blank" value="" disabled>Problem Template</option>
-                                            {
-                                                problemTemplateOptions.map(function (o, idx) {
-                                                    return <option key={idx} value={o.value}>{o.label}</option>
-                                                })
-                                            }
-                                        </select>
-                                    }
+                            dramaticQuestion={dramaticQuestion}
+                            onDramaticQuestionChange={onDramaticQuestionChange}
+                            dramaticQuestionOptions={dramaticQuestionOptions}
 
-                                </div>
-                            </div>
+                            onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
+                            AILogLineDescriptions={AILogLineDescriptions}
+                            AITitles={AITitles}
+                            setAITitles={setAITitles}
 
-                            <div className='row pb-3'>
-                                <div className='col-md-3'>
-                                    <label htmlFor="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
-                                </div>
-                                <div className='col-md-9'>
-                                    <select
-                                        id='dramaticQuestion'
-                                        required
-                                        className='fs-5 form-select dramaticQuestionSelect'
-                                        value={dramaticQuestion}
-                                        onChange={onDramaticQuestionChange}
-                                        onFocus={() => onFocusChange('dramatic question')}>
-                                        <option key="blank" value="" selected disabled>Dramatic Question</option>
-                                        {
-                                            dramaticQuestionOptions.map(function (o) {
-                                                return <option key={o.value} value={o.value}>{o.label}</option>
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className='col-md-5'>
-                            <LogLineObjDetails
-                                userInfo={userInfo}
-                                logLineDescription={logLineDescription}
-                                onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
-                                AILogLineDescriptions={AILogLineDescriptions}
-                                AITitles={AITitles}
-                                setAITitles={setAITitles}
-                                curFocusElName={curFocusElName}
-                                genres={genres}
-                                problemTemplate={problemTemplate}
-                                dramaticQuestion={dramaticQuestion}
-                                keywords={keywords}
-                            />
-                        </div>
+                            curFocusElName={curFocusElName}
+                        />
                     </div>
 
                     {
@@ -686,20 +605,9 @@ const PlotHome = (
                                     />
                                 }
 
-                                <CharacterList
-                                    characters={characters}
-                                    userInfo={userInfo}
-                                    archetypeOptions={archetypeOptions}
-                                    onFocusChange={onFocusChange}
-                                    updateCharacterName={updateCharacterName}
-                                    updateCharacterIsHero={updateCharacterIsHero}
-                                    updateCharacterArchetype={updateCharacterArchetype}
-                                    updateCharacterDescription={updateCharacterDescription}
-                                    updateAICharacterCompletion={updateAICharacterCompletion}
-                                    updateCharacterPersonality={updateCharacterPersonality}
-                                    insertCharacter={insertCharacter}
-                                    deleteCharacter={deleteCharacter}
-                                />
+                                {
+                                    deferredCharacterList
+                                }
                             </Tab>
                             <Tab eventKey="sequences" title="Sequence of Events">
                                 {
@@ -708,23 +616,11 @@ const PlotHome = (
                                 }
                                 {
                                     hideSequences === false &&
-                                    <SequenceList
-                                        sequences={sequences}
-                                        userInfo={userInfo}
-                                        logLineDescription={logLineDescription}
-                                        setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                        lastFocusedSequenceName={lastFocusedSequenceName}
-                                        updateSequenceEventsText={updateSequenceEventsText}
-                                        insertSequence={insertSequence}
-                                        deleteSequence={deleteSequence}
-                                        genres={genres}
-                                        problemTemplate={problemTemplate}
-                                        keywords={keywords}
-                                        characters={characters}
-                                        dramaticQuestion={dramaticQuestion}
-                                        updateSequenceCompletions={updateSequenceCompletions}
-                                        setSequences={setSequences}
-                                    />
+                                    <>
+                                        {
+                                            deferredSequenceList
+                                        }
+                                    </>
                                 }
                             </Tab>
                         </Tabs>

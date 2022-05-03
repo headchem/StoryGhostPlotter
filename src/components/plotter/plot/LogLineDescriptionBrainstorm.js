@@ -143,7 +143,7 @@ const LogLineDescriptionBrainstorm = (
                         Write 1-3 sentences that tease the hero's transformation via the plot events. Try to interweave two iteresting ideas. Add irony where the primary conflict also happens to intersect with the hero's biggest character flaws. For example:
                     </p>
                     <p>
-                        When [FLAWED HERO], is [CHALLENGED BY PIVOTAL EVENT], they must [DO ACTION]. But when [UNEXPECTED TWIST], they must [OVERCOME PERSONAL FLAW], or [LOSE PRIMAL STAKES].
+                        When [FLAWED HERO], is [CHALLENGED BY PIVOTAL EVENT], they must [DO ACTION]. But when [IRONIC TWIST], they must [OVERCOME PERSONAL FLAW], or [LOSE PRIMAL STAKES].
                     </p>
                 </Accordion.Body>
             </Accordion.Item>
