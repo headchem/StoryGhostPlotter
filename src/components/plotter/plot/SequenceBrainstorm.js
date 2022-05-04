@@ -93,20 +93,43 @@ const SequenceBrainstorm = (
         updateSequenceCompletions(targetSequence, newBrainstormList)
     }
 
+    // return true is any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
+    const brainstormDisabled = () => {
+        const existingSequenceNamesArr = sequences.map((seq) => seq.sequenceName)
+        const curSeqIndex = existingSequenceNamesArr.indexOf(targetSequence)
+        const prevSeqsArr = sequences.slice(0, curSeqIndex) // +1 to include self
+        const prevTexts = prevSeqsArr.map((seq) => seq.text)
+
+        const isBlank = (str) => (!str || str.trim().length === 0);
+
+        return prevTexts.some(isBlank)
+    }
+
     return (
         <>
             {
                 availableModels.indexOf(targetSequence) > -1 &&
-                <AICompletions
-                    userInfo={userInfo}
-                    isLoading={isCompletionLoading}
-                    onGenerateCompletion={fetchCompletion}
-                    completions={completions}
-                    onDeleteBrainstorm={onDeleteBrainstorm}
-                    showTemperature={true}
-                    temperature={temperature}
-                    setTemperature={setTemperature}
-                />
+                <>
+                    {
+                        brainstormDisabled() === true &&
+                        <div class="alert alert-warning" role="alert">
+                            <p>All previous sequences must have some text before you can ask the AI to brainstorm on this sequence.</p>
+                        </div>
+                    }
+                    {
+                        brainstormDisabled() === false &&
+                        <AICompletions
+                            userInfo={userInfo}
+                            isLoading={isCompletionLoading}
+                            onGenerateCompletion={fetchCompletion}
+                            completions={completions}
+                            onDeleteBrainstorm={onDeleteBrainstorm}
+                            showTemperature={true}
+                            temperature={temperature}
+                            setTemperature={setTemperature}
+                        />
+                    }
+                </>
             }
             {
                 availableModels.indexOf(targetSequence) === -1 &&

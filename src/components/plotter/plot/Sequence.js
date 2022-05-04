@@ -146,19 +146,6 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     ), [allowed]);
 
-
-    // return true is any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
-    // const brainstormDisabled = () => {
-    //     const existingSequenceNamesArr = sequences.map((seq) => seq.sequenceName)
-    //     const curSeqIndex = existingSequenceNamesArr.indexOf(sequence.sequenceName)
-    //     const prevSeqsArr = sequences.slice(0, curSeqIndex) // +1 to include self
-    //     const prevTexts = prevSeqsArr.map((seq) => seq.text)
-
-    //     const isBlank = (str) => (!str || str.trim().length === 0);
-
-    //     return prevTexts.some(isBlank)
-    // }
-
     return (
         <>
             <div className='row border-top mt-3 pt-3'>
