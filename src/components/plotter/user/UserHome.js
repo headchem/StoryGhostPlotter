@@ -59,8 +59,6 @@ const UserHome = ({ userInfo }) => {
 
     const onCreateNewPlot = async () => {
         setNewPlotLoading(true)
-        // NewPlot
-
 
         fetch('/api/NewPlot', {
             method: 'POST',
@@ -81,8 +79,6 @@ const UserHome = ({ userInfo }) => {
 
     return (
         <div>
-            <p>User home goes here</p>
-
             {
                 plotsLoading === true &&
                 <Spinner animation="border" variant="secondary" />
@@ -96,10 +92,6 @@ const UserHome = ({ userInfo }) => {
                             {plotList}
                         </>
                     }
-                    {/* {
-                        plotList.length === 0 &&
-                        <p>No plots have been created yet.</p>
-                    } */}
                 </>
             }
 

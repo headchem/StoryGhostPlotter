@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-//import ToDoHome from './components/todo/ToDoHome'
 import PlotHome from './components/plotter/plot/PlotHome'
 import PlotView from './components/plotter/plot/PlotView'
 import Header from './components/Header'
@@ -81,7 +80,6 @@ function App() {
                             </>
 
                         } />
-                        {/* <Route path="/todo" element={<ToDoHome />} /> */}
 
                         {userInfo && userInfo.userRoles.includes('admin') &&
                             <Route path="/admin" element={<Admin />} />
