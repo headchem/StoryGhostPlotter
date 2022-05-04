@@ -237,7 +237,50 @@ public class UserActions
         // update existing plot
         var plotPatchOps = new List<PatchOperation>();
 
-        var newLogLineDescription = plot.LogLineDescription;
+        // enforce brainstorm limit on the server-side (client side has a lower number, so this is just a safeguard)
+        var brainstormLimit = 20;
+
+        plot.AILogLineDescriptions = plot.AILogLineDescriptions.Take(brainstormLimit).ToList();
+
+        foreach (var character in plot.Characters)
+        {
+            if (character.AICompletions != null)
+            {
+                character.AICompletions = character.AICompletions.Take(brainstormLimit).ToList();
+            }
+            character.Description = character.Description.Truncate(1000);
+        }
+
+        foreach (var sequence in plot.Sequences)
+        {
+            if (sequence.Completions != null)
+            {
+                sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
+            }
+            sequence.Text = sequence.Text.Truncate(2000);
+        }
+
+        if (plot.AITitles != null)
+        {
+            plot.AITitles = plot.AITitles.Take(brainstormLimit).ToList();
+        }
+
+        if (plot.Characters != null)
+        {
+            plot.Characters = plot.Characters.Take(brainstormLimit).ToList();
+        }
+
+        if (plot.Keywords != null)
+        {
+            plot.Keywords = plot.Keywords.Take(10).ToList();
+        }
+
+        if (plot.Sequences != null)
+        {
+            plot.Sequences = plot.Sequences.Take(brainstormLimit).ToList(); // safeguard, isn't possible via UI alone
+        }
+
+        var newLogLineDescription = plot.LogLineDescription.Truncate(1000);
         var newAILogLineDescriptions = plot.AILogLineDescriptions;
         var newAITitles = plot.AITitles;
         var newCharacters = plot.Characters;

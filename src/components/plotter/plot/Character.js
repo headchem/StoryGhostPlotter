@@ -44,20 +44,20 @@ const Character = ({
     }
 
     const updateTokenCount = async () => {
+        //console.log('updating token count for character: ' + character.name)
         const tokenCount = await getTokenCount(character.description)
         setDescriptionTokenCount(tokenCount)
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        //if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
+        //console.log('character changed for: ' + character.name)
         const timeout = setTimeout(() => {
             updateTokenCount()
         }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        //}
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [character]);
 
@@ -153,7 +153,6 @@ const Character = ({
         unflappableToAnxiousAspect,
     )
 
-    //const personalitySummary = personalityStrs.slice(0, 4).join(', ') + ' and ' + personalityStrs[4]
     const personalitySummary = personalityStrs.slice(0, 5).join(', ')
 
     const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)

@@ -198,6 +198,10 @@ const PlotHome = (
         }
     }
 
+    const heroCharacters = !characters ? null : characters.filter(c => c.isHero === true)
+    const heroCharacter = !heroCharacters ? null : (heroCharacters.length === 1 ? heroCharacters[0] : null)
+    const heroCharacterArchetype = !heroCharacter ? '' : heroCharacter.archetype;
+
     const updateCharacterDescription = (id, description) => {
         setCharacters(
             characters.map(
@@ -647,6 +651,7 @@ const PlotHome = (
                                                 problemTemplate={problemTemplate}
                                                 keywords={keywords}
                                                 characters={characters}
+                                                heroCharacterArchetype={heroCharacterArchetype}
                                                 dramaticQuestion={dramaticQuestion}
                                                 updateSequenceCompletions={updateSequenceCompletions}
                                                 setSequences={setSequences}

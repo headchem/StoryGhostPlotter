@@ -8,11 +8,8 @@ const SequenceAdvice = ({
     genres,
     problemTemplate,
     keywords,
-    characters,
-    dramaticQuestion,
-
-    //sequence,
-    sequences
+    heroCharacterArchetype,
+    dramaticQuestion
 }) => {
 
     const navigate = useNavigate()
@@ -40,8 +37,8 @@ const SequenceAdvice = ({
     }
 
     const fetchAdvice = async () => {
-        let heroCharacter = characters.filter((character) => character.isHero === true);
-        heroCharacter = heroCharacter.length > 0 ? heroCharacter[0] : null;
+        //let heroCharacter = characters.filter((character) => character.isHero === true);
+        //heroCharacter = heroCharacter.length > 0 ? heroCharacter[0] : null;
 
         if (sequenceName === '') return
 
@@ -54,7 +51,7 @@ const SequenceAdvice = ({
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
-                'heroArchetype': (heroCharacter ? heroCharacter.archetype : ''),
+                'heroArchetype': heroCharacterArchetype,
                 'dramaticQuestion': dramaticQuestion,
                 //'text': sequence.text,
                 //'context': sequence.context
@@ -104,6 +101,8 @@ const SequenceAdvice = ({
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
+        console.log(heroCharacterArchetype)
+
         const timeout = setTimeout(() => {
             getAdvice()
         }, 500) // timeout to execute this function if timeout will be not cleared
@@ -111,7 +110,7 @@ const SequenceAdvice = ({
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [genres, problemTemplate, dramaticQuestion, characters]); // sequence,
+    }, [genres, problemTemplate, dramaticQuestion, heroCharacterArchetype]);
 
     return (
         <>

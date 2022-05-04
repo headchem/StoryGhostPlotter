@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { FaGhost, FaCog } from 'react-icons/fa'
 import Accordion from 'react-bootstrap/Accordion';
@@ -71,7 +71,18 @@ const LogLineDescriptionBrainstorm = (
         onAILogLineDescriptionsChange(AILogLineDescriptions.filter((obj, objIdx) => objIdx !== idxToDelete))
     }
 
+    const [currentPage, setCurrentPage] = useState(0);
+
+    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
+    useEffect(() => {
+        const lastPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length - 1
+        setCurrentPage(lastPage)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [AILogLineDescriptions]);
+
     const startingPage = !AILogLineDescriptions ? 0 : AILogLineDescriptions.length - 1
+
+    const limit = 10 // maximum number of brainstorms before the Brainstorm button is disabled and replaced with a message asking user to delete brainstorms
 
     return (
 
@@ -87,7 +98,7 @@ const LogLineDescriptionBrainstorm = (
                                     <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                     <hr />
 
-                                    <Carousel variant="dark" interval={null} indicators={true} defaultActiveIndex={startingPage}>
+                                    <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage}>
                                         {
                                             AILogLineDescriptions && AILogLineDescriptions.length > 0 && AILogLineDescriptions.map((obj, idx) =>
                                                 <Carousel.Item key={'carousel-' + idx}>
@@ -112,17 +123,30 @@ const LogLineDescriptionBrainstorm = (
                                         }
                                     </Carousel>
 
-                                    <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
-                                        {
-                                            isLogLineDescriptionCompletionLoading === true &&
-                                            <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                                        }
-                                        {
-                                            isLogLineDescriptionCompletionLoading === false &&
-                                            <FaGhost />
-                                        }
-                                        <span> New AI Brainstorm</span>
-                                    </button>
+
+                                    {
+                                        AILogLineDescriptions && AILogLineDescriptions.length >= limit &&
+                                        <div className='row'>
+                                            <div className='col alert alert-primary'>
+                                                <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms (use the gear icon) before generating more.</p>
+                                            </div>
+                                        </div>
+
+                                    }
+                                    {
+                                        AILogLineDescriptions && AILogLineDescriptions.length < limit &&
+                                        <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
+                                            {
+                                                isLogLineDescriptionCompletionLoading === true &&
+                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                            }
+                                            {
+                                                isLogLineDescriptionCompletionLoading === false &&
+                                                <FaGhost />
+                                            }
+                                            <span> New AI Brainstorm</span>
+                                        </button>
+                                    }
                                 </>
                             }
                             {

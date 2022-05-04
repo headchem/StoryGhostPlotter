@@ -14,6 +14,7 @@ const Sequence = ({
     problemTemplate,
     keywords,
     characters,
+    heroCharacterArchetype,
     dramaticQuestion,
     logLineDescription,
 
@@ -128,17 +129,14 @@ const Sequence = ({
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        //if (sequence.isLocked === false) { // IMPORTANT: changing log line won't affect advice of older sequences that have already been locked
         const timeout = setTimeout(() => {
-            //getAdvice()
             updateTokenCount()
         }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        //}
-
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sequence, characters]);
+    }, [sequence]);
 
     const NextSequencesButtonGroupMemo = useMemo(() => ( // useMemo prevents the buttons from flickering on keypress
         <NextSequencesButtonGroup
@@ -203,7 +201,7 @@ const Sequence = ({
                 </div>
                 <div className='col-md-5'>
 
-                    <Accordion defaultActiveKey={[]} alwaysOpen>
+                    <Accordion defaultActiveKey={['0']} alwaysOpen>
 
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Advice</Accordion.Header>
@@ -214,10 +212,8 @@ const Sequence = ({
                                     genres={genres}
                                     problemTemplate={problemTemplate}
                                     keywords={keywords}
-                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
                                     dramaticQuestion={dramaticQuestion}
-                                    //sequence={sequence}
-                                    sequences={sequences}
                                 />
                             </Accordion.Body>
                         </Accordion.Item>

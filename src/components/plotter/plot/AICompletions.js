@@ -26,6 +26,8 @@ const AICompletions = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [completions]);
 
+    const limit = 10 // maximum number of brainstorms before the Brainstorm button is disabled and replaced with a message asking user to delete brainstorms
+
     return (
         <>
             {
@@ -55,20 +57,33 @@ const AICompletions = (
                             <label className='form-label'>tame &lt;-&gt; wild <span>(temperature: {temperature})</span>
                                 <input className='form-range' type="range" min="0.5" max="1.0" step={0.05} defaultValue={temperature} onChange={(e) => setTemperature(e.target.value)} />
                             </label>
-                            
+
                         </div>
                     }
-                    <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
-                        {
-                            isLoading === true &&
-                            <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                        }
-                        {
-                            isLoading === false &&
-                            <FaGhost />
-                        }
-                        <span> New AI Brainstorm</span>
-                    </button>
+                    {
+                        completions && completions.length >= limit &&
+                        <div className='row'>
+                            <div className='col alert alert-primary'>
+                                <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms before generating more.</p>
+                            </div>
+                        </div>
+
+                    }
+                    {
+                        (!completions || completions.length < limit) &&
+                        <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                            {
+                                isLoading === true &&
+                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                            }
+                            {
+                                isLoading === false &&
+                                <FaGhost />
+                            }
+                            <span> New AI Brainstorm</span>
+                        </button>
+                    }
+
                 </>
             }
             {

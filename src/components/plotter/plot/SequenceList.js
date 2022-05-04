@@ -13,6 +13,7 @@ const SequenceList = ({
     problemTemplate,
     keywords,
     characters,
+    heroCharacterArchetype,
     dramaticQuestion,
     updateSequenceCompletions,
     setSequences
@@ -163,6 +164,7 @@ const SequenceList = ({
                             problemTemplate={problemTemplate}
                             keywords={keywords}
                             characters={characters}
+                            heroCharacterArchetype={heroCharacterArchetype}
                             dramaticQuestion={dramaticQuestion}
                             logLineDescription={logLineDescription}
 

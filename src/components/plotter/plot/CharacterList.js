@@ -24,6 +24,7 @@ const CharacterList = ({
         insertCharacter(unique_id)
     }
 
+    const limit = 7;
 
     return (
         <>
@@ -56,11 +57,18 @@ const CharacterList = ({
 
             <div className='row pb-3 pt-3'>
                 <div className='col'>
-                    <button
-                        type='button'
-                        className='btn btn-outline-primary btn-block'
-                        onClick={onInsertCharacter}
-                    ><FaPlusCircle /> New Character</button>
+                    {
+                        characters && characters.length > limit &&
+                        <p>You have reached the limit of {limit} characters.</p>
+                    }
+                    {
+                        characters && characters.length <= limit &&
+                        <button
+                            type='button'
+                            className='btn btn-outline-primary btn-block'
+                            onClick={onInsertCharacter}
+                        ><FaPlusCircle /> New Character</button>
+                    }
                 </div>
             </div>
         </>

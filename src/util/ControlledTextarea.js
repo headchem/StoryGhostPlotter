@@ -1,3 +1,5 @@
+// FROM: https://stackoverflow.com/questions/46000544/react-controlled-input-cursor-jumps
+// fixes the behavior where a controlled textarea (where you set value instead of defaultValue) would always jump the cursor to end preventing you from making edits in the middle of the text
 import React, { useEffect, useRef, useState } from 'react';
 
 const ControlledTextArea = (props) => {
