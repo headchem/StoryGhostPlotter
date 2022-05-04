@@ -8,16 +8,16 @@ public class Action : IGenre
 {
     public string Id { get { return "action"; } }
     public string Name { get { return "Action"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "In the Action genre, the protagonist is thrust into a series of events that typically involve violence and physical feats. Action tends to feature a mostly resourceful hero struggling against incredible odds, which include life-threatening situations, a dangerous villain, or a pursuit which usually concludes in victory for the hero."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "chase", "disaster", "spy",
+                "chase", "disaster", "spy", "nuclear", "robbery", "swashbuckler", "assemble a team", "fortress", "secret weapon", "maverick police officer", "kung fu", "shanty town", "shopping mall", "high-rise building", "serial killer", "drug kingpin", "super powers", "zombies", "vengeance", "volcano", "natural disaster", "space battle", "swordfighting",
 
                 // GPT-3 generated
-                "heist", "kidnap", "bomb", "shootout", "escape", "fugitive", "",
+                "heist", "kidnap", "bomb", "shootout", "escape", "fugitive", 
 
                 "man",
                 "woman",
