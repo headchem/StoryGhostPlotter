@@ -296,7 +296,7 @@ public class OpenAICompletionService : ICompletionService
             Temperature = 1.0,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = "",
-            PresencePenalty = 0.9, // helped avoid same-y titles from being generated
+            PresencePenalty = 0.9, // helped avoid same-y titles from being generated. We also don't expect much punctuation in Titles, so no concerns with suppressing common characters
             FrequencyPenalty = 0.9,
             LogitBias = new Dictionary<string, int>()
         };
@@ -547,7 +547,7 @@ public class OpenAICompletionService : ICompletionService
             Temperature = 0.0, // low temp seems to work well for NER
             TopP = 1.0, // some names may be super weird, so we allow all token combinations
             Stop = "6.", // if it gets this far, we want to stop and only consider the first 5 it finds
-            PresencePenalty = 1.0, // high penalty to avoid repetition of already found names
+            PresencePenalty = 1.0, // high penalty to avoid repetition of already found names. Since we don't expect repeated punctuation due to the increasing numbers in the list, I think this higher penalty is ok
             FrequencyPenalty = 1.0,
             LogitBias = new Dictionary<string, int>()
         };

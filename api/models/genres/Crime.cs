@@ -8,13 +8,13 @@ public class Crime : IGenre
 {
     public string Id { get { return "crime"; } }
     public string Name { get { return "Crime"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "The Crime genre centers on criminal acts and especially on the investigation, either by an amateur or a professional detective, of a serious crime, often a murder. Most crime drama focuses on crime investigation and does not feature the courtroom."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "crime", "detective", "danger", "secrets", "hunt",
+                "crime", "detective", "danger", "secrets", "hunt", "locked chest", "bank safe", "expert witness", "witness", "methodical detective", "Scotland Yard", "corruption", "inept police", "forensic", "locked room", "clues", "intruder", "medical examiner", "morgue", "lawyer",
 
                 // GPT-3 generated
                 "cybercrime", "vandalism", "surveillance", "evidence", "alibi", "prosecutor", "defense attorney", "jury", "testimony", "confession", "FBI", "CIA", "Secret Service", "treasury", "insurance fraud", "money laundering", "forgery", "counterfeiting", "hacking", "identity theft",

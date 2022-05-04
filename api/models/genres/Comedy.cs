@@ -8,13 +8,13 @@ public class Comedy : IGenre
 {
     public string Id { get { return "comedy"; } }
     public string Name { get { return "Comedy"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "Comedy is intended to be humorous or amusing by inducing laughter. Stories in this style traditionally have a happy ending. The genre focuses on individual character personalities and interactions."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "uncomfortable", "mistaken",
+                "uncomfortable", "mistaken", "powerless youth", "bizarre situation", "mimic the powerful", "prank", "divergent world views", "witty", "avoiding chores", "awkward situation", "accidentally successful buffoon", "mismatched partners", "silly mundane task",
 
                 // GPT-3 generated
                 "overconfidence", "bluffing", "embarrassment", "rivalry", "luck", "caught in a lie", "disguised", "caught in the act", "Incompetence", "prank gone wrong", "fool",
