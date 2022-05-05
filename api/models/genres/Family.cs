@@ -8,13 +8,15 @@ public class Family : IGenre
 {
     public string Id { get { return "family"; } }
     public string Name { get { return "Family"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "The Family genre contains children or relates to them in the context of home and family. Often covering topics of fear, authority, and reciprocal relationships."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                
+
+                "parents", "single parent", "sibling", "maturity",
+
                 // GPT-3 generated
                 "family dynamics", "long-lost relative", "reconciliation", "generational differences", "only child", "large family", "family secrets", "estrangement", "adoption", "multi-cultural family",
 

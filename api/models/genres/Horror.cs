@@ -8,13 +8,13 @@ public class Horror : IGenre
 {
     public string Id { get { return "horror"; } }
     public string Name { get { return "Horror"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "Horror is intended to shock, frighten, or induce a feeling of disgust, repulsion, or loathing. It intends to create an eerie atmosphere, focusing on either psychological or supernatural aspects."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "dread", "ghosts", "psychological",
+                "dread", "ghosts", "psychological", "cult", "dark magic", "chains", "gloomy castle", "madness", "cruelty", "living dead", "graveyard", "exorcism","grotesque monster", "abyss", "unblinking", "hunted", "maggots", "psychotic",
 
                 // GPT-3 generated
                 "dark basement", "demonic possession", "creepy children", "fears coming to life", "doors that lock themselves", "hallucinations", "whispering gravestones", "nightmares", "buried alive", "being followed", "unsuspected serial killer", "premonitions", "cursed objects", "cannibalism", "spreading infection", "claustrophobic",

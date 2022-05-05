@@ -8,7 +8,7 @@ public class Music : IGenre
 {
     public string Id { get { return "music"; } }
     public string Name { get { return "Music"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "Stories in the Music genre focus on some aspect of music itself, while also involving music in the telling of the story."; } }
     public List<string> Keywords
     {
         get

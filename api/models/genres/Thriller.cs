@@ -8,13 +8,13 @@ public class Thriller : IGenre
 {
     public string Id { get { return "thriller"; } }
     public string Name { get { return "Thriller"; } }
-    public string Description { get { return "TODO description"; } }
+    public string Description { get { return "Thrillers are characterized and defined by the moods they elicit, giving viewers heightened feelings of suspense, excitement, surprise, anticipation and anxiety. Thrillers generally keep the audience on the \"edge of their seats\" as the plot builds towards a climax. The cover-up of important information is a common element. Literary devices such as red herrings, plot twists, unreliable narrators, and cliffhangers are used extensively. A thriller is often a villain-driven plot, whereby they present obstacles that the protagonist must overcome."; } }
     public List<string> Keywords
     {
         get
         {
             return new List<string>{
-                "twist", "running out of time",
+                "twist", "running out of time", "unpredictable villain", "ransom", "kidnapping", "mind games", "killer robots", "stalker", "deathtrap", "conspiracy theory", "private eye", "world weary", "psychotic", "danger", "battling wits", "sudden violence", "innocent victim", "wrongful accusation", "mistaken identity", "ticking clock", "sacrifices", "betrayal", "secret location", "enemy spy",
 
                 // GPT-3 generated
                 "save humanity", "mind games", "untrusting", "being watched", "held hostage", "blackouts", "no memory", "survive", "doppelgänger", "waking up in a strange place", "paranoid", "hearing voices", "false memories", "time loop", "precognition",
