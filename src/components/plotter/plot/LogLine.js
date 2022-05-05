@@ -185,7 +185,7 @@ const LogLine = (
                                 id='problemTemplate'
                                 required
                                 className='fs-5 form-select'
-                                value={problemTemplate}
+                                value={!problemTemplate ? '' : problemTemplate}
                                 //defaultValue={problemTemplate}
                                 onChange={onProblemTemplateChange}
                                 onFocus={() => onFocusChange('problem template')}>
@@ -210,10 +210,10 @@ const LogLine = (
                             id='dramaticQuestion'
                             required
                             className='fs-5 form-select dramaticQuestionSelect'
-                            value={dramaticQuestion}
+                            value={!dramaticQuestion ? '' : dramaticQuestion}
                             onChange={onDramaticQuestionChange}
                             onFocus={() => onFocusChange('dramatic question')}>
-                            <option key="blank" value="" selected disabled>Dramatic Question</option>
+                            <option key="blank" value="" disabled>Dramatic Question</option>
                             {
                                 dramaticQuestionOptions.map(function (o) {
                                     return <option key={o.value} value={o.value}>{o.label}</option>

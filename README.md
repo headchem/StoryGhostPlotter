@@ -73,6 +73,9 @@ git pull
 "id": "ef1494647e3f4fe69890dfb8b41431a1",
 "displayName": "jdparsons.dev@gmail.com",
 
+"id": "6ba6b68eb0294af39340f256ac0bea3d",
+"displayName": "headchem@gmail.com",
+
 
 FINETUNING
  * from Google Sheets, export file as csv

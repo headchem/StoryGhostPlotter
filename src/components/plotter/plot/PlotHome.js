@@ -520,7 +520,8 @@ const PlotHome = (
         navigate('/view?' + createSearchParams(params))
     }
 
-    const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || characters.filter(c => c.isHero === true).length === 0)
+    const heroCharacterCheck = !characters ? [] : characters.filter(c => c.isHero === true)
+    const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
 
     // here we use the new React 18 feature of deferring rending to avoid "sticky" keys when every update to the log line forces a complete rerendering of the CharacterList and SequenceList
     // const deferredCharacterList = useDeferredValue(
@@ -656,7 +657,7 @@ const PlotHome = (
                             <Tab eventKey="sequences" title="Sequence of Events">
                                 {
                                     hideSequences === true &&
-                                    <p>You must have a protagonist character, and all characters must have a name.</p>
+                                    <p>You must have a protagonist character with an archetype, and all characters must have a name.</p>
                                 }
                                 {
                                     hideSequences === false &&

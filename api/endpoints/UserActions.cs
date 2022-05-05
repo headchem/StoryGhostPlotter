@@ -240,24 +240,33 @@ public class UserActions
         // enforce brainstorm limit on the server-side (client side has a lower number, so this is just a safeguard)
         var brainstormLimit = 20;
 
-        plot.AILogLineDescriptions = plot.AILogLineDescriptions.Take(brainstormLimit).ToList();
-
-        foreach (var character in plot.Characters)
+        if (plot.AILogLineDescriptions != null)
         {
-            if (character.AICompletions != null)
-            {
-                character.AICompletions = character.AICompletions.Take(brainstormLimit).ToList();
-            }
-            character.Description = character.Description.Truncate(1000);
+            plot.AILogLineDescriptions = plot.AILogLineDescriptions.Take(brainstormLimit).ToList();
         }
 
-        foreach (var sequence in plot.Sequences)
+        if (plot.Characters != null)
         {
-            if (sequence.Completions != null)
+            foreach (var character in plot.Characters)
             {
-                sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
+                if (character.AICompletions != null)
+                {
+                    character.AICompletions = character.AICompletions.Take(brainstormLimit).ToList();
+                }
+                character.Description = character.Description.Truncate(1000);
             }
-            sequence.Text = sequence.Text.Truncate(2000);
+        }
+
+        if (plot.Sequences != null)
+        {
+            foreach (var sequence in plot.Sequences)
+            {
+                if (sequence.Completions != null)
+                {
+                    sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
+                }
+                sequence.Text = sequence.Text.Truncate(2000);
+            }
         }
 
         if (plot.AITitles != null)

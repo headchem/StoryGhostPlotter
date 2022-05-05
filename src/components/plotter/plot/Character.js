@@ -168,8 +168,8 @@ const Character = ({
 
                         </div>
                         <div className='col-md-3'>
-                            <select required className='fs-5 form-select form-inline' defaultValue={character.archetype} onChange={onArchetypeChange} onFocus={() => onFocusChange('archetype')}>
-                                <option key="blank" value="" selected disabled>Archetype</option>
+                            <select required className='fs-5 form-select form-inline' value={!character.archetype ? '' : character.archetype} onChange={onArchetypeChange} onFocus={() => onFocusChange('archetype')}>
+                                <option key="blank" value="" disabled>Archetype</option>
                                 {
                                     archetypeOptions.map(function (o) {
                                         return <option key={o.value} value={o.value}>{o.label}</option>
