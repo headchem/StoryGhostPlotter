@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { FaGhost } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
+import SignUpMessage from './SignUpMessage'
 
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 
@@ -86,9 +87,7 @@ const TitleBrainstorm = (
             }
             {
                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                <>
-                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
-                </>
+                <SignUpMessage />
             }
         </>
     )

@@ -7,6 +7,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Carousel from 'react-bootstrap/Carousel'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
+import SignUpMessage from './SignUpMessage'
 
 const LogLineDescriptionBrainstorm = (
     {
@@ -151,9 +152,7 @@ const LogLineDescriptionBrainstorm = (
                             }
                             {
                                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                                <>
-                                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
-                                </>
+                                <SignUpMessage />
                             }
 
                         </div>

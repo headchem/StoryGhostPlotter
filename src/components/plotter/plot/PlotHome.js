@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid';
+import { toast } from 'react-toastify';
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
@@ -21,6 +22,24 @@ const PlotHome = (
         userInfo,
     }
 ) => {
+
+    const toastSaveId = 'save-status'
+
+    const notify = (msg) => {
+        toast(msg, {
+            toastId: toastSaveId,
+            type: toast.TYPE.ERROR,
+            autoClose: false
+        });
+
+        toast.update(toastSaveId, {
+            render: msg,
+            type: toast.TYPE.DEFAULT,
+            autoClose: false
+        });
+    }
+
+
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
@@ -441,10 +460,13 @@ const PlotHome = (
                         // Do something
                         if (response.status === 204) {
                             setLastSaveSuccess(Date.now())
+                            notify('Last saved: ' + (new Date().toLocaleTimeString()))
                         } else {
+                            notify('Unable to save!')
                             console.error('error saving: ' + response.status);
                         }
                     } else {
+                        notify('Unable to save!')
                         console.error('error saving: ' + response.status);
                     }
                 }

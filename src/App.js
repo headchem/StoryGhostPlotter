@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import PlotHome from './components/plotter/plot/PlotHome'
 import PlotView from './components/plotter/plot/PlotView'
@@ -9,6 +10,8 @@ import Footer from './components/Footer'
 import About from './components/About'
 import Admin from './components/Admin'
 import UserHome from './components/plotter/user/UserHome'
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -32,9 +35,26 @@ function App() {
         }
     }
 
+    const [mode, setMode] = useState(() => {
+        const initialState = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
+        return initialState;
+    });
+
+    useEffect(() => {
+        const modeMe = (e) => {
+            setMode(e.matches ? "dark" : "light");
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', modeMe);
+        return window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', modeMe);
+    }, []);
+
 
     return (
         <Router>
+            <ToastContainer
+                theme={mode}
+                style={{ width: "250px" }}
+            />
             <Header userInfo={userInfo} />
 
             <main className="flex-shrink-0 mt-5">

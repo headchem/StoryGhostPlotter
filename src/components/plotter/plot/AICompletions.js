@@ -4,6 +4,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import DeleteTab from './DeleteTab'
+import SignUpMessage from './SignUpMessage'
 
 const AICompletions = (
     {
@@ -88,9 +89,7 @@ const AICompletions = (
             }
             {
                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                <>
-                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas.</p>
-                </>
+                <SignUpMessage />
             }
 
         </>

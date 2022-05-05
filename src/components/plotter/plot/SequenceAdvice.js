@@ -101,8 +101,6 @@ const SequenceAdvice = ({
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-        console.log(heroCharacterArchetype)
-
         const timeout = setTimeout(() => {
             getAdvice()
         }, 500) // timeout to execute this function if timeout will be not cleared
