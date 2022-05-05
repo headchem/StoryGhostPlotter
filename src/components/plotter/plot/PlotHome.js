@@ -26,16 +26,16 @@ const PlotHome = (
 
     const toastSaveId = 'save-status'
 
-    const notify = (msg) => {
+    const notify = (msg, type) => {
         toast(msg, {
             toastId: toastSaveId,
-            type: toast.TYPE.ERROR,
+            type: type,
             autoClose: false
         });
 
         toast.update(toastSaveId, {
             render: msg,
-            type: toast.TYPE.DEFAULT,
+            type: type,
             autoClose: false
         });
     }
@@ -461,19 +461,20 @@ const PlotHome = (
                         // Do something
                         if (response.status === 204) {
                             setLastSaveSuccess(Date.now())
-                            notify('Last saved: ' + (new Date().toLocaleTimeString()))
+                            notify('Last saved: ' + (new Date().toLocaleTimeString()), toast.TYPE.DEFAULT)
                         } else {
-                            notify('Unable to save!')
+                            notify('Unable to save!', toast.TYPE.ERROR)
                             console.error('error saving: ' + response.status);
                         }
                     } else {
-                        notify('Unable to save!')
+                        notify('Unable to save!', toast.TYPE.ERROR)
                         console.error('error saving: ' + response.status);
                     }
                 }
             })
             .catch(error => {
                 console.error(error)
+                notify('Unable to save!', toast.TYPE.ERROR)
             }).finally(function () {
 
             });

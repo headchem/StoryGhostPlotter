@@ -23,6 +23,5 @@ export const getTokenCount = async (text) => {
 
     });
 
-    return await response['count']
-
+    return await (!response ? -1 : response['count'])
 }

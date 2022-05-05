@@ -56,7 +56,7 @@ const AICompletions = (
                         showTemperature === true &&
                         <div className='row'>
                             <label className='form-label'>tame &lt;-&gt; wild <span>(temperature: {temperature})</span>
-                                <input className='form-range' type="range" min="0.5" max="1.0" step={0.05} defaultValue={temperature} onChange={(e) => setTemperature(e.target.value)} />
+                                <input className='form-range' type="range" min="0.5" max="1.3" step={0.05} defaultValue={temperature} onChange={(e) => setTemperature(e.target.value)} />
                             </label>
 
                         </div>

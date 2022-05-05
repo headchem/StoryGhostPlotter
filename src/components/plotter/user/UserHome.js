@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import DeletePlot from './DeletePlot'
@@ -10,6 +11,16 @@ const UserHome = ({ userInfo }) => {
     const [newPlotName, setNewPlotName] = useState('')
     const [newPlotLoading, setNewPlotLoading] = useState(false)
     const navigate = useNavigate()
+
+    const toastSaveId = 'load-user-status'
+
+    const notify = (msg) => {
+        toast(msg, {
+            toastId: toastSaveId,
+            type: toast.TYPE.ERROR,
+            autoClose: false
+        });
+    }
 
     const loadAllPlots = () => {
         setPlotsLoading(true)
@@ -33,6 +44,7 @@ const UserHome = ({ userInfo }) => {
                 }
             }).catch(function (error) {
                 console.warn(error);
+                notify('unable to communicate with server!')
             }).finally(function () {
                 setPlotsLoading(false)
             });
