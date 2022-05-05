@@ -4,10 +4,21 @@ const Placeholder = (props) => {
     return <components.Placeholder {...props} />;
 };
 
-const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, options, value, onChange }) => {
-    
+const LogLineSelect = (
+    {
+        selectTheme,
+        width,
+        isMultiSelect,
+        onFocusChange,
+        placeholder,
+        options,
+        value,
+        onChange
+    }
+) => {
+
     const multiValues = value.map(keyword => ({ 'label': keyword, 'value': keyword }))
-    
+
     return (
         <div className='logLineSelectMulti' style={{ width: width }} onFocus={onFocusChange}>
             {
@@ -20,6 +31,7 @@ const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, optio
                         options={options}
                         defaultInputValue={value}
                         onChange={onChange}
+                        theme={selectTheme}
                     />
                     :
                     <CreatableSelect
@@ -31,6 +43,7 @@ const LogLineSelect = ({ width, isMultiSelect, onFocusChange, placeholder, optio
                         defaultValue={multiValues}
                         value={multiValues}
                         onChange={onChange}
+                        theme={selectTheme}
                     />
             }
         </div>

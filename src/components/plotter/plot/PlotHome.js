@@ -20,6 +20,7 @@ import { getTokenCount } from "../../../util/Tokenizer";
 const PlotHome = (
     {
         userInfo,
+        mode
     }
 ) => {
 
@@ -575,6 +576,7 @@ const PlotHome = (
                     <div className='row pb-5'>
                         <LogLine
                             userInfo={userInfo}
+                            mode={mode}
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}

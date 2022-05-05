@@ -83,6 +83,7 @@ function App() {
                                 {userInfo &&
                                     <PlotHome
                                         userInfo={userInfo}
+                                        mode={mode}
                                     />
                                 }
                                 {

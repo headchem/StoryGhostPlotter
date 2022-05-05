@@ -8,6 +8,7 @@ import LogLineBrainstormAll from './LogLineBrainstormAll'
 const LogLine = (
     {
         userInfo,
+        mode,
         genreOptions,
         genres,
         onGenresChange,
@@ -46,6 +47,40 @@ const LogLine = (
 ) => {
 
 
+    var selectTheme = (theme) => {
+        if (mode === 'dark') {
+            const darkTheme = {
+                ...theme,
+                borderRadius: 0,
+                colors: {
+                    ...theme.colors,
+                    neutral0: '#222',
+                    neutral5: '#333',
+                    neutral10: '#444',
+                    neutral20: '#666',
+                    neutral30: '#888',
+                    neutral40: '#999',
+                    neutral50: '#aaa',
+                    neutral60: '#bbb',
+                    neutral70: '#ccc',
+                    neutral80: '#ddd',
+                    neutral90: '#eee',
+
+                    primary: '#444',
+                    primary25: '#333',
+                    primary50: '#444',
+                    primary75: '#555',
+
+                    danger: '#ffb3ab',
+                    dangerLight: '#601a13'
+                },
+            }
+
+            return darkTheme;
+        } else {
+            return theme
+        }
+    }
 
     return (
         <>
@@ -65,6 +100,7 @@ const LogLine = (
                                 classNamePrefix="select"
                                 onChange={onGenresChange}
                                 onFocus={() => onFocusChange('genres')}
+                                theme={selectTheme}
                             />
                         </div>
                     </div>
@@ -90,6 +126,7 @@ const LogLine = (
                     <div className='col-md-9'>
                         <div style={{ width: '100%' }}>
                             <LogLineSelect
+                                selectTheme={selectTheme}
                                 placeholder='Keywords'
                                 isMultiSelect={true}
                                 onFocusChange={() => onFocusChange('keywords')}
