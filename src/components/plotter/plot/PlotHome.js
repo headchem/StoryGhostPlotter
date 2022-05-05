@@ -568,7 +568,7 @@ const PlotHome = (
             {
                 isNotFound === true &&
                 <>
-                    <p>This plot either doesn't exist, or the author has not made it public.</p>
+                    <p>Plot not found! This plot either doesn't exist, the author has not made it public, or your network connection is down.</p>
                 </>
             }
             {

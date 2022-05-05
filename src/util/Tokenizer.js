@@ -19,9 +19,10 @@ export const getTokenCount = async (text) => {
         return Promise.reject(response);
     }).catch(function (error) {
         console.warn(error);
+        return -1;
     }).finally(function () {
 
     });
 
-    return await (!response ? -1 : response['count'])
+    return await response['count']
 }

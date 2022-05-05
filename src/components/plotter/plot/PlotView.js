@@ -73,7 +73,7 @@ const PlotView = (
             {
                 isNotFound === true &&
                 <>
-                    <p>This plot either doesn't exist, or the author has not made it public. If you are the author, ensure you are logged in.</p>
+                    <p>Plot not found! This plot either doesn't exist, the author has not made it public, or your network connection is down. If you are the author, ensure you are logged in.</p>
                 </>
             }
             {
