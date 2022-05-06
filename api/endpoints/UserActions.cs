@@ -16,15 +16,19 @@ using StoryGhost.Util;
 using StoryGhost.Models;
 using StoryGhost.Models.Completions;
 
+using System.Diagnostics;
+using Microsoft.ApplicationInsights;
 
 
 namespace StoryGhost.LogLine;
 public class UserActions
 {
+    private TelemetryClient _telemetry;
     private readonly CosmosClient _db;
 
-    public UserActions(CosmosClient db)
+    public UserActions(TelemetryClient telemetry, CosmosClient db)
     {
+        _telemetry = telemetry;
         _db = db;
     }
 
@@ -73,6 +77,8 @@ public class UserActions
                 {
                     var newUserResponse = await container.CreateItemAsync<StoryGhost.Models.User>(newUser, new PartitionKey(newUser.Id));
                     var RUs = newUserResponse.RequestCharge;
+
+                    _telemetry.TrackEvent("Create New User");
 
                     return new OkObjectResult(newUser);
                 }
@@ -151,6 +157,8 @@ public class UserActions
                 patchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
 
                 var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
+
+                _telemetry.TrackEvent("Create New Plot");
 
                 return new OkObjectResult(newPlot.Id);
             }
@@ -404,6 +412,8 @@ public class UserActions
 
         plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
         var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
+
+        _telemetry.TrackEvent("Delete Plot");
 
         return new NoContentResult();
     }

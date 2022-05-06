@@ -12,13 +12,18 @@ using Newtonsoft.Json;
 using StoryGhost.Util;
 using StoryGhost.Interfaces;
 
+using System.Diagnostics;
+using Microsoft.ApplicationInsights;
+
 namespace StoryGhost.LogLine;
 public class Keywords
 {
+    private TelemetryClient _telemetry;
     private readonly IKeywordsService _keywordsService;
 
-    public Keywords(IKeywordsService keywordsService)
+    public Keywords(TelemetryClient telemetry, IKeywordsService keywordsService)
     {
+        _telemetry = telemetry;
         _keywordsService = keywordsService;
     }
 
@@ -40,6 +45,8 @@ public class Keywords
         }
 
         var keywords = _keywordsService.GetKeywords(genres, numKeywords);
+
+        _telemetry.TrackEvent("Generate Keywords");
 
         return new OkObjectResult(keywords);
     }

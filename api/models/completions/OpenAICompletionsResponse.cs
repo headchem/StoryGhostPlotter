@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace StoryGhost.Models;
+namespace StoryGhost.Models.Completions;
 
 public class OpenAICompletionsResponse
 {

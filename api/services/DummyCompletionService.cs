@@ -65,37 +65,48 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription)
     {
-        return new List<string>{
-            "Title 1",
-            "Title 2",
-            "Title 3",
-            "Title 4",
-            "Title 5"
+        return new TitlesResponse
+        {
+            Titles = new List<string>
+            {
+                "Title 1",
+                "Title 2",
+                "Title 3",
+                "Title 4",
+                "Title 5"
+            },
+            CompletionResponse = new CompletionResponse
+            {
+                Prompt = "titles prompt goes here",
+                Completion = "titles completion goes here",
+                PromptTokenCount = 123,
+                CompletionTokenCount = 444
+            }
         };
     }
 
-    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
     {
-        return new List<UserSequence>();
+        return (new List<UserSequence>(), 123);
     }
 
-    public async Task<Plot> GenerateAllLogLine(List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(List<string> genres)
     {
-        return new Plot
+        return (new Plot
         {
             Keywords = new List<string> { "keyword 1", "keyword 2" },
             Title = "TESTING edit here...",
             LogLineDescription = "auto gen log line desc goes here",
             ProblemTemplate = Factory.GetProblemTemplates().OrderBy(x => Guid.NewGuid()).First().Name,
             DramaticQuestion = Factory.GetDramaticQuestions().OrderBy(x => Guid.NewGuid()).First().Name
-        };
+        }, 123);
     }
 
-    public async Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
-        return new List<Character> {
+        return (new List<Character> {
             new Character {
                 Id = Guid.NewGuid().ToString(),
                 Name = "John",
@@ -153,7 +164,7 @@ public class DummyCompletionService : ICompletionService
                 },
                 Description = "Rachel's description goes here"
             },
-        };
+        }, 123);
     }
 
 }

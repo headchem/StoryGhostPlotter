@@ -20,11 +20,13 @@ public class OpenAICompletionService : ICompletionService
 {
     private readonly HttpClient _httpClient;
     private readonly IKeywordsService _keywordService;
+    private readonly IEncodingService _encodingService;
 
-    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService)
+    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService, IEncodingService encodingService)
     {
         _httpClient = httpClient;
         _keywordService = keywordsService;
+        _encodingService = encodingService;
     }
 
     private async Task<CompletionResponse> getResponse(string engineURL, OpenAICompletionsRequest openAIRequest)
@@ -46,10 +48,15 @@ public class OpenAICompletionService : ICompletionService
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
+        var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(completion)).Count;
+
         var result = new CompletionResponse
         {
             Prompt = openAIRequest.Prompt,
-            Completion = completion
+            PromptTokenCount = promptTokenCount,
+            Completion = completion,
+            CompletionTokenCount = completionTokenCount
         };
 
         return result;
@@ -283,7 +290,7 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<List<string>> GetTitles(List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription)
     {
         var prompt = $"Genres: {string.Join(", ", genres)}";
         prompt += $"\n\nStory synopsis: {logLineDescription.Trim()}";
@@ -301,11 +308,15 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse("engines/text-curie-001/completions", openAIRequest);
+        var openAIResult = await getResponse("engines/text-curie-001/completions", openAIRequest);
 
-        var results = removeListNumbers(result.Completion);
+        var titleResults = removeListNumbers(openAIResult.Completion);
 
-        return results;
+        var result = new TitlesResponse();
+        result.Titles = titleResults;
+        result.CompletionResponse = openAIResult;
+
+        return result;
     }
 
     private List<string> removeListNumbers(string completion)
@@ -336,27 +347,31 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
     {
         var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
 
         var results = new List<UserSequence>();
 
+        var totalTokenCount = 0;
+
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceText = await GetSequenceCompletion(targetSequence, 256, 0.8, story);
+            var sequenceResponse = await GetSequenceCompletion(targetSequence, 256, 0.8, story);
+            totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
+
             var sequence = new UserSequence
             {
                 SequenceName = targetSequence,
-                Text = sequenceText.Completion,
-                Completions = new List<string> { sequenceText.Completion }
+                Text = sequenceResponse.Completion,
+                Completions = new List<string> { sequenceResponse.Completion }
             };
 
             results.Add(sequence);
             story.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
         }
 
-        return results;
+        return (results, totalTokenCount);
     }
 
     // returns a list of target sequence names in a random plausible order. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
@@ -470,27 +485,37 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<Plot> GenerateAllLogLine(List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(List<string> genres)
     {
+        var totalTokens = 0;
+
         var keywords = _keywordService.GetKeywords(genres, 4);
-        var logLineDesc = (await GetLogLineDescriptionCompletion(new Plot
+
+        var logLineDescCompletion = await GetLogLineDescriptionCompletion(new Plot
         {
             Genres = genres,
             Keywords = keywords
-        }, 4))["keywords"].Completion;
-        var title = (await GetTitles(genres, logLineDesc)).First();
+        }, 4);
+        var logLineDesc = logLineDescCompletion["keywords"].Completion;
 
-        return new Plot
+        totalTokens += logLineDescCompletion["finetuned"].PromptTokenCount + logLineDescCompletion["finetuned"].CompletionTokenCount + logLineDescCompletion["keywords"].PromptTokenCount + logLineDescCompletion["keywords"].CompletionTokenCount;
+
+        var titleCompletion = await GetTitles(genres, logLineDesc);
+        totalTokens += titleCompletion.CompletionResponse.PromptTokenCount + titleCompletion.CompletionResponse.CompletionTokenCount;
+
+        var firstTitle = titleCompletion.Titles.First();
+
+        return (new Plot
         {
             Keywords = keywords,
             LogLineDescription = logLineDesc,
-            Title = title,
+            Title = firstTitle,
             ProblemTemplate = Factory.GetProblemTemplates().OrderBy(x => Guid.NewGuid()).First().Id,
             DramaticQuestion = Factory.GetDramaticQuestions().OrderBy(x => Guid.NewGuid()).First().Id
-        };
+        }, totalTokens);
     }
 
-    public async Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
         var rand = new Random();
 
@@ -500,6 +525,8 @@ public class OpenAICompletionService : ICompletionService
         var names = await getCharacterNames(LogLineDescription, numCharacters);
 
         var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+
+        var totalTokenCount = 0;
 
         foreach (var name in names)
         {
@@ -521,14 +548,15 @@ public class OpenAICompletionService : ICompletionService
             };
 
             // Generate Description for each Character based on Name, Archetype, Personality
-            var characterDescription = await getFinetunedCharacterCompletion(character);
+            var characterResponse = await getFinetunedCharacterCompletion(character);
+            totalTokenCount += characterResponse.PromptTokenCount + characterResponse.CompletionTokenCount;
 
-            character.Description = characterDescription.Completion;
+            character.Description = characterResponse.Completion;
 
             characters.Add(character);
         }
 
-        return characters;
+        return (characters, totalTokenCount);
     }
 
     ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>

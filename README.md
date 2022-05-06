@@ -76,6 +76,12 @@ git pull
 "id": "6ba6b68eb0294af39340f256ac0bea3d",
 "displayName": "headchem@gmail.com",
 
+ROLES:
+authenticated
+anonymous
+customer
+admin
+
 
 FINETUNING
  * from Google Sheets, export file as csv

@@ -11,11 +11,12 @@ public interface ICompletionService
     public Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordLogitBias);
     public Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story);
     public Task<CompletionResponse> GetCharacterCompletion(Character character);
-    public Task<List<string>> GetTitles(List<string> genres, string logLineDescription);
+    public Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription);
     
-    public Task<Plot> GenerateAllLogLine(List<string> genres);
+    ///<summary>Returns a tuple where the first value is the completed Plot object, and second tuple is the total Token cost.</summary>
+    public Task<(Plot, int)> GenerateAllLogLine(List<string> genres);
 
-    public Task<List<Character>> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion);
+    public Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion);
 
-    public Task<List<UserSequence>> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive);
+    public Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive);
 }

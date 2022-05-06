@@ -10,20 +10,21 @@ using System.Security.Claims;
 using Microsoft.Azure.Cosmos;
 using StoryGhost.Models;
 using StoryGhost.Interfaces;
-using System.Net;
-using Newtonsoft.Json;
-using Microsoft.Azure.Documents;
-using StoryGhost.Models.Completions;
+
+using System.Diagnostics;
+using Microsoft.ApplicationInsights;
 
 namespace StoryGhost.Generate;
 
 public class Generate
 {
+    private TelemetryClient _telemetry;
     private readonly ICompletionService _completionService;
     private readonly CosmosClient _db;
 
-    public Generate(ICompletionService completionService, CosmosClient db)
+    public Generate(TelemetryClient telemetry, ICompletionService completionService, CosmosClient db)
     {
+        _telemetry = telemetry;
         _completionService = completionService;
         _db = db;
     }
@@ -36,18 +37,35 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
+
+            var result = await _completionService.GetLogLineDescriptionCompletion(plot, keywordsLogitBias);
+            var totalTokenCount = result["finetuned"].PromptTokenCount + result["finetuned"].CompletionTokenCount + result["keywords"].PromptTokenCount + result["keywords"].CompletionTokenCount;
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", totalTokenCount);
+
+            _telemetry.TrackEvent("Completion Log Line Description", null, metrics);
+
+            return new OkObjectResult(result);
         }
-
-        var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
-
-        var result = await _completionService.GetLogLineDescriptionCompletion(plot, keywordsLogitBias);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 
     [FunctionName("GenerateTitles")]
@@ -58,16 +76,32 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var result = await _completionService.GetTitles(plot.Genres, plot.LogLineDescription);
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", result.CompletionResponse.PromptTokenCount + result.CompletionResponse.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Titles", null, metrics);
+
+            return new OkObjectResult(result.Titles);
         }
-
-        var result = await _completionService.GetTitles(plot.Genres, plot.LogLineDescription);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 
     [FunctionName("GenerateCharacterDescription")]
@@ -78,17 +112,32 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var result = await _completionService.GetCharacterCompletion(character);
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Character", null, metrics);
+
+            return new OkObjectResult(result);
         }
-
-
-        var result = await _completionService.GetCharacterCompletion(character);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 
     [FunctionName("GenerateSequence")]
@@ -99,20 +148,36 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var targetSequence = req.Query["targetSequence"][0];
+            var temperature = double.Parse(req.Query["temperature"][0]);
+            var maxTokens = 256;
+
+            var result = await _completionService.GetSequenceCompletion(targetSequence, maxTokens, temperature, plot);
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Sequence", null, metrics);
+
+            return new OkObjectResult(result);
         }
-
-        var targetSequence = req.Query["targetSequence"][0];
-        var temperature = double.Parse(req.Query["temperature"][0]);
-        var maxTokens = 256;
-
-        var result = await _completionService.GetSequenceCompletion(targetSequence, maxTokens, temperature, plot);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 
     [FunctionName("GenerateAllLogLine")]
@@ -123,16 +188,32 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var (result, totalTokens) = await _completionService.GenerateAllLogLine(plot.Genres);
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", totalTokens);
+
+            _telemetry.TrackEvent("Completion Entire Log Line", null, metrics);
+
+            return new OkObjectResult(result);
         }
-
-        var result = await _completionService.GenerateAllLogLine(plot.Genres);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 
     [FunctionName("GenerateAllCharacters")]
@@ -141,18 +222,34 @@ public class Generate
         var user = StaticWebAppsAuth.Parse(req);
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
 
-        // var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        // using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
-        // {
-        //     //log.LogInformation("An example of an Information level message");
-        // }
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
 
-        var result = await _completionService.GenerateAllCharacters(plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
+        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        {
+            //log.LogInformation("An example of an Information level message");
 
-        // TODO: log token usage by OpenAI to current user container
+            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
 
-        return new OkObjectResult(result);
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", totalTokenCount);
+
+            _telemetry.TrackEvent("Completion All Characters", null, metrics);
+
+            return new OkObjectResult(result);
+        }
     }
 
 
@@ -164,17 +261,33 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
         using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
         {
             //log.LogInformation("An example of an Information level message");
+
+            var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
+
+            var (result, totalTokenCount) = await _completionService.GenerateAllSequences(plot, upToTargetSequenceExclusive);
+
+            // TODO: log token usage by OpenAI to current user container
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", totalTokenCount);
+
+            _telemetry.TrackEvent("Completion All Sequences", null, metrics);
+
+            return new OkObjectResult(result);
         }
-
-        var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
-
-        var result = await _completionService.GenerateAllSequences(plot, upToTargetSequenceExclusive);
-
-        // TODO: log token usage by OpenAI to current user container
-
-        return new OkObjectResult(result);
     }
 }
