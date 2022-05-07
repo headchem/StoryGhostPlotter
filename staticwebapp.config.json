@@ -1,4 +1,21 @@
 {
+    "auth": {
+        "identityProviders": {
+            "azureActiveDirectory": {
+                "registration": {
+                    "openIdIssuer": "https://login.microsoftonline.com/169f4dad-dd1b-40cd-bce4-5ecc8f8d3a48/v2.0",
+                    "clientIdSettingName": "AZURE_CLIENT_ID",
+                    "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+                }
+            },
+            "google": {
+                "registration": {
+                    "clientIdSettingName": "GOOGLE_CLIENT_ID",
+                    "clientSecretSettingName": "GOOGLE_CLIENT_SECRET"
+                }
+            }
+        }
+    },
     "routes": [
         {
             "route": "/.auth/login/github",
