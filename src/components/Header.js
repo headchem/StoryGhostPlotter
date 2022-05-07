@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 const Header = ({ userInfo }) => {
-    //const providers = ['twitter', 'github', 'aad'];
-    //const providers = ['aad'];
-    const providers = { 'aad': 'Microsoft' }
+    const providers = {
+        'aad': 'Microsoft',
+        'google': 'Google'
+    }
     const redirect = window.location.pathname;
-
 
     return (
         <header>
