@@ -59,7 +59,10 @@ public class UserActions
                 var existingUserObj = userResponse.Resource;
 
                 // filter out plots flagged as deleted
-                existingUserObj.PlotReferences = existingUserObj.PlotReferences.Where(p => p.IsDeleted == false).ToList();
+                if (existingUserObj.PlotReferences != null)
+                {
+                    existingUserObj.PlotReferences = existingUserObj.PlotReferences.Where(p => p.IsDeleted == false).ToList();
+                }
 
                 return new OkObjectResult(existingUserObj);
             }
