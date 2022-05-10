@@ -14,7 +14,7 @@ public class Scifi : IGenre
         get
         {
             return new List<string>{
-                "technology", "future", "space", "aliens", "innovation", "time travel", "space travel", "scientific advances",
+                "technology", "future", "space", "aliens", "innovation", "time travel", "space travel", "scientific advances", "secret lab", "secret chemical", "serum", "weapon", "laser", "light speed", "rocket", "nebula", "telescope", "radio waves", "stellar transmission", "mega-structure", "hologram", "galaxy", "galactic map", "black hole", "gravity well", "energy pulse", "deep sea lab", "alien ruins", "asteroid field", "asteroid", "artificial intelligence", "teleport", "teleporter", "warp drive", "pulsar", "ancient alien civilization",
 
                 // GPT-3 generated
                 "AI", "premonitions", "parallel universe", "mind control", "clones", "alien invation", "robots", "cyborgs", "nanotechnology", "genetic engineering", "cybernetics", "virtual reality", "biotechnology", "machine learning", "genetic modification",
