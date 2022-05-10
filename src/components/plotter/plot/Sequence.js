@@ -6,6 +6,7 @@ import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 import { getTokenCount } from "../../../util/Tokenizer";
 import SequenceAdvice from './SequenceAdvice'
 import SequenceBrainstorm from './SequenceBrainstorm'
+import SignUpMessage from './SignUpMessage'
 
 const Sequence = ({
     userInfo,
@@ -134,7 +135,7 @@ const Sequence = ({
         }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sequence]);
 
@@ -232,7 +233,7 @@ const Sequence = ({
                                             {
                                                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                 <>
-                                                    <p>Sign up for our premium plan to ask the AI to brainstorm ideas for this sequence.</p>
+                                                    <SignUpMessage />
                                                 </>
                                             }
                                         </div>
