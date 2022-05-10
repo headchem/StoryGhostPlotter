@@ -19,15 +19,40 @@
 
 // @import "~bootstrap-dark-5/scss/bootstrap.scss";
 
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
 @media (prefers-color-scheme: dark) {
+    // .btn-primary {
+    //     background-color: rgb(211, 0, 0);
+    // }
+
+    
+
+    .genres_advice {
+
+    }
+
+    .problem_template_advice {
+
+    }
+
+    .dramatic_question_advice {
+
+    }
+
+    .hero_archetype_advice {
+
+    }
+}
+
+@media (prefers-color-scheme: light) {
     // .btn-primary {
     //     background-color: rgb(211, 0, 0);
     // }
 }
 
-// @media (prefers-color-scheme: light) {
-//     .styles_go_here {color: white;}
-// }
 
 .logLineSelect:required:invalid {
     //color: rgb(128, 128, 128);

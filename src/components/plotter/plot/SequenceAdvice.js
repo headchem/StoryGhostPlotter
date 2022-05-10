@@ -110,6 +110,16 @@ const SequenceAdvice = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [genres, problemTemplate, dramaticQuestion, heroCharacterArchetype]);
 
+    const opacity_class = 'bg-opacity-25'
+
+    const getAdviceClass = (type) => {
+        if (type === 'common') return type + '_advice bg-primary ' + opacity_class;
+        if (type === 'genres') return type + '_advice bg-success ' + opacity_class;
+        if (type === 'problem_template') return type + '_advice bg-danger ' + opacity_class;
+        if (type === 'dramatic_question') return type + '_advice bg-warning ' + opacity_class;
+        if (type === 'hero_archetype') return type + '_advice bg-info ' + opacity_class;
+    }
+
     return (
         <>
             <h3>Advice for {sequenceName}</h3>
@@ -118,11 +128,11 @@ const SequenceAdvice = ({
                 <>
                     <h5 title="Info hidden from the reader, or character backstories that inform the visible events">Background Context</h5>
                     <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                        <span title="common advice">{contextCommonAdvice} </span>
-                        <span title="genres advice">{contextGenresAdvice} </span>
-                        <span title="problem template advice">{contextProblemTemplateAdvice} </span>
-                        <span title="dramatic question advice">{contextDramaticQuestionAdvice} </span>
-                        <span title="hero archetype advice">{contextHeroArchetypeAdvice} </span>
+                        <span className={getAdviceClass('common')} title="common advice">{contextCommonAdvice} </span>
+                        <span className={getAdviceClass('genres')} title={`genres advice for: ` + genres.join(', ')}>{contextGenresAdvice} </span>
+                        <span className={getAdviceClass('problem_template')} title={`problem template advice for: ` + problemTemplate}>{contextProblemTemplateAdvice} </span>
+                        <span className={getAdviceClass('dramatic_question')} title={`dramatic question advice for: ` + dramaticQuestion}>{contextDramaticQuestionAdvice} </span>
+                        <span className={getAdviceClass('hero_archetype')} title={`hero archetype advice for: ` + heroCharacterArchetype}>{contextHeroArchetypeAdvice} </span>
                     </p>
                 </>
             }
@@ -135,11 +145,11 @@ const SequenceAdvice = ({
                 <>
                     <h5 title="string events together with 'therefore' instead of 'and then'">Events</h5>
                     <p className={`${isAdviceLoading ? 'text-loading' : ''}`}>
-                        <span title="common advice">{eventsCommonAdvice} </span>
-                        <span title="genres advice">{eventsGenresAdvice} </span>
-                        <span title="problem template advice">{eventsProblemTemplateAdvice} </span>
-                        <span title="dramatic question advice">{eventsDramaticQuestionAdvice} </span>
-                        <span title="hero archetype advice">{eventsHeroArchetypeAdvice} </span>
+                        <span className={getAdviceClass('common')} title="common advice">{eventsCommonAdvice} </span>
+                        <span className={getAdviceClass('genres')} title={`genres advice for: ` + genres.join(', ')}>{eventsGenresAdvice} </span>
+                        <span className={getAdviceClass('problem_template')} title={`problem template advice for: ` + problemTemplate}>{eventsProblemTemplateAdvice} </span>
+                        <span className={getAdviceClass('dramatic_question')} title={`dramatic question advice for: ` + dramaticQuestion}>{eventsDramaticQuestionAdvice} </span>
+                        <span className={getAdviceClass('hero_archetype')} title={`hero archetype advice for: ` + heroCharacterArchetype}>{eventsHeroArchetypeAdvice} </span>
                     </p>
                 </>
             }
