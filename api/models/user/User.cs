@@ -20,5 +20,7 @@ public class User
     /// <summary>UTC date any user property, including adding (but not modifying) new PlotReferences, was last modified.</summary>
     public DateTime Modified { get; set; }
 
+    public int RemainingTokens { get; set; }
+
     public List<PlotReference> PlotReferences { get; set; }
 }

@@ -26,6 +26,7 @@ namespace MyNamespace
             // builder.Services.AddTransient<SalesforceTokenService>();
             // builder.Services.AddTransient<ISalesforceTokenService, CachedSalesforceTokenService>();
 
+
             var isDebug = false; // toggle the dummy completion service or the real OpenAI service
 
             if (isDebug == false)
@@ -70,7 +71,7 @@ namespace MyNamespace
                 });
             }
 
-            builder.Services.AddApplicationInsightsTelemetry();
+            builder.Services.AddApplicationInsightsTelemetry(); // adds ILogger to DI
 
             var cosmosDBConnection = Environment.GetEnvironmentVariable("COSMOS_DB_CONNECTION");
             builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
@@ -104,6 +105,8 @@ namespace MyNamespace
             // builder.Services.AddSingleton<ILoggerProvider, MyLoggerProvider>();
 
             builder.Services.AddTransient<IKeywordsService, KeywordsService>();
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IPlotService, PlotService>();
         }
 
 

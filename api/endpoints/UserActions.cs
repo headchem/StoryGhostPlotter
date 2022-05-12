@@ -7,29 +7,21 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
-using Microsoft.Azure.Cosmos;
-using System.Collections.Generic;
-using System.Net;
-using System.Linq;
-using Newtonsoft.Json;
-using StoryGhost.Util;
+
 using StoryGhost.Models;
-using StoryGhost.Models.Completions;
 
-using System.Diagnostics;
-using Microsoft.ApplicationInsights;
-
+using StoryGhost.Interfaces;
 
 namespace StoryGhost.LogLine;
 public class UserActions
 {
-    private TelemetryClient _telemetry;
-    private readonly CosmosClient _db;
+    private readonly IUserService _userService;
+    private readonly IPlotService _plotService;
 
-    public UserActions(TelemetryClient telemetry, CosmosClient db)
+    public UserActions(IUserService userService, IPlotService plotService)
     {
-        _telemetry = telemetry;
-        _db = db;
+        _userService = userService;
+        _plotService = plotService;
     }
 
     /// <summary>
@@ -41,59 +33,12 @@ public class UserActions
         var user = StaticWebAppsAuth.Parse(req);
         if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
 
-        //if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var displayName = user.Identity.Name;
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
-        {
-            //log.LogInformation("An example of an Information level message");
+        var userObj = await _userService.GetOrCreateUser(userId, displayName);
 
-            // Read the item to see if it exists.
-            var container = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
-
-            try
-            {
-                var userResponse = await container.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId)); //await _db.ReadItemAsync<TestUser>(u.Id, new PartitionKey(u.UserId));
-                var RUs = userResponse.RequestCharge;
-                var existingUserObj = userResponse.Resource;
-
-                // filter out plots flagged as deleted
-                if (existingUserObj.PlotReferences != null)
-                {
-                    existingUserObj.PlotReferences = existingUserObj.PlotReferences.Where(p => p.IsDeleted == false).ToList();
-                }
-
-                return new OkObjectResult(existingUserObj);
-            }
-            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-            {
-                var newUser = new StoryGhost.Models.User
-                {
-                    Id = userId,
-                    DisplayName = user.Identity.Name,
-                    Created = DateTime.UtcNow,
-                    Modified = DateTime.UtcNow
-                };
-
-                try
-                {
-                    var newUserResponse = await container.CreateItemAsync<StoryGhost.Models.User>(newUser, new PartitionKey(newUser.Id));
-                    var RUs = newUserResponse.RequestCharge;
-
-                    _telemetry.TrackEvent("Create New User");
-
-                    return new OkObjectResult(newUser);
-                }
-                catch (Exception exNewUser)
-                {
-                    log.LogError($"Failed to create new user: {user.Identity.Name}, userId: {userId}. Exception message: {exNewUser.Message}");
-                    throw exNewUser;
-                }
-            }
-        }
-
-        throw new Exception("Unable to retrieve user");
+        return new OkObjectResult(userObj);
     }
 
     [FunctionName("NewPlot")]
@@ -103,76 +48,9 @@ public class UserActions
         if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
-        {
-            // create new plot in cosmos
+        var newPlot = await _plotService.CreateNewPlot(userId, user.Identity.Name, NewPlotName);
 
-            var newPlot = new Plot
-            {
-                Id = Guid.NewGuid().ToString("N"), // formats to no dashes, all lower case
-                UserId = userId,
-                LogLineDescription = "",
-                Title = NewPlotName,
-                Seed = new Random().NextInt64(),
-                Keywords = new List<string>(),
-                Genres = new List<string>(),
-                Created = DateTime.UtcNow,
-                Modified = DateTime.UtcNow,
-                IsDeleted = false,
-                IsPublic = false,
-                Characters = new List<Character>{
-                    new Character{
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "",
-                        Archetype = "",
-                        Description = ""
-                    }
-                }
-            };
-
-            var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-
-            try
-            {
-                var newPlotResponse = await plotsContainer.CreateItemAsync<Plot>(newPlot, new PartitionKey(userId));
-                var RUs = newPlotResponse.RequestCharge;
-                //var newPlotObj = newPlotResponse.Resource;
-
-                // update the PlotReferences field in the user's container
-                var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
-                var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
-                var userObj = userResponse.Resource;
-
-                if (userObj.PlotReferences == null)
-                {
-                    userObj.PlotReferences = new List<PlotReference>();
-                }
-
-                userObj.PlotReferences.Add(new PlotReference
-                {
-                    PlotId = newPlot.Id,
-                    DisplayName = NewPlotName,
-                    IsDeleted = false
-                });
-
-                var patchOps = new List<PatchOperation>();
-                patchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
-                patchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
-
-                var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
-
-                _telemetry.TrackEvent("Create New Plot");
-
-                return new OkObjectResult(newPlot.Id);
-            }
-            catch (Exception ex)
-            {
-                log.LogError($"Failed to create new plot: {user.Identity.Name}, userId: {userId}. Exception message: {ex.Message}");
-                var deleteResult = await plotsContainer.DeleteItemAsync<Plot>(newPlot.Id, new PartitionKey(userId)); // cleanup upon failure
-
-                throw ex;
-            }
-        }
+        return new OkObjectResult(newPlot.Id);
     }
 
     [FunctionName("GetPlot")]
@@ -192,9 +70,7 @@ public class UserActions
             authorId = curUser.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
 
-        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(authorId));
-        var plotObj = plotResponse.Resource;
+        var plotObj = await _plotService.GetPlot(authorId, plotId);
 
         if (plotObj.IsDeleted) return new NotFoundResult();
 
@@ -221,160 +97,11 @@ public class UserActions
 
         var plotId = req.Query["id"][0];
 
-        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
-        var curPlotObj = plotResponse.Resource;
+        var curPlotObj = await _plotService.GetPlot(userId, plotId);
 
         if (curPlotObj.UserId != userId) return new UnauthorizedResult();
 
-        var newTitle = plot.Title;
-
-        if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
-        {
-            // get user container, update PlotReference to match new title
-
-            var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
-            var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
-            var userObj = userResponse.Resource;
-
-            userObj.PlotReferences.Where(p => p.PlotId == plotId).First().DisplayName = newTitle;
-
-            var userPatchOps = new List<PatchOperation>();
-            userPatchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
-
-            var userPatchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: userPatchOps);
-        }
-
-        // update existing plot
-        var plotPatchOps = new List<PatchOperation>();
-
-        // enforce brainstorm limit on the server-side (client side has a lower number, so this is just a safeguard)
-        var brainstormLimit = 20;
-
-        if (plot.AILogLineDescriptions != null)
-        {
-            plot.AILogLineDescriptions = plot.AILogLineDescriptions.Take(brainstormLimit).ToList();
-        }
-
-        if (plot.Characters != null)
-        {
-            foreach (var character in plot.Characters)
-            {
-                if (character.AICompletions != null)
-                {
-                    character.AICompletions = character.AICompletions.Take(brainstormLimit).ToList();
-                }
-                character.Description = character.Description.Truncate(1000);
-            }
-        }
-
-        if (plot.Sequences != null)
-        {
-            foreach (var sequence in plot.Sequences)
-            {
-                if (sequence.Completions != null)
-                {
-                    sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
-                }
-                sequence.Text = sequence.Text.Truncate(2000);
-            }
-        }
-
-        if (plot.AITitles != null)
-        {
-            plot.AITitles = plot.AITitles.Take(brainstormLimit).ToList();
-        }
-
-        if (plot.Characters != null)
-        {
-            plot.Characters = plot.Characters.Take(brainstormLimit).ToList();
-        }
-
-        if (plot.Keywords != null)
-        {
-            plot.Keywords = plot.Keywords.Take(10).ToList();
-        }
-
-        if (plot.Sequences != null)
-        {
-            plot.Sequences = plot.Sequences.Take(brainstormLimit).ToList(); // safeguard, isn't possible via UI alone
-        }
-
-        var newLogLineDescription = plot.LogLineDescription.Truncate(1000);
-        var newAILogLineDescriptions = plot.AILogLineDescriptions;
-        var newAITitles = plot.AITitles;
-        var newCharacters = plot.Characters;
-        var newDramaticQuestion = plot.DramaticQuestion;
-        var newGenres = plot.Genres;
-        var newKeywords = plot.Keywords;
-        var newProblemTemplate = plot.ProblemTemplate;
-        var newSequences = plot.Sequences;
-        var newIsPublic = plot.IsPublic;
-
-        if (!string.IsNullOrWhiteSpace(newLogLineDescription) && newLogLineDescription != curPlotObj.LogLineDescription)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/logLineDescription", newLogLineDescription));
-        }
-
-        if (!string.IsNullOrWhiteSpace(newTitle) && newTitle != curPlotObj.Title)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/title", newTitle));
-        }
-
-        if (!string.IsNullOrWhiteSpace(newDramaticQuestion) && newDramaticQuestion != curPlotObj.DramaticQuestion)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/dramaticQuestion", newDramaticQuestion));
-        }
-
-        if (newGenres != null && string.Join(',', newGenres) != string.Join(',', curPlotObj.Genres ?? new List<string>()))
-        {
-            plotPatchOps.Add(PatchOperation.Set("/genres", newGenres));
-        }
-
-        if (newAITitles != null && string.Join(',', newAITitles) != string.Join(',', curPlotObj.AITitles ?? new List<string>()))
-        {
-            plotPatchOps.Add(PatchOperation.Set("/AITitles", newAITitles));
-        }
-
-        // if keywords exists on both ends, update it
-        if (newKeywords != null && curPlotObj.Keywords != null && string.Join(',', newKeywords) != string.Join(',', curPlotObj.Keywords))
-        {
-            plotPatchOps.Add(PatchOperation.Set("/keywords", newKeywords));
-        }
-
-        if (!string.IsNullOrWhiteSpace(newProblemTemplate) && newProblemTemplate != curPlotObj.ProblemTemplate)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/problemTemplate", newProblemTemplate));
-        }
-
-        if (newIsPublic != curPlotObj.IsPublic)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/isPublic", newIsPublic));
-        }
-
-        var aiCompletionsComparer = new ObjectsComparer.Comparer<List<Dictionary<string, CompletionResponse>>>();
-        if (aiCompletionsComparer.Compare(newAILogLineDescriptions, curPlotObj.AILogLineDescriptions) == false)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/AILogLineDescriptions", newAILogLineDescriptions));
-        }
-
-        var seqComparer = new ObjectsComparer.Comparer<List<UserSequence>>();
-        if (seqComparer.Compare(newSequences, curPlotObj.Sequences) == false)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/sequences", newSequences));
-        }
-
-        var characterComparer = new ObjectsComparer.Comparer<List<Character>>();
-        if (characterComparer.Compare(newCharacters, curPlotObj.Characters) == false)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/characters", newCharacters));
-        }
-
-        if (plotPatchOps.Count > 0)
-        {
-            plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
-            var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
-        }
+        await _plotService.SavePlot(userId, plotId, curPlotObj, plot);
 
         return new NoContentResult();
     }
@@ -388,9 +115,7 @@ public class UserActions
 
         var plotId = req.Query["id"][0];
 
-        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
-        var curPlotObj = plotResponse.Resource;
+        var curPlotObj = await _plotService.GetPlot(userId, plotId);
 
         if (curPlotObj.IsDeleted) return new NotFoundResult();
 
@@ -398,25 +123,8 @@ public class UserActions
 
         // update IsDeleted to true in both the Plot item and the User.PlotReferences item
 
-        var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
-        var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
-        var userObj = userResponse.Resource;
-
-        userObj.PlotReferences.Where(p => p.PlotId == plotId).First().IsDeleted = true;
-
-        var userPatchOps = new List<PatchOperation>();
-        userPatchOps.Add(PatchOperation.Set("/plotReferences", userObj.PlotReferences));
-
-        var userPatchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: userPatchOps);
-
-
-        var plotPatchOps = new List<PatchOperation>();
-        plotPatchOps.Add(PatchOperation.Set("/isDeleted", true));
-
-        plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
-        var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
-
-        _telemetry.TrackEvent("Delete Plot");
+        await _userService.DeletePlotReference(userId, plotId);
+        await _plotService.DeletePlot(userId, plotId);
 
         return new NoContentResult();
     }
