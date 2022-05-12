@@ -4,7 +4,7 @@ const About = () => {
     return (
         <div className='fs-5'>
             <p>
-                Story Ghost is a highly opinionated tool to help writers craft compelling plot lines. If you are a "pantser" - someone who writes by the seat of their pants - you will find this tool frustrating. If you are a "plotter" - someone who benefits from carefully planning outlines and hitting emotional targets at prescribed moments - Story Ghost is for you!
+                Story Ghost is a highly opinionated tool to help writers craft compelling plot lines at the outline level. If you are a "pantser" - someone who writes by the seat of their pants - you will find this tool frustrating. If you are a "plotter" - someone who benefits from carefully planning outlines and hitting emotional targets at prescribed moments - Story Ghost is for you!
             </p>
             <p>
                 In addition to structured plotting, our longterm goal is to train an AI to assist in the brainstorming process. The nature of AI transformer models is that they write like a "pantser". We hope Story Ghost combines the best of both the plotter and pantser styles to help you quickly formulate structurally sound and creative stories. However, Story Ghost is designed to be a helpful tool even without the AI features.
