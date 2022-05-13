@@ -117,6 +117,7 @@ const LogLineObjDetails = (
                             logLineDescription={logLineDescription}
                             genres={genres}
                             setAITitles={setAITitles}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                     {

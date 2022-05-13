@@ -56,7 +56,7 @@ const PlotHome = (
     const [isPublicCheckboxId] = useState(useUniqueId('isPublicCheckbox'))
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
-    const [tokensRemaining, setTokensRemaining] = useState(0)
+    const [tokensRemaining, setTokensRemaining] = useState(9999999999)
 
     const [logLineDescriptionTokenCount, setLogLineDescriptionTokenCount] = useState(0)
 

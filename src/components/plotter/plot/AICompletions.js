@@ -62,28 +62,40 @@ const AICompletions = (
 
                         </div>
                     }
-                    {
-                        completions && completions.length >= limit &&
-                        <div className='row'>
-                            <div className='col alert alert-primary'>
-                                <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms before generating more.</p>
-                            </div>
-                        </div>
 
+                    {
+                        tokensRemaining <= 0 &&
+                        <>
+                            <p>You have run out of tokens.</p>
+                        </>
                     }
                     {
-                        (!completions || completions.length < limit) &&
-                        <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                        tokensRemaining > 0 &&
+                        <>
                             {
-                                isLoading === true &&
-                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                completions && completions.length >= limit &&
+                                <div className='row'>
+                                    <div className='col alert alert-primary'>
+                                        <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms before generating more.</p>
+                                    </div>
+                                </div>
+
                             }
                             {
-                                isLoading === false &&
-                                <FaGhost />
+                                (!completions || completions.length < limit) &&
+                                <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                                    {
+                                        isLoading === true &&
+                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                    }
+                                    {
+                                        isLoading === false &&
+                                        <FaGhost />
+                                    }
+                                    <span> New AI Brainstorm</span>
+                                </button>
                             }
-                            <span> New AI Brainstorm</span>
-                        </button>
+                        </>
                     }
 
                 </>

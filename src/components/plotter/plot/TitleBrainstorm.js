@@ -12,7 +12,8 @@ const TitleBrainstorm = (
         AITitles,
         logLineDescription,
         genres,
-        setAITitles
+        setAITitles,
+        tokensRemaining
     }
 ) => {
 
@@ -50,7 +51,7 @@ const TitleBrainstorm = (
             setAITitles(data)
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsTitlesCompletionLoading(false)
         });
@@ -66,23 +67,34 @@ const TitleBrainstorm = (
             {
                 userInfo && userInfo.userRoles.includes('customer') &&
                 <>
-                    <ul>
-                        {
-                            aiTitlesListItems
-                        }
-                    </ul>
-                    <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
-                    <button disabled={isTitlesCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
-                        {
-                            isTitlesCompletionLoading === true &&
-                            <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                        }
-                        {
-                            isTitlesCompletionLoading === false &&
-                            <FaGhost />
-                        }
-                        <span> New AI Brainstorm</span>
-                    </button>
+                    {
+                        tokensRemaining <= 0 &&
+                        <>
+                            <p>You have run out of tokens.</p>
+                        </>
+                    }
+                    {
+                        tokensRemaining > 0 &&
+                        <>
+                            <ul>
+                                {
+                                    aiTitlesListItems
+                                }
+                            </ul>
+                            <p className='text-muted'>Sometimes the generated titles have already been used by other authors or movies, so we recommend searching for the title before using it.</p>
+                            <button disabled={isTitlesCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateTitlesCompletion}>
+                                {
+                                    isTitlesCompletionLoading === true &&
+                                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                }
+                                {
+                                    isTitlesCompletionLoading === false &&
+                                    <FaGhost />
+                                }
+                                <span> New AI Brainstorm</span>
+                            </button>
+                        </>
+                    }
                 </>
             }
             {

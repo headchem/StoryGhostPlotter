@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
@@ -19,12 +20,14 @@ namespace StoryGhost.Services;
 public class DummyCompletionService : ICompletionService
 {
 
+    private readonly ILogger<DummyCompletionService> _logger;
     private readonly HttpClient _httpClient;
     private readonly IEncodingService _encodingService;
     private readonly IUserService _userService;
 
-    public DummyCompletionService(HttpClient httpClient, IEncodingService encodingService, IUserService userService)
+    public DummyCompletionService(ILogger<DummyCompletionService> logger, HttpClient httpClient, IEncodingService encodingService, IUserService userService)
     {
+        _logger = logger;
         _httpClient = httpClient;
         _encodingService = encodingService;
         _userService = userService;
@@ -32,6 +35,15 @@ public class DummyCompletionService : ICompletionService
 
     public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         var prompt = "TODO log line desc prompt goes here...";
 
         var result = new CompletionResponse();
@@ -46,14 +58,25 @@ public class DummyCompletionService : ICompletionService
 
         await _userService.DeductTokens(userId, totalTokens);
 
-        return new Dictionary<string, CompletionResponse> {
+        return new Dictionary<string, CompletionResponse>
+        {
             ["finetuned"] = result,
             ["keywords"] = result
-            };
+        };
     }
 
     public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story)
     {
+
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
@@ -76,6 +99,15 @@ public class DummyCompletionService : ICompletionService
 
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, Character character)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         var prompt = "TODO character archetype prompt goes here...";
 
         var result = new CompletionResponse();
@@ -95,6 +127,15 @@ public class DummyCompletionService : ICompletionService
 
     public async Task<TitlesResponse> GetTitles(string userId, List<string> genres, string logLineDescription)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         return new TitlesResponse
         {
             Titles = new List<string>

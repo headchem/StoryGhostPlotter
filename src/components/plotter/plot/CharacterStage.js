@@ -91,7 +91,7 @@ const CharacterStage = ({
 
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             if (completionType.indexOf('Summary') > -1) {
                 setIsSummaryLoading(false)

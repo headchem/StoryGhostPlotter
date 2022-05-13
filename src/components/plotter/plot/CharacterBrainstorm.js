@@ -45,7 +45,7 @@ const CharacterBrainstorm = (
             }
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsCompletionLoading(false)
         });

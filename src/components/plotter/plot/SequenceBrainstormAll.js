@@ -55,7 +55,7 @@ const SequenceBrainstormAll = ({
             setSequences(data)
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsReplaceAllLoading(false)
             setShowConfirmReplaceAll(false)
@@ -67,50 +67,63 @@ const SequenceBrainstormAll = ({
         <>
             <div className='row'>
                 <div className="alert alert-warning" role="alert">
+
                     {
-                        isReplaceAllLoading === true &&
+                        tokensRemaining <= 0 &&
                         <>
-                            <Spinner animation="border" variant="secondary" />
-                            <p>This may take 1-2 minutes...</p>
+                            <p>You have run out of tokens.</p>
                         </>
                     }
                     {
-                        isReplaceAllLoading === false &&
+                        tokensRemaining > 0 &&
                         <>
                             {
-                                showConfirmReplaceAll === false &&
-                                <div className="row g-3 align-items-center">
-                                    <div className='col-auto'>
-                                        <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
-                                        <p>Tokens remaining: {tokensRemaining}</p>
-                                    </div>
-                                    <div className='col-auto'>
-                                        <label htmlFor='gen-up-to' className='col-form-label'>Generate sequences up to: </label>
-                                    </div>
-                                    <div className="col-auto">
-                                        <select id="gen-up-to" required className='form-select form-inline form-control' defaultValue={upToTargetSequenceExclusive} onChange={(e) => { setUpToTargetSequenceExclusive(e.target.value) }}>
-                                            <option value="Fun And Games">Fun And Games</option>
-                                            <option value="Break Into Three">Break Into Three</option>
-                                            <option value="All">Complete Story</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            }
-                            {
-                                showConfirmReplaceAll === true &&
+                                isReplaceAllLoading === true &&
                                 <>
-                                    <p>Are you sure?</p>
-                                    <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
-                                    <button className='btn btn-danger' onClick={generateAll}>Yes, delete all sequences and replace with a new story</button>
+                                    <Spinner animation="border" variant="secondary" />
+                                    <p>This may take 1-2 minutes...</p>
                                 </>
                             }
+                            {
+                                isReplaceAllLoading === false &&
+                                <>
+                                    {
+                                        showConfirmReplaceAll === false &&
+                                        <div className="row g-3 align-items-center">
+                                            <div className='col-auto'>
+                                                <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
+                                                <p>Tokens remaining: {tokensRemaining}</p>
+                                            </div>
+                                            <div className='col-auto'>
+                                                <label htmlFor='gen-up-to' className='col-form-label'>Generate sequences up to: </label>
+                                            </div>
+                                            <div className="col-auto">
+                                                <select id="gen-up-to" required className='form-select form-inline form-control' defaultValue={upToTargetSequenceExclusive} onChange={(e) => { setUpToTargetSequenceExclusive(e.target.value) }}>
+                                                    <option value="Fun And Games">Fun And Games</option>
+                                                    <option value="Break Into Three">Break Into Three</option>
+                                                    <option value="All">Complete Story</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+                                    {
+                                        showConfirmReplaceAll === true &&
+                                        <>
+                                            <p>Are you sure?</p>
+                                            <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
+                                            <button className='btn btn-danger' onClick={generateAll}>Yes, delete all sequences and replace with a new story</button>
+                                        </>
+                                    }
 
-                            <p className='mt-3'>Caution! This will generate a new complete story, <strong>permanently deleting all existing sequences and sequence brainstorms.</strong> You will be prompted to confirm.</p>
+                                    <p className='mt-3'>Caution! This will generate a new complete story, <strong>permanently deleting all existing sequences and sequence brainstorms.</strong> You will be prompted to confirm.</p>
+                                </>
+                            }
                         </>
                     }
+
                 </div>
             </div>
-            
+
         </>
     )
 }

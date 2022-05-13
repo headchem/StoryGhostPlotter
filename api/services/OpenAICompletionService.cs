@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
@@ -22,9 +23,11 @@ public class OpenAICompletionService : ICompletionService
     private readonly IKeywordsService _keywordService;
     private readonly IEncodingService _encodingService;
     private readonly IUserService _userService;
+    private readonly ILogger<OpenAICompletionService> _logger;
 
-    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService, IEncodingService encodingService, IUserService userService)
+    public OpenAICompletionService(ILogger<OpenAICompletionService> logger, HttpClient httpClient, IKeywordsService keywordsService, IEncodingService encodingService, IUserService userService)
     {
+        _logger = logger;
         _httpClient = httpClient;
         _keywordService = keywordsService;
         _encodingService = encodingService;
@@ -33,6 +36,15 @@ public class OpenAICompletionService : ICompletionService
 
     private async Task<CompletionResponse> getResponse(string userId, string engineURL, OpenAICompletionsRequest openAIRequest)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
