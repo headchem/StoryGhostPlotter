@@ -8,7 +8,8 @@ const CharacterBrainstorm = (
     {
         userInfo,
         character,
-        updateAICharacterCompletion
+        updateAICharacterCompletion,
+        tokensRemaining
     }
 ) => {
 
@@ -63,6 +64,7 @@ const CharacterBrainstorm = (
             completions={character['aiCompletions']}
             onDeleteBrainstorm={onDeleteBrainstorm}
             showTemperature={false}
+            tokensRemaining={tokensRemaining}
         />
     )
 }

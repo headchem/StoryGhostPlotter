@@ -12,7 +12,8 @@ const SequenceBrainstormAll = ({
     keywords,
     characters,
     dramaticQuestion,
-    setSequences
+    setSequences,
+    tokensRemaining
 }) => {
 
     const navigate = useNavigate()
@@ -81,6 +82,7 @@ const SequenceBrainstormAll = ({
                                 <div className="row g-3 align-items-center">
                                     <div className='col-auto'>
                                         <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
+                                        <p>Tokens remaining: {tokensRemaining}</p>
                                     </div>
                                     <div className='col-auto'>
                                         <label htmlFor='gen-up-to' className='col-form-label'>Generate sequences up to: </label>

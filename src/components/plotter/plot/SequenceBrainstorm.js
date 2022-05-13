@@ -16,7 +16,8 @@ const SequenceBrainstorm = (
         characters,
         completions,
         targetSequence,
-        updateSequenceCompletions
+        updateSequenceCompletions,
+        tokensRemaining
     }
 ) => {
 
@@ -127,6 +128,7 @@ const SequenceBrainstorm = (
                             showTemperature={true}
                             temperature={temperature}
                             setTemperature={setTemperature}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                 </>

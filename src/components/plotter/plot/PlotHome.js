@@ -56,6 +56,7 @@ const PlotHome = (
     const [isPublicCheckboxId] = useState(useUniqueId('isPublicCheckbox'))
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
+    const [tokensRemaining, setTokensRemaining] = useState(0)
 
     const [logLineDescriptionTokenCount, setLogLineDescriptionTokenCount] = useState(0)
 
@@ -414,6 +415,23 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
 
+    const updateTokensRemaining = () => {
+        fetch('/api/GetTokensRemaining', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setTokensRemaining(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
     const savePlot = () => {
         if (isNotFound === true) return;
 
@@ -421,6 +439,8 @@ const PlotHome = (
             console.log('title was empty string, skip auto-save');
             return;
         }
+
+        updateTokensRemaining();
 
         const plotId = searchParams.get("id")
         //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genres: ${genres}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
@@ -614,6 +634,8 @@ const PlotHome = (
                             setAITitles={setAITitles}
 
                             curFocusElName={curFocusElName}
+
+                            tokensRemaining={tokensRemaining}
                         />
                     </div>
 
@@ -633,6 +655,7 @@ const PlotHome = (
                                         problemTemplate={problemTemplate}
                                         dramaticQuestion={dramaticQuestion}
                                         setCharacters={setCharacters}
+                                        tokensRemaining={tokensRemaining}
                                     />
                                 }
 
@@ -651,6 +674,8 @@ const PlotHome = (
                                         updateCharacterPersonality={updateCharacterPersonality}
                                         insertCharacter={insertCharacter}
                                         deleteCharacter={deleteCharacter}
+
+                                        tokensRemaining={tokensRemaining}
                                     />
                                 }
                             </Tab>
@@ -681,6 +706,8 @@ const PlotHome = (
                                                 dramaticQuestion={dramaticQuestion}
                                                 updateSequenceCompletions={updateSequenceCompletions}
                                                 setSequences={setSequences}
+
+                                                tokensRemaining={tokensRemaining}
                                             />
                                         }
                                     </>

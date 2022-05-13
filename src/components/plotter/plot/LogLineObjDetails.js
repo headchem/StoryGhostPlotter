@@ -20,7 +20,8 @@ const LogLineObjDetails = (
         problemTemplate,
         dramaticQuestion,
         keywords,
-        setAITitles
+        setAITitles,
+        tokensRemaining
     }
 ) => {
 
@@ -105,6 +106,7 @@ const LogLineObjDetails = (
                             problemTemplate={problemTemplate}
                             dramaticQuestion={dramaticQuestion}
                             keywords={keywords}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                     {

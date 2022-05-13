@@ -13,7 +13,8 @@ const LogLineBrainstormAll = (
         setLogLineDescription,
         setTitle,
         setProblemTemplate,
-        setDramaticQuestion
+        setDramaticQuestion,
+        tokensRemaining
     }
 ) => {
 
@@ -76,7 +77,7 @@ const LogLineBrainstormAll = (
                         {
                             showConfirmReplaceAll === false &&
                             <>
-                                <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question.</p>
+                                <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question. Tokens remaining: {tokensRemaining}</p>
 
                                 <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
                                     {

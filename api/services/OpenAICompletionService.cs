@@ -21,15 +21,17 @@ public class OpenAICompletionService : ICompletionService
     private readonly HttpClient _httpClient;
     private readonly IKeywordsService _keywordService;
     private readonly IEncodingService _encodingService;
+    private readonly IUserService _userService;
 
-    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService, IEncodingService encodingService)
+    public OpenAICompletionService(HttpClient httpClient, IKeywordsService keywordsService, IEncodingService encodingService, IUserService userService)
     {
         _httpClient = httpClient;
         _keywordService = keywordsService;
         _encodingService = encodingService;
+        _userService = userService;
     }
 
-    private async Task<CompletionResponse> getResponse(string engineURL, OpenAICompletionsRequest openAIRequest)
+    private async Task<CompletionResponse> getResponse(string userId, string engineURL, OpenAICompletionsRequest openAIRequest)
     {
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -50,6 +52,10 @@ public class OpenAICompletionService : ICompletionService
 
         var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
         var completionTokenCount = (await _encodingService.Encode(completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
 
         var result = new CompletionResponse
         {
@@ -137,9 +143,9 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot plot, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot plot, int keywordsLogitBias)
     {
-        var finetunedCompletion = await getFinetunedLogLineCompletion(plot, keywordsLogitBias);
+        var finetunedCompletion = await getFinetunedLogLineCompletion(userId, plot, keywordsLogitBias);
 
         if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
         {
@@ -147,7 +153,7 @@ public class OpenAICompletionService : ICompletionService
         }
 
         // feed the initial log line completion into "instruct" which asks it to infuse the keywords into a new rewritten log line
-        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(finetunedCompletion.Completion, plot, keywordsLogitBias - 3);
+        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(userId, finetunedCompletion.Completion, plot, keywordsLogitBias - 3);
 
         var results = new Dictionary<string, CompletionResponse>
         {
@@ -158,7 +164,7 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    private async Task<CompletionResponse> getFinetunedLogLineCompletion(Plot plot, int keywordsLogitBias)
+    private async Task<CompletionResponse> getFinetunedLogLineCompletion(string userId, Plot plot, int keywordsLogitBias)
     {
         var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
@@ -184,12 +190,12 @@ public class OpenAICompletionService : ICompletionService
             }
         }
 
-        var result = await getResponse("completions", openAIRequest);
+        var result = await getResponse(userId, "completions", openAIRequest);
 
         return result;
     }
 
-    private async Task<CompletionResponse> getInstructKeywordsLogLineCompletion(string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
+    private async Task<CompletionResponse> getInstructKeywordsLogLineCompletion(string userId, string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
     {
         var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
 
@@ -217,12 +223,12 @@ public class OpenAICompletionService : ICompletionService
             }
         }
 
-        var result = await getResponse("engines/text-curie-001/completions", openAIRequest);
+        var result = await getResponse(userId, "engines/text-curie-001/completions", openAIRequest);
 
         return result;
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story)
     {
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
@@ -240,7 +246,7 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse("completions", openAIRequest);
+        var result = await getResponse(userId, "completions", openAIRequest);
 
         var allSequences = Factory.GetSequences();
 
@@ -260,14 +266,14 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, Character character)
     {
-        var result = await getFinetunedCharacterCompletion(character);
+        var result = await getFinetunedCharacterCompletion(userId, character);
 
         return result;
     }
 
-    private async Task<CompletionResponse> getFinetunedCharacterCompletion(Character character)
+    private async Task<CompletionResponse> getFinetunedCharacterCompletion(string userId, Character character)
     {
         var prompt = PersonalityDescription.GetCharacterPrompt(character) + CreateFinetuningDataset.PromptSuffix;
 
@@ -285,12 +291,12 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse("completions", openAIRequest);
+        var result = await getResponse(userId, "completions", openAIRequest);
 
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, List<string> genres, string logLineDescription)
     {
         var prompt = $"Genres: {string.Join(", ", genres)}";
         prompt += $"\n\nStory synopsis: {logLineDescription.Trim()}";
@@ -308,7 +314,7 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var openAIResult = await getResponse("engines/text-curie-001/completions", openAIRequest);
+        var openAIResult = await getResponse(userId, "engines/text-curie-001/completions", openAIRequest);
 
         var titleResults = removeListNumbers(openAIResult.Completion);
 
@@ -347,7 +353,7 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
     {
         var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
 
@@ -357,7 +363,7 @@ public class OpenAICompletionService : ICompletionService
 
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceResponse = await GetSequenceCompletion(targetSequence, 256, 0.8, story);
+            var sequenceResponse = await GetSequenceCompletion(userId, targetSequence, 256, 0.8, story);
             totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
 
             var sequence = new UserSequence
@@ -485,13 +491,13 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<(Plot, int)> GenerateAllLogLine(List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(string userId, List<string> genres)
     {
         var totalTokens = 0;
 
         var keywords = _keywordService.GetKeywords(genres, 4);
 
-        var logLineDescCompletion = await GetLogLineDescriptionCompletion(new Plot
+        var logLineDescCompletion = await GetLogLineDescriptionCompletion(userId, new Plot
         {
             Genres = genres,
             Keywords = keywords
@@ -500,7 +506,7 @@ public class OpenAICompletionService : ICompletionService
 
         totalTokens += logLineDescCompletion["finetuned"].PromptTokenCount + logLineDescCompletion["finetuned"].CompletionTokenCount + logLineDescCompletion["keywords"].PromptTokenCount + logLineDescCompletion["keywords"].CompletionTokenCount;
 
-        var titleCompletion = await GetTitles(genres, logLineDesc);
+        var titleCompletion = await GetTitles(userId, genres, logLineDesc);
         totalTokens += titleCompletion.CompletionResponse.PromptTokenCount + titleCompletion.CompletionResponse.CompletionTokenCount;
 
         var firstTitle = titleCompletion.Titles.First();
@@ -515,14 +521,14 @@ public class OpenAICompletionService : ICompletionService
         }, totalTokens);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
         var rand = new Random();
 
         var characters = new List<Character>();
         var numCharacters = (int)rand.NextInt64(2, 5);
 
-        var names = await getCharacterNames(LogLineDescription, numCharacters);
+        var names = await getCharacterNames(userId, LogLineDescription, numCharacters);
 
         var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
 
@@ -548,7 +554,7 @@ public class OpenAICompletionService : ICompletionService
             };
 
             // Generate Description for each Character based on Name, Archetype, Personality
-            var characterResponse = await getFinetunedCharacterCompletion(character);
+            var characterResponse = await getFinetunedCharacterCompletion(userId, character);
             totalTokenCount += characterResponse.PromptTokenCount + characterResponse.CompletionTokenCount;
 
             character.Description = characterResponse.Completion;
@@ -560,7 +566,7 @@ public class OpenAICompletionService : ICompletionService
     }
 
     ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>
-    private async Task<List<string>> getCharacterNames(string LogLineDescription, int numCharacters)
+    private async Task<List<string>> getCharacterNames(string userId, string LogLineDescription, int numCharacters)
     {
         // Ask GPT-3 to decide who the Hero is according to the LogLineDesc, and make them the first Character in list
 
@@ -581,7 +587,7 @@ public class OpenAICompletionService : ICompletionService
         };
 
         // smallest Ada model was accurate enough
-        var result = await getResponse("engines/text-ada-001/completions", openAIRequest);
+        var result = await getResponse(userId, "engines/text-ada-001/completions", openAIRequest);
 
         var results = removeListNumbers(result.Completion);
 

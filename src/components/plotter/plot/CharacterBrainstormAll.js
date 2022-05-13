@@ -11,7 +11,8 @@ const CharacterBrainstormAll = (
         logLineDescription,
         problemTemplate,
         dramaticQuestion,
-        setCharacters
+        setCharacters,
+        tokensRemaining
     }
 ) => {
 
@@ -70,7 +71,7 @@ const CharacterBrainstormAll = (
                         {
                             showConfirmReplaceAll === false &&
                             <>
-                                <p>Based on the log line description, ask the AI to generate a list of characters.</p>
+                                <p>Based on the log line description, ask the AI to generate a list of characters. Tokens remaining: {tokensRemaining}</p>
 
                                 <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
                                     {

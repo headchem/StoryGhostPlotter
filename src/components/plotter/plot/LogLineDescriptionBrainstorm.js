@@ -17,7 +17,8 @@ const LogLineDescriptionBrainstorm = (
         genres,
         problemTemplate,
         dramaticQuestion,
-        keywords
+        keywords,
+        tokensRemaining
     }
 ) => {
 
@@ -96,7 +97,7 @@ const LogLineDescriptionBrainstorm = (
                             {
                                 userInfo && userInfo.userRoles.includes('customer') &&
                                 <>
-                                    <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
+                                    <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                     <hr />
 
                                     <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage}>

@@ -42,7 +42,9 @@ const LogLine = (
         AITitles,
         setAITitles,
 
-        curFocusElName
+        curFocusElName,
+
+        tokensRemaining
     }
 ) => {
 
@@ -115,6 +117,7 @@ const LogLine = (
                         setTitle={setTitle}
                         setProblemTemplate={setProblemTemplate}
                         setDramaticQuestion={setDramaticQuestion}
+                        tokensRemaining={tokensRemaining}
                     />
                 }
 
@@ -237,6 +240,7 @@ const LogLine = (
                     problemTemplate={problemTemplate}
                     dramaticQuestion={dramaticQuestion}
                     keywords={keywords}
+                    tokensRemaining={tokensRemaining}
                 />
             </div>
         </>

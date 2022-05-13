@@ -15,7 +15,8 @@ const AICompletions = (
         onGenerateCompletion,
         showTemperature,
         temperature,
-        setTemperature
+        setTemperature,
+        tokensRemaining
     }
 ) => {
     const [currentTab, setCurrentTab] = useState("tab-0");
@@ -34,7 +35,7 @@ const AICompletions = (
             {
                 userInfo && userInfo.userRoles.includes('customer') &&
                 <>
-                    <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
+                    <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                     <hr />
 
                     <Tabs

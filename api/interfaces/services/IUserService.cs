@@ -15,6 +15,8 @@ public interface IUserService
 
     public Task DeletePlotReference(string userId, string plotId);
 
+    public Task<int> GetTokensRemaining(string userId);
+
     public Task AddTokens(string userId, int numTokens);
 
     public Task DeductTokens(string userId, int numTokens);

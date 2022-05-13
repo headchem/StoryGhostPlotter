@@ -33,6 +33,7 @@ const Character = ({
     updateAICharacterCompletion,
     deleteCharacter,
     updateCharacterPersonality,
+    tokensRemaining
 }) => {
 
     const [descriptionTokenCount, setDescriptionTokenCount] = useState(0)
@@ -362,6 +363,7 @@ const Character = ({
                                             userInfo={userInfo}
                                             character={character}
                                             updateAICharacterCompletion={updateAICharacterCompletion}
+                                            tokensRemaining={tokensRemaining}
                                         />
                                     </Accordion.Body>
                                 </Accordion.Item>

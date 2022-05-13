@@ -129,4 +129,32 @@ public class UserActions
         return new NoContentResult();
     }
 
+
+    [FunctionName("AddTokens")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different (SGAdmin)
+    public async Task<IActionResult> CreateLogLineFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "SGAdmin/AddTokens")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("admin")) return new UnauthorizedResult();
+
+        var targetUserId = req.Query["targetUserId"][0];
+        var tokensToAdd = int.Parse(req.Query["tokensToAdd"][0]);
+
+        await _userService.AddTokens(targetUserId, tokensToAdd);
+
+        return new OkObjectResult($"{tokensToAdd} tokens added to userId: {targetUserId}");
+    }
+
+
+    [FunctionName("GetTokensRemaining")]
+    public async Task<IActionResult> GetTokensRemaining([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetTokensRemaining")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (user.Identity == null || !user.Identity.IsAuthenticated) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var tokensRemaining = await _userService.GetTokensRemaining(userId);
+
+        return new OkObjectResult(tokensRemaining);
+    }
+
 }

@@ -120,13 +120,42 @@ public class UserService : IUserService
         var userPatchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: userPatchOps);
     }
 
-    public Task AddTokens(string userId, int numTokens)
-    {
-        throw new NotImplementedException();
+    public async Task<int> GetTokensRemaining(string userId) {
+        var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+        var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+        var userObj = userResponse.Resource;
+
+        return userObj.TokensRemaining;
     }
 
-    public Task DeductTokens(string userId, int numTokens)
+    public async Task AddTokens(string userId, int numTokens)
     {
-        throw new NotImplementedException();
+        var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+        var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+        var userObj = userResponse.Resource;
+
+        var newTokens = userObj.TokensRemaining + numTokens;
+
+        var patchOps = new List<PatchOperation>();
+        patchOps.Add(PatchOperation.Set("/tokensRemaining", newTokens));
+        patchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
+
+        var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
+    }
+
+    public async Task DeductTokens(string userId, int numTokens)
+    {
+        var userContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
+        var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
+        var userObj = userResponse.Resource;
+
+        var newTokens = userObj.TokensRemaining - numTokens;
+        newTokens = Math.Max(newTokens, 0); // can't have negative tokens
+
+        var patchOps = new List<PatchOperation>();
+        patchOps.Add(PatchOperation.Set("/tokensRemaining", newTokens));
+        patchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
+
+        var patchResult = await userContainer.PatchItemAsync<StoryGhost.Models.User>(id: userId, partitionKey: new PartitionKey(userId), patchOperations: patchOps);
     }
 }

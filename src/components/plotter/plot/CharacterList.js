@@ -16,6 +16,7 @@ const CharacterList = ({
     updateCharacterPersonality,
     insertCharacter,
     deleteCharacter,
+    tokensRemaining
 }) => {
 
 
@@ -48,6 +49,7 @@ const CharacterList = ({
                                     updateAICharacterCompletion={updateAICharacterCompletion}
                                     updateCharacterPersonality={updateCharacterPersonality}
                                     deleteCharacter={deleteCharacter}
+                                    tokensRemaining={tokensRemaining}
                                 />
                             ))
                     }

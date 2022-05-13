@@ -26,7 +26,8 @@ const Sequence = ({
     insertSequence,
     deleteSequence,
     updateSequenceCompletions,
-    allowed
+    allowed,
+    tokensRemaining
 }) => {
 
     const textLimits = {
@@ -227,6 +228,7 @@ const Sequence = ({
                                                         completions={!sequence['completions'] ? [] : sequence['completions']}
                                                         targetSequence={sequence.sequenceName}
                                                         updateSequenceCompletions={updateSequenceCompletions}
+                                                        tokensRemaining={tokensRemaining}
                                                     />
                                                 </>
                                             }

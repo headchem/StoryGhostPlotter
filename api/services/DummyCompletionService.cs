@@ -20,13 +20,17 @@ public class DummyCompletionService : ICompletionService
 {
 
     private readonly HttpClient _httpClient;
+    private readonly IEncodingService _encodingService;
+    private readonly IUserService _userService;
 
-    public DummyCompletionService(HttpClient httpClient)
+    public DummyCompletionService(HttpClient httpClient, IEncodingService encodingService, IUserService userService)
     {
         _httpClient = httpClient;
+        _encodingService = encodingService;
+        _userService = userService;
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias)
     {
         var prompt = "TODO log line desc prompt goes here...";
 
@@ -35,10 +39,20 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
-        return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
+        return new Dictionary<string, CompletionResponse> {
+            ["finetuned"] = result,
+            ["keywords"] = result
+            };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story)
     {
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
@@ -50,10 +64,17 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI SEQUENCE completion for " + targetSequence + " goes here...";
 
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, Character character)
     {
         var prompt = "TODO character archetype prompt goes here...";
 
@@ -62,10 +83,17 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
 
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, List<string> genres, string logLineDescription)
     {
         return new TitlesResponse
         {
@@ -87,12 +115,12 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
     {
         return (new List<UserSequence>(), 123);
     }
 
-    public async Task<(Plot, int)> GenerateAllLogLine(List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(string userId, List<string> genres)
     {
         return (new Plot
         {
@@ -104,7 +132,7 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
         return (new List<Character> {
             new Character {

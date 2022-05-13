@@ -16,7 +16,8 @@ const SequenceList = ({
     heroCharacterArchetype,
     dramaticQuestion,
     updateSequenceCompletions,
-    setSequences
+    setSequences,
+    tokensRemaining
 }) => {
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
@@ -142,6 +143,7 @@ const SequenceList = ({
                     characters={characters}
                     dramaticQuestion={dramaticQuestion}
                     setSequences={setSequences}
+                    tokensRemaining={tokensRemaining}
                 />
             }
 
@@ -169,6 +171,8 @@ const SequenceList = ({
                             logLineDescription={logLineDescription}
 
                             updateSequenceCompletions={updateSequenceCompletions}
+
+                            tokensRemaining={tokensRemaining}
                         />
                     ))
             }
