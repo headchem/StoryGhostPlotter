@@ -1,4 +1,4 @@
-130 tokens per $0.01
+~130 tokens per $0.01
 
 Git process:
 
