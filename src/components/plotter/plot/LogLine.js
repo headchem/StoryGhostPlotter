@@ -8,6 +8,7 @@ import LogLineBrainstormAll from './LogLineBrainstormAll'
 const LogLine = (
     {
         userInfo,
+        plotId,
         mode,
         genreOptions,
         genres,
@@ -42,7 +43,9 @@ const LogLine = (
         AITitles,
         setAITitles,
 
-        curFocusElName
+        curFocusElName,
+
+        tokensRemaining
     }
 ) => {
 
@@ -109,12 +112,14 @@ const LogLine = (
                 {
                     userInfo && userInfo.userRoles.includes('customer') &&
                     <LogLineBrainstormAll
+                        plotId={plotId}
                         genres={genres}
                         setKeywords={setKeywords}
                         setLogLineDescription={setLogLineDescription}
                         setTitle={setTitle}
                         setProblemTemplate={setProblemTemplate}
                         setDramaticQuestion={setDramaticQuestion}
+                        tokensRemaining={tokensRemaining}
                     />
                 }
 
@@ -227,6 +232,7 @@ const LogLine = (
             <div className='col-md-5'>
                 <LogLineObjDetails
                     userInfo={userInfo}
+                    plotId={plotId}
                     logLineDescription={logLineDescription}
                     onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
                     AILogLineDescriptions={AILogLineDescriptions}
@@ -237,6 +243,7 @@ const LogLine = (
                     problemTemplate={problemTemplate}
                     dramaticQuestion={dramaticQuestion}
                     keywords={keywords}
+                    tokensRemaining={tokensRemaining}
                 />
             </div>
         </>

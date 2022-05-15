@@ -7,8 +7,10 @@ import AICompletions from './AICompletions'
 const CharacterBrainstorm = (
     {
         userInfo,
+        plotId,
         character,
-        updateAICharacterCompletion
+        updateAICharacterCompletion,
+        tokensRemaining
     }
 ) => {
 
@@ -19,7 +21,7 @@ const CharacterBrainstorm = (
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Character/Generate', {
+        fetchWithTimeout('/api/Character/Generate?plotId=' + plotId, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -44,7 +46,7 @@ const CharacterBrainstorm = (
             }
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsCompletionLoading(false)
         });
@@ -63,6 +65,7 @@ const CharacterBrainstorm = (
             completions={character['aiCompletions']}
             onDeleteBrainstorm={onDeleteBrainstorm}
             showTemperature={false}
+            tokensRemaining={tokensRemaining}
         />
     )
 }

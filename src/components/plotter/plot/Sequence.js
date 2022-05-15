@@ -10,6 +10,7 @@ import SignUpMessage from './SignUpMessage'
 
 const Sequence = ({
     userInfo,
+    plotId,
 
     genres,
     problemTemplate,
@@ -26,7 +27,8 @@ const Sequence = ({
     insertSequence,
     deleteSequence,
     updateSequenceCompletions,
-    allowed
+    allowed,
+    tokensRemaining
 }) => {
 
     const textLimits = {
@@ -217,6 +219,7 @@ const Sequence = ({
                                                     <p>Based on the log line, characters, and previous events, ask the AI to brainstorm for {sequence.sequenceName}.</p>
                                                     <SequenceBrainstorm
                                                         userInfo={userInfo}
+                                                        plotId={plotId}
                                                         logLineDescription={logLineDescription}
                                                         genres={genres}
                                                         problemTemplate={problemTemplate}
@@ -227,6 +230,7 @@ const Sequence = ({
                                                         completions={!sequence['completions'] ? [] : sequence['completions']}
                                                         targetSequence={sequence.sequenceName}
                                                         updateSequenceCompletions={updateSequenceCompletions}
+                                                        tokensRemaining={tokensRemaining}
                                                     />
                                                 </>
                                             }

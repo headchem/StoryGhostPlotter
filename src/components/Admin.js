@@ -10,6 +10,22 @@ const Admin = () => {
     const [characterJSONL, setCharacterJSONL] = useState(null)
     const [sequenceJSONL, setSequenceJSONL] = useState(null)
 
+    const [numTokensToAdd, setNumTokensToAdd] = useState(4096)
+    const [tokensTargetUserId, setTokensTargetUserId] = useState('')
+
+    const addTokens = () => {
+        fetch('/api/SGAdmin/AddTokens?targetUserId=' + tokensTargetUserId + '&tokensToAdd=' + numTokensToAdd, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
     const onLogLineChangeFile = e => {
         setLogLineFile(e.target.files[0]);
     };
@@ -86,6 +102,13 @@ const Admin = () => {
             <button onClick={getSequenceFinetuningData}>Get Sequence Data</button>
             <label htmlFor="sequenceFinetune" className="fs-3">Sequence Finetune</label>
             <textarea className="form-control" id="sequenceFinetune" rows="6" defaultValue={sequenceJSONL}></textarea>
+
+            <hr />
+
+            <label htmlFor="addTokens">Add Tokens to User</label>
+            <input type="text" id="tokensTargetUserId" value={tokensTargetUserId} onChange={e => setTokensTargetUserId(e.target.value)} />
+            <input type="number" id="addTokens" value={numTokensToAdd} onChange={e => setNumTokensToAdd(e.target.value)} />
+            <button onClick={addTokens}>Add Tokens</button>
 
             <Link to="/">Back to Home</Link>
         </div>

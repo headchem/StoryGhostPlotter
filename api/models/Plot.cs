@@ -47,6 +47,7 @@ public class Plot
 
     public bool IsDeleted { get; set; }
     public bool IsPublic { get; set; }
+    public int TokensUsed { get; set; }
 
     [JsonPropertyName("sequences")]
     public List<UserSequence> Sequences { get; set; }

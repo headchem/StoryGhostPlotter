@@ -12,12 +12,14 @@ import SignUpMessage from './SignUpMessage'
 const LogLineDescriptionBrainstorm = (
     {
         userInfo,
+        plotId,
         AILogLineDescriptions,
         onAILogLineDescriptionsChange,
         genres,
         problemTemplate,
         dramaticQuestion,
-        keywords
+        keywords,
+        tokensRemaining
     }
 ) => {
 
@@ -39,6 +41,7 @@ const LogLineDescriptionBrainstorm = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
@@ -62,7 +65,7 @@ const LogLineDescriptionBrainstorm = (
 
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsLogLineDescriptionCompletionLoading(false)
         });
@@ -85,6 +88,10 @@ const LogLineDescriptionBrainstorm = (
 
     const limit = 10 // maximum number of brainstorms before the Brainstorm button is disabled and replaced with a message asking user to delete brainstorms
 
+    const onPageChange = (eventKey, event) => {
+        setCurrentPage(eventKey)
+    }
+
     return (
 
         <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
@@ -96,10 +103,10 @@ const LogLineDescriptionBrainstorm = (
                             {
                                 userInfo && userInfo.userRoles.includes('customer') &&
                                 <>
-                                    <p className="text-muted">The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
+                                    <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                     <hr />
 
-                                    <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage}>
+                                    <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage} onSelect={onPageChange}>
                                         {
                                             AILogLineDescriptions && AILogLineDescriptions.length > 0 && AILogLineDescriptions.map((obj, idx) =>
                                                 <Carousel.Item key={'carousel-' + idx}>
@@ -126,28 +133,39 @@ const LogLineDescriptionBrainstorm = (
 
 
                                     {
-                                        AILogLineDescriptions && AILogLineDescriptions.length >= limit &&
-                                        <div className='row'>
-                                            <div className='col alert alert-primary'>
-                                                <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms (use the gear icon) before generating more.</p>
-                                            </div>
-                                        </div>
-
+                                        tokensRemaining <= 0 &&
+                                        <>
+                                            <p>You have run out of tokens.</p>
+                                        </>
                                     }
                                     {
-                                        AILogLineDescriptions && AILogLineDescriptions.length < limit &&
-                                        <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
+                                        tokensRemaining > 0 &&
+                                        <>
                                             {
-                                                isLogLineDescriptionCompletionLoading === true &&
-                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                                AILogLineDescriptions && AILogLineDescriptions.length >= limit &&
+                                                <div className='row'>
+                                                    <div className='col alert alert-primary'>
+                                                        <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms (use the gear icon) before generating more.</p>
+                                                    </div>
+                                                </div>
                                             }
                                             {
-                                                isLogLineDescriptionCompletionLoading === false &&
-                                                <FaGhost />
+                                                AILogLineDescriptions && AILogLineDescriptions.length < limit &&
+                                                <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
+                                                    {
+                                                        isLogLineDescriptionCompletionLoading === true &&
+                                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                                    }
+                                                    {
+                                                        isLogLineDescriptionCompletionLoading === false &&
+                                                        <FaGhost />
+                                                    }
+                                                    <span> New AI Brainstorm</span>
+                                                </button>
                                             }
-                                            <span> New AI Brainstorm</span>
-                                        </button>
+                                        </>
                                     }
+
                                 </>
                             }
                             {

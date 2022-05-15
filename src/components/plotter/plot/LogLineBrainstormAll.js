@@ -8,12 +8,14 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const LogLineBrainstormAll = (
     {
         userInfo,
+        plotId,
         genres,
         setKeywords,
         setLogLineDescription,
         setTitle,
         setProblemTemplate,
-        setDramaticQuestion
+        setDramaticQuestion,
+        tokensRemaining
     }
 ) => {
 
@@ -33,6 +35,7 @@ const LogLineBrainstormAll = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'genres': genres
             })
         }).then(function (response) {
@@ -62,41 +65,52 @@ const LogLineBrainstormAll = (
     return (
         <div className='row'>
             <div className="alert alert-warning" role="alert">
-
                 {
-                    isLoading === true &&
+                    tokensRemaining <= 0 &&
                     <>
-                        <Spinner animation="border" variant="secondary" />
-                        <p>Generating new log line...</p>
+                        <p>You have run out of tokens.</p>
                     </>
                 }
                 {
-                    isLoading === false &&
+                    tokensRemaining > 0 &&
                     <>
-                        {
-                            showConfirmReplaceAll === false &&
-                            <>
-                                <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question.</p>
 
-                                <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
-                                    {
-                                        isLoading === true &&
-                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                                    }
-                                    {
-                                        isLoading === false &&
-                                        <FaGhost />
-                                    }
-                                    <span> Delete and Regenerate All Log Line Inputs</span>
-                                </button>
+                        {
+                            isLoading === true &&
+                            <>
+                                <Spinner animation="border" variant="secondary" />
+                                <p>Generating new log line...</p>
                             </>
                         }
                         {
-                            showConfirmReplaceAll === true &&
+                            isLoading === false &&
                             <>
-                                <p>Are you sure?</p>
-                                <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
-                                <button className='btn btn-danger' onClick={generateAll}>Yes, delete and replace all log line properties</button>
+                                {
+                                    showConfirmReplaceAll === false &&
+                                    <>
+                                        <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question. Tokens remaining: {tokensRemaining} This action takes ~500-700 tokens.</p>
+
+                                        <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
+                                            {
+                                                isLoading === true &&
+                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                            }
+                                            {
+                                                isLoading === false &&
+                                                <FaGhost />
+                                            }
+                                            <span> Delete and Regenerate All Log Line Inputs</span>
+                                        </button>
+                                    </>
+                                }
+                                {
+                                    showConfirmReplaceAll === true &&
+                                    <>
+                                        <p>Are you sure?</p>
+                                        <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
+                                        <button className='btn btn-danger' onClick={generateAll}>Yes, delete and replace all log line properties</button>
+                                    </>
+                                }
                             </>
                         }
                     </>

@@ -11,6 +11,7 @@ import LogLineDescriptionBrainstorm from './LogLineDescriptionBrainstorm'
 const LogLineObjDetails = (
     {
         userInfo,
+        plotId,
         logLineDescription,
         AILogLineDescriptions,
         AITitles,
@@ -20,7 +21,8 @@ const LogLineObjDetails = (
         problemTemplate,
         dramaticQuestion,
         keywords,
-        setAITitles
+        setAITitles,
+        tokensRemaining
     }
 ) => {
 
@@ -99,22 +101,26 @@ const LogLineObjDetails = (
                         (curFocusElName === 'logLineDescription') &&
                         <LogLineDescriptionBrainstorm
                             userInfo={userInfo}
+                            plotId={plotId}
                             AILogLineDescriptions={AILogLineDescriptions}
                             onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
                             genres={genres}
                             problemTemplate={problemTemplate}
                             dramaticQuestion={dramaticQuestion}
                             keywords={keywords}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                     {
                         curFocusElName === 'title' &&
                         <TitleBrainstorm
                             userInfo={userInfo}
+                            plotId={plotId}
                             AITitles={AITitles}
                             logLineDescription={logLineDescription}
                             genres={genres}
                             setAITitles={setAITitles}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                     {

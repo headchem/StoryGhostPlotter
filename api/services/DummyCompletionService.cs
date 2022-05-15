@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 using StoryGhost.Interfaces;
 using StoryGhost.Models;
@@ -19,15 +20,30 @@ namespace StoryGhost.Services;
 public class DummyCompletionService : ICompletionService
 {
 
+    private readonly ILogger<DummyCompletionService> _logger;
     private readonly HttpClient _httpClient;
+    private readonly IEncodingService _encodingService;
+    private readonly IUserService _userService;
 
-    public DummyCompletionService(HttpClient httpClient)
+    public DummyCompletionService(ILogger<DummyCompletionService> logger, HttpClient httpClient, IEncodingService encodingService, IUserService userService)
     {
+        _logger = logger;
         _httpClient = httpClient;
+        _encodingService = encodingService;
+        _userService = userService;
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(Plot story, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias, bool bypassTokenCheck)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         var prompt = "TODO log line desc prompt goes here...";
 
         var result = new CompletionResponse();
@@ -35,11 +51,32 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
-        return new Dictionary<string, CompletionResponse> { ["finetuned"] = result };
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
+        return new Dictionary<string, CompletionResponse>
+        {
+            ["finetuned"] = result,
+            ["keywords"] = result
+        };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string targetSequence, int maxTokens, double temperature, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
+
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         //var prompt = Factory.GetSequencePrompt(sequenceName, story);
 
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story);
@@ -50,11 +87,27 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI SEQUENCE completion for " + targetSequence + " goes here...";
 
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character, bool bypassTokenCheck)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         var prompt = "TODO character archetype prompt goes here...";
 
         var result = new CompletionResponse();
@@ -62,11 +115,27 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
 
+        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
+        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription, bool bypassTokenCheck)
     {
+        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
         return new TitlesResponse
         {
             Titles = new List<string>
@@ -87,12 +156,12 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
     {
         return (new List<UserSequence>(), 123);
     }
 
-    public async Task<(Plot, int)> GenerateAllLogLine(List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
         return (new Plot
         {
@@ -104,7 +173,7 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
         return (new List<Character> {
             new Character {

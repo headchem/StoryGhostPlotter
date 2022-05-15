@@ -8,10 +8,12 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const CharacterBrainstormAll = (
     {
         userInfo,
+        plotId,
         logLineDescription,
         problemTemplate,
         dramaticQuestion,
-        setCharacters
+        setCharacters,
+        tokensRemaining
     }
 ) => {
 
@@ -31,6 +33,7 @@ const CharacterBrainstormAll = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'logLineDescription': logLineDescription,
                 'problemTemplate': problemTemplate,
                 'dramaticQuestion': dramaticQuestion
@@ -57,44 +60,58 @@ const CharacterBrainstormAll = (
     return (
         <div className='row'>
             <div className="alert alert-warning" role="alert">
-                {
-                    isLoading === true &&
-                    <>
-                        <Spinner animation="border" variant="secondary" />
-                        <p>Generating new characters...</p>
-                    </>
-                }
-                {
-                    isLoading === false &&
-                    <>
-                        {
-                            showConfirmReplaceAll === false &&
-                            <>
-                                <p>Based on the log line description, ask the AI to generate a list of characters.</p>
 
-                                <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
-                                    {
-                                        isLoading === true &&
-                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                                    }
-                                    {
-                                        isLoading === false &&
-                                        <FaGhost />
-                                    }
-                                    <span> Delete and Regenerate All Characters</span>
-                                </button>
+                {
+                    tokensRemaining <= 0 &&
+                    <>
+                        <p>You have run out of tokens.</p>
+                    </>
+                }
+
+                {
+                    tokensRemaining > 0 &&
+                    <>
+                        {
+                            isLoading === true &&
+                            <>
+                                <Spinner animation="border" variant="secondary" />
+                                <p>Generating new characters...</p>
                             </>
                         }
                         {
-                            showConfirmReplaceAll === true &&
+                            isLoading === false &&
                             <>
-                                <p>Are you sure?</p>
-                                <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
-                                <button className='btn btn-danger' onClick={generateAll}>Yes, delete all characters and replace with new characters</button>
+                                {
+                                    showConfirmReplaceAll === false &&
+                                    <>
+                                        <p>Based on the log line description, ask the AI to generate a list of characters. Tokens remaining: {tokensRemaining}. This action takes ~300-500 tokens.</p>
+
+                                        <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
+                                            {
+                                                isLoading === true &&
+                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                            }
+                                            {
+                                                isLoading === false &&
+                                                <FaGhost />
+                                            }
+                                            <span> Delete and Regenerate All Characters</span>
+                                        </button>
+                                    </>
+                                }
+                                {
+                                    showConfirmReplaceAll === true &&
+                                    <>
+                                        <p>Are you sure?</p>
+                                        <button className='btn btn-warning me-3' onClick={() => setShowConfirmReplaceAll(false)}>Cancel</button>
+                                        <button className='btn btn-danger' onClick={generateAll}>Yes, delete all characters and replace with new characters</button>
+                                    </>
+                                }
                             </>
                         }
                     </>
                 }
+
             </div>
         </div>
     )

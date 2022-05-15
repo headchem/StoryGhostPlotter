@@ -7,6 +7,7 @@ import AICompletions from './AICompletions'
 const SequenceBrainstorm = (
     {
         userInfo,
+        plotId,
         logLineDescription,
         genres,
         problemTemplate,
@@ -16,7 +17,8 @@ const SequenceBrainstorm = (
         characters,
         completions,
         targetSequence,
-        updateSequenceCompletions
+        updateSequenceCompletions,
+        tokensRemaining
     }
 ) => {
 
@@ -53,6 +55,7 @@ const SequenceBrainstorm = (
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: plotId,
                 logLineDescription: logLineDescription,
                 genres: genres,
                 problemTemplate: problemTemplate,
@@ -81,7 +84,7 @@ const SequenceBrainstorm = (
             }
         }).catch(function (error) {
             console.warn(error);
-            console.warn('usually this means the model is still loading on the server. Please wait a few minutes and try again.');
+            console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsCompletionLoading(false)
         });
@@ -127,6 +130,7 @@ const SequenceBrainstorm = (
                             showTemperature={true}
                             temperature={temperature}
                             setTemperature={setTemperature}
+                            tokensRemaining={tokensRemaining}
                         />
                     }
                 </>
