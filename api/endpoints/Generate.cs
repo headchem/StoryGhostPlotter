@@ -40,7 +40,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -82,7 +87,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -120,7 +130,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plotId
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -156,7 +171,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -196,7 +216,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -232,7 +257,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 
@@ -269,7 +299,12 @@ public class Generate
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        using (log.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = user.Identity.Name }))
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
         {
             //log.LogInformation("An example of an Information level message");
 

@@ -275,13 +275,14 @@ public class PlotService : IPlotService
 
         var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
 
-        var teleDict = new Dictionary<string, string>
-        {
-            ["UserId"] = userId,
-            //["User"] = userDisplayName
-        };
+        // we already log tokens in Generate.cs
+        // var teleDict = new Dictionary<string, string>
+        // {
+        //     ["UserId"] = userId,
+        //     //["User"] = userDisplayName
+        // };
 
-        _telemetry.TrackMetric("Tokens Used", tokensUsed, teleDict);
+        // _telemetry.TrackMetric("Tokens Used", tokensUsed, teleDict);
     }
 
 }
