@@ -88,7 +88,7 @@ const LogLineBrainstormAll = (
                                 {
                                     showConfirmReplaceAll === false &&
                                     <>
-                                        <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question. Tokens remaining: {tokensRemaining}</p>
+                                        <p>Based on the genres above, ask the AI to fill out the keywords, log line, title, problem template, and dramatic question. Tokens remaining: {tokensRemaining} This action takes ~500-700 tokens.</p>
 
                                         <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
                                             {

@@ -33,7 +33,7 @@ public class DummyCompletionService : ICompletionService
         _userService = userService;
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias, bool bypassTokenCheck)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -65,7 +65,7 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story)
+    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
 
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
@@ -97,7 +97,7 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character, bool bypassTokenCheck)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -125,7 +125,7 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription, bool bypassTokenCheck)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {

@@ -94,7 +94,7 @@ const SequenceBrainstormAll = ({
                                         <div className="row g-3 align-items-center">
                                             <div className='col-auto'>
                                                 <button className='btn btn-warning' onClick={() => { setShowConfirmReplaceAll(true) }}>Delete and Regenerate All Sequences</button>
-                                                <p>Tokens remaining: {tokensRemaining}</p>
+                                                <p>Tokens remaining: {tokensRemaining}. Generating a complete story takes ~9000-12000 tokens.</p>
                                             </div>
                                             <div className='col-auto'>
                                                 <label htmlFor='gen-up-to' className='col-form-label'>Generate sequences up to: </label>

@@ -1,3 +1,5 @@
+130 tokens per $0.01
+
 Git process:
 
 git checkout -b feat-my-cool-feature

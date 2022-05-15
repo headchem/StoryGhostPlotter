@@ -23,9 +23,9 @@ const DeleteTab = (
             {
                 showConfirm === true &&
                 <span>
-                    <button className="btn btn-link" onClick={() => onDeleteBrainstorm(idx)}>delete</button>
+                    <a className="btn btn-link" onClick={() => onDeleteBrainstorm(idx)}>delete</a>
                     /
-                    <button className="btn btn-link" onClick={() => setShowConfirm(false)}>cancel</button>
+                    <a className="btn btn-link" onClick={() => setShowConfirm(false)}>cancel</a>
                 </span>
             }
 

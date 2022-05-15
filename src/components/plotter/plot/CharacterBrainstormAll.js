@@ -84,7 +84,7 @@ const CharacterBrainstormAll = (
                                 {
                                     showConfirmReplaceAll === false &&
                                     <>
-                                        <p>Based on the log line description, ask the AI to generate a list of characters. Tokens remaining: {tokensRemaining}</p>
+                                        <p>Based on the log line description, ask the AI to generate a list of characters. Tokens remaining: {tokensRemaining}. This action takes ~300-500 tokens.</p>
 
                                         <button disabled={isLoading} type="button" className="btn btn-warning" onClick={() => { setShowConfirmReplaceAll(true) }}>
                                             {

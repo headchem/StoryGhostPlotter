@@ -46,22 +46,6 @@ public class OpenAICompletionService : ICompletionService
             throw new Exception("PlotId cannot be empty!");
         }
 
-        // confirm that plotId is owned by userId
-        var plot = await _plotService.GetPlot(userId, plotId);
-        if (plot.UserId != userId)
-        {
-            throw new Exception($"UserId {userId} does not own PlotId {plotId}");
-        }
-
-        using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
-        {
-            var tokensRemaining = await _userService.GetTokensRemaining(userId);
-            if (tokensRemaining <= 0)
-            {
-                throw new Exception("User is out of tokens, unable to generate completion");
-            }
-        }
-
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
@@ -174,8 +158,10 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot plot, int keywordsLogitBias)
+    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot plot, int keywordsLogitBias, bool bypassTokenCheck)
     {
+        await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
+
         var finetunedCompletion = await getFinetunedLogLineCompletion(userId, plot, keywordsLogitBias);
 
         if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
@@ -259,8 +245,10 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot)
+    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
     {
+        await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
+
         var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot);
         var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
 
@@ -297,8 +285,10 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character, bool bypassTokenCheck)
     {
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
+
         var result = await getFinetunedCharacterCompletion(userId, plotId, character);
 
         return result;
@@ -327,8 +317,10 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription, bool bypassTokenCheck)
     {
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
+
         var prompt = $"Genres: {string.Join(", ", genres)}";
         prompt += $"\n\nStory synopsis: {logLineDescription.Trim()}";
         prompt += $"\n\nWrite 5 movie titles for this story, ranked from best to worst:\n\n1.";
@@ -384,8 +376,10 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
+    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot plot, string upToTargetSequenceExclusive)
     {
+        await ensureSufficientTokensAndOwnership(userId, plot.Id, false);
+
         var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
 
         var results = new List<UserSequence>();
@@ -394,7 +388,7 @@ public class OpenAICompletionService : ICompletionService
 
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceResponse = await GetSequenceCompletion(userId, targetSequence, 256, 0.8, story);
+            var sequenceResponse = await GetSequenceCompletion(userId, targetSequence, 256, 0.8, plot, true);
             totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
 
             var sequence = new UserSequence
@@ -405,7 +399,7 @@ public class OpenAICompletionService : ICompletionService
             };
 
             results.Add(sequence);
-            story.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
+            plot.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
         }
 
         return (results, totalTokenCount);
@@ -524,26 +518,30 @@ public class OpenAICompletionService : ICompletionService
 
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
+        await ensureSufficientTokensAndOwnership(userId, plotId, false);
+
         var totalTokens = 0;
 
         var keywords = _keywordService.GetKeywords(genres, 4);
 
         var logLineDescCompletion = await GetLogLineDescriptionCompletion(userId, new Plot
         {
+            Id = plotId,
             Genres = genres,
             Keywords = keywords
-        }, 4);
+        }, 4, true);
         var logLineDesc = logLineDescCompletion["keywords"].Completion;
 
         totalTokens += logLineDescCompletion["finetuned"].PromptTokenCount + logLineDescCompletion["finetuned"].CompletionTokenCount + logLineDescCompletion["keywords"].PromptTokenCount + logLineDescCompletion["keywords"].CompletionTokenCount;
 
-        var titleCompletion = await GetTitles(userId, plotId, genres, logLineDesc);
+        var titleCompletion = await GetTitles(userId, plotId, genres, logLineDesc, true);
         totalTokens += titleCompletion.CompletionResponse.PromptTokenCount + titleCompletion.CompletionResponse.CompletionTokenCount;
 
         var firstTitle = titleCompletion.Titles.First();
 
         return (new Plot
         {
+            Id = plotId,
             Keywords = keywords,
             LogLineDescription = logLineDesc,
             Title = firstTitle,
@@ -554,6 +552,8 @@ public class OpenAICompletionService : ICompletionService
 
     public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
+        await ensureSufficientTokensAndOwnership(userId, plotId, false);
+
         var rand = new Random();
 
         var characters = new List<Character>();
@@ -617,7 +617,7 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        // smallest Ada model was accurate enough
+        // smallest Ada model was usually accurate enough. NOTE: names like "Tinker Bell" or "Spiderman" will not appear in the list of 7000 most popular names, so they will be filtered out.
         var result = await getResponse(userId, plotId, "engines/text-ada-001/completions", openAIRequest);
 
         var results = removeListNumbers(result.Completion);
@@ -699,5 +699,42 @@ public class OpenAICompletionService : ICompletionService
             Primary = primary,
             Aspect = aspect
         };
+    }
+
+    private async Task ensureSufficientTokensAndOwnership(string userId, string plotId, bool bypassTokenCheck)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new Exception("UserId must not be empty");
+        if (string.IsNullOrWhiteSpace(plotId)) throw new Exception("PlotId must not be empty");
+
+        using (_logger.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["PlotId"] = plotId
+        }))
+        {
+            // ensure that plotId is owned by userId
+            var plot = await _plotService.GetPlot(userId, plotId);
+            if (plot.UserId != userId)
+            {
+                throw new Exception($"UserId {userId} does not own PlotId {plotId}");
+            }
+
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+
+            if (tokensRemaining <= -1 * 2048 * 16)
+            {
+                throw new Exception($"User attempted completion even though they have an extremely negative token balance. This is suspicious behavior that should be investigated. UserId: {userId}, PlotId: {plotId}, tokensRemaining: {tokensRemaining}");
+            }
+
+            if (bypassTokenCheck == false)
+            {
+                // ensure user has more than 0 tokens remaining
+
+                if (tokensRemaining <= 0)
+                {
+                    throw new Exception("User is out of tokens, unable to generate completion");
+                }
+            }
+        }
     }
 }

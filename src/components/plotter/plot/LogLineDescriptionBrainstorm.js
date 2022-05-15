@@ -88,6 +88,10 @@ const LogLineDescriptionBrainstorm = (
 
     const limit = 10 // maximum number of brainstorms before the Brainstorm button is disabled and replaced with a message asking user to delete brainstorms
 
+    const onPageChange = (eventKey, event) => {
+        setCurrentPage(eventKey)
+    }
+
     return (
 
         <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
@@ -102,7 +106,7 @@ const LogLineDescriptionBrainstorm = (
                                     <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                                     <hr />
 
-                                    <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage}>
+                                    <Carousel variant="dark" interval={null} indicators={true} activeIndex={currentPage} defaultActiveIndex={startingPage} onSelect={onPageChange}>
                                         {
                                             AILogLineDescriptions && AILogLineDescriptions.length > 0 && AILogLineDescriptions.map((obj, idx) =>
                                                 <Carousel.Item key={'carousel-' + idx}>

@@ -51,13 +51,11 @@ public class Generate
 
             var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
 
-            var result = await _completionService.GetLogLineDescriptionCompletion(userId, plot, keywordsLogitBias);
+            var result = await _completionService.GetLogLineDescriptionCompletion(userId, plot, keywordsLogitBias, false);
             var totalTokenCount = result["finetuned"].PromptTokenCount
                                 + result["finetuned"].CompletionTokenCount
                                 + result["keywords"].PromptTokenCount
                                 + result["keywords"].CompletionTokenCount;
-
-            // TODO: log token usage by OpenAI to current user container
 
             var timespan = stopwatch.Elapsed;
 
@@ -96,9 +94,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var result = await _completionService.GetTitles(userId, plot.Id, plot.Genres, plot.LogLineDescription);
-
-            // TODO: log token usage by OpenAI to current user container
+            var result = await _completionService.GetTitles(userId, plot.Id, plot.Genres, plot.LogLineDescription, false);
 
             var timespan = stopwatch.Elapsed;
 
@@ -139,9 +135,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var result = await _completionService.GetCharacterCompletion(userId, plotId, character);
-
-            // TODO: log token usage by OpenAI to current user container
+            var result = await _completionService.GetCharacterCompletion(userId, plotId, character, false);
 
             var timespan = stopwatch.Elapsed;
 
@@ -184,9 +178,7 @@ public class Generate
             var temperature = double.Parse(req.Query["temperature"][0]);
             var maxTokens = 256;
 
-            var result = await _completionService.GetSequenceCompletion(userId, targetSequence, maxTokens, temperature, plot);
-
-            // TODO: log token usage by OpenAI to current user container
+            var result = await _completionService.GetSequenceCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
 
             var timespan = stopwatch.Elapsed;
 
@@ -227,8 +219,6 @@ public class Generate
 
             var (result, totalTokens) = await _completionService.GenerateAllLogLine(userId, plot.Id, plot.Genres);
 
-            // TODO: log token usage by OpenAI to current user container
-
             var timespan = stopwatch.Elapsed;
 
             stopwatch.Stop();
@@ -267,8 +257,6 @@ public class Generate
             //log.LogInformation("An example of an Information level message");
 
             var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
-
-            // TODO: log token usage by OpenAI to current user container
 
             var timespan = stopwatch.Elapsed;
 
@@ -311,8 +299,6 @@ public class Generate
             var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
 
             var (result, totalTokenCount) = await _completionService.GenerateAllSequences(userId, plot, upToTargetSequenceExclusive);
-
-            // TODO: log token usage by OpenAI to current user container
 
             var timespan = stopwatch.Elapsed;
 

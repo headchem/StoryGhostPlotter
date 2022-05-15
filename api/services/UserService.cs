@@ -134,7 +134,10 @@ public class UserService : IUserService
         var userResponse = await userContainer.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
         var userObj = userResponse.Resource;
 
-        var newTokens = userObj.TokensRemaining + numTokens;
+        var curTokens = userObj.TokensRemaining;
+        curTokens = Math.Max(0, curTokens); // if adding new tokens, ensure we start at 0, even if user went negative from a "Genenate All" call
+
+        var newTokens = curTokens + numTokens;
 
         var patchOps = new List<PatchOperation>();
         patchOps.Add(PatchOperation.Set("/tokensRemaining", newTokens));
@@ -150,7 +153,7 @@ public class UserService : IUserService
         var userObj = userResponse.Resource;
 
         var newTokens = userObj.TokensRemaining - numTokens;
-        newTokens = Math.Max(newTokens, 0); // can't have negative tokens
+        // we allow negative tokens in cases where the user was low on tokens and execute a "Generate All" method. There is a check elsewhere for extremely negative balances as a safeguard.
 
         var patchOps = new List<PatchOperation>();
         patchOps.Add(PatchOperation.Set("/tokensRemaining", newTokens));
