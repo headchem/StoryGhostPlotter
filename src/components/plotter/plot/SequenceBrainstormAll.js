@@ -4,6 +4,7 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 import Spinner from 'react-bootstrap/Spinner';
 
 const SequenceBrainstormAll = ({
+    plotId,
     sequences,
     userInfo,
     logLineDescription,
@@ -32,6 +33,7 @@ const SequenceBrainstormAll = ({
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: plotId,
                 logLineDescription: logLineDescription,
                 genres: genres,
                 problemTemplate: problemTemplate,

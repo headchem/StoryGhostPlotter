@@ -4,6 +4,7 @@ import { FaPlusCircle } from 'react-icons/fa'
 import Character from './Character'
 
 const CharacterList = ({
+    plotId,
     characters,
     userInfo,
     archetypeOptions,
@@ -38,6 +39,7 @@ const CharacterList = ({
                                 <Character
                                     key={character.id}
                                     userInfo={userInfo}
+                                    plotId={plotId}
                                     archetypeOptions={archetypeOptions}
                                     character={character}
                                     characters={characters}

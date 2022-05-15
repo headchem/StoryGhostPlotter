@@ -86,7 +86,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var result = await _completionService.GetTitles(userId, plot.Genres, plot.LogLineDescription);
+            var result = await _completionService.GetTitles(userId, plot.Id, plot.Genres, plot.LogLineDescription);
 
             // TODO: log token usage by OpenAI to current user container
 
@@ -115,6 +115,8 @@ public class Generate
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+        var plotId = req.Query["plotId"][0];
+
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
@@ -122,7 +124,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var result = await _completionService.GetCharacterCompletion(userId, character);
+            var result = await _completionService.GetCharacterCompletion(userId, plotId, character);
 
             // TODO: log token usage by OpenAI to current user container
 
@@ -198,7 +200,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var (result, totalTokens) = await _completionService.GenerateAllLogLine(userId, plot.Genres);
+            var (result, totalTokens) = await _completionService.GenerateAllLogLine(userId, plot.Id, plot.Genres);
 
             // TODO: log token usage by OpenAI to current user container
 
@@ -234,7 +236,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
+            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
 
             // TODO: log token usage by OpenAI to current user container
 

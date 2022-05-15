@@ -598,6 +598,7 @@ const PlotHome = (
                     <div className='row pb-5'>
                         <LogLine
                             userInfo={userInfo}
+                            plotId={searchParams.get("id")}
                             mode={mode}
                             genreOptions={genreOptions}
                             genres={genres}
@@ -651,6 +652,7 @@ const PlotHome = (
                                     userInfo && userInfo.userRoles.includes('customer') &&
                                     <CharacterBrainstormAll
                                         userInfo={userInfo}
+                                        plotId={searchParams.get("id")}
                                         logLineDescription={logLineDescription}
                                         problemTemplate={problemTemplate}
                                         dramaticQuestion={dramaticQuestion}
@@ -662,6 +664,7 @@ const PlotHome = (
                                 {
                                     //deferredCharacterList
                                     <CharacterList
+                                        plotId={searchParams.get("id")}
                                         characters={characters}
                                         userInfo={userInfo}
                                         archetypeOptions={archetypeOptions}
@@ -690,6 +693,7 @@ const PlotHome = (
                                         {
                                             //deferredSequenceList
                                             <SequenceList
+                                                plotId={searchParams.get("id")}
                                                 sequences={sequences}
                                                 userInfo={userInfo}
                                                 logLineDescription={logLineDescription}

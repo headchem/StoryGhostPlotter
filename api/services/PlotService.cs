@@ -262,4 +262,26 @@ public class PlotService : IPlotService
         _telemetry.TrackEvent("Delete Plot");
     }
 
+    public async Task LogTokenUsage(string userId, string plotId, long tokensUsed)
+    {
+        var plotPatchOps = new List<PatchOperation>();
+
+        plotPatchOps.Add(PatchOperation.Increment("/tokensUsed", tokensUsed));
+
+        plotPatchOps.Add(PatchOperation.Set("/modified", DateTime.UtcNow));
+
+        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
+
+        var plotPatchResult = await plotContainer.PatchItemAsync<Plot>(id: plotId, partitionKey: new PartitionKey(userId), patchOperations: plotPatchOps);
+
+        var teleDict = new Dictionary<string, string>
+        {
+            ["UserId"] = userId,
+            //["User"] = userDisplayName
+        };
+
+        _telemetry.TrackMetric("Tokens Used", tokensUsed, teleDict);
+    }
+
 }

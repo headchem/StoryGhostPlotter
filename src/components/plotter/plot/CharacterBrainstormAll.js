@@ -8,6 +8,7 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const CharacterBrainstormAll = (
     {
         userInfo,
+        plotId,
         logLineDescription,
         problemTemplate,
         dramaticQuestion,
@@ -32,6 +33,7 @@ const CharacterBrainstormAll = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'logLineDescription': logLineDescription,
                 'problemTemplate': problemTemplate,
                 'dramaticQuestion': dramaticQuestion

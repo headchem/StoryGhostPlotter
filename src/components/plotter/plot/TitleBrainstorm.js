@@ -9,6 +9,7 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const TitleBrainstorm = (
     {
         userInfo,
+        plotId,
         AITitles,
         logLineDescription,
         genres,
@@ -35,6 +36,7 @@ const TitleBrainstorm = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId, 
                 'genres': genres,
                 'logLineDescription': logLineDescription
             })

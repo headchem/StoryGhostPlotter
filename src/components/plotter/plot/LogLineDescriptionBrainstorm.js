@@ -12,6 +12,7 @@ import SignUpMessage from './SignUpMessage'
 const LogLineDescriptionBrainstorm = (
     {
         userInfo,
+        plotId,
         AILogLineDescriptions,
         onAILogLineDescriptionsChange,
         genres,
@@ -40,6 +41,7 @@ const LogLineDescriptionBrainstorm = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'genres': genres,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,

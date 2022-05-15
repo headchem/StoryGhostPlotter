@@ -27,7 +27,7 @@ namespace MyNamespace
             // builder.Services.AddTransient<ISalesforceTokenService, CachedSalesforceTokenService>();
 
 
-            var isDebug = true; // toggle the dummy completion service or the real OpenAI service
+            var isDebug = false; // toggle the dummy completion service or the real OpenAI service
 
             if (isDebug == false)
             {

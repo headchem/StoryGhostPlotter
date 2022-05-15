@@ -15,4 +15,6 @@ public interface IPlotService
     public Task SavePlot(string userId, string plotId, Plot curPlotObj, Plot plot);
 
     public Task DeletePlot(string userId, string plotId);
+
+    public Task LogTokenUsage(string userId, string plotId, long tokensUsed);
 }

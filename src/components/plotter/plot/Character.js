@@ -18,6 +18,7 @@ import { getTokenCount } from "../../../util/Tokenizer";
 
 const Character = ({
     userInfo,
+    plotId,
     onFocusChange,
 
     archetypeOptions,
@@ -361,6 +362,7 @@ const Character = ({
                                     <Accordion.Body>
                                         <CharacterBrainstorm
                                             userInfo={userInfo}
+                                            plotId={plotId}
                                             character={character}
                                             updateAICharacterCompletion={updateAICharacterCompletion}
                                             tokensRemaining={tokensRemaining}

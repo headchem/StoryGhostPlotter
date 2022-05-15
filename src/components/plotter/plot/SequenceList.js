@@ -3,6 +3,7 @@ import Sequence from './Sequence'
 import SequenceBrainstormAll from './SequenceBrainstormAll';
 
 const SequenceList = ({
+    plotId,
     sequences,
     userInfo,
     logLineDescription,
@@ -134,6 +135,7 @@ const SequenceList = ({
             {
                 userInfo && userInfo.userRoles.includes('customer') &&
                 <SequenceBrainstormAll
+                    plotId={plotId}
                     sequences={sequences}
                     userInfo={userInfo}
                     logLineDescription={logLineDescription}
@@ -153,6 +155,7 @@ const SequenceList = ({
                         <Sequence
                             key={sequence.sequenceName}
                             userInfo={userInfo}
+                            plotId={plotId}
                             sequence={sequence}
                             sequences={sequences}
                             updateEventsText={updateSequenceEventsText}

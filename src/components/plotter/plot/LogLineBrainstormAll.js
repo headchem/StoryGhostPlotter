@@ -8,6 +8,7 @@ import { fetchWithTimeout } from '../../../util/FetchUtil'
 const LogLineBrainstormAll = (
     {
         userInfo,
+        plotId,
         genres,
         setKeywords,
         setLogLineDescription,
@@ -34,6 +35,7 @@ const LogLineBrainstormAll = (
             },
             body: JSON.stringify({
                 'seed': 123,
+                'id': plotId,
                 'genres': genres
             })
         }).then(function (response) {

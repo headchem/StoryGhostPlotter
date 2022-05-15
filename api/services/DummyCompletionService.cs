@@ -97,7 +97,7 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetCharacterCompletion(string userId, Character character)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -125,7 +125,7 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<TitlesResponse> GetTitles(string userId, List<string> genres, string logLineDescription)
+    public async Task<TitlesResponse> GetTitles(string userId, string plotId, List<string> genres, string logLineDescription)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -161,7 +161,7 @@ public class DummyCompletionService : ICompletionService
         return (new List<UserSequence>(), 123);
     }
 
-    public async Task<(Plot, int)> GenerateAllLogLine(string userId, List<string> genres)
+    public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
         return (new Plot
         {
@@ -173,7 +173,7 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
     {
         return (new List<Character> {
             new Character {

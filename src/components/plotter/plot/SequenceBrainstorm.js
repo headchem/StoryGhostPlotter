@@ -7,6 +7,7 @@ import AICompletions from './AICompletions'
 const SequenceBrainstorm = (
     {
         userInfo,
+        plotId,
         logLineDescription,
         genres,
         problemTemplate,
@@ -54,6 +55,7 @@ const SequenceBrainstorm = (
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                id: plotId,
                 logLineDescription: logLineDescription,
                 genres: genres,
                 problemTemplate: problemTemplate,
