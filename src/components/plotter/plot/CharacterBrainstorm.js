@@ -39,9 +39,9 @@ const CharacterBrainstorm = (
             return Promise.reject(response);
         }).then(function (data) {
             if (!character['aiCompletions']) {
-                updateAICharacterCompletion(character.id, [data['completion']])
+                updateAICharacterCompletion(character.id, [data])
             } else {
-                const newCompletionList = [...character['aiCompletions'], data['completion']] // set newCompletionList to all existing character.AICompletions plus add the new one
+                const newCompletionList = [...character['aiCompletions'], data] // set newCompletionList to all existing character.AICompletions plus add the new one
                 updateAICharacterCompletion(character.id, newCompletionList)
             }
         }).catch(function (error) {

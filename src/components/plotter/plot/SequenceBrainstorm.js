@@ -77,9 +77,9 @@ const SequenceBrainstorm = (
             console.log('save this data:')
             console.log(data)
             if (!completions || completions.length === 0) {
-                updateSequenceCompletions(targetSequence, [data['completion']])
+                updateSequenceCompletions(targetSequence, [data])
             } else {
-                const newCompletionList = [...completions, data['completion']]
+                const newCompletionList = [...completions, data]
                 updateSequenceCompletions(targetSequence, newCompletionList)
             }
         }).catch(function (error) {

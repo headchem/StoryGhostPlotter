@@ -67,9 +67,8 @@ public class OpenAICompletionService : ICompletionService
         var completionObj = resultDeserialized.Choices.FirstOrDefault();
         var completion = completionObj == null ? "" : completionObj.Text.Trim();
 
-        // TODO: figure out way for toxic check to interrupt a Generate All run
         var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
-        var completionIsToxic = false;//await _analysisService.IsToxic(completion);
+        var completionIsToxic = await _analysisService.IsToxic(userId, completion);
 
         var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
         var completionTokenCount = (await _encodingService.Encode(completion)).Count;
@@ -430,16 +429,11 @@ public class OpenAICompletionService : ICompletionService
             var sequenceResponse = await GetSequenceCompletion(userId, targetSequence, 256, 0.8, plot, true);
             totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
 
-            if (sequenceResponse.CompletionIsToxic)
-            {
-                sequenceResponse.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
-            }
-
             var sequence = new UserSequence
             {
                 SequenceName = targetSequence,
                 Text = sequenceResponse.Completion,
-                Completions = new List<string> { sequenceResponse.Completion }
+                Completions = new List<CompletionResponse> { sequenceResponse }
             };
 
             results.Add(sequence);

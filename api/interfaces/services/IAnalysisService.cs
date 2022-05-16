@@ -6,6 +6,6 @@ namespace StoryGhost.Interfaces;
 
 public interface IAnalysisService
 {
-    public Task<bool> IsToxic(string text);
+    public Task<bool> IsToxic(string userId, string text);
     
 }

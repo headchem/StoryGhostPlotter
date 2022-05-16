@@ -24,7 +24,7 @@ public class DummyAnalysisService : IAnalysisService
         _httpClient = httpClient;
     }
 
-    public async Task<bool> IsToxic(string text)
+    public async Task<bool> IsToxic(string userId, string text)
     {
         return false;
     }

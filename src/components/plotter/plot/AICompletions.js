@@ -5,6 +5,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import DeleteTab from './DeleteTab'
 import SignUpMessage from './SignUpMessage'
+import ToxicMessage from './ToxicMessage'
 
 const AICompletions = (
     {
@@ -47,7 +48,12 @@ const AICompletions = (
                         {
                             completions && completions.length > 0 && completions.map((completion, idx) =>
                                 <Tab key={`tab-` + idx} eventKey={`tab-` + idx} title={<>{idx} <DeleteTab idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} /></>}>
-                                    <p style={{ whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto" }}>{completion}</p>
+                                    {
+                                        completion['completionIsToxic']
+                                        &&
+                                        <ToxicMessage />
+                                    }
+                                    <p style={{ whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto" }}>{completion['completion']}</p>
                                 </Tab>
                             )
                         }

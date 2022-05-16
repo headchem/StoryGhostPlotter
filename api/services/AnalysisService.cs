@@ -35,7 +35,7 @@ public class AnalysisService : IAnalysisService
         _plotService = plotService;
     }
 
-    public async Task<bool> IsToxic(string text)
+    public async Task<bool> IsToxic(string userId, string text)
     {
         var prompt = $"<|endoftext|>{text}\n--\nLabel:";
 
@@ -46,7 +46,8 @@ public class AnalysisService : IAnalysisService
             Temperature = 0.0,
             TopP = 0.0,
             Logprobs = 5,
-            LogitBias = new Dictionary<string, int>()
+            LogitBias = new Dictionary<string, int>(),
+            UserId = userId,
         };
 
         var jsonString = JsonSerializer.Serialize(openAIRequest);
@@ -85,7 +86,7 @@ public class AnalysisService : IAnalysisService
         var toxic_threshold = -0.355;
 
         // # If the model is not sufficiently confident in "2", choose the most probable of "0" or "1". Guaranteed to have a confidence for 2 since this was the selected token.
-        if (logprobs["2"] < toxic_threshold) {
+        if (logprobs.ContainsKey("2") && logprobs["2"] < toxic_threshold) {
             double? logprob_0 = null;
             double? logprob_1 = null;
 

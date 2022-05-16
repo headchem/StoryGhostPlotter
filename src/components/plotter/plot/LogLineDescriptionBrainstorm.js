@@ -8,6 +8,7 @@ import Tab from 'react-bootstrap/Tab'
 import Carousel from 'react-bootstrap/Carousel'
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 import SignUpMessage from './SignUpMessage'
+import ToxicMessage from './ToxicMessage'
 
 const LogLineDescriptionBrainstorm = (
     {
@@ -113,11 +114,21 @@ const LogLineDescriptionBrainstorm = (
                                                     {
                                                         <Tabs defaultActiveKey="finetune" className="mb-3">
                                                             <Tab eventKey="finetune" title="Original (genres)">
+                                                                {
+                                                                    obj['finetuned']['completionIsToxic']
+                                                                    &&
+                                                                    <ToxicMessage />
+                                                                }
                                                                 <p>{obj['finetuned']['completion']}</p>
                                                             </Tab>
                                                             {
                                                                 obj['keywords'] &&
                                                                 <Tab eventKey="keywords" title="With keywords">
+                                                                    {
+                                                                        obj['keywords']['completionIsToxic']
+                                                                        &&
+                                                                        <ToxicMessage />
+                                                                    }
                                                                     <p>{obj['keywords']['completion']}</p>
                                                                 </Tab>
                                                             }
