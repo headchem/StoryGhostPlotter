@@ -48,6 +48,8 @@ public class OpenAICompletionService : ICompletionService
             throw new Exception("PlotId cannot be empty!");
         }
 
+        openAIRequest.UserId = userId;
+
         var jsonString = JsonSerializer.Serialize(openAIRequest);
         var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 

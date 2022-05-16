@@ -38,6 +38,10 @@ public class OpenAICompletionsRequest
 
     /// Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens. For example, if logprobs is 10, the API will return a list of the 10 most likely tokens.
     [JsonPropertyName("logprobs")]
-    public int Logprobs { get; set; }
+    public int? Logprobs { get; set; }
+
+    // From OpenAI documentation: "To help with monitoring for possible misuse, developers serving multiple end-users should pass an additional user parameter to OpenAI with each API call, in which user is a unique ID representing a particular end-user."
+    [JsonPropertyName("user")]
+    public string UserId { get; set; }
 
 }
