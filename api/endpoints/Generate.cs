@@ -52,6 +52,7 @@ public class Generate
             var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
 
             var result = await _completionService.GetLogLineDescriptionCompletion(userId, plot, keywordsLogitBias, false);
+
             var totalTokenCount = result["finetuned"].PromptTokenCount
                                 + result["finetuned"].CompletionTokenCount
                                 + result["keywords"].PromptTokenCount
@@ -60,9 +61,6 @@ public class Generate
             var timespan = stopwatch.Elapsed;
 
             stopwatch.Stop();
-
-            //var metricsText = new Dictionary<string, string>();
-            //metricsText.Add("UserId", userId);
 
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);

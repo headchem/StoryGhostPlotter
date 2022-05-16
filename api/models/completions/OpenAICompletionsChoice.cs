@@ -15,4 +15,7 @@ public class OpenAICompletionsChoice
     ///<example>stop|length</example>
     [JsonPropertyName("finish_reason")]
     public string FinishReason { get; set; }
+
+    [JsonPropertyName("logprobs")]
+    public OpenAICompletionsLogProbs LogProbs { get; set; }
 }

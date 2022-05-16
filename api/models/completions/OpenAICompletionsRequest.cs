@@ -30,10 +30,14 @@ public class OpenAICompletionsRequest
 
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim. Reasonable values for the penalty coefficients are around 0.1 to 1 if the aim is to just reduce repetitive samples somewhat. If the aim is to strongly suppress repetition, then one can increase the coefficients up to 2, but this can noticeably degrade the quality of samples. Negative values can be used to increase the likelihood of repetition. IMPORTANT: higher values also penalize repetition of common punctuation like "." so you don't want to increase it too much.
     [JsonPropertyName("frequency_penalty")]
-    public double FrequencyPenalty {get;set;}
+    public double FrequencyPenalty { get; set; }
 
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics. Reasonable values for the penalty coefficients are around 0.1 to 1 if the aim is to just reduce repetitive samples somewhat. If the aim is to strongly suppress repetition, then one can increase the coefficients up to 2, but this can noticeably degrade the quality of samples. Negative values can be used to increase the likelihood of repetition. IMPORTANT: higher values also penalize repetition of common punctuation like "." so you don't want to increase it too much.
     [JsonPropertyName("presence_penalty")]
-    public double PresencePenalty {get;set;}
+    public double PresencePenalty { get; set; }
+
+    /// Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens. For example, if logprobs is 10, the API will return a list of the 10 most likely tokens.
+    [JsonPropertyName("logprobs")]
+    public int Logprobs { get; set; }
 
 }

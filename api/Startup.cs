@@ -49,6 +49,20 @@ namespace MyNamespace
                     .SetHandlerLifetime(TimeSpan.FromSeconds(500))
                     .AddPolicyHandler(combinedExpLongPolicy);
 
+
+                builder.Services.AddHttpClient<IAnalysisService, AnalysisService>(c =>
+                {
+                    c.BaseAddress = new System.Uri("https://api.openai.com/v1/");
+                    c.Timeout = TimeSpan.FromMinutes(5); // default is 100 sec
+                    c.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                    var openAIKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+                    c.DefaultRequestHeaders.Add("Authorization", "Bearer " + openAIKey);
+                })
+                    .SetHandlerLifetime(TimeSpan.FromSeconds(500))
+                    .AddPolicyHandler(combinedExpLongPolicy);
+
+
                 builder.Services.AddHttpClient<IEncodingService, EncodingService>(c =>
                 {
                     c.BaseAddress = new System.Uri("https://sg-gpt-encoder.azurewebsites.net/api/");
@@ -62,7 +76,8 @@ namespace MyNamespace
             {
                 // use below for testing the UI without using up real completions
                 builder.Services.AddHttpClient<ICompletionService, DummyCompletionService>();
-
+                builder.Services.AddHttpClient<IAnalysisService, DummyAnalysisService>();
+                
                 builder.Services.AddHttpClient<IEncodingService, EncodingService>(c =>
                 {
                     c.BaseAddress = new System.Uri("https://sg-gpt-encoder.azurewebsites.net/api/");

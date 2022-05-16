@@ -29,8 +29,17 @@ public class Tokenizer
 
         //var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        var result = await _encodingService.Encode(body.Text);
+        if (body != null && string.IsNullOrWhiteSpace(body.Text) == false)
+        {
+            var result = await _encodingService.Encode(body.Text);
 
-        return new OkObjectResult(result);
+            return new OkObjectResult(result);
+        }
+
+        return new OkObjectResult(new Models.Completions.EncodingResponse
+        {
+            Count = 0,
+            Tokens = new List<int>()
+        });
     }
 }
