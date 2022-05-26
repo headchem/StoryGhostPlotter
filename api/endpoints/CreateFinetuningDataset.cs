@@ -184,7 +184,8 @@ public class CreateFinetuningDataset
     {
         var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot);
 
-        if (string.IsNullOrWhiteSpace(promptSequenceText)) {
+        if (string.IsNullOrWhiteSpace(promptSequenceText))
+        {
             throw new Exception($"Incomplete story, empty sequence was found in \"{plot.Title}\" at target sequence \"{targetSequence}\".");
         }
 
@@ -224,7 +225,7 @@ public class CreateFinetuningDataset
     private async Task<List<Plot>> getTrainingPlots()
     {
         var container = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
-        var userId = "ef1494647e3f4fe69890dfb8b41431a1"; // jdparsons.dev@gmail.com - all of the finetuning datapoints have been added to this specific account (filter out the dedicated "TESTING" plot)
+        var userId = "f98f654a-f5fb-4a33-84d3-2498b8d4d348"; // jdparsons.dev@gmail.com - all of the finetuning datapoints have been added to this specific account (filter out the dedicated "TESTING" plot)
         var userResponse = await container.ReadItemAsync<StoryGhost.Models.User>(userId, new PartitionKey(userId));
         var existingUserObj = userResponse.Resource;
         // filter out deleted plots
@@ -239,7 +240,9 @@ public class CreateFinetuningDataset
             var plotResponse = await plotContainer.ReadItemAsync<Plot>(plotId, new PartitionKey(userId));
             var plotObj = plotResponse.Resource;
 
-            if (plotObj.Title.ToLower().Contains("testing") == false)
+            var cooldownSeq = plotObj.Sequences.Where(s => s.SequenceName.ToLower() == "cooldown").FirstOrDefault();
+
+            if (plotObj.Title.ToLower().Contains("testing") == false && cooldownSeq != null && !string.IsNullOrWhiteSpace(cooldownSeq.Text))
             {
                 results.Add(plotObj);
             }

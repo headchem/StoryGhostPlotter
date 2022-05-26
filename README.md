@@ -72,9 +72,15 @@ git pull
 "id": "43de282f30cf52c2ba73f71a4f28712a",
 "displayName": "testuser1",
 
+LOCALHOST
 "id": "ef1494647e3f4fe69890dfb8b41431a1",
 "displayName": "jdparsons.dev@gmail.com",
 
+AAD
+"id": "f98f654a-f5fb-4a33-84d3-2498b8d4d348",
+"displayName": "jdparsons.dev@gmail.com",
+
+GOOGLE
 "id": "6ba6b68eb0294af39340f256ac0bea3d",
 "displayName": "headchem@gmail.com",
 

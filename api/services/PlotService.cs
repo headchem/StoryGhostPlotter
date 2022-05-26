@@ -31,6 +31,8 @@ public class PlotService : IPlotService
 
     public async Task<Plot> CreateNewPlot(string userId, string userDisplayName, string newPlotName)
     {
+        newPlotName = newPlotName.Truncate(128);
+
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId, ["User"] = userDisplayName }))
         {
             // create new plot in cosmos

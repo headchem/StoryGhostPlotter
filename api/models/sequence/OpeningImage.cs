@@ -9,7 +9,7 @@ namespace StoryGhost.Models.Sequences;
 public class OpeningImage : ISequence
 {
     public string Name { get { return "Opening Image"; } }
-    public string EventsDescription { get { return "Present a brief snapshot of the world the Hero lives in, or the Hero's status quo life, and what they are missing. Establish the tone of the story, and hint at the problem to come."; } }
+    public string EventsDescription { get { return "Present a brief snapshot of the world the Hero lives in, or the Hero's status quo life, and what they are missing. Establish the tone of the story, or hint at the problem to come."; } }
     public string ContextDescription { get { return ""; } }
 
     public AdviceComponentsWrapper GetAdvice(List<string> genres, string problemTemplate, string heroArchetype, string dramaticQuestion)

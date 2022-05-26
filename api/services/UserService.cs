@@ -95,7 +95,7 @@ public class UserService : IUserService
         userObj.PlotReferences.Add(new PlotReference
         {
             PlotId = newPlot.Id,
-            DisplayName = newPlot.Title,
+            DisplayName = newPlot.Title.Truncate(128),
             IsDeleted = false
         });
 
