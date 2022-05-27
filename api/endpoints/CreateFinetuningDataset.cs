@@ -91,7 +91,7 @@ public class CreateFinetuningDataset
 
         var finetuningRows = new List<FinetuningRow>();
 
-        var plots = await getTrainingPlots();
+        var plots = await getTrainingPlots("character");
 
         foreach (var plot in plots)
         {
@@ -124,6 +124,16 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
+    private async Task<Plot> getPlot(Plot plot)
+    {
+        // get single Plot
+        var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
+        var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
+        var plotObj = plotResponse.Resource;
+
+        return plotObj;
+    }
+
     [FunctionName("CreateSequenceBlurbFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
     public async Task<IActionResult> CreateSequenceBlurbFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceBlurbFinetuningDataset")] HttpRequest req, ILogger log)
     {
@@ -132,7 +142,24 @@ public class CreateFinetuningDataset
 
         var finetuningRows = new List<FinetuningRow>();
 
-        var resultText = "blurb jsonl goes here";
+        var plots = await getTrainingPlots("blurb");
+
+        foreach (var plot in plots)
+        {
+            var plotObj = await getPlot(plot);
+
+            foreach (var targetSequence in allFinetuningSequenceNames)
+            {
+                var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence, "blurb");
+                if (prompt == "" || completion == "") continue;
+
+                finetuningRows.Add(getFinetuningRow(prompt, completion));
+            }
+        }
+
+        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
 
         var results = new
         {
@@ -150,18 +177,15 @@ public class CreateFinetuningDataset
 
         var finetuningRows = new List<FinetuningRow>();
 
-        var plots = await getTrainingPlots();
+        var plots = await getTrainingPlots("expanded summary");
 
         foreach (var plot in plots)
         {
-            // get single Plot
-            var plotContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
-            var plotResponse = await plotContainer.ReadItemAsync<Plot>(plot.Id, new PartitionKey(plot.UserId));
-            var plotObj = plotResponse.Resource;
+            var plotObj = await getPlot(plot);
 
             foreach (var targetSequence in allFinetuningSequenceNames)
             {
-                var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence);
+                var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence, "expanded summary");
                 if (prompt == "" || completion == "") continue;
 
                 finetuningRows.Add(getFinetuningRow(prompt, completion));
@@ -188,7 +212,24 @@ public class CreateFinetuningDataset
 
         var finetuningRows = new List<FinetuningRow>();
 
-        var resultText = "full jsonl goes here";
+        var plots = await getTrainingPlots("full");
+
+        foreach (var plot in plots)
+        {
+            var plotObj = await getPlot(plot);
+
+            foreach (var targetSequence in allFinetuningSequenceNames)
+            {
+                var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence, "full");
+                if (prompt == "" || completion == "") continue;
+
+                finetuningRows.Add(getFinetuningRow(prompt, completion));
+            }
+        }
+
+        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
 
         var results = new
         {
@@ -218,9 +259,9 @@ public class CreateFinetuningDataset
         "Cooldown",
     };
 
-    private (string, string) getSequencePromptAndCompletion(Plot plot, string targetSequence)
+    private (string, string) getSequencePromptAndCompletion(Plot plot, string targetSequence, string sequenceType)
     {
-        var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot);
+        var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot, sequenceType);
 
         if (targetSequence != "Opening Image" && string.IsNullOrWhiteSpace(promptSequenceText))
         {
@@ -234,16 +275,34 @@ public class CreateFinetuningDataset
         {
             return ("", "");
         }
-        var completionText = targetSeqObj.Text;
+        var completionText = "";
 
-        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText);
+        if (sequenceType == "blurb")
+        {
+            completionText = targetSeqObj.Blurb;
+        }
+        else if (sequenceType == "expanded summary")
+        {
+            completionText = targetSeqObj.Text;
+        }
+        else if (sequenceType == "full")
+        {
+            completionText = targetSeqObj.Full;
+        }
+        else
+        {
+            throw new Exception($"unknown sequenceType: {sequenceType}");
+        }
+
+
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText, sequenceType);
         var completion = targetSequence.ToUpper() + ": " + completionText.Trim();
 
         return (prompt, completion);
     }
 
     /// <summary>Given a targetSequence, return all sequence text up to but not including the target sequence.</summary>
-    public static string GetSequenceTextUpTo(string targetSequenceExclusive, Plot plot)
+    public static string GetSequenceTextUpTo(string targetSequenceExclusive, Plot plot, string sequenceType)
     {
         var result = "";
 
@@ -251,23 +310,37 @@ public class CreateFinetuningDataset
         {
             if (sequence.SequenceName == targetSequenceExclusive) return result;
 
-            result += sequenceToText(sequence);
+            result += sequenceToText(sequence, sequenceType);
         }
 
         //throw new Exception($"Incorrect targetSequenceExclusive: \"{targetSequenceExclusive}\"");
         return result;
     }
 
-    private static string sequenceToText(UserSequence sequence)
+    private static string sequenceToText(UserSequence sequence, string sequenceType)
     {
-        var results = "";
+        var results = $"{sequence.SequenceName.ToUpper()}: ";
 
-        results += $"{sequence.SequenceName.ToUpper()}: {sequence.Text}\n\n";
+        if (sequenceType == "blurb")
+        {
+            results += sequence.Blurb;
+        }
+        else if (sequenceType == "expanded summary")
+        {
+            results += sequence.Text;
+        }
+        else if (sequenceType == "full")
+        {
+            results += sequence.Full;
+        }
+
+        results += "\n\n";
 
         return results;
     }
 
-    private async Task<List<Plot>> getTrainingPlots()
+    ///<summary>Returns a list of Plots where only the PlotId and UserId are populated (the plot references)</summary>
+    private async Task<List<Plot>> getTrainingPlots(string sequenceType)
     {
         var container = _db.GetContainer(databaseId: "Plotter", containerId: "Users");
         var userId = "f98f654a-f5fb-4a33-84d3-2498b8d4d348"; // jdparsons.dev@gmail.com - all of the finetuning datapoints have been added to this specific account (filter out the dedicated "TESTING" plot)
@@ -287,7 +360,31 @@ public class CreateFinetuningDataset
 
             var cooldownSeq = plotObj.Sequences.Where(s => s.SequenceName.ToLower() == "cooldown").FirstOrDefault();
 
-            if (plotObj.Title.ToLower().Contains("testing") == false && cooldownSeq != null && !string.IsNullOrWhiteSpace(cooldownSeq.Text))
+            var cooldownHasContent = false;
+
+            if (sequenceType == "blurb")
+            {
+                cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Blurb);
+            }
+            else if (sequenceType == "expanded summary")
+            {
+                cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Text);
+            }
+            else if (sequenceType == "full")
+            {
+                cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Full);
+            }
+            else if (sequenceType == "character")
+            {
+                cooldownHasContent = true; // hardcoded because character doesn't care about the sequences
+            }
+            else
+            {
+                throw new Exception($"Unknwown sequenceType: {sequenceType}");
+            }
+
+
+            if (plotObj.Title.ToLower().Contains("testing") == false && cooldownSeq != null && cooldownHasContent)
             {
                 results.Add(plotObj);
             }

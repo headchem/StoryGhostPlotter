@@ -285,8 +285,8 @@ public class OpenAICompletionService : ICompletionService
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
-        var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot);
-        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText) + CreateFinetuningDataset.PromptSuffix;
+        var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "expanded summary");
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText, "expanded summary") + CreateFinetuningDataset.PromptSuffix;
 
         var openAIRequest = new OpenAICompletionsRequest
         {

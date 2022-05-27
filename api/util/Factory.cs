@@ -201,7 +201,7 @@ public static class Factory
     }
 
     /// <summary>returns a prompt tailored for the targetSequence given the plot and preceding sequence text</summary>
-    public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText)
+    public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText, string sequenceType)
     {
         var sequence = GetSequence(targetSequence);
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
