@@ -1,7 +1,17 @@
 import React from 'react'
 import ControlledTextArea from '../../../util/ControlledTextarea'
 
-const LimitedTextArea = ({ id, rows, cols, value, limit, curTokenCount, className, setValue, showCount, onFocus }) => {
+const LimitedTextArea = ({
+    id,
+    rows,
+    cols,
+    value,
+    limit,
+    //curTokenCount,
+    className,
+    setValue,
+    showCount,
+    onFocus }) => {
 
     const setTruncatedContent = React.useCallback(
         text => {

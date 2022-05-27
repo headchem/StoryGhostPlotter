@@ -3,7 +3,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
-import { getTokenCount } from "../../../util/Tokenizer";
+//import { getTokenCount } from "../../../util/Tokenizer";
 import SequenceAdvice from './SequenceAdvice'
 import SequenceBrainstorm from './SequenceBrainstorm'
 import SignUpMessage from './SignUpMessage'
@@ -273,9 +273,9 @@ const Sequence = ({
         }
     }
 
-    const [blurbTokenCount, setBlurbTokenCount] = useState(0)
-    const [expandedSummaryTokenCount, setExpandedSummaryTokenCount] = useState(0)
-    const [fullTokenCount, setFullTokenCount] = useState(0)
+    // const [blurbTokenCount, setBlurbTokenCount] = useState(0)
+    // const [expandedSummaryTokenCount, setExpandedSummaryTokenCount] = useState(0)
+    // const [fullTokenCount, setFullTokenCount] = useState(0)
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
@@ -288,26 +288,26 @@ const Sequence = ({
         deleteSequence(sequence.sequenceName)
     }
 
-    const updateBlurbTokenCount = async () => {
-        const text = sequence.blurb ? sequence.blurb : ''
+    // const updateBlurbTokenCount = async () => {
+    //     const text = sequence.blurb ? sequence.blurb : ''
 
-        const tokenCount = await getTokenCount(text)
-        setBlurbTokenCount(tokenCount)
-    }
+    //     const tokenCount = await getTokenCount(text)
+    //     setBlurbTokenCount(tokenCount)
+    // }
 
-    const updateExpandedSummaryTokenCount = async () => {
-        const text = sequence.text ? sequence.text : ''
+    // const updateExpandedSummaryTokenCount = async () => {
+    //     const text = sequence.text ? sequence.text : ''
 
-        const tokenCount = await getTokenCount(text)
-        setExpandedSummaryTokenCount(tokenCount)
-    }
+    //     const tokenCount = await getTokenCount(text)
+    //     setExpandedSummaryTokenCount(tokenCount)
+    // }
 
-    const updateFullTokenCount = async () => {
-        const text = sequence.full ? sequence.full : ''
+    // const updateFullTokenCount = async () => {
+    //     const text = sequence.full ? sequence.full : ''
 
-        const tokenCount = await getTokenCount(text)
-        setFullTokenCount(tokenCount)
-    }
+    //     const tokenCount = await getTokenCount(text)
+    //     setFullTokenCount(tokenCount)
+    // }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
@@ -366,7 +366,7 @@ const Sequence = ({
                                 setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
                                 rows={blurbLimits[sequence.sequenceName]['rows']}
                                 limit={blurbLimits[sequence.sequenceName]['max']}
-                                curTokenCount={blurbTokenCount}
+                                //curTokenCount={blurbTokenCount}
                                 showCount={true}
                             />
                         </div>
@@ -383,7 +383,7 @@ const Sequence = ({
                                 setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
                                 rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
                                 limit={expandedSummaryLimits[sequence.sequenceName]['max']}
-                                curTokenCount={expandedSummaryTokenCount}
+                                //curTokenCount={expandedSummaryTokenCount}
                                 showCount={true}
                             />
                         </div>
@@ -400,7 +400,7 @@ const Sequence = ({
                                 setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
                                 rows={fullLimits[sequence.sequenceName]['rows']}
                                 limit={fullLimits[sequence.sequenceName]['max']}
-                                curTokenCount={fullTokenCount}
+                                //curTokenCount={fullTokenCount}
                                 showCount={true}
                             />
                         </div>

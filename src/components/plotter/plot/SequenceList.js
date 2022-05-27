@@ -1,6 +1,6 @@
 import React from 'react'
 import Sequence from './Sequence'
-import SequenceBrainstormAll from './SequenceBrainstormAll';
+//import SequenceBrainstormAll from './SequenceBrainstormAll';
 
 const SequenceList = ({
     sequenceType,
