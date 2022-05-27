@@ -86,10 +86,7 @@ public class DummyCompletionService : ICompletionService
             }
         }
 
-        //var prompt = Factory.GetSequencePrompt(sequenceName, story);
-
-        var promptSequenceText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, story, "expanded summary");
-        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, promptSequenceText, "expanded summary");
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, story, "expanded summary");
 
         var result = new CompletionResponse();
 

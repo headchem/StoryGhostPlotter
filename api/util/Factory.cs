@@ -200,15 +200,38 @@ public static class Factory
         };
     }
 
+    ///<summary>Filters out characters that aren't mentioned by name in the Blurb.</summary>
+    private static List<Character> getCharactersMentioned(string blurb, List<Character> characters)
+    {
+        if (blurb == null) {
+            blurb = "";
+        }
+
+        var mentioned = new List<Character>();
+
+        foreach (var character in characters)
+        {
+            if (blurb.Contains(character.Name))
+            {
+                mentioned.Add(character);
+            }
+        }
+
+        return mentioned;
+    }
+
     /// <summary>returns a prompt tailored for the targetSequence given the plot and preceding sequence text</summary>
-    public static string GetSequencePartPrompt(string targetSequence, Plot plot, string promptSequenceText, string sequenceType)
+    public static string GetSequencePartPrompt(string targetSequence, Plot plot, string sequenceType)
     {
         var sequence = GetSequence(targetSequence);
         var problemTemplate = Factory.GetProblemTemplate(plot.ProblemTemplate);
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
         var genres = Factory.GetGenres(plot.Genres);
 
-        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
+        var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
+        var charactersMentioned = getCharactersMentioned(curSequence.Blurb, plot.Characters);
+
+        var heroCharacter = charactersMentioned.Where(c => c.IsHero == true).FirstOrDefault();
         var heroCharacterContribution = "";
         var heroPersonalityDescription = "";
         var heroShadowSide = "";
@@ -216,18 +239,14 @@ public static class Factory
         if (heroCharacter != null)
         {
             var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
-            heroShadowSide = heroArchetype.ShadowSide;
+            heroShadowSide = "The protagonist has character flaws: " + heroArchetype.ShadowSide;
             heroPersonalityDescription = PersonalityDescription.GetCharacterPrompt(heroCharacter);
             heroCharacterContribution = heroPersonalityDescription + $". {heroCharacter.Name} is the protagonist of the story.";
             //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
-            heroCharacterContribution += $" Additional character description: {heroCharacter.Description}";
-        }
-        else
-        {
-            throw new Exception("All plots must have a designated protagonist.");
+            heroCharacterContribution += $" {heroCharacter.Description}";
         }
 
-        var nonHeroCharacters = plot.Characters.Where(c => c.IsHero == false).ToList();
+        var nonHeroCharacters = charactersMentioned.Where(c => c.IsHero == false).ToList();
         var nonHeroCharacterContributions = "";
 
         foreach (var character in nonHeroCharacters)
@@ -235,7 +254,7 @@ public static class Factory
             var archetype = Factory.GetArchetype(character.Archetype);
             nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $". {character.Name} is a supporting character in this story.";
             //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
-            nonHeroCharacterContributions += $" Additional character description: {character.Description}";
+            nonHeroCharacterContributions += $" {character.Description}";
         }
 
         nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
@@ -247,36 +266,48 @@ public static class Factory
 
         var sequenceAdvice = sequence.ContextDescription + " " + sequence.EventsDescription;
 
-        var adviceWrapper = Factory.GetSequenceAdvice(sequence, new SequenceAdviceRequest
+        var seqAdviceRequest = new SequenceAdviceRequest
         {
             Genres = plot.Genres,
             ProblemTemplate = plot.ProblemTemplate,
-            HeroArchetype = heroCharacter.Archetype,
+            HeroArchetype = heroCharacter == null ? "" : heroCharacter.Archetype,
             DramaticQuestion = plot.DramaticQuestion
-        });
+        };
 
+        var adviceWrapper = Factory.GetSequenceAdvice(sequence, seqAdviceRequest);
 
-        promptSequenceText = promptSequenceText.Trim();
+        var prompt = sequenceType switch
+        {
+            "blurb" => constructBlurbPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
+            "expanded summary" => constructExpandedSummaryPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
+            "full" => constructFullPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
+            _ => throw new Exception($"Unknown sequenceType: {sequenceType}")
+        };
 
-        var prompt = "";
+        return prompt;
+    }
 
-        prompt = targetSequence switch
+    private static string constructBlurbPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    {
+        var prevBlurbText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "blurb").Trim();
+
+        var prompt = targetSequence switch
         {
             "Opening Image" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
-            "Setup" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{promptSequenceText}",
-            "Theme Stated" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} The protagonist has character flaws: {heroShadowSide} The following events lead up to posing the thematic question: {promptSequenceText}",
-            "Catalyst" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "Debate" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "B Story" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "Break Into Two" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "Bad Guys Close In" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. The protagonist's backstory is: {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{promptSequenceText}",
-            "All Hope Is Lost" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
-            "Dark Night Of The Soul" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
-            "Break Into Three" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
-            "Climax" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
-            "Cooldown" => $"The protagonist's backstory is: {heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{promptSequenceText}",
+            "Setup" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{prevBlurbText}",
+            "Theme Stated" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroShadowSide}\n\n{prevBlurbText}",
+            "Catalyst" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "Debate" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "B Story" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "Break Into Two" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "Bad Guys Close In" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {prevBlurbText}",
+            "All Hope Is Lost" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Dark Night Of The Soul" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Break Into Three" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Climax" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Cooldown" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
 
@@ -284,12 +315,63 @@ public static class Factory
 
         if (targetSequence == "Opening Image")
         {
-            prompt += $" As an award-winning literary author, creatively write the events of the {targetSequence.ToUpper()} moment per the given advice.";
-        } else {
-            prompt += $" As an award-winning literary author, creatively write the events of the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with previous events.";
+            prompt += $"\n\nWrite a short logical description of what happens in the {targetSequence.ToUpper()} per the given advice.";
+        }
+        else
+        {
+            prompt += $"\n\nWrite a short logical description of what happens in the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with previous events.";
         }
 
         return prompt;
+    }
+
+    private static string constructExpandedSummaryPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    {
+        var prevBlurbText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "blurb").Trim();
+        var prevExpandedSummaryText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "expanded summary").Trim();
+
+        // TODO: only include character personality, and backstories if that character name appears in the current sequence BLURB. Otherwise, omit it because it doesn't contribute any important information.
+
+        var prompt = targetSequence switch
+        {
+            "Opening Image" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
+            "Setup" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions} \n\n{prevBlurbText}",
+            "Theme Stated" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {heroShadowSide}\n\n{prevBlurbText}",
+            "Catalyst" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "Debate" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "B Story" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "Break Into Two" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "Fun And Games" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "Midpoint" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "Bad Guys Close In" => $"Plot teaser: {plot.LogLineDescription} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n. {heroCharacterContribution} {nonHeroCharacterContributions}\n\n{prevBlurbText}",
+            "All Hope Is Lost" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Dark Night Of The Soul" => $"Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Break Into Three" => $"{heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Climax" => $"{heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Cooldown" => $"{heroCharacterContribution} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
+        };
+
+        prompt = cleanPrompt(prompt);
+
+        if (targetSequence == "Opening Image")
+        {
+            prompt += $"\n\nAs an award-winning literary author, creatively expand upon the events of the {targetSequence.ToUpper()} moment per the given advice.";
+        }
+        else
+        {
+            prompt += $"\n\nAs an award-winning literary author, creatively expand upon the events of the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with previous events.";
+        }
+
+        var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
+        prompt += $" The short logical description of the {targetSequence.ToUpper()} moment is: {curSequence.Blurb}";
+
+        return prompt;
+    }
+
+    private static string constructFullPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    {
+        return "TODO!";
     }
 
     private static string cleanPrompt(string input)

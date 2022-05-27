@@ -117,17 +117,20 @@ const SequenceBrainstorm = (
                     }
                     {
                         brainstormDisabled() === false &&
-                        <AICompletions
-                            userInfo={userInfo}
-                            isLoading={isCompletionLoading}
-                            onGenerateCompletion={fetchCompletion}
-                            completions={completions}
-                            onDeleteBrainstorm={onDeleteBrainstorm}
-                            showTemperature={true}
-                            temperature={temperature}
-                            setTemperature={setTemperature}
-                            tokensRemaining={tokensRemaining}
-                        />
+                        <>
+                            <p>Select the brainstorm that best adheres to the advice for this sequence.</p>
+                            <AICompletions
+                                userInfo={userInfo}
+                                isLoading={isCompletionLoading}
+                                onGenerateCompletion={fetchCompletion}
+                                completions={completions}
+                                onDeleteBrainstorm={onDeleteBrainstorm}
+                                showTemperature={true}
+                                temperature={temperature}
+                                setTemperature={setTemperature}
+                                tokensRemaining={tokensRemaining}
+                            />
+                        </>
                     }
                 </>
             }

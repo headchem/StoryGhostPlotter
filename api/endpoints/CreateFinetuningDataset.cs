@@ -295,7 +295,7 @@ public class CreateFinetuningDataset
         }
 
 
-        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText, sequenceType);
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, sequenceType);
         var completion = targetSequence.ToUpper() + ": " + completionText.Trim();
 
         return (prompt, completion);
