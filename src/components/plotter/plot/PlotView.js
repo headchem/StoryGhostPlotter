@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 
 
 const PlotView = (
@@ -93,13 +95,38 @@ const PlotView = (
                     {
                         sequences &&
                         <>
-                            {
-                                sequences.map((sequence) => (
-                                    <span key={sequence.sequenceName}>
-                                        <p className='fs-5' title={sequence.sequenceName}>{sequence.text}</p>
-                                    </span>
-                                ))
-                            }
+
+
+                            <Tabs defaultActiveKey="blurbs" className="mb-3">
+                                <Tab eventKey="blurbs" title="Blurbs">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <span key={sequence.sequenceName}>
+                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.blurb}</p>
+                                            </span>
+                                        ))
+                                    }
+                                </Tab>
+                                <Tab eventKey="expandedSummaries" title="Expanded Summaries">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <span key={sequence.sequenceName}>
+                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.text}</p>
+                                            </span>
+                                        ))
+                                    }
+                                </Tab>
+                                <Tab eventKey="full" title="Full">
+                                    {
+                                        sequences.map((sequence) => (
+                                            <span key={sequence.sequenceName}>
+                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.full}</p>
+                                            </span>
+                                        ))
+                                    }
+                                </Tab>
+                            </Tabs>
+
                         </>
                     }
                 </div>

@@ -3,6 +3,7 @@ import Sequence from './Sequence'
 import SequenceBrainstormAll from './SequenceBrainstormAll';
 
 const SequenceList = ({
+    sequenceType,
     plotId,
     sequences,
     userInfo,
@@ -18,7 +19,9 @@ const SequenceList = ({
     characters,
     heroCharacterArchetype,
     dramaticQuestion,
-    updateSequenceCompletions,
+    updateBlurbCompletions,
+    updateExpandedSummaryCompletions,
+    updateFullCompletions,
     setSequences,
     tokensRemaining
 }) => {
@@ -134,7 +137,7 @@ const SequenceList = ({
 
     return (
         <>
-            {
+            {/* {
                 userInfo && userInfo.userRoles.includes('customer') &&
                 <SequenceBrainstormAll
                     plotId={plotId}
@@ -149,12 +152,13 @@ const SequenceList = ({
                     setSequences={setSequences}
                     tokensRemaining={tokensRemaining}
                 />
-            }
+            } */}
 
             {
                 sequences && sequences
                     .map((sequence) => (
                         <Sequence
+                            sequenceType={sequenceType}
                             key={sequence.sequenceName}
                             userInfo={userInfo}
                             plotId={plotId}
@@ -177,7 +181,9 @@ const SequenceList = ({
                             dramaticQuestion={dramaticQuestion}
                             logLineDescription={logLineDescription}
 
-                            updateSequenceCompletions={updateSequenceCompletions}
+                            updateBlurbCompletions={updateBlurbCompletions}
+                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                            updateFullCompletions={updateFullCompletions}
 
                             tokensRemaining={tokensRemaining}
                         />

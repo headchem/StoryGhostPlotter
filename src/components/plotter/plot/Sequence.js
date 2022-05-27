@@ -12,6 +12,7 @@ const Sequence = ({
     userInfo,
     plotId,
 
+    sequenceType,
     genres,
     problemTemplate,
     keywords,
@@ -28,7 +29,9 @@ const Sequence = ({
     updateFull,
     insertSequence,
     deleteSequence,
-    updateSequenceCompletions,
+    updateBlurbCompletions,
+    updateExpandedSummaryCompletions,
+    updateFullCompletions,
     allowed,
     tokensRemaining
 }) => {
@@ -193,79 +196,79 @@ const Sequence = ({
 
     const fullLimits = {
         'Opening Image': {
-            'max': 400,
+            'max': 4000,
             'rows': 4
         },
         'Setup': {
-            'max': 900,
+            'max': 9000,
             'rows': 9
         },
         'Theme Stated': {
-            'max': 500,
+            'max': 5000,
             'rows': 6
         },
         'Setup (Continued)': {
-            'max': 500,
+            'max': 5000,
             'rows': 7
         },
         'Catalyst': {
-            'max': 500,
+            'max': 5000,
             'rows': 7
         },
         'Debate': {
-            'max': 800,
+            'max': 8000,
             'rows': 11
         },
         'B Story': {
-            'max': 400,
+            'max': 4000,
             'rows': 5
         },
         'Debate (Continued)': {
-            'max': 300,
+            'max': 3000,
             'rows': 5
         },
         'Break Into Two': {
-            'max': 650,
+            'max': 6500,
             'rows': 8
         },
         'Fun And Games': {
-            'max': 1700,
+            'max': 17000,
             'rows': 22
         },
         'First Pinch Point': {
-            'max': 150,
+            'max': 1500,
             'rows': 2
         },
         'Midpoint': {
-            'max': 500,
+            'max': 5000,
             'rows': 6
         },
         'Bad Guys Close In': {
-            'max': 1000,
+            'max': 10000,
             'rows': 14
         },
         'Second Pinch Point': {
-            'max': 350,
+            'max': 3500,
             'rows': 5
         },
         'All Hope Is Lost': {
-            'max': 500,
+            'max': 5000,
             'rows': 7
         },
         'Dark Night Of The Soul': {
-            'max': 750,
+            'max': 7500,
             'rows': 10
         },
         'Break Into Three': {
-            'max': 600,
+            'max': 6000,
             'rows': 8
         },
         'Climax': {
-            'max': 1100,
+            'max': 11000,
             'rows': 14
         },
         'Cooldown': {
-            'max': 600,
+            'max': 6000,
             'rows': 8
         }
     }
@@ -309,9 +312,10 @@ const Sequence = ({
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            updateBlurbTokenCount()
-            updateExpandedSummaryTokenCount()
-            updateFullTokenCount()
+            // removing, too noisy, use simpler character counts as the limit
+            //updateBlurbTokenCount()
+            //updateExpandedSummaryTokenCount()
+            //updateFullTokenCount()
         }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -333,7 +337,7 @@ const Sequence = ({
                 <div className='col-md-7'>
                     <h4 className="float-start">{sequence.sequenceName}</h4>
                     {
-                        sequence.sequenceName !== 'Opening Image' &&
+                        sequence.sequenceName !== 'Opening Image' && sequenceType === 'blurb' &&
                         <div className='float-end'>
                             {
                                 showConfirmDelete === false &&
@@ -351,52 +355,61 @@ const Sequence = ({
                         </div>
                     }
 
-                    <div className="float-start w-100 pt-3">
-                        <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                        <LimitedTextArea
-                            id={sequence.sequenceName + '_blurb_textarea'}
-                            className="form-control"
-                            value={sequence.blurb}
-                            setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
-                            rows={blurbLimits[sequence.sequenceName]['rows']}
-                            limit={blurbLimits[sequence.sequenceName]['max']}
-                            curTokenCount={blurbTokenCount}
-                            showCount={true}
-                        />
-                    </div>
+                    {
+                        sequenceType === 'blurb' &&
+                        <div className="float-start w-100 pt-3">
+                            <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <LimitedTextArea
+                                id={sequence.sequenceName + '_blurb_textarea'}
+                                className="form-control"
+                                value={sequence.blurb}
+                                setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
+                                rows={blurbLimits[sequence.sequenceName]['rows']}
+                                limit={blurbLimits[sequence.sequenceName]['max']}
+                                curTokenCount={blurbTokenCount}
+                                showCount={true}
+                            />
+                        </div>
+                    }
 
-                    <div className="float-start w-100 pt-3">
-                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                        <LimitedTextArea
-                            id={sequence.sequenceName + '_expanded_summary_textarea'}
-                            className="form-control"
-                            value={sequence.text}
-                            setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
-                            rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
-                            limit={expandedSummaryLimits[sequence.sequenceName]['max']}
-                            curTokenCount={expandedSummaryTokenCount}
-                            showCount={true}
-                        />
-                    </div>
+                    {
+                        sequenceType === 'expandedSummary' &&
+                        <div className="float-start w-100 pt-3">
+                            <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <LimitedTextArea
+                                id={sequence.sequenceName + '_expanded_summary_textarea'}
+                                className="form-control"
+                                value={sequence.text}
+                                setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
+                                rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
+                                limit={expandedSummaryLimits[sequence.sequenceName]['max']}
+                                curTokenCount={expandedSummaryTokenCount}
+                                showCount={true}
+                            />
+                        </div>
+                    }
 
-                    {/* <div className="float-start w-100 pt-3">
-                        <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                        <LimitedTextArea
-                            id={sequence.sequenceName + '_full_textarea'}
-                            className="form-control"
-                            value={sequence.full}
-                            setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
-                            rows={fullLimits[sequence.sequenceName]['rows']}
-                            limit={fullLimits[sequence.sequenceName]['max']}
-                            curTokenCount={fullTokenCount}
-                            showCount={true}
-                        />
-                    </div> */}
+                    {
+                        sequenceType === 'full' &&
+                        <div className="float-start w-100 pt-3">
+                            <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <LimitedTextArea
+                                id={sequence.sequenceName + '_full_textarea'}
+                                className="form-control"
+                                value={sequence.full}
+                                setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
+                                rows={fullLimits[sequence.sequenceName]['rows']}
+                                limit={fullLimits[sequence.sequenceName]['max']}
+                                curTokenCount={fullTokenCount}
+                                showCount={true}
+                            />
+                        </div>
+                    }
 
                 </div>
                 <div className='col-md-5'>
 
-                    <Accordion defaultActiveKey={['0']} alwaysOpen>
+                    <Accordion alwaysOpen>
 
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Advice</Accordion.Header>
@@ -412,52 +425,147 @@ const Sequence = ({
                                 />
                             </Accordion.Body>
                         </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Brainstorm with AI</Accordion.Header>
-                            <Accordion.Body>
-                                {
-                                    <div className='row'>
-                                        <div className='col'>
-                                            {
-                                                userInfo && userInfo.userRoles.includes('customer') &&
-                                                <>
-                                                    <p>Based on the log line, characters, and previous events, ask the AI to brainstorm for {sequence.sequenceName}.</p>
-                                                    <SequenceBrainstorm
-                                                        userInfo={userInfo}
-                                                        plotId={plotId}
-                                                        logLineDescription={logLineDescription}
-                                                        genres={genres}
-                                                        problemTemplate={problemTemplate}
-                                                        dramaticQuestion={dramaticQuestion}
-                                                        keywords={keywords}
-                                                        sequences={sequences}
-                                                        characters={characters}
-                                                        completions={!sequence['completions'] ? [] : sequence['completions']}
-                                                        targetSequence={sequence.sequenceName}
-                                                        updateSequenceCompletions={updateSequenceCompletions}
-                                                        tokensRemaining={tokensRemaining}
-                                                    />
-                                                </>
-                                            }
-                                            {
-                                                (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                                                <>
-                                                    <SignUpMessage />
-                                                </>
-                                            }
+                        {
+                            sequenceType === 'blurb' &&
+                            <Accordion.Item eventKey="1">
+                                <Accordion.Header>Brainstorm Blurb with AI</Accordion.Header>
+                                <Accordion.Body>
+                                    {
+                                        <div className='row'>
+                                            <div className='col'>
+                                                {
+                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    <>
+                                                        <p>Based on the log line, characters, and previous events, ask the AI to brainstorm a blurb for {sequence.sequenceName}.</p>
+                                                        <SequenceBrainstorm
+                                                            userInfo={userInfo}
+                                                            plotId={plotId}
+                                                            logLineDescription={logLineDescription}
+                                                            genres={genres}
+                                                            problemTemplate={problemTemplate}
+                                                            dramaticQuestion={dramaticQuestion}
+                                                            keywords={keywords}
+                                                            sequences={sequences}
+                                                            characters={characters}
+                                                            completions={!sequence['blurbCompletions'] ? [] : sequence['blurbCompletions']}
+                                                            targetSequence={sequence.sequenceName}
+                                                            updateSequenceCompletions={updateBlurbCompletions}
+                                                            completionURL={'GenerateBlurb'}
+                                                            textPropName='blurb'
+                                                            tokensRemaining={tokensRemaining}
+                                                        />
+                                                    </>
+                                                }
+                                                {
+                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                                                    <>
+                                                        <SignUpMessage />
+                                                    </>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
-                                }
-                            </Accordion.Body>
-                        </Accordion.Item>
+                                    }
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        }
+                        {
+                            sequenceType === 'expandedSummary' &&
+                            <Accordion.Item eventKey="2">
+                                <Accordion.Header>Brainstorm Expanded Summary with AI</Accordion.Header>
+                                <Accordion.Body>
+                                    {
+                                        <div className='row'>
+                                            <div className='col'>
+                                                {
+                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    <>
+                                                        <p>Based on the log line, characters, and previous events, ask the AI to brainstorm an expanded summary for {sequence.sequenceName}.</p>
+                                                        <SequenceBrainstorm
+                                                            userInfo={userInfo}
+                                                            plotId={plotId}
+                                                            logLineDescription={logLineDescription}
+                                                            genres={genres}
+                                                            problemTemplate={problemTemplate}
+                                                            dramaticQuestion={dramaticQuestion}
+                                                            keywords={keywords}
+                                                            sequences={sequences}
+                                                            characters={characters}
+                                                            completions={!sequence['completions'] ? [] : sequence['completions']}
+                                                            targetSequence={sequence.sequenceName}
+                                                            updateSequenceCompletions={updateExpandedSummaryCompletions}
+                                                            completionURL={'GenerateExpandedSummary'}
+                                                            textPropName='text'
+                                                            tokensRemaining={tokensRemaining}
+                                                        />
+                                                    </>
+                                                }
+                                                {
+                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                                                    <>
+                                                        <SignUpMessage />
+                                                    </>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        }
+                        {
+                            sequenceType === 'full' &&
+                            <Accordion.Item eventKey="3">
+                                <Accordion.Header>Brainstorm Full with AI</Accordion.Header>
+                                <Accordion.Body>
+                                    {
+                                        <div className='row'>
+                                            <div className='col'>
+                                                {
+                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    <>
+                                                        <p>Based on the log line, characters, and previous events, ask the AI to brainstorm a full screenplay for {sequence.sequenceName}.</p>
+                                                        <SequenceBrainstorm
+                                                            userInfo={userInfo}
+                                                            plotId={plotId}
+                                                            logLineDescription={logLineDescription}
+                                                            genres={genres}
+                                                            problemTemplate={problemTemplate}
+                                                            dramaticQuestion={dramaticQuestion}
+                                                            keywords={keywords}
+                                                            sequences={sequences}
+                                                            characters={characters}
+                                                            completions={!sequence['fullCompletions'] ? [] : sequence['fullCompletions']}
+                                                            targetSequence={sequence.sequenceName}
+                                                            updateSequenceCompletions={updateFullCompletions}
+                                                            completionURL={'GenerateFull'}
+                                                            textPropName='full'
+                                                            tokensRemaining={tokensRemaining}
+                                                        />
+                                                    </>
+                                                }
+                                                {
+                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
+                                                    <>
+                                                        <SignUpMessage />
+                                                    </>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        }
                     </Accordion>
                 </div>
             </div>
-            <div className='row pb-3 pt-3'>
-                {
-                    NextSequencesButtonGroupMemo
-                }
-            </div>
+            {
+                sequenceType === 'blurb' &&
+
+                <div className='row pb-3 pt-3'>
+                    {
+                        NextSequencesButtonGroupMemo
+                    }
+                </div>
+            }
         </>
     )
 }

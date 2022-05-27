@@ -13,7 +13,6 @@ using StoryGhost.Models;
 using StoryGhost.Models.Completions;
 using StoryGhost.Util;
 using StoryGhost.LogLine;
-using StoryGhost.Util;
 
 namespace StoryGhost.Services;
 
@@ -65,9 +64,19 @@ public class DummyCompletionService : ICompletionService
         };
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
+        // TODO: check if tokens exist, deduct tokens
+        var result = new CompletionResponse();
 
+        result.Prompt = "TODO";
+        result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
+
+        return result;
+    }
+
+    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
             var tokensRemaining = await _userService.GetTokensRemaining(userId);
@@ -85,7 +94,7 @@ public class DummyCompletionService : ICompletionService
         var result = new CompletionResponse();
 
         result.Prompt = prompt;
-        result.Completion = "AI SEQUENCE completion for " + targetSequence + " goes here...";
+        result.Completion = "AI EXPANDED SUMMARY completion for " + targetSequence + " goes here...";
 
         var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
         var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
@@ -93,6 +102,17 @@ public class DummyCompletionService : ICompletionService
         var totalTokens = promptTokenCount + completionTokenCount;
 
         await _userService.DeductTokens(userId, totalTokens);
+
+        return result;
+    }
+
+    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    {
+        // TODO: check if tokens exist, deduct tokens
+        var result = new CompletionResponse();
+
+        result.Prompt = "TODO";
+        result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
         return result;
     }
