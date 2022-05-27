@@ -58,11 +58,11 @@ const Sequence = ({
             'rows': 2
         },
         'Debate': {
-            'max': 300,
+            'max': 350,
             'rows': 3
         },
         'B Story': {
-            'max': 100,
+            'max': 150,
             'rows': 2
         },
         'Debate (Continued)': {
@@ -86,7 +86,7 @@ const Sequence = ({
             'rows': 2
         },
         'Bad Guys Close In': {
-            'max': 300,
+            'max': 400,
             'rows': 4
         },
         'Second Pinch Point': {
@@ -94,11 +94,11 @@ const Sequence = ({
             'rows': 2
         },
         'All Hope Is Lost': {
-            'max': 200,
-            'rows': 2
+            'max': 300,
+            'rows': 3
         },
         'Dark Night Of The Soul': {
-            'max': 250,
+            'max': 350,
             'rows': 4
         },
         'Break Into Three': {
@@ -106,7 +106,7 @@ const Sequence = ({
             'rows': 2
         },
         'Climax': {
-            'max': 300,
+            'max': 400,
             'rows': 4
         },
         'Cooldown': {
@@ -376,6 +376,7 @@ const Sequence = ({
                         sequenceType === 'expandedSummary' &&
                         <div className="float-start w-100 pt-3">
                             <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <p>{sequence.blurb}</p>
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_expanded_summary_textarea'}
                                 className="form-control"
@@ -393,6 +394,7 @@ const Sequence = ({
                         sequenceType === 'full' &&
                         <div className="float-start w-100 pt-3">
                             <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <p>{sequence.text}</p>
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_full_textarea'}
                                 className="form-control"
