@@ -10,9 +10,24 @@ public class UserSequence
     [JsonPropertyName("sequenceName")]
     public string SequenceName { get; set; }
 
+    [JsonPropertyName("blurb")]
+    public string Blurb { get; set; }
+
+    ///<summary>This is the expanded summary</summary>
     [JsonPropertyName("text")]
     public string Text { get; set; }
 
+    [JsonPropertyName("full")]
+    public string Full { get; set; }
+
+
+    [JsonPropertyName("blurbCompletions")]
+    public List<CompletionResponse> BlurbCompletions { get; set; }
+
+    ///<summary>These are the completions for the expanded summary</summary>
     [JsonPropertyName("completions")]
     public List<CompletionResponse> Completions { get; set; }
+
+    [JsonPropertyName("fullCompletions")]
+    public List<CompletionResponse> FullCompletions { get; set; }
 }

@@ -7,7 +7,9 @@ const SequenceList = ({
     sequences,
     userInfo,
     logLineDescription,
-    updateSequenceEventsText,
+    updateBlurb,
+    updateExpandedSummary,
+    updateFull,
     insertSequence,
     deleteSequence,
     genres,
@@ -158,7 +160,9 @@ const SequenceList = ({
                             plotId={plotId}
                             sequence={sequence}
                             sequences={sequences}
-                            updateEventsText={updateSequenceEventsText}
+                            updateBlurb={updateBlurb}
+                            updateExpandedSummary={updateExpandedSummary}
+                            updateFull={updateFull}
 
                             insertSequence={insertSequence}
                             deleteSequence={deleteSequence}

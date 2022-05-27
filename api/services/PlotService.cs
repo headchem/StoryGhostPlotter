@@ -144,11 +144,23 @@ public class PlotService : IPlotService
         {
             foreach (var sequence in plot.Sequences)
             {
+                if (sequence.BlurbCompletions != null)
+                {
+                    sequence.BlurbCompletions = sequence.BlurbCompletions.Take(brainstormLimit).ToList();
+                }
+                sequence.Blurb = sequence.Blurb.Truncate(500);
+
                 if (sequence.Completions != null)
                 {
                     sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
                 }
                 sequence.Text = sequence.Text.Truncate(2000);
+
+                if (sequence.FullCompletions != null)
+                {
+                    sequence.FullCompletions = sequence.FullCompletions.Take(brainstormLimit).ToList();
+                }
+                sequence.Full = sequence.Full.Truncate(50000); // TODO: is this this right limit?
             }
         }
 

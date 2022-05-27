@@ -173,10 +173,26 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const updateSequenceEventsText = (sequenceName, text) => {
+    const updateBlurb = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, blurb: text } : sequence
+            )
+        )
+    }
+
+    const updateExpandedSummary = (sequenceName, text) => {
         setSequences(
             sequences.map(
                 (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, text: text } : sequence
+            )
+        )
+    }
+
+    const updateFull = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, full: text } : sequence
             )
         )
     }
@@ -699,7 +715,9 @@ const PlotHome = (
                                                 logLineDescription={logLineDescription}
                                                 setLastFocusedSequenceName={setLastFocusedSequenceName}
                                                 lastFocusedSequenceName={lastFocusedSequenceName}
-                                                updateSequenceEventsText={updateSequenceEventsText}
+                                                updateBlurb={updateBlurb}
+                                                updateExpandedSummary={updateExpandedSummary}
+                                                updateFull={updateFull}
                                                 insertSequence={insertSequence}
                                                 deleteSequence={deleteSequence}
                                                 genres={genres}

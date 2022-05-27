@@ -23,7 +23,9 @@ const Sequence = ({
     sequence,
     sequences,
 
-    updateEventsText,
+    updateBlurb,
+    updateExpandedSummary,
+    updateFull,
     insertSequence,
     deleteSequence,
     updateSequenceCompletions,
@@ -31,7 +33,86 @@ const Sequence = ({
     tokensRemaining
 }) => {
 
-    const textLimits = {
+    const blurbLimits = {
+        'Opening Image': {
+            'max': 200,
+            'rows': 2
+        },
+        'Setup': {
+            'max': 400,
+            'rows': 4
+        },
+        'Theme Stated': {
+            'max': 200,
+            'rows': 2
+        },
+        'Setup (Continued)': {
+            'max': 200,
+            'rows': 2
+        },
+        'Catalyst': {
+            'max': 200,
+            'rows': 2
+        },
+        'Debate': {
+            'max': 300,
+            'rows': 3
+        },
+        'B Story': {
+            'max': 100,
+            'rows': 2
+        },
+        'Debate (Continued)': {
+            'max': 100,
+            'rows': 1
+        },
+        'Break Into Two': {
+            'max': 250,
+            'rows': 2
+        },
+        'Fun And Games': {
+            'max': 300,
+            'rows': 5
+        },
+        'First Pinch Point': {
+            'max': 100,
+            'rows': 2
+        },
+        'Midpoint': {
+            'max': 200,
+            'rows': 2
+        },
+        'Bad Guys Close In': {
+            'max': 300,
+            'rows': 4
+        },
+        'Second Pinch Point': {
+            'max': 150,
+            'rows': 2
+        },
+        'All Hope Is Lost': {
+            'max': 200,
+            'rows': 2
+        },
+        'Dark Night Of The Soul': {
+            'max': 250,
+            'rows': 4
+        },
+        'Break Into Three': {
+            'max': 200,
+            'rows': 2
+        },
+        'Climax': {
+            'max': 300,
+            'rows': 4
+        },
+        'Cooldown': {
+            'max': 200,
+            'rows': 2
+        }
+    }
+
+    const expandedSummaryLimits = {
         'Opening Image': {
             'max': 400,
             'rows': 4
@@ -110,7 +191,88 @@ const Sequence = ({
         }
     }
 
-    const [sequenceEventsTokenCount, setSequenceEventsTokenCount] = useState(0)
+    const fullLimits = {
+        'Opening Image': {
+            'max': 400,
+            'rows': 4
+        },
+        'Setup': {
+            'max': 900,
+            'rows': 9
+        },
+        'Theme Stated': {
+            'max': 500,
+            'rows': 6
+        },
+        'Setup (Continued)': {
+            'max': 500,
+            'rows': 7
+        },
+        'Catalyst': {
+            'max': 500,
+            'rows': 7
+        },
+        'Debate': {
+            'max': 800,
+            'rows': 11
+        },
+        'B Story': {
+            'max': 400,
+            'rows': 5
+        },
+        'Debate (Continued)': {
+            'max': 300,
+            'rows': 5
+        },
+        'Break Into Two': {
+            'max': 650,
+            'rows': 8
+        },
+        'Fun And Games': {
+            'max': 1700,
+            'rows': 22
+        },
+        'First Pinch Point': {
+            'max': 150,
+            'rows': 2
+        },
+        'Midpoint': {
+            'max': 500,
+            'rows': 6
+        },
+        'Bad Guys Close In': {
+            'max': 1000,
+            'rows': 14
+        },
+        'Second Pinch Point': {
+            'max': 350,
+            'rows': 5
+        },
+        'All Hope Is Lost': {
+            'max': 500,
+            'rows': 7
+        },
+        'Dark Night Of The Soul': {
+            'max': 750,
+            'rows': 10
+        },
+        'Break Into Three': {
+            'max': 600,
+            'rows': 8
+        },
+        'Climax': {
+            'max': 1100,
+            'rows': 14
+        },
+        'Cooldown': {
+            'max': 600,
+            'rows': 8
+        }
+    }
+
+    const [blurbTokenCount, setBlurbTokenCount] = useState(0)
+    const [expandedSummaryTokenCount, setExpandedSummaryTokenCount] = useState(0)
+    const [fullTokenCount, setFullTokenCount] = useState(0)
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
@@ -123,17 +285,33 @@ const Sequence = ({
         deleteSequence(sequence.sequenceName)
     }
 
-    const updateTokenCount = async () => {
-        const seqText = sequence.text ? sequence.text : ''
+    const updateBlurbTokenCount = async () => {
+        const text = sequence.blurb ? sequence.blurb : ''
 
-        const eventsTokenCount = await getTokenCount(seqText)
-        setSequenceEventsTokenCount(eventsTokenCount)
+        const tokenCount = await getTokenCount(text)
+        setBlurbTokenCount(tokenCount)
+    }
+
+    const updateExpandedSummaryTokenCount = async () => {
+        const text = sequence.text ? sequence.text : ''
+
+        const tokenCount = await getTokenCount(text)
+        setExpandedSummaryTokenCount(tokenCount)
+    }
+
+    const updateFullTokenCount = async () => {
+        const text = sequence.full ? sequence.full : ''
+
+        const tokenCount = await getTokenCount(text)
+        setFullTokenCount(tokenCount)
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(() => {
-            updateTokenCount()
+            updateBlurbTokenCount()
+            updateExpandedSummaryTokenCount()
+            updateFullTokenCount()
         }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -153,7 +331,6 @@ const Sequence = ({
         <>
             <div className='row border-top mt-3 pt-3'>
                 <div className='col-md-7'>
-                    {/* <div className='col-md-7'> */}
                     <h4 className="float-start">{sequence.sequenceName}</h4>
                     {
                         sequence.sequenceName !== 'Opening Image' &&
@@ -175,18 +352,46 @@ const Sequence = ({
                     }
 
                     <div className="float-start w-100 pt-3">
-                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_events_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                        <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
                         <LimitedTextArea
-                            id={sequence.sequenceName + '_events_textarea'}
+                            id={sequence.sequenceName + '_blurb_textarea'}
                             className="form-control"
-                            value={sequence.text}
-                            setValue={(newValue) => updateEventsText(sequence.sequenceName, newValue)}
-                            rows={textLimits[sequence.sequenceName]['rows']}
-                            limit={textLimits[sequence.sequenceName]['max']}
-                            curTokenCount={sequenceEventsTokenCount}
+                            value={sequence.blurb}
+                            setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
+                            rows={blurbLimits[sequence.sequenceName]['rows']}
+                            limit={blurbLimits[sequence.sequenceName]['max']}
+                            curTokenCount={blurbTokenCount}
                             showCount={true}
                         />
                     </div>
+
+                    <div className="float-start w-100 pt-3">
+                        <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                        <LimitedTextArea
+                            id={sequence.sequenceName + '_expanded_summary_textarea'}
+                            className="form-control"
+                            value={sequence.text}
+                            setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
+                            rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
+                            limit={expandedSummaryLimits[sequence.sequenceName]['max']}
+                            curTokenCount={expandedSummaryTokenCount}
+                            showCount={true}
+                        />
+                    </div>
+
+                    {/* <div className="float-start w-100 pt-3">
+                        <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                        <LimitedTextArea
+                            id={sequence.sequenceName + '_full_textarea'}
+                            className="form-control"
+                            value={sequence.full}
+                            setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
+                            rows={fullLimits[sequence.sequenceName]['rows']}
+                            limit={fullLimits[sequence.sequenceName]['max']}
+                            curTokenCount={fullTokenCount}
+                            showCount={true}
+                        />
+                    </div> */}
 
                 </div>
                 <div className='col-md-5'>
