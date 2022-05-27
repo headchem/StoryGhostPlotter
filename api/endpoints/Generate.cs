@@ -152,8 +152,8 @@ public class Generate
         }
     }
 
-    [FunctionName("GenerateSequence")]
-    public async Task<IActionResult> GenerateSequence([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/Generate")] Plot plot, HttpRequest req, ILogger log)
+    [FunctionName("GenerateBlurb")]
+    public async Task<IActionResult> GenerateBlurb([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateBlurb")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
         if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
@@ -176,7 +176,7 @@ public class Generate
             var temperature = double.Parse(req.Query["temperature"][0]);
             var maxTokens = 256;
 
-            var result = await _completionService.GetSequenceCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+            var result = await _completionService.GetBlurbCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
 
             var timespan = stopwatch.Elapsed;
 
@@ -189,7 +189,93 @@ public class Generate
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
             metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
 
-            _telemetry.TrackEvent("Completion Sequence", null, metrics);
+            _telemetry.TrackEvent("Completion Blurb", null, metrics);
+
+            return new OkObjectResult(result);
+        }
+    }
+
+    [FunctionName("GenerateExpandedSummary")]
+    public async Task<IActionResult> GenerateExpandedSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateExpandedSummary")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
+        {
+            //log.LogInformation("An example of an Information level message");
+
+            var targetSequence = req.Query["targetSequence"][0];
+            var temperature = double.Parse(req.Query["temperature"][0]);
+            var maxTokens = 256;
+
+            var result = await _completionService.GetExpandedSummaryCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Expanded Summary", null, metrics);
+
+            return new OkObjectResult(result);
+        }
+    }
+
+    [FunctionName("GenerateFull")]
+    public async Task<IActionResult> GenerateFull([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateFull")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
+        {
+            //log.LogInformation("An example of an Information level message");
+
+            var targetSequence = req.Query["targetSequence"][0];
+            var temperature = double.Parse(req.Query["temperature"][0]);
+            var maxTokens = 256;
+
+            var result = await _completionService.GetFullCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            //var metricsText = new Dictionary<string, string>();
+            //metricsText.Add("UserId", userId);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Full", null, metrics);
 
             return new OkObjectResult(result);
         }

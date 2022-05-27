@@ -9,7 +9,7 @@ import LogLine from './LogLine'
 
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
-
+import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
 
 import SequenceList from './SequenceList'
@@ -173,7 +173,15 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const updateSequenceEventsText = (sequenceName, text) => {
+    const updateBlurb = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, blurb: text } : sequence
+            )
+        )
+    }
+
+    const updateExpandedSummary = (sequenceName, text) => {
         setSequences(
             sequences.map(
                 (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, text: text } : sequence
@@ -181,10 +189,34 @@ const PlotHome = (
         )
     }
 
-    const updateSequenceCompletions = (sequenceName, completions) => {
+    const updateFull = (sequenceName, text) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, full: text } : sequence
+            )
+        )
+    }
+
+    const updateBlurbCompletions = (sequenceName, completions) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, blurbCompletions: completions } : sequence
+            )
+        )
+    }
+
+    const updateExpandedSummaryCompletions = (sequenceName, completions) => {
         setSequences(
             sequences.map(
                 (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, completions: completions } : sequence
+            )
+        )
+    }
+
+    const updateFullCompletions = (sequenceName, completions) => {
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, fullCompletions: completions } : sequence
             )
         )
     }
@@ -424,7 +456,7 @@ const PlotHome = (
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                //console.log(data)
                 setTokensRemaining(data)
             })
             .catch(error => {
@@ -541,7 +573,9 @@ const PlotHome = (
     }
 
     const heroCharacterCheck = !characters ? [] : characters.filter(c => c.isHero === true)
-    const hideSequences = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
+    const hideBlurbs = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
+    const hideExpandedSummaries = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
+    const hideFull = hideExpandedSummaries || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
 
     // here we use the new React 18 feature of deferring rending to avoid "sticky" keys when every update to the log line forces a complete rerendering of the CharacterList and SequenceList
     // const deferredCharacterList = useDeferredValue(
@@ -647,7 +681,7 @@ const PlotHome = (
                     {
                         logLineIncomplete === false &&
                         <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
-                            <Tab eventKey="characters" title="Characters">
+                            <Tab eventKey="characters" title="1. Characters">
                                 {
                                     userInfo && userInfo.userRoles.includes('customer') &&
                                     <CharacterBrainstormAll
@@ -682,24 +716,28 @@ const PlotHome = (
                                     />
                                 }
                             </Tab>
-                            <Tab eventKey="sequences" title="Sequence of Events">
+                            <Tab eventKey="blurbs" title="2. Blurbs">
+                                <p>Write the absolute minimum logical sequence of events that propel the story. Try to keep to one sentence.</p>
                                 {
-                                    hideSequences === true &&
+                                    hideBlurbs === true &&
                                     <p>You must have a protagonist character with an archetype, and all characters must have a name.</p>
                                 }
                                 {
-                                    hideSequences === false &&
+                                    hideBlurbs === false &&
                                     <>
                                         {
                                             //deferredSequenceList
                                             <SequenceList
+                                                sequenceType='blurb'
                                                 plotId={searchParams.get("id")}
                                                 sequences={sequences}
                                                 userInfo={userInfo}
                                                 logLineDescription={logLineDescription}
                                                 setLastFocusedSequenceName={setLastFocusedSequenceName}
                                                 lastFocusedSequenceName={lastFocusedSequenceName}
-                                                updateSequenceEventsText={updateSequenceEventsText}
+                                                updateBlurb={updateBlurb}
+                                                updateExpandedSummary={updateExpandedSummary}
+                                                updateFull={updateFull}
                                                 insertSequence={insertSequence}
                                                 deleteSequence={deleteSequence}
                                                 genres={genres}
@@ -708,7 +746,9 @@ const PlotHome = (
                                                 characters={characters}
                                                 heroCharacterArchetype={heroCharacterArchetype}
                                                 dramaticQuestion={dramaticQuestion}
-                                                updateSequenceCompletions={updateSequenceCompletions}
+                                                updateBlurbCompletions={updateBlurbCompletions}
+                                                updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                                updateFullCompletions={updateFullCompletions}
                                                 setSequences={setSequences}
 
                                                 tokensRemaining={tokensRemaining}
@@ -717,6 +757,91 @@ const PlotHome = (
                                     </>
                                 }
                             </Tab>
+                            <Tab eventKey="expandedSummaries" title="3. Expanded Summaries">
+                                <p>Expand the logical blurbs into paragraphs, including details of the world, characters, and their emotions.</p>
+                                {
+                                    hideExpandedSummaries === true &&
+                                    <p>You must complete all blurbs before you may add expanded summaries.</p>
+                                }
+                                {
+                                    hideExpandedSummaries === false &&
+                                    <>
+                                        {
+                                            //deferredSequenceList
+                                            <SequenceList
+                                                sequenceType='expandedSummary'
+                                                plotId={searchParams.get("id")}
+                                                sequences={sequences}
+                                                userInfo={userInfo}
+                                                logLineDescription={logLineDescription}
+                                                setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                                lastFocusedSequenceName={lastFocusedSequenceName}
+                                                updateBlurb={updateBlurb}
+                                                updateExpandedSummary={updateExpandedSummary}
+                                                updateFull={updateFull}
+                                                insertSequence={insertSequence}
+                                                deleteSequence={deleteSequence}
+                                                genres={genres}
+                                                problemTemplate={problemTemplate}
+                                                keywords={keywords}
+                                                characters={characters}
+                                                heroCharacterArchetype={heroCharacterArchetype}
+                                                dramaticQuestion={dramaticQuestion}
+                                                updateBlurbCompletions={updateBlurbCompletions}
+                                                updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                                updateFullCompletions={updateFullCompletions}
+                                                setSequences={setSequences}
+
+                                                tokensRemaining={tokensRemaining}
+                                            />
+                                        }
+                                    </>
+                                }
+                            </Tab>
+                            {
+                                userInfo && userInfo.userRoles.includes('admin') &&
+                                <Tab eventKey="full" title="4. Full">
+                                    <p>Expand the summaries into full prose or a screenplay.</p>
+                                    {
+                                        hideFull === true &&
+                                        <p>You must complete all expanded summaries before you may add the full text.</p>
+                                    }
+                                    {
+                                        hideFull === false &&
+                                        <>
+                                            {
+                                                //deferredSequenceList
+                                                <SequenceList
+                                                    sequenceType='full'
+                                                    plotId={searchParams.get("id")}
+                                                    sequences={sequences}
+                                                    userInfo={userInfo}
+                                                    logLineDescription={logLineDescription}
+                                                    setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                                    lastFocusedSequenceName={lastFocusedSequenceName}
+                                                    updateBlurb={updateBlurb}
+                                                    updateExpandedSummary={updateExpandedSummary}
+                                                    updateFull={updateFull}
+                                                    insertSequence={insertSequence}
+                                                    deleteSequence={deleteSequence}
+                                                    genres={genres}
+                                                    problemTemplate={problemTemplate}
+                                                    keywords={keywords}
+                                                    characters={characters}
+                                                    heroCharacterArchetype={heroCharacterArchetype}
+                                                    dramaticQuestion={dramaticQuestion}
+                                                    updateBlurbCompletions={updateBlurbCompletions}
+                                                    updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                                    updateFullCompletions={updateFullCompletions}
+                                                    setSequences={setSequences}
+
+                                                    tokensRemaining={tokensRemaining}
+                                                />
+                                            }
+                                        </>
+                                    }
+                                </Tab>
+                            }
                         </Tabs>
 
                     }

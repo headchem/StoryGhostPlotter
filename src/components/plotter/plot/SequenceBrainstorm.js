@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../util/FetchUtil'
+import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 import AICompletions from './AICompletions'
 
 
@@ -18,6 +19,8 @@ const SequenceBrainstorm = (
         completions,
         targetSequence,
         updateSequenceCompletions,
+        completionURL,
+        textPropName,
         tokensRemaining
     }
 ) => {
@@ -48,7 +51,7 @@ const SequenceBrainstorm = (
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Sequence/Generate?targetSequence=' + targetSequence + '&temperature=' + temperature, {
+        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -96,16 +99,9 @@ const SequenceBrainstorm = (
         updateSequenceCompletions(targetSequence, newBrainstormList)
     }
 
-    // return true is any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
+    // return true if any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
     const brainstormDisabled = () => {
-        const existingSequenceNamesArr = sequences.map((seq) => seq.sequenceName)
-        const curSeqIndex = existingSequenceNamesArr.indexOf(targetSequence)
-        const prevSeqsArr = sequences.slice(0, curSeqIndex) // +1 to include self
-        const prevTexts = prevSeqsArr.map((seq) => seq.text)
-
-        const isBlank = (str) => (!str || str.trim().length === 0);
-
-        return prevTexts.some(isBlank)
+        return allSequencesHaveValues(sequences, targetSequence, textPropName) === false
     }
 
     return (
@@ -115,7 +111,7 @@ const SequenceBrainstorm = (
                 <>
                     {
                         brainstormDisabled() === true &&
-                        <div class="alert alert-warning" role="alert">
+                        <div className="alert alert-warning" role="alert">
                             <p>All previous sequences must have some text before you can ask the AI to brainstorm on this sequence.</p>
                         </div>
                     }

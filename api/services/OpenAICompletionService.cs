@@ -270,7 +270,18 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetSequenceCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    {
+        // TODO: check if tokens exist, deduct tokens
+        var result = new CompletionResponse();
+
+        result.Prompt = "TODO";
+        result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
+
+        return result;
+    }
+
+    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -314,6 +325,16 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
+    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    {
+        // TODO: check if tokens exist, deduct tokens
+        var result = new CompletionResponse();
+
+        result.Prompt = "TODO";
+        result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
+
+        return result;
+    }
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character, bool bypassTokenCheck)
     {
         await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
@@ -426,7 +447,7 @@ public class OpenAICompletionService : ICompletionService
 
         foreach (var targetSequence in sequenceList)
         {
-            var sequenceResponse = await GetSequenceCompletion(userId, targetSequence, 256, 0.8, plot, true);
+            var sequenceResponse = await GetExpandedSummaryCompletion(userId, targetSequence, 256, 0.8, plot, true);
             totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
 
             var sequence = new UserSequence
