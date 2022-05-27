@@ -124,8 +124,26 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
-    [FunctionName("CreateSequenceFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
-    public async Task<IActionResult> CreateSequenceFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceFinetuningDataset")] HttpRequest req, ILogger log)
+    [FunctionName("CreateSequenceBlurbFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateSequenceBlurbFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceBlurbFinetuningDataset")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var finetuningRows = new List<FinetuningRow>();
+
+        var resultText = "blurb jsonl goes here";
+
+        var results = new
+        {
+            jsonl = resultText
+        };
+
+        return new OkObjectResult(results);
+    }
+
+    [FunctionName("CreateSequenceExpandedSummaryFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateSequenceExpandedSummaryFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceExpandedSummaryFinetuningDataset")] HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
         if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
@@ -144,6 +162,7 @@ public class CreateFinetuningDataset
             foreach (var targetSequence in allFinetuningSequenceNames)
             {
                 var (prompt, completion) = getSequencePromptAndCompletion(plotObj, targetSequence);
+                if (prompt == "" || completion == "") continue;
 
                 finetuningRows.Add(getFinetuningRow(prompt, completion));
             }
@@ -155,11 +174,30 @@ public class CreateFinetuningDataset
 
         var results = new
         {
-            Text = resultText
+            jsonl = resultText
         };
 
         return new OkObjectResult(results);
     }
+
+    [FunctionName("CreateSequenceFullFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateSequenceFullFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSequenceFullFinetuningDataset")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var finetuningRows = new List<FinetuningRow>();
+
+        var resultText = "full jsonl goes here";
+
+        var results = new
+        {
+            jsonl = resultText
+        };
+
+        return new OkObjectResult(results);
+    }
+
 
     // not all sequences will have a finetuning model - for example First Pinch Point. Not all stories have this sequence, so there aren't enough data points to train a model
     private List<string> allFinetuningSequenceNames = new List<string>{
@@ -184,12 +222,19 @@ public class CreateFinetuningDataset
     {
         var promptSequenceText = GetSequenceTextUpTo(targetSequence, plot);
 
-        if (string.IsNullOrWhiteSpace(promptSequenceText))
+        if (targetSequence != "Opening Image" && string.IsNullOrWhiteSpace(promptSequenceText))
         {
             throw new Exception($"Incomplete story, empty sequence was found in \"{plot.Title}\" at target sequence \"{targetSequence}\".");
         }
 
-        var completionText = plot.Sequences.Where(s => s.SequenceName == targetSequence).First().Text;
+        var targetSeqObj = plot.Sequences.Where(s => s.SequenceName == targetSequence).FirstOrDefault();
+
+        // for example, not all training stories have a B Story
+        if (targetSeqObj == null)
+        {
+            return ("", "");
+        }
+        var completionText = targetSeqObj.Text;
 
         var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, promptSequenceText);
         var completion = targetSequence.ToUpper() + ": " + completionText.Trim();

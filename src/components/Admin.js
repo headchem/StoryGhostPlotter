@@ -8,7 +8,9 @@ const Admin = () => {
     const [logLineJSONL, setLogLineJSONL] = useState(null)
 
     const [characterJSONL, setCharacterJSONL] = useState(null)
-    const [sequenceJSONL, setSequenceJSONL] = useState(null)
+    const [sequenceBlurbJSONL, setSequenceBlurbJSONL] = useState(null)
+    const [sequenceExpandedSummaryJSONL, setSequenceExpandedSummaryJSONL] = useState(null)
+    const [sequenceFullJSONL, setSequenceFullJSONL] = useState(null)
 
     const [numTokensToAdd, setNumTokensToAdd] = useState(4096)
     const [tokensTargetUserId, setTokensTargetUserId] = useState('')
@@ -63,15 +65,42 @@ const Admin = () => {
             })
     }
 
-    const getSequenceFinetuningData = () => {
-
-        fetch('/api/SGAdmin/CreateSequenceFinetuningDataset', {
+    const getSequenceBlurbFinetuningData = () => {
+        fetch('/api/SGAdmin/CreateSequenceBlurbFinetuningDataset', {
             method: 'GET'
         })
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setSequenceJSONL(data['text'])
+                setSequenceBlurbJSONL(data['jsonl'])
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
+    const getSequenceExpandedSummaryFinetuningData = () => {
+        fetch('/api/SGAdmin/CreateSequenceExpandedSummaryFinetuningDataset', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setSequenceExpandedSummaryJSONL(data['jsonl'])
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
+    const getSequenceFullFinetuningData = () => {
+        fetch('/api/SGAdmin/CreateSequenceFullFinetuningDataset', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setSequenceFullJSONL(data['jsonl'])
             })
             .catch(error => {
                 console.error(error)
@@ -99,9 +128,21 @@ const Admin = () => {
 
             <hr />
 
-            <button onClick={getSequenceFinetuningData}>Get Sequence Data</button>
-            <label htmlFor="sequenceFinetune" className="fs-3">Sequence Finetune</label>
-            <textarea className="form-control" id="sequenceFinetune" rows="6" defaultValue={sequenceJSONL}></textarea>
+            <button onClick={getSequenceBlurbFinetuningData}>Get Sequence Blurb Data</button>
+            <label htmlFor="sequenceBlurbFinetune" className="fs-3">Sequence Blurb Finetune</label>
+            <textarea className="form-control" id="sequenceBlurbFinetune" rows="6" defaultValue={sequenceBlurbJSONL}></textarea>
+
+            <hr />
+
+            <button onClick={getSequenceExpandedSummaryFinetuningData}>Get Sequence Expanded Summary Data</button>
+            <label htmlFor="sequenceExpandedSummaryFinetune" className="fs-3">Sequence Expanded Summary Finetune</label>
+            <textarea className="form-control" id="sequenceExpandedSummaryFinetune" rows="6" defaultValue={sequenceExpandedSummaryJSONL}></textarea>
+
+            <hr />
+
+            <button onClick={getSequenceFullFinetuningData}>Get Sequence Full Data</button>
+            <label htmlFor="sequenceFullFinetune" className="fs-3">Sequence Full Finetune</label>
+            <textarea className="form-control" id="sequenceFullFinetune" rows="6" defaultValue={sequenceFullJSONL}></textarea>
 
             <hr />
 
