@@ -359,6 +359,7 @@ const Sequence = ({
                         sequenceType === 'blurb' &&
                         <div className="float-start w-100 pt-3">
                             <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                            <p>{sequence.text}</p>
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_blurb_textarea'}
                                 className="form-control"
