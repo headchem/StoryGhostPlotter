@@ -212,9 +212,17 @@ public static class Factory
 
         foreach (var character in characters)
         {
-            if (blurb.Contains(character.Name))
+            // handle names like "Tony Stark" where we want to include the character even if only "Tony" is mentioned in the blurb
+            var nameParts = character.Name.Split(' ').ToList();
+
+            foreach (var namePart in nameParts)
             {
-                mentioned.Add(character);
+                var alreadyAddedCharacterNames = mentioned.Select(c => c.Name).ToList();
+
+                if (blurb.Contains(namePart) && alreadyAddedCharacterNames.Contains(character.Name) == false)
+                {
+                    mentioned.Add(character);
+                }
             }
         }
 
