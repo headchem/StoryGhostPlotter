@@ -157,36 +157,107 @@ const SequenceList = ({
             {
                 sequences && sequences
                     .map((sequence) => (
-                        <Sequence
-                            sequenceType={sequenceType}
-                            key={sequence.sequenceName}
-                            userInfo={userInfo}
-                            plotId={plotId}
-                            sequence={sequence}
-                            sequences={sequences}
-                            updateBlurb={updateBlurb}
-                            updateExpandedSummary={updateExpandedSummary}
-                            updateFull={updateFull}
+                        <>
+                            {
+                                sequenceType === 'blurb' &&
+                                <Sequence
+                                    sequenceType={sequenceType}
+                                    key={sequence.sequenceName}
+                                    userInfo={userInfo}
+                                    plotId={plotId}
+                                    sequence={sequence}
+                                    sequences={sequences}
+                                    updateBlurb={updateBlurb}
+                                    updateExpandedSummary={updateExpandedSummary}
+                                    updateFull={updateFull}
 
-                            insertSequence={insertSequence}
-                            deleteSequence={deleteSequence}
+                                    insertSequence={insertSequence}
+                                    deleteSequence={deleteSequence}
 
-                            allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
+                                    allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
 
-                            genres={genres}
-                            problemTemplate={problemTemplate}
-                            keywords={keywords}
-                            characters={characters}
-                            heroCharacterArchetype={heroCharacterArchetype}
-                            dramaticQuestion={dramaticQuestion}
-                            logLineDescription={logLineDescription}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    dramaticQuestion={dramaticQuestion}
+                                    logLineDescription={logLineDescription}
 
-                            updateBlurbCompletions={updateBlurbCompletions}
-                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                            updateFullCompletions={updateFullCompletions}
+                                    updateBlurbCompletions={updateBlurbCompletions}
+                                    updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                    updateFullCompletions={updateFullCompletions}
 
-                            tokensRemaining={tokensRemaining}
-                        />
+                                    tokensRemaining={tokensRemaining}
+                                />
+                            }
+                            {
+                                sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                                <Sequence
+                                    sequenceType={sequenceType}
+                                    key={sequence.sequenceName}
+                                    userInfo={userInfo}
+                                    plotId={plotId}
+                                    sequence={sequence}
+                                    sequences={sequences}
+                                    updateBlurb={updateBlurb}
+                                    updateExpandedSummary={updateExpandedSummary}
+                                    updateFull={updateFull}
+
+                                    insertSequence={insertSequence}
+                                    deleteSequence={deleteSequence}
+
+                                    allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
+
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    dramaticQuestion={dramaticQuestion}
+                                    logLineDescription={logLineDescription}
+
+                                    updateBlurbCompletions={updateBlurbCompletions}
+                                    updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                    updateFullCompletions={updateFullCompletions}
+
+                                    tokensRemaining={tokensRemaining}
+                                />
+                            }
+                            {
+                                sequenceType === 'full' && sequence.blurb && sequence.blurb !== '' && sequence.text && sequence.text !== '' &&
+                                <Sequence
+                                    sequenceType={sequenceType}
+                                    key={sequence.sequenceName}
+                                    userInfo={userInfo}
+                                    plotId={plotId}
+                                    sequence={sequence}
+                                    sequences={sequences}
+                                    updateBlurb={updateBlurb}
+                                    updateExpandedSummary={updateExpandedSummary}
+                                    updateFull={updateFull}
+
+                                    insertSequence={insertSequence}
+                                    deleteSequence={deleteSequence}
+
+                                    allowed={getAllowedNextSequenceNames(sequence.sequenceName, sequences)}
+
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    dramaticQuestion={dramaticQuestion}
+                                    logLineDescription={logLineDescription}
+
+                                    updateBlurbCompletions={updateBlurbCompletions}
+                                    updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                    updateFullCompletions={updateFullCompletions}
+
+                                    tokensRemaining={tokensRemaining}
+                                />
+                            }
+                        </>
                     ))
             }
         </>

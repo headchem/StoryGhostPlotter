@@ -574,8 +574,8 @@ const PlotHome = (
 
     const heroCharacterCheck = !characters ? [] : characters.filter(c => c.isHero === true)
     const hideBlurbs = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
-    const hideExpandedSummaries = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
-    const hideFull = hideExpandedSummaries || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
+    const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
+    const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
 
     // here we use the new React 18 feature of deferring rending to avoid "sticky" keys when every update to the log line forces a complete rerendering of the CharacterList and SequenceList
     // const deferredCharacterList = useDeferredValue(
@@ -760,85 +760,77 @@ const PlotHome = (
                             <Tab eventKey="expandedSummaries" title="3. Expanded Summaries">
                                 <p>Expand the logical blurbs into paragraphs, including details of the world, characters, and their emotions.</p>
                                 {
-                                    hideExpandedSummaries === true &&
-                                    <p>You must complete all blurbs before you may add expanded summaries.</p>
+                                    //deferredSequenceList
+                                    <SequenceList
+                                        sequenceType='expandedSummary'
+                                        plotId={searchParams.get("id")}
+                                        sequences={sequences}
+                                        userInfo={userInfo}
+                                        logLineDescription={logLineDescription}
+                                        setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                        lastFocusedSequenceName={lastFocusedSequenceName}
+                                        updateBlurb={updateBlurb}
+                                        updateExpandedSummary={updateExpandedSummary}
+                                        updateFull={updateFull}
+                                        insertSequence={insertSequence}
+                                        deleteSequence={deleteSequence}
+                                        genres={genres}
+                                        problemTemplate={problemTemplate}
+                                        keywords={keywords}
+                                        characters={characters}
+                                        heroCharacterArchetype={heroCharacterArchetype}
+                                        dramaticQuestion={dramaticQuestion}
+                                        updateBlurbCompletions={updateBlurbCompletions}
+                                        updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                        updateFullCompletions={updateFullCompletions}
+                                        setSequences={setSequences}
+
+                                        tokensRemaining={tokensRemaining}
+                                    />
                                 }
                                 {
-                                    hideExpandedSummaries === false &&
-                                    <>
-                                        {
-                                            //deferredSequenceList
-                                            <SequenceList
-                                                sequenceType='expandedSummary'
-                                                plotId={searchParams.get("id")}
-                                                sequences={sequences}
-                                                userInfo={userInfo}
-                                                logLineDescription={logLineDescription}
-                                                setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                                lastFocusedSequenceName={lastFocusedSequenceName}
-                                                updateBlurb={updateBlurb}
-                                                updateExpandedSummary={updateExpandedSummary}
-                                                updateFull={updateFull}
-                                                insertSequence={insertSequence}
-                                                deleteSequence={deleteSequence}
-                                                genres={genres}
-                                                problemTemplate={problemTemplate}
-                                                keywords={keywords}
-                                                characters={characters}
-                                                heroCharacterArchetype={heroCharacterArchetype}
-                                                dramaticQuestion={dramaticQuestion}
-                                                updateBlurbCompletions={updateBlurbCompletions}
-                                                updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                                                updateFullCompletions={updateFullCompletions}
-                                                setSequences={setSequences}
-
-                                                tokensRemaining={tokensRemaining}
-                                            />
-                                        }
-                                    </>
+                                    blurbsIncomplete &&
+                                    <p>Not all blurbs have been completed. Additional expanded summaries will only appear when their corresponding blurb has been entered.</p>
                                 }
+
                             </Tab>
                             {
                                 userInfo && userInfo.userRoles.includes('admin') &&
                                 <Tab eventKey="full" title="4. Full">
                                     <p>Expand the summaries into full prose or a screenplay.</p>
+
                                     {
-                                        hideFull === true &&
-                                        <p>You must complete all expanded summaries before you may add the full text.</p>
+                                        //deferredSequenceList
+                                        <SequenceList
+                                            sequenceType='full'
+                                            plotId={searchParams.get("id")}
+                                            sequences={sequences}
+                                            userInfo={userInfo}
+                                            logLineDescription={logLineDescription}
+                                            setLastFocusedSequenceName={setLastFocusedSequenceName}
+                                            lastFocusedSequenceName={lastFocusedSequenceName}
+                                            updateBlurb={updateBlurb}
+                                            updateExpandedSummary={updateExpandedSummary}
+                                            updateFull={updateFull}
+                                            insertSequence={insertSequence}
+                                            deleteSequence={deleteSequence}
+                                            genres={genres}
+                                            problemTemplate={problemTemplate}
+                                            keywords={keywords}
+                                            characters={characters}
+                                            heroCharacterArchetype={heroCharacterArchetype}
+                                            dramaticQuestion={dramaticQuestion}
+                                            updateBlurbCompletions={updateBlurbCompletions}
+                                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                                            updateFullCompletions={updateFullCompletions}
+                                            setSequences={setSequences}
+
+                                            tokensRemaining={tokensRemaining}
+                                        />
                                     }
                                     {
-                                        hideFull === false &&
-                                        <>
-                                            {
-                                                //deferredSequenceList
-                                                <SequenceList
-                                                    sequenceType='full'
-                                                    plotId={searchParams.get("id")}
-                                                    sequences={sequences}
-                                                    userInfo={userInfo}
-                                                    logLineDescription={logLineDescription}
-                                                    setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                                    lastFocusedSequenceName={lastFocusedSequenceName}
-                                                    updateBlurb={updateBlurb}
-                                                    updateExpandedSummary={updateExpandedSummary}
-                                                    updateFull={updateFull}
-                                                    insertSequence={insertSequence}
-                                                    deleteSequence={deleteSequence}
-                                                    genres={genres}
-                                                    problemTemplate={problemTemplate}
-                                                    keywords={keywords}
-                                                    characters={characters}
-                                                    heroCharacterArchetype={heroCharacterArchetype}
-                                                    dramaticQuestion={dramaticQuestion}
-                                                    updateBlurbCompletions={updateBlurbCompletions}
-                                                    updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                                                    updateFullCompletions={updateFullCompletions}
-                                                    setSequences={setSequences}
-
-                                                    tokensRemaining={tokensRemaining}
-                                                />
-                                            }
-                                        </>
+                                        expandedSummariesIncomplete &&
+                                        <p>Not all expanded summaries have been completed. Additional full text areas will only appear when their corresponding expanded summary has been entered.</p>
                                     }
                                 </Tab>
                             }

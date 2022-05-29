@@ -374,7 +374,7 @@ const Sequence = ({
                     }
 
                     {
-                        sequenceType === 'expandedSummary' &&
+                        sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
                         <div className="float-start w-100 pt-3">
                             <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
                             <p>{sequence.blurb}</p>
@@ -392,7 +392,7 @@ const Sequence = ({
                     }
 
                     {
-                        sequenceType === 'full' &&
+                        sequenceType === 'full' && sequence.text && sequence.text !== '' &&
                         <div className="float-start w-100 pt-3">
                             <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
                             <p>{sequence.text}</p>
