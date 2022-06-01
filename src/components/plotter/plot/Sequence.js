@@ -74,7 +74,7 @@ const Sequence = ({
             'rows': 2
         },
         'Fun And Games': {
-            'max': 300,
+            'max': 400,
             'rows': 5
         },
         'First Pinch Point': {
