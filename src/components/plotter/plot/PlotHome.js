@@ -468,7 +468,7 @@ const PlotHome = (
         if (isNotFound === true) return;
 
         if (title === '') {
-            console.log('title was empty string, skip auto-save');
+            //console.log('title was empty string, skip auto-save');
             return;
         }
 
@@ -717,7 +717,7 @@ const PlotHome = (
                                 }
                             </Tab>
                             <Tab eventKey="blurbs" title="2. Blurbs">
-                                <p>Write the absolute minimum logical sequence of events that propel the story. Try to keep to one sentence.</p>
+                                <p>Write the absolute minimum logical sequence of events that propel the story. This should be a dry A therefore B therefore C style of writing.</p>
                                 {
                                     hideBlurbs === true &&
                                     <p>You must have a protagonist character with an archetype, and all characters must have a name.</p>
@@ -758,7 +758,7 @@ const PlotHome = (
                                 }
                             </Tab>
                             <Tab eventKey="expandedSummaries" title="3. Expanded Summaries">
-                                <p>Expand the logical blurbs into paragraphs, including details of the world, characters, and their emotions.</p>
+                                <p>Expand the logical blurbs into more colorful paragraphs, including details of the setting, characters, emotions, and symbolism.</p>
                                 {
                                     //deferredSequenceList
                                     <SequenceList
@@ -830,7 +830,7 @@ const PlotHome = (
                                     }
                                     {
                                         expandedSummariesIncomplete &&
-                                        <p>Not all expanded summaries have been completed. Additional full text areas will only appear when their corresponding expanded summary has been entered.</p>
+                                        <p>Not all blurbs and expanded summaries have been completed. Additional full text areas will only appear when their corresponding blurbs and expanded summary has been entered.</p>
                                     }
                                 </Tab>
                             }

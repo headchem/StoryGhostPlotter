@@ -359,7 +359,10 @@ const Sequence = ({
                         sequenceType === 'blurb' &&
                         <div className="float-start w-100 pt-3">
                             <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            <p>{sequence.text}</p>
+                            {
+                                sequence.text && sequence.text !== '' &&
+                                <p>{sequence.text}</p>
+                            }
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_blurb_textarea'}
                                 className="form-control"
@@ -377,7 +380,10 @@ const Sequence = ({
                         sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
                         <div className="float-start w-100 pt-3">
                             <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            <p>{sequence.blurb}</p>
+                            {
+                                sequence.blurb && sequence.blurb !== '' &&
+                                <p>{sequence.blurb}</p>
+                            }
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_expanded_summary_textarea'}
                                 className="form-control"
@@ -395,7 +401,14 @@ const Sequence = ({
                         sequenceType === 'full' && sequence.text && sequence.text !== '' &&
                         <div className="float-start w-100 pt-3">
                             <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            <p>{sequence.text}</p>
+                            {
+                                sequence.blurb && sequence.blurb !== '' &&
+                                <p>{sequence.blurb}</p>
+                            }
+                            {
+                                sequence.text && sequence.text !== '' &&
+                                <p>{sequence.text}</p>
+                            }
                             <LimitedTextArea
                                 id={sequence.sequenceName + '_full_textarea'}
                                 className="form-control"
