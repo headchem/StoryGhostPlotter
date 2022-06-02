@@ -306,20 +306,20 @@ public static class Factory
         var prompt = targetSequence switch
         {
             "Opening Image" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
-            "Setup" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {nonHeroCharacterContributions} \n\n{prevBlurbText}",
-            "Theme Stated" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroShadowSide}\n\n{prevBlurbText}",
-            "Catalyst" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "Debate" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "B Story" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "Break Into Two" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "Fun And Games" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "Midpoint" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "Bad Guys Close In" => $"{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{prevBlurbText}",
-            "All Hope Is Lost" => $"{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
-            "Dark Night Of The Soul" => $"{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
-            "Break Into Three" => $"{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
-            "Climax" => $"{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
-            "Cooldown" => $"{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}\n\n{prevBlurbText}",
+            "Setup" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {nonHeroCharacterContributions}",
+            "Theme Stated" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroShadowSide}",
+            "Catalyst" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.",
+            "Debate" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {nonHeroCharacterContributions}",
+            "B Story" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.",
+            "Break Into Two" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.",
+            "Fun And Games" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {nonHeroCharacterContributions}",
+            "Midpoint" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.",
+            "Bad Guys Close In" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} {plotTeaser} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroShadowSide}",
+            "All Hope Is Lost" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
+            "Dark Night Of The Soul" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {heroShadowSide}",
+            "Break Into Three" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
+            "Climax" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}.\n\n{heroCharacterContribution} {nonHeroCharacterContributions}",
+            "Cooldown" => $"STORY SO FAR: {prevBlurbText}\n\n{genresText} Advice for {targetSequence}: {renderAdviceComponents(adviceWrapper.Context)} {renderAdviceComponents(adviceWrapper.Events)}",
             _ => throw new ArgumentException(message: "invalid completion type value", paramName: nameof(targetSequence)),
         };
 
@@ -331,7 +331,7 @@ public static class Factory
         }
         else
         {
-            prompt += $"\n\nWrite a short logical description of what happens in the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with previous events.";
+            prompt += $"\n\nWrite a short logical description of what happens in the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with the story so far.";
         }
 
         return prompt;

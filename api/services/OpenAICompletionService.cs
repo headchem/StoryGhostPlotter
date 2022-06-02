@@ -270,13 +270,42 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
     {
-        // TODO: check if tokens exist, deduct tokens
-        var result = new CompletionResponse();
+        await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
-        result.Prompt = "TODO";
-        result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
+        var prompt = Factory.GetSequencePartPrompt(targetSequence, plot, "blurb") + CreateFinetuningDataset.PromptSuffix;
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            // openai api fine_tunes.create -t "blurbs.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.04
+            Model = "davinci:ft-personal-2022-06-02-07-30-49",
+            MaxTokens = maxTokens,
+            Temperature = temperature,
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
+        };
+
+        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+
+        var allSequences = Factory.GetSequences();
+
+        // remove all of the sequence name prefixes
+        foreach (var seq in allSequences)
+        {
+            var replaceStr = (seq.Name + ":").ToUpper();
+            result.Completion = result.Completion.Trim();
+
+            if (result.Completion.StartsWith(replaceStr))
+            {
+                result.Completion = result.Completion.Replace(replaceStr, "");
+                result.Completion = result.Completion.Trim();
+            }
+        }
 
         return result;
     }

@@ -160,8 +160,9 @@ const LogLineDescriptionBrainstorm = (
                                                     </div>
                                                 </div>
                                             }
+                                            
                                             {
-                                                AILogLineDescriptions && AILogLineDescriptions.length < limit &&
+                                                (!AILogLineDescriptions || (AILogLineDescriptions && AILogLineDescriptions.length < limit)) &&
                                                 <button disabled={isLogLineDescriptionCompletionLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateLogLineCompletion}>
                                                     {
                                                         isLogLineDescriptionCompletionLoading === true &&

@@ -157,7 +157,7 @@ public class CreateFinetuningDataset
             }
         }
 
-        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
+        //finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
 
         var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
 
