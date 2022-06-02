@@ -319,13 +319,14 @@ public class OpenAICompletionService : ICompletionService
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            Model = "davinci:ft-personal-2022-04-22-19-10-16",
+            // openai api fine_tunes.create -t "expandedSummaries.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.06
+            Model = "davinci:ft-personal-2022-06-02-18-31-37",
             MaxTokens = maxTokens,
             Temperature = temperature,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
-            PresencePenalty = 0.1, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
-            FrequencyPenalty = 0.1,
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.0,
             LogitBias = new Dictionary<string, int>()
         };
 
