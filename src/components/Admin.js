@@ -109,7 +109,7 @@ const Admin = () => {
 
     return (
         <div>
-            <p>Export Top_10000_Movies from Google Sheets as CSV, then upload that file here.</p>
+            <p>Export Top_10000_Movies from Google Sheets as CSV, run it through the Google Colab notebook "KeyBERT.ipynb" to attach keywords, then upload that CSV file here.</p>
 
             <input
                 type="file"
