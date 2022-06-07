@@ -16,12 +16,12 @@ const CharacterBrainstorm = (
 
     const navigate = useNavigate()
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
-    //const [completionText, setCompletionText] = useState(false)
+    const [temperature, setTemperature] = useState(0.9)
 
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Character/Generate?plotId=' + plotId, {
+        fetchWithTimeout('/api/Character/Generate?plotId=' + plotId + '&temperature=' + temperature, {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -64,7 +64,9 @@ const CharacterBrainstorm = (
             onGenerateCompletion={fetchCompletion}
             completions={character['aiCompletions']}
             onDeleteBrainstorm={onDeleteBrainstorm}
-            showTemperature={false}
+            temperature={temperature}
+            setTemperature={setTemperature}
+            showTemperature={true}
             tokensRemaining={tokensRemaining}
         />
     )

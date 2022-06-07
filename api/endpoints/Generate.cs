@@ -119,6 +119,7 @@ public class Generate
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         var plotId = req.Query["plotId"][0];
+        var temperature = double.Parse(req.Query["temperature"][0]);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -132,7 +133,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var result = await _completionService.GetCharacterCompletion(userId, plotId, character, false);
+            var result = await _completionService.GetCharacterCompletion(userId, plotId, temperature, character, false);
 
             var timespan = stopwatch.Elapsed;
 

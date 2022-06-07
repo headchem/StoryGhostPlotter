@@ -370,16 +370,16 @@ public class OpenAICompletionService : ICompletionService
 
         return result;
     }
-    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, Character character, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck)
     {
         await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
 
-        var result = await getFinetunedCharacterCompletion(userId, plotId, character);
+        var result = await getFinetunedCharacterCompletion(userId, plotId, temperature, character);
 
         return result;
     }
 
-    private async Task<CompletionResponse> getFinetunedCharacterCompletion(string userId, string plotId, Character character)
+    private async Task<CompletionResponse> getFinetunedCharacterCompletion(string userId, string plotId, double temperature, Character character)
     {
         var prompt = PersonalityDescription.GetCharacterPrompt(character) + CreateFinetuningDataset.PromptSuffix;
 
@@ -389,7 +389,7 @@ public class OpenAICompletionService : ICompletionService
             // openai api fine_tunes.create -t "characters.jsonl" -m davinci --n_epochs 3 --learning_rate_multiplier 0.035
             Model = "davinci:ft-personal-2022-04-05-06-09-25",
             MaxTokens = 150, // longest character description completion was 88 tokens,
-            Temperature = 0.99,
+            Temperature = temperature,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -679,7 +679,7 @@ public class OpenAICompletionService : ICompletionService
             };
 
             // Generate Description for each Character based on Name, Archetype, Personality
-            var characterResponse = await getFinetunedCharacterCompletion(userId, plotId, character);
+            var characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
             totalTokenCount += characterResponse.PromptTokenCount + characterResponse.CompletionTokenCount;
 
             character.Description = characterResponse.Completion;
