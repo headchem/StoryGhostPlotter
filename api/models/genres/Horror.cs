@@ -373,7 +373,7 @@ public class Horror : IGenre
                 "apocalyptic",
                 "Chicago",
                 "wasteland",
-                "Jigsaw",
+                //"Jigsaw",
                 "West Virginia",
                 "estranged",
                 "accident",
@@ -410,7 +410,7 @@ public class Horror : IGenre
                 "sorority",
                 "adventure",
                 "flight",
-                "tales",
+                //"tales",
             };
         
             return listWithDupes.Distinct().ToList();
