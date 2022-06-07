@@ -333,7 +333,7 @@ public class Comedy : IGenre
                 "differences",
                 "heart",
                 "path",
-                "ready",
+                //"ready",
                 "hospital",
                 "wakes",
                 "wishes",
