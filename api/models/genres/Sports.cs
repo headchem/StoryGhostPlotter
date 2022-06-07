@@ -214,7 +214,7 @@ public class Sports : IGenre
                 "shake",
                 "bobbleheads",
                 "bobble",
-                "ready",
+                //"ready",
                 "bobblehead",
                 "chin",
                 "boogie",
