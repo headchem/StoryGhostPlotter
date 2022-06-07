@@ -15,7 +15,7 @@ const LogLineObjDetails = (
         logLineDescription,
         AILogLineDescriptions,
         AITitles,
-        onAILogLineDescriptionsChange,
+        updateLogLineDescriptionCompletions,
         curFocusElName,
         genres,
         problemTemplate,
@@ -102,11 +102,9 @@ const LogLineObjDetails = (
                         <LogLineDescriptionBrainstorm
                             userInfo={userInfo}
                             plotId={plotId}
-                            AILogLineDescriptions={AILogLineDescriptions}
-                            onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
+                            completions={AILogLineDescriptions}
+                            updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                             genres={genres}
-                            problemTemplate={problemTemplate}
-                            dramaticQuestion={dramaticQuestion}
                             keywords={keywords}
                             tokensRemaining={tokensRemaining}
                         />

@@ -54,7 +54,10 @@ public class CreateFinetuningDataset
 
         foreach (var row in rows)
         {
-            var prompt = string.Join(", ", row.Genres);
+            var keywords = row.CombinedKeywordsDelim.Split(";").Select(k => k.Trim()).ToList();
+            keywords = keywords.Where(k => k.Contains(",") == false).ToList(); // many keywords were long lists of character names, so we will remove them
+
+            var prompt = Factory.GetLogLinePrompt(row.GenreList, keywords);
             var completion = row.Overview;// + " --- " + row.Title; // my theory is that putting the title at the end will force the model to come up with a more creative title, since it has seen a bunch of creative words before it. Otherwise, I feel like it was memorizing famous titles and then outputting known plot summaries of those titles. I think this will work because GPT-3 only reads "forward" so it can't know about the title until the very end. UPDATE: this didn't work, and it just repeated well known titles instead of coming up new ones
 
             finetuningRows.Add(getFinetuningRow(prompt, completion));

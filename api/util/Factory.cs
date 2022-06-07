@@ -229,6 +229,35 @@ public static class Factory
         return mentioned;
     }
 
+    public static string GetLogLinePrompt(List<string> Genres, List<string> Keywords)
+    {
+        var genresPrompt = "";
+
+        if (Genres.Count == 1)
+        {
+            genresPrompt += "GENRE: " + Genres.First();
+        }
+        else
+        {
+            genresPrompt += "GENRES: " + string.Join(", ", Genres);
+        }
+
+        var keywordsPrompt = "";
+
+        if (Keywords.Count == 1)
+        {
+            keywordsPrompt += "KEYWORD: " + Keywords.First();
+        }
+        else if (Keywords.Count > 1)
+        {
+            keywordsPrompt += "KEYWORDS: " + string.Join(", ", Keywords);
+        }
+
+        var prompt = $"{genresPrompt}. {keywordsPrompt}";
+
+        return prompt;
+    }
+
     /// <summary>returns a prompt tailored for the targetSequence given the plot and preceding sequence text</summary>
     public static string GetSequencePartPrompt(string targetSequence, Plot plot, string sequenceType)
     {

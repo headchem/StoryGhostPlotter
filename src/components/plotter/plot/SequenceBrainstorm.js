@@ -77,8 +77,8 @@ const SequenceBrainstorm = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            console.log('save this data:')
-            console.log(data)
+            //console.log('save this data:')
+            //console.log(data)
             if (!completions || completions.length === 0) {
                 updateSequenceCompletions(targetSequence, [data])
             } else {

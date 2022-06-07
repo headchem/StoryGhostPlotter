@@ -38,7 +38,7 @@ const LogLine = (
         onDramaticQuestionChange,
         dramaticQuestionOptions,
 
-        onAILogLineDescriptionsChange,
+        updateLogLineDescriptionCompletions,
         AILogLineDescriptions,
         AITitles,
         setAITitles,
@@ -234,7 +234,7 @@ const LogLine = (
                     userInfo={userInfo}
                     plotId={plotId}
                     logLineDescription={logLineDescription}
-                    onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
+                    updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                     AILogLineDescriptions={AILogLineDescriptions}
                     AITitles={AITitles}
                     setAITitles={setAITitles}

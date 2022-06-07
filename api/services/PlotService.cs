@@ -236,7 +236,7 @@ public class PlotService : IPlotService
             plotPatchOps.Add(PatchOperation.Set("/isPublic", newIsPublic));
         }
 
-        var aiCompletionsComparer = new ObjectsComparer.Comparer<List<Dictionary<string, CompletionResponse>>>();
+        var aiCompletionsComparer = new ObjectsComparer.Comparer<List<CompletionResponse>>();
         if (aiCompletionsComparer.Compare(newAILogLineDescriptions, oldPlotObj.AILogLineDescriptions) == false)
         {
             plotPatchOps.Add(PatchOperation.Set("/AILogLineDescriptions", newAILogLineDescriptions));

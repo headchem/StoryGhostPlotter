@@ -14,14 +14,16 @@ public class LogLineRow
     public double VoteAverage { get; set; }
     public int VoteCount { get; set; }
     public string GenreNoSports { get; set; }
-    public List<string> Genres
+    public string Genres { get; set; }
+    public List<string> GenreList
     {
         get
         {
             // randomizes the order of the genres
             var genres = GenreNoSports.Replace("[", "").Replace("]", "").Split(',').ToList().Select(g => g.Replace("'", "").Trim()).ToList().Where(g => g != "TV Movie").OrderBy(a => Guid.NewGuid()).ToList();
 
-            if (HasSports == "Yes") {
+            if (HasSports == "Yes")
+            {
                 genres.Add("Sports");
             }
 
@@ -35,4 +37,10 @@ public class LogLineRow
     public double Revenue { get; set; }
     public int? Runtime { get; set; }
     public string Tagline { get; set; }
+
+    public string CombinedKeywords { get; set; }
+    public string CombinedKeywordsDelim { get; set; }
+    public string Keybert { get; set; }
+    public string Ners { get; set; }
+
 }

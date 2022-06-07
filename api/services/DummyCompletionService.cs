@@ -32,7 +32,7 @@ public class DummyCompletionService : ICompletionService
         _userService = userService;
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordsLogitBias, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetLogLineDescriptionCompletion(string userId, double temperature, Plot story, int keywordsLogitBias, bool bypassTokenCheck)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -57,11 +57,7 @@ public class DummyCompletionService : ICompletionService
 
         await _userService.DeductTokens(userId, totalTokens);
 
-        return new Dictionary<string, CompletionResponse>
-        {
-            ["finetuned"] = result,
-            ["keywords"] = result
-        };
+        return result;
     }
 
     public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)

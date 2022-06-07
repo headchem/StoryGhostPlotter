@@ -157,12 +157,12 @@ const SequenceList = ({
             {
                 sequences && sequences
                     .map((sequence) => (
-                        <>
+                        <div key={sequenceType + sequence.sequenceName}>
                             {
                                 sequenceType === 'blurb' &&
                                 <Sequence
                                     sequenceType={sequenceType}
-                                    key={sequence.sequenceName}
+                                    key={sequenceType + sequence.sequenceName}
                                     userInfo={userInfo}
                                     plotId={plotId}
                                     sequence={sequence}
@@ -195,7 +195,7 @@ const SequenceList = ({
                                 sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
                                 <Sequence
                                     sequenceType={sequenceType}
-                                    key={sequence.sequenceName}
+                                    key={sequenceType + sequence.sequenceName}
                                     userInfo={userInfo}
                                     plotId={plotId}
                                     sequence={sequence}
@@ -228,7 +228,7 @@ const SequenceList = ({
                                 sequenceType === 'full' && sequence.blurb && sequence.blurb !== '' && sequence.text && sequence.text !== '' &&
                                 <Sequence
                                     sequenceType={sequenceType}
-                                    key={sequence.sequenceName}
+                                    key={sequenceType + sequence.sequenceName}
                                     userInfo={userInfo}
                                     plotId={plotId}
                                     sequence={sequence}
@@ -257,7 +257,7 @@ const SequenceList = ({
                                     tokensRemaining={tokensRemaining}
                                 />
                             }
-                        </>
+                        </div>
                     ))
             }
         </>

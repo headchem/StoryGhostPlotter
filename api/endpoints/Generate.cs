@@ -51,12 +51,11 @@ public class Generate
 
             var keywordsLogitBias = int.Parse(req.Query["keywordsImpact"]);
 
-            var result = await _completionService.GetLogLineDescriptionCompletion(userId, plot, keywordsLogitBias, false);
+            var temperature = double.Parse(req.Query["temperature"][0]);
 
-            var totalTokenCount = result["finetuned"].PromptTokenCount
-                                + result["finetuned"].CompletionTokenCount
-                                + result["keywords"].PromptTokenCount
-                                + result["keywords"].CompletionTokenCount;
+            var result = await _completionService.GetLogLineDescriptionCompletion(userId, temperature, plot, keywordsLogitBias, false);
+
+            var totalTokenCount = result.PromptTokenCount + result.CompletionTokenCount;
 
             var timespan = stopwatch.Elapsed;
 

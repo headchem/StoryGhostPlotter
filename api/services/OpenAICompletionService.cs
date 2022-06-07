@@ -107,6 +107,8 @@ public class OpenAICompletionService : ICompletionService
         }
         else
         {
+            // TEMP - with new finetuning, no more enhancing logits, because training data now includes keywords directly
+            return;
             direction = enhanceAmt;
         }
 
@@ -167,16 +169,18 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot plot, int keywordsLogitBias, bool bypassTokenCheck)
+    public async Task<CompletionResponse> GetLogLineDescriptionCompletion(string userId, double temperature, Plot plot, int keywordsLogitBias, bool bypassTokenCheck)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
-        var finetunedCompletion = await getFinetunedLogLineCompletion(userId, plot, keywordsLogitBias);
+        var finetunedCompletion = await getFinetunedLogLineCompletion(userId, plot, temperature, keywordsLogitBias);
 
-        if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
-        {
-            return new Dictionary<string, CompletionResponse> { ["finetuned"] = finetunedCompletion };
-        }
+        return finetunedCompletion;
+
+        // if (plot.Keywords == null || plot.Keywords.Count == 0 || plot.Keywords.Where(k => k.StartsWith("-") == false).ToList().Count == 0)
+        // {
+        //     return new Dictionary<string, CompletionResponse> { ["finetuned"] = finetunedCompletion };
+        // }
 
         // if (finetunedCompletion.CompletionIsToxic)
         // {
@@ -190,31 +194,33 @@ public class OpenAICompletionService : ICompletionService
         // }
 
         // feed the initial log line completion into "instruct" which asks it to infuse the keywords into a new rewritten log line
-        var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(userId, finetunedCompletion.Completion, plot, keywordsLogitBias - 3);
+        //var keywordInfusedCompletion = await getInstructKeywordsLogLineCompletion(userId, finetunedCompletion.Completion, plot, keywordsLogitBias - 3);
 
         // if (keywordInfusedCompletion.CompletionIsToxic)
         // {
         //     keywordInfusedCompletion.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
         // }
 
-        var results = new Dictionary<string, CompletionResponse>
-        {
-            ["finetuned"] = finetunedCompletion,
-            ["keywords"] = keywordInfusedCompletion
-        };
+        // var results = new Dictionary<string, CompletionResponse>
+        // {
+        //     ["finetuned"] = finetunedCompletion,
+        //     ["keywords"] = keywordInfusedCompletion
+        // };
 
-        return results;
+        // return results;
     }
 
-    private async Task<CompletionResponse> getFinetunedLogLineCompletion(string userId, Plot plot, int keywordsLogitBias)
+    private async Task<CompletionResponse> getFinetunedLogLineCompletion(string userId, Plot plot, double temperature, int keywordsLogitBias)
     {
-        var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
+        //var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
+
+        var prompt = Factory.GetLogLinePrompt(plot.Genres, plot.Keywords) + CreateFinetuningDataset.PromptSuffix;
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            // "curie:ft-personal-2022-02-27-23-31-57" = openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-            Model = "curie:ft-personal-2022-02-27-23-31-57",
+            // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
+            Model = "curie:ft-personal-2022-06-07-05-37-00",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
@@ -226,7 +232,7 @@ public class OpenAICompletionService : ICompletionService
 
         if (plot.Keywords != null && plot.Keywords.Count > 0)
         {
-            foreach (var keyword in plot.Keywords)
+            foreach (var keyword in plot.Keywords.Where(k => k.Contains("-")).ToList())
             {
                 addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
             }
@@ -237,38 +243,38 @@ public class OpenAICompletionService : ICompletionService
         return result;
     }
 
-    private async Task<CompletionResponse> getInstructKeywordsLogLineCompletion(string userId, string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
-    {
-        var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
+    // private async Task<CompletionResponse> getInstructKeywordsLogLineCompletion(string userId, string finetunedLogLineCompletion, Plot plot, int keywordsLogitBias)
+    // {
+    //     var keywordStr = Factory.GetKeywordsSentence("", plot.Keywords.Where(k => k.StartsWith("-") == false).ToList());
 
-        var prompt = finetunedLogLineCompletion.Trim() + "\n\n" + $"You are an expert screenplay writer, summarizing the log line of an award-winning plot. Creatively rewrite the above plot teaser to focus on: {keywordStr}. It MUST include ALL {plot.Keywords.Count} of these concepts. Add a twist of irony while preserving the movie log line tone and structure." + "\n\n" + "New reworked plot log line (limit to 1 paragraph, and don't just list the keywords at the end):";
+    //     var prompt = finetunedLogLineCompletion.Trim() + "\n\n" + $"You are an expert screenplay writer, summarizing the log line of an award-winning plot. Creatively rewrite the above plot teaser to focus on: {keywordStr}. It MUST include ALL {plot.Keywords.Count} of these concepts. Add a twist of irony while preserving the movie log line tone and structure." + "\n\n" + "New reworked plot log line (limit to 1 paragraph, and don't just list the keywords at the end):";
 
-        var openAIRequest = new OpenAICompletionsRequest
-        {
-            Prompt = prompt,
-            MaxTokens = 150, // longest log line prompt was 167 tokens,
-            Temperature = 1.0,
-            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
-            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
-            PresencePenalty = 0.0,
-            FrequencyPenalty = 0.0,
-            LogitBias = new Dictionary<string, int>()
-        };
+    //     var openAIRequest = new OpenAICompletionsRequest
+    //     {
+    //         Prompt = prompt,
+    //         MaxTokens = 150, // longest log line prompt was 167 tokens,
+    //         Temperature = 1.0,
+    //         TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+    //         Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+    //         PresencePenalty = 0.0,
+    //         FrequencyPenalty = 0.0,
+    //         LogitBias = new Dictionary<string, int>()
+    //     };
 
-        if (plot.Keywords != null && plot.Keywords.Count > 0)
-        {
-            openAIRequest.LogitBias = new Dictionary<string, int>();
+    //     if (plot.Keywords != null && plot.Keywords.Count > 0)
+    //     {
+    //         openAIRequest.LogitBias = new Dictionary<string, int>();
 
-            foreach (var keyword in plot.Keywords)
-            {
-                addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
-            }
-        }
+    //         foreach (var keyword in plot.Keywords)
+    //         {
+    //             addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
+    //         }
+    //     }
 
-        var result = await getResponse(userId, plot.Id, "engines/text-curie-001/completions", openAIRequest);
+    //     var result = await getResponse(userId, plot.Id, "engines/text-curie-001/completions", openAIRequest);
 
-        return result;
-    }
+    //     return result;
+    // }
 
     public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
     {
@@ -612,15 +618,15 @@ public class OpenAICompletionService : ICompletionService
 
         var keywords = _keywordService.GetKeywords(genres, 4);
 
-        var logLineDescCompletion = await GetLogLineDescriptionCompletion(userId, new Plot
+        var logLineDescCompletion = await GetLogLineDescriptionCompletion(userId, 0.9d, new Plot
         {
             Id = plotId,
             Genres = genres,
             Keywords = keywords
         }, 4, true);
-        var logLineDesc = logLineDescCompletion["keywords"].Completion;
+        var logLineDesc = logLineDescCompletion.Completion;
 
-        totalTokens += logLineDescCompletion["finetuned"].PromptTokenCount + logLineDescCompletion["finetuned"].CompletionTokenCount + logLineDescCompletion["keywords"].PromptTokenCount + logLineDescCompletion["keywords"].CompletionTokenCount;
+        totalTokens += logLineDescCompletion.PromptTokenCount + logLineDescCompletion.CompletionTokenCount;
 
         var titleCompletion = await GetTitles(userId, plotId, genres, logLineDesc, true);
         totalTokens += titleCompletion.CompletionResponse.PromptTokenCount + titleCompletion.CompletionResponse.CompletionTokenCount;

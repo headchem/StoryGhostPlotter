@@ -8,7 +8,7 @@ namespace StoryGhost.Interfaces;
 
 public interface ICompletionService
 {
-    public Task<Dictionary<string, CompletionResponse>> GetLogLineDescriptionCompletion(string userId, Plot story, int keywordLogitBias, bool bypassTokenCheck);
+    public Task<CompletionResponse> GetLogLineDescriptionCompletion(string userId, double temperature, Plot story, int keywordLogitBias, bool bypassTokenCheck);
 
     public Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck);
     public Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck);

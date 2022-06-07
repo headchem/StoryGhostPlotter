@@ -173,6 +173,10 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const updateLogLineDescriptionCompletions = (completions) => {
+        setAILogLineDescriptions(completions)
+    }
+
     const updateBlurb = (sequenceName, text) => {
         setSequences(
             sequences.map(
@@ -561,9 +565,9 @@ const PlotHome = (
     //     setAILogLineTitle(val)
     // }
 
-    const onAILogLineDescriptionsChange = (val) => {
-        setAILogLineDescriptions(val)
-    }
+    // const onAILogLineDescriptionsChange = (val) => {
+    //     setAILogLineDescriptions(val)
+    // }
 
     const goToViewPlot = () => {
         const plotId = searchParams.get("id")
@@ -663,7 +667,7 @@ const PlotHome = (
                             onDramaticQuestionChange={onDramaticQuestionChange}
                             dramaticQuestionOptions={dramaticQuestionOptions}
 
-                            onAILogLineDescriptionsChange={onAILogLineDescriptionsChange}
+                            updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                             AILogLineDescriptions={AILogLineDescriptions}
                             AITitles={AITitles}
                             setAITitles={setAITitles}
