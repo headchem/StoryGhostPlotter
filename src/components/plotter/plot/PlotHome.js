@@ -546,6 +546,7 @@ const PlotHome = (
     }
 
     const onKeywordsChange = (inputValue) => {
+        console.log(inputValue)
         setKeywords(inputValue.map(el => el.value))
     }
 

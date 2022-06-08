@@ -233,6 +233,7 @@ const LogLine = (
                 <LogLineObjDetails
                     userInfo={userInfo}
                     plotId={plotId}
+                    onKeywordsChange={onKeywordsChange}
                     logLineDescription={logLineDescription}
                     updateLogLineDescription={setLogLineDescription}
                     updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}

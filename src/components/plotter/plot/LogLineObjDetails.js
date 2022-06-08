@@ -12,6 +12,7 @@ const LogLineObjDetails = (
     {
         userInfo,
         plotId,
+        onKeywordsChange,
         logLineDescription,
         updateLogLineDescription,
         AILogLineDescriptions,
@@ -97,7 +98,23 @@ const LogLineObjDetails = (
                 descIsLoading === true && <Spinner animation="border" variant="secondary" />
             }
             {
-                descIsLoading === false && <>
+                descIsLoading === false &&
+                <>
+                    {
+                        (curFocusElName === 'genres' && genresDescObjs !== null) &&
+                        <GenresDescription
+                            genresDescObjs={genresDescObjs}
+                        />
+                    }
+                    {
+                        curFocusElName === 'keywords' &&
+                        <KeywordsBrainstorm
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            userInfo={userInfo}
+                            genres={genres}
+                        />
+                    }
                     {
                         (curFocusElName === 'logLineDescription') &&
                         <LogLineDescriptionBrainstorm
@@ -123,12 +140,7 @@ const LogLineObjDetails = (
                             tokensRemaining={tokensRemaining}
                         />
                     }
-                    {
-                        (curFocusElName === 'genres' && genresDescObjs !== null) &&
-                        <GenresDescription
-                            genresDescObjs={genresDescObjs}
-                        />
-                    }
+
                     {
                         (curFocusElName === 'problem template' && problemTemplateDescObj) &&
                         <ProblemTemplateDescription
@@ -139,13 +151,6 @@ const LogLineObjDetails = (
                         (curFocusElName === 'dramatic question' && dramaticQuestionDescObj) &&
                         <DramaticQuestionDescription
                             dramaticQuestionDescObj={dramaticQuestionDescObj}
-                        />
-                    }
-                    {
-                        curFocusElName === 'keywords' &&
-                        <KeywordsBrainstorm
-                            userInfo={userInfo}
-                            genres={genres}
                         />
                     }
                 </>

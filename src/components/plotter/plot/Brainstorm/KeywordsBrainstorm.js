@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { FaGhost } from 'react-icons/fa'
+import { FaGhost, FaCopy } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
 import { fetchWithTimeout } from '../../../../util/FetchUtil'
 
 const KeywordsBrainstorm = (
     {
         userInfo,
+        keywords,
+        onKeywordsChange,
         genres
     }
 ) => {
@@ -46,8 +48,17 @@ const KeywordsBrainstorm = (
         });
     }
 
+    const addKeyword = (keyword) => {
+        console.log('existing keywords:')
+        console.log(keywords)
+        const newKeywords = [...keywords.map(k => ({ 'label': k, 'value': k })), { 'label': keyword, 'value': keyword }]
+        onKeywordsChange(newKeywords)
+    }
+
     const aiKeywordsListItems = (aiKeywords ?? []).map((keyword, idx) =>
-        <li key={idx}>{keyword}</li>
+        <li key={idx}>
+            {keyword} <button title="add keyword" className="btn btn-link" onClick={() => addKeyword(keyword)}><FaCopy /></button>
+        </li>
     )
 
     return (
