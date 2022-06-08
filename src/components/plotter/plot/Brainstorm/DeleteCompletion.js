@@ -15,7 +15,7 @@ const DeleteCompletion = (
     }
 
     return (
-        <span className='ms-3'>
+        <span className='ms-3  card-link'>
             {
                 showConfirm === false &&
                 <FaTrash title='will prompt to confirm' onClick={onDelete} />

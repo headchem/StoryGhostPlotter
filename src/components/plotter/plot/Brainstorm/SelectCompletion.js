@@ -15,7 +15,7 @@ const SelectCompletion = (
     }
 
     return (
-        <span className='ms-3'>
+        <span className='ms-3 card-link'>
             {
                 showConfirm === false &&
                 <FaCopy title='will prompt to confirm' onClick={onSelect} />
@@ -23,7 +23,7 @@ const SelectCompletion = (
             {
                 showConfirm === true &&
                 <span>
-                    <span className="btn btn-link" onClick={() => onSelectBrainstorm(idx)}>copy to textarea</span>
+                    <span title="WARNING: replaces existing text" className="btn btn-link" onClick={() => onSelectBrainstorm(idx)}>copy to textarea</span>
                     /
                     <span className="btn btn-link" onClick={() => setShowConfirm(false)}>cancel</span>
                 </span>

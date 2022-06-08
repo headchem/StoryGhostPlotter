@@ -41,11 +41,11 @@ const AICompletions = (
                     <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
                     <hr />
 
-                    <ul>
-                        {
-                            completions && completions.length > 0 && completions.map((completion, idx) =>
-                                <li key={`completion-` + idx}>
-                                    <p style={{ whiteSpace: "pre-wrap", maxHeight: "500px", overflowY: "auto" }}>{completion['completion']}</p>
+                    {
+                        completions && completions.length > 0 && completions.map((completion, idx) =>
+                            <div key={`completion-` + idx} className="card mb-2">
+                                <div className="card-body">
+                                    <p className="card-text">{completion['completion']}</p>
                                     <SelectCompletion idx={idx} onSelectBrainstorm={onSelectBrainstorm} />
                                     <DeleteCompletion idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} />
                                     {
@@ -53,10 +53,10 @@ const AICompletions = (
                                         &&
                                         <ToxicMessage />
                                     }
-                                </li>
-                            )
-                        }
-                    </ul>
+                                </div>
+                            </div>
+                        )
+                    }
 
                     {/* {
                         false &&
