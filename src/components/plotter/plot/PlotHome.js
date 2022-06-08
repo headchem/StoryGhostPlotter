@@ -14,7 +14,7 @@ import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
-import CharacterBrainstormAll from './CharacterBrainstormAll';
+import CharacterBrainstormAll from './Brainstorm/CharacterBrainstormAll';
 import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (

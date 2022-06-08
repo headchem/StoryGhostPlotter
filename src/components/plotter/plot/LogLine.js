@@ -3,7 +3,7 @@ import Select from 'react-select';
 import LimitedTextArea from './LimitedTextArea'
 import LogLineSelect from './LogLineSelect'
 import LogLineObjDetails from './LogLineObjDetails'
-import LogLineBrainstormAll from './LogLineBrainstormAll'
+import LogLineBrainstormAll from './Brainstorm/LogLineBrainstormAll'
 
 const LogLine = (
     {
@@ -234,6 +234,7 @@ const LogLine = (
                     userInfo={userInfo}
                     plotId={plotId}
                     logLineDescription={logLineDescription}
+                    updateLogLineDescription={setLogLineDescription}
                     updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                     AILogLineDescriptions={AILogLineDescriptions}
                     AITitles={AITitles}

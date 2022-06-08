@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchWithTimeout } from '../../../util/FetchUtil'
+import { fetchWithTimeout } from '../../../../util/FetchUtil'
 import AICompletions from './AICompletions'
 
 
@@ -9,6 +9,7 @@ const CharacterBrainstorm = (
         userInfo,
         plotId,
         character,
+        updateCharacterDescription,
         updateAICharacterCompletion,
         tokensRemaining
     }
@@ -52,6 +53,11 @@ const CharacterBrainstorm = (
         });
     }
 
+    const onSelectBrainstorm = (idxToSelect) => {
+        const selectedCompletion = character['aiCompletions'][idxToSelect]['completion']
+        updateCharacterDescription(character.id, selectedCompletion)
+    }
+
     const onDeleteBrainstorm = (idxToDelete) => {
         const newBrainstormList = character['aiCompletions'].filter((obj, objIdx) => objIdx !== idxToDelete)
         updateAICharacterCompletion(character.id, newBrainstormList)
@@ -63,6 +69,7 @@ const CharacterBrainstorm = (
             isLoading={isCompletionLoading}
             onGenerateCompletion={fetchCompletion}
             completions={character['aiCompletions']}
+            onSelectBrainstorm={onSelectBrainstorm}
             onDeleteBrainstorm={onDeleteBrainstorm}
             temperature={temperature}
             setTemperature={setTemperature}

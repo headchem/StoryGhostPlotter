@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchWithTimeout } from '../../../util/FetchUtil'
+import { fetchWithTimeout } from '../../../../util/FetchUtil'
 import AICompletions from './AICompletions'
 
 const LogLineDescriptionBrainstorm = (
@@ -10,6 +10,7 @@ const LogLineDescriptionBrainstorm = (
         genres,
         keywords,
         completions,
+        updateLogLineDescription,
         updateLogLineDescriptionCompletions,
         tokensRemaining
     }
@@ -65,6 +66,11 @@ const LogLineDescriptionBrainstorm = (
         });
     }
 
+    const onSelectBrainstorm = (idxToSelect) => {
+        const selectedCompletion = completions[idxToSelect]['completion']
+        updateLogLineDescription(selectedCompletion)
+    }
+
     const onDeleteBrainstorm = (idxToDelete) => {
         const newBrainstormList = completions.filter((obj, objIdx) => objIdx !== idxToDelete)
 
@@ -82,6 +88,7 @@ const LogLineDescriptionBrainstorm = (
                         isLoading={isCompletionLoading}
                         onGenerateCompletion={fetchCompletion}
                         completions={completions}
+                        onSelectBrainstorm={onSelectBrainstorm}
                         onDeleteBrainstorm={onDeleteBrainstorm}
                         showTemperature={true}
                         temperature={temperature}

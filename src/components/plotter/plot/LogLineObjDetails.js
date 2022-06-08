@@ -4,15 +4,16 @@ import Spinner from 'react-bootstrap/Spinner';
 import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
-import KeywordsBrainstorm from './KeywordsBrainstorm'
-import TitleBrainstorm from './TitleBrainstorm';
-import LogLineDescriptionBrainstorm from './LogLineDescriptionBrainstorm'
+import KeywordsBrainstorm from './Brainstorm/KeywordsBrainstorm'
+import TitleBrainstorm from './Brainstorm/TitleBrainstorm';
+import LogLineDescriptionBrainstorm from './Brainstorm/LogLineDescriptionBrainstorm'
 
 const LogLineObjDetails = (
     {
         userInfo,
         plotId,
         logLineDescription,
+        updateLogLineDescription,
         AILogLineDescriptions,
         AITitles,
         updateLogLineDescriptionCompletions,
@@ -103,6 +104,7 @@ const LogLineObjDetails = (
                             userInfo={userInfo}
                             plotId={plotId}
                             completions={AILogLineDescriptions}
+                            updateLogLineDescription={updateLogLineDescription}
                             updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                             genres={genres}
                             keywords={keywords}

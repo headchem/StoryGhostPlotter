@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchWithTimeout } from '../../../util/FetchUtil'
+import { fetchWithTimeout } from '../../../../util/FetchUtil'
 import Spinner from 'react-bootstrap/Spinner';
 
 const SequenceBrainstormAll = ({

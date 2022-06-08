@@ -5,7 +5,7 @@ import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 //import { getTokenCount } from "../../../util/Tokenizer";
 import SequenceAdvice from './SequenceAdvice'
-import SequenceBrainstorm from './SequenceBrainstorm'
+import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
 import SignUpMessage from './SignUpMessage'
 
 const Sequence = ({
@@ -467,6 +467,7 @@ const Sequence = ({
                                                             characters={characters}
                                                             completions={!sequence['blurbCompletions'] ? [] : sequence['blurbCompletions']}
                                                             targetSequence={sequence.sequenceName}
+                                                            updateText={updateBlurb}
                                                             updateSequenceCompletions={updateBlurbCompletions}
                                                             completionURL={'GenerateBlurb'}
                                                             textPropName='blurb'
@@ -510,6 +511,7 @@ const Sequence = ({
                                                             characters={characters}
                                                             completions={!sequence['completions'] ? [] : sequence['completions']}
                                                             targetSequence={sequence.sequenceName}
+                                                            updateText={updateExpandedSummary}
                                                             updateSequenceCompletions={updateExpandedSummaryCompletions}
                                                             completionURL={'GenerateExpandedSummary'}
                                                             textPropName='text'
@@ -553,6 +555,7 @@ const Sequence = ({
                                                             characters={characters}
                                                             completions={!sequence['fullCompletions'] ? [] : sequence['fullCompletions']}
                                                             targetSequence={sequence.sequenceName}
+                                                            updateText={updateFull}
                                                             updateSequenceCompletions={updateFullCompletions}
                                                             completionURL={'GenerateFull'}
                                                             textPropName='full'

@@ -11,7 +11,7 @@ import Nav from 'react-bootstrap/Nav'
 import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
-import CharacterBrainstorm from './CharacterBrainstorm'
+import CharacterBrainstorm from './Brainstorm/CharacterBrainstorm'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import { getTokenCount } from "../../../util/Tokenizer";
@@ -364,6 +364,7 @@ const Character = ({
                                             userInfo={userInfo}
                                             plotId={plotId}
                                             character={character}
+                                            updateCharacterDescription={updateCharacterDescription}
                                             updateAICharacterCompletion={updateAICharacterCompletion}
                                             tokensRemaining={tokensRemaining}
                                         />

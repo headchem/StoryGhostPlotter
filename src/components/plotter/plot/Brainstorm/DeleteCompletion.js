@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 
 
-const DeleteTab = (
+const DeleteCompletion = (
     {
         idx,
         onDeleteBrainstorm
@@ -33,4 +33,4 @@ const DeleteTab = (
     )
 }
 
-export default DeleteTab
+export default DeleteCompletion

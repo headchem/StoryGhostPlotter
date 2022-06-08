@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { fetchWithTimeout } from '../../../util/FetchUtil'
-import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
+import { fetchWithTimeout } from '../../../../util/FetchUtil'
+import { allSequencesHaveValues } from '../../../../util/SequenceTextCheck'
 import AICompletions from './AICompletions'
 
 
@@ -18,6 +18,7 @@ const SequenceBrainstorm = (
         characters,
         completions,
         targetSequence,
+        updateText,
         updateSequenceCompletions,
         completionURL,
         textPropName,
@@ -93,6 +94,11 @@ const SequenceBrainstorm = (
         });
     }
 
+    const onSelectBrainstorm = (idxToSelect) => {
+        const selectedCompletion = completions[idxToSelect]['completion']
+        updateText(targetSequence, selectedCompletion)
+    }
+
     const onDeleteBrainstorm = (idxToDelete) => {
         const newBrainstormList = completions.filter((obj, objIdx) => objIdx !== idxToDelete)
 
@@ -124,6 +130,7 @@ const SequenceBrainstorm = (
                                 isLoading={isCompletionLoading}
                                 onGenerateCompletion={fetchCompletion}
                                 completions={completions}
+                                onSelectBrainstorm={onSelectBrainstorm}
                                 onDeleteBrainstorm={onDeleteBrainstorm}
                                 showTemperature={true}
                                 temperature={temperature}
