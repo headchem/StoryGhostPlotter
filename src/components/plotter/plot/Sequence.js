@@ -335,97 +335,99 @@ const Sequence = ({
         <>
             <div className='row border-top mt-3 pt-3'>
                 <div className='col-md-7'>
-                    <h4 className="float-start">{sequence.sequenceName}</h4>
-                    {
-                        sequence.sequenceName !== 'Opening Image' && sequenceType === 'blurb' &&
-                        <div className='float-end'>
-                            {
-                                showConfirmDelete === false &&
-                                <>
-                                    <button onClick={() => setShowConfirmDelete(true)} className='btn btn-outline-danger btn-no-border' title='Delete this sequence. You will be prompted to confirm.'><FaMinusCircle /></button>
-                                </>
-                            }
-                            {
-                                showConfirmDelete === true &&
-                                <>
-                                    <button onClick={onDeleteSequence} className="btn btn-danger">Delete</button>
-                                    <button className='btn btn-link' onClick={() => setShowConfirmDelete(false)}>cancel delete</button>
-                                </>
-                            }
-                        </div>
-                    }
+                    <div className="d-inline-block sticky-md-top w-100">
+                        <h4 className="float-start">{sequence.sequenceName}</h4>
+                        {
+                            sequence.sequenceName !== 'Opening Image' && sequenceType === 'blurb' &&
+                            <div className='float-end'>
+                                {
+                                    showConfirmDelete === false &&
+                                    <>
+                                        <button onClick={() => setShowConfirmDelete(true)} className='btn btn-outline-danger btn-no-border' title='Delete this sequence. You will be prompted to confirm.'><FaMinusCircle /></button>
+                                    </>
+                                }
+                                {
+                                    showConfirmDelete === true &&
+                                    <>
+                                        <button onClick={onDeleteSequence} className="btn btn-danger">Delete</button>
+                                        <button className='btn btn-link' onClick={() => setShowConfirmDelete(false)}>cancel delete</button>
+                                    </>
+                                }
+                            </div>
+                        }
 
-                    {
-                        sequenceType === 'blurb' &&
-                        <div className="float-start w-100 pt-3">
-                            <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            {
-                                sequence.text && sequence.text !== '' &&
-                                <p>{sequence.text}</p>
-                            }
-                            <LimitedTextArea
-                                id={sequence.sequenceName + '_blurb_textarea'}
-                                className="form-control"
-                                value={sequence.blurb}
-                                setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
-                                rows={blurbLimits[sequence.sequenceName]['rows']}
-                                limit={blurbLimits[sequence.sequenceName]['max']}
-                                //curTokenCount={blurbTokenCount}
-                                showCount={true}
-                            />
-                        </div>
-                    }
+                        {
+                            sequenceType === 'blurb' &&
+                            <div className="float-start w-100 pt-3">
+                                <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                                {
+                                    sequence.text && sequence.text !== '' &&
+                                    <p>{sequence.text}</p>
+                                }
+                                <LimitedTextArea
+                                    id={sequence.sequenceName + '_blurb_textarea'}
+                                    className="form-control"
+                                    value={sequence.blurb}
+                                    setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
+                                    rows={blurbLimits[sequence.sequenceName]['rows']}
+                                    limit={blurbLimits[sequence.sequenceName]['max']}
+                                    //curTokenCount={blurbTokenCount}
+                                    showCount={true}
+                                />
+                            </div>
+                        }
 
-                    {
-                        sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
-                        <div className="float-start w-100 pt-3">
-                            <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            {
-                                sequence.blurb && sequence.blurb !== '' &&
-                                <p>{sequence.blurb}</p>
-                            }
-                            <LimitedTextArea
-                                id={sequence.sequenceName + '_expanded_summary_textarea'}
-                                className="form-control"
-                                value={sequence.text}
-                                setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
-                                rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
-                                limit={expandedSummaryLimits[sequence.sequenceName]['max']}
-                                //curTokenCount={expandedSummaryTokenCount}
-                                showCount={true}
-                            />
-                        </div>
-                    }
+                        {
+                            sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                            <div className="float-start w-100 pt-3">
+                                <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                                {
+                                    sequence.blurb && sequence.blurb !== '' &&
+                                    <p>{sequence.blurb}</p>
+                                }
+                                <LimitedTextArea
+                                    id={sequence.sequenceName + '_expanded_summary_textarea'}
+                                    className="form-control"
+                                    value={sequence.text}
+                                    setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
+                                    rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
+                                    limit={expandedSummaryLimits[sequence.sequenceName]['max']}
+                                    //curTokenCount={expandedSummaryTokenCount}
+                                    showCount={true}
+                                />
+                            </div>
+                        }
 
-                    {
-                        sequenceType === 'full' && sequence.text && sequence.text !== '' &&
-                        <div className="float-start w-100 pt-3">
-                            <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                            {
-                                sequence.blurb && sequence.blurb !== '' &&
-                                <p>{sequence.blurb}</p>
-                            }
-                            {
-                                sequence.text && sequence.text !== '' &&
-                                <p>{sequence.text}</p>
-                            }
-                            <LimitedTextArea
-                                id={sequence.sequenceName + '_full_textarea'}
-                                className="form-control"
-                                value={sequence.full}
-                                setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
-                                rows={fullLimits[sequence.sequenceName]['rows']}
-                                limit={fullLimits[sequence.sequenceName]['max']}
-                                //curTokenCount={fullTokenCount}
-                                showCount={true}
-                            />
-                        </div>
-                    }
+                        {
+                            sequenceType === 'full' && sequence.text && sequence.text !== '' &&
+                            <div className="float-start w-100 pt-3">
+                                <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                                {
+                                    sequence.blurb && sequence.blurb !== '' &&
+                                    <p>{sequence.blurb}</p>
+                                }
+                                {
+                                    sequence.text && sequence.text !== '' &&
+                                    <p>{sequence.text}</p>
+                                }
+                                <LimitedTextArea
+                                    id={sequence.sequenceName + '_full_textarea'}
+                                    className="form-control"
+                                    value={sequence.full}
+                                    setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
+                                    rows={fullLimits[sequence.sequenceName]['rows']}
+                                    limit={fullLimits[sequence.sequenceName]['max']}
+                                    //curTokenCount={fullTokenCount}
+                                    showCount={true}
+                                />
+                            </div>
+                        }
+                    </div>
 
                 </div>
                 <div className='col-md-5'>
 
-                    <Accordion alwaysOpen>
+                    <Accordion defaultActiveKey={['1']} alwaysOpen>
 
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Advice</Accordion.Header>
@@ -486,7 +488,7 @@ const Sequence = ({
                         }
                         {
                             sequenceType === 'expandedSummary' &&
-                            <Accordion.Item eventKey="2">
+                            <Accordion.Item eventKey="1">
                                 <Accordion.Header>Brainstorm Expanded Summary with AI</Accordion.Header>
                                 <Accordion.Body>
                                     {
@@ -529,7 +531,7 @@ const Sequence = ({
                         }
                         {
                             sequenceType === 'full' &&
-                            <Accordion.Item eventKey="3">
+                            <Accordion.Item eventKey="1">
                                 <Accordion.Header>Brainstorm Full with AI</Accordion.Header>
                                 <Accordion.Body>
                                     {

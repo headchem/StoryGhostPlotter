@@ -337,7 +337,7 @@ const Character = ({
                 <div className='col-md-5'>
                     {
                         <>
-                            <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
+                            <Accordion defaultActiveKey={['0', '2']} alwaysOpen>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>Character Analysis</Accordion.Header>
                                     <Accordion.Body>
