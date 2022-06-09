@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { v4 as uuid } from 'uuid';
 import { toast } from 'react-toastify';
 import Spinner from 'react-bootstrap/Spinner';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
-
-import LogLine from './LogLine'
 
 import { useSearchParams, useNavigate, createSearchParams } from "react-router-dom";
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
-
-import SequenceList from './SequenceList'
-import CharacterList from './CharacterList'
-import CharacterBrainstormAll from './Brainstorm/CharacterBrainstormAll';
+import DisplayAdvanced from './DisplayAdvanced'
 import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (
@@ -40,7 +33,7 @@ const PlotHome = (
         });
     }
 
-
+    const [displayMode, setDisplayMode] = useState('advanced') // options are "simple" and "advanced"
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
@@ -546,7 +539,7 @@ const PlotHome = (
     }
 
     const onKeywordsChange = (inputValue) => {
-        console.log(inputValue)
+        //console.log(inputValue)
         setKeywords(inputValue.map(el => el.value))
     }
 
@@ -582,43 +575,14 @@ const PlotHome = (
     const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
     const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
 
-    // here we use the new React 18 feature of deferring rending to avoid "sticky" keys when every update to the log line forces a complete rerendering of the CharacterList and SequenceList
-    // const deferredCharacterList = useDeferredValue(
-    //     <CharacterList
-    //         characters={characters}
-    //         userInfo={userInfo}
-    //         archetypeOptions={archetypeOptions}
-    //         onFocusChange={onFocusChange}
-    //         updateCharacterName={updateCharacterName}
-    //         updateCharacterIsHero={updateCharacterIsHero}
-    //         updateCharacterArchetype={updateCharacterArchetype}
-    //         updateCharacterDescription={updateCharacterDescription}
-    //         updateAICharacterCompletion={updateAICharacterCompletion}
-    //         updateCharacterPersonality={updateCharacterPersonality}
-    //         insertCharacter={insertCharacter}
-    //         deleteCharacter={deleteCharacter}
-    //     />
-    // );
-
-    // const deferredSequenceList = useDeferredValue(
-    //     <SequenceList
-    //         sequences={sequences}
-    //         userInfo={userInfo}
-    //         logLineDescription={logLineDescription}
-    //         setLastFocusedSequenceName={setLastFocusedSequenceName}
-    //         lastFocusedSequenceName={lastFocusedSequenceName}
-    //         updateSequenceEventsText={updateSequenceEventsText}
-    //         insertSequence={insertSequence}
-    //         deleteSequence={deleteSequence}
-    //         genres={genres}
-    //         problemTemplate={problemTemplate}
-    //         keywords={keywords}
-    //         characters={characters}
-    //         dramaticQuestion={dramaticQuestion}
-    //         updateSequenceCompletions={updateSequenceCompletions}
-    //         setSequences={setSequences}
-    //     />
-    // );
+    const handleDisplayModeChange = e => {
+        const target = e.target;
+        if (target.checked) {
+            setDisplayMode('advanced');
+        } else {
+            setDisplayMode('simple');
+        }
+    };
 
     return (
         <>
@@ -634,8 +598,21 @@ const PlotHome = (
             {
                 plotLoading === false && isNotFound === false &&
                 <>
-                    <div className='row pb-5'>
-                        <LogLine
+                    <div className='row d-none'>
+                        <div className='col-12'>
+                            <div className="form-check form-switch">
+                                <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onChange={handleDisplayModeChange} checked={displayMode === 'advanced'} />
+                                <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Advanced Mode</label>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        displayMode === 'simple' &&
+                        <p>simple mode goes here!</p>
+                    }
+                    {
+                        displayMode === 'advanced' &&
+                        <DisplayAdvanced
                             userInfo={userInfo}
                             plotId={searchParams.get("id")}
                             mode={mode}
@@ -643,235 +620,72 @@ const PlotHome = (
                             genres={genres}
                             onGenresChange={onGenresChange}
                             onFocusChange={onFocusChange}
-
                             setKeywords={setKeywords}
                             setLogLineDescription={setLogLineDescription}
                             setTitle={setTitle}
                             setProblemTemplate={setProblemTemplate}
                             setDramaticQuestion={setDramaticQuestion}
-
                             keywords={keywords}
                             onKeywordsChange={onKeywordsChange}
+                            logLineIncomplete={logLineIncomplete}
                             logLineDescription={logLineDescription}
                             onLogLineDescriptionChange={onLogLineDescriptionChange}
-                            logLineDescriptionTokenCount={logLineDescriptionTokenCount} // move inward?
-
+                            logLineDescriptionTokenCount={logLineDescriptionTokenCount}
                             onTitleChange={onTitleChange}
                             title={title}
-
                             problemTemplate={problemTemplate}
                             onProblemTemplateChange={onProblemTemplateChange}
-
                             problemTemplateOptions={problemTemplateOptions}
-
                             dramaticQuestion={dramaticQuestion}
                             onDramaticQuestionChange={onDramaticQuestionChange}
                             dramaticQuestionOptions={dramaticQuestionOptions}
-
                             updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                             AILogLineDescriptions={AILogLineDescriptions}
                             AITitles={AITitles}
                             setAITitles={setAITitles}
-
                             curFocusElName={curFocusElName}
-
                             tokensRemaining={tokensRemaining}
+
+                            hideBlurbs={hideBlurbs}
+                            blurbsIncomplete={blurbsIncomplete}
+                            expandedSummariesIncomplete={expandedSummariesIncomplete}
+
+                            setCharacters={setCharacters}
+
+                            characters={characters}
+                            archetypeOptions={archetypeOptions}
+                            updateCharacterName={updateCharacterName}
+                            updateCharacterIsHero={updateCharacterIsHero}
+                            updateCharacterArchetype={updateCharacterArchetype}
+                            updateCharacterDescription={updateCharacterDescription}
+                            updateAICharacterCompletion={updateAICharacterCompletion}
+                            updateCharacterPersonality={updateCharacterPersonality}
+                            insertCharacter={insertCharacter}
+                            deleteCharacter={deleteCharacter}
+
+                            sequences={sequences}
+                            setLastFocusedSequenceName={setLastFocusedSequenceName}
+                            lastFocusedSequenceName={lastFocusedSequenceName}
+                            updateBlurb={updateBlurb}
+                            updateExpandedSummary={updateExpandedSummary}
+                            updateFull={updateFull}
+                            insertSequence={insertSequence}
+                            deleteSequence={deleteSequence}
+                            heroCharacterArchetype={heroCharacterArchetype}
+                            updateBlurbCompletions={updateBlurbCompletions}
+                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                            updateFullCompletions={updateFullCompletions}
+                            setSequences={setSequences}
+
+                            goToViewPlot={goToViewPlot}
+                            isPublicCheckboxId={isPublicCheckboxId}
+                            onIsPublicChange={onIsPublicChange}
+                            isPublic={isPublic}
+                            lastSaveSuccess={lastSaveSuccess}
+                            totalTokens={totalTokens}
                         />
-                    </div>
-
-                    {
-                        logLineIncomplete === true &&
-                        <p>All fields above must be completed.</p>
                     }
-                    {
-                        logLineIncomplete === false &&
-                        <Tabs defaultActiveKey="characters" className="mb-3" onFocus={() => onFocusChange('tabs')}>
-                            <Tab eventKey="characters" title="1. Characters">
-                                {
-                                    userInfo && userInfo.userRoles.includes('customer') &&
-                                    <CharacterBrainstormAll
-                                        userInfo={userInfo}
-                                        plotId={searchParams.get("id")}
-                                        logLineDescription={logLineDescription}
-                                        problemTemplate={problemTemplate}
-                                        dramaticQuestion={dramaticQuestion}
-                                        setCharacters={setCharacters}
-                                        tokensRemaining={tokensRemaining}
-                                    />
-                                }
 
-                                {
-                                    //deferredCharacterList
-                                    <CharacterList
-                                        plotId={searchParams.get("id")}
-                                        characters={characters}
-                                        userInfo={userInfo}
-                                        archetypeOptions={archetypeOptions}
-                                        onFocusChange={onFocusChange}
-                                        updateCharacterName={updateCharacterName}
-                                        updateCharacterIsHero={updateCharacterIsHero}
-                                        updateCharacterArchetype={updateCharacterArchetype}
-                                        updateCharacterDescription={updateCharacterDescription}
-                                        updateAICharacterCompletion={updateAICharacterCompletion}
-                                        updateCharacterPersonality={updateCharacterPersonality}
-                                        insertCharacter={insertCharacter}
-                                        deleteCharacter={deleteCharacter}
-
-                                        tokensRemaining={tokensRemaining}
-                                    />
-                                }
-                            </Tab>
-                            <Tab eventKey="blurbs" title="2. Blurbs">
-                                <p>Write the absolute minimum logical sequence of events that propel the story. This should be a dry A therefore B therefore C style of writing.</p>
-                                {
-                                    hideBlurbs === true &&
-                                    <p>You must have a protagonist character with an archetype, and all characters must have a name.</p>
-                                }
-                                {
-                                    hideBlurbs === false &&
-                                    <>
-                                        {
-                                            //deferredSequenceList
-                                            <SequenceList
-                                                sequenceType='blurb'
-                                                plotId={searchParams.get("id")}
-                                                sequences={sequences}
-                                                userInfo={userInfo}
-                                                logLineDescription={logLineDescription}
-                                                setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                                lastFocusedSequenceName={lastFocusedSequenceName}
-                                                updateBlurb={updateBlurb}
-                                                updateExpandedSummary={updateExpandedSummary}
-                                                updateFull={updateFull}
-                                                insertSequence={insertSequence}
-                                                deleteSequence={deleteSequence}
-                                                genres={genres}
-                                                problemTemplate={problemTemplate}
-                                                keywords={keywords}
-                                                characters={characters}
-                                                heroCharacterArchetype={heroCharacterArchetype}
-                                                dramaticQuestion={dramaticQuestion}
-                                                updateBlurbCompletions={updateBlurbCompletions}
-                                                updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                                                updateFullCompletions={updateFullCompletions}
-                                                setSequences={setSequences}
-
-                                                tokensRemaining={tokensRemaining}
-                                            />
-                                        }
-                                    </>
-                                }
-                            </Tab>
-                            <Tab eventKey="expandedSummaries" title="3. Expanded Summaries">
-                                <p>Expand the logical blurbs into more colorful paragraphs, including details of the setting, characters, emotions, and symbolism.</p>
-                                {
-                                    //deferredSequenceList
-                                    <SequenceList
-                                        sequenceType='expandedSummary'
-                                        plotId={searchParams.get("id")}
-                                        sequences={sequences}
-                                        userInfo={userInfo}
-                                        logLineDescription={logLineDescription}
-                                        setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                        lastFocusedSequenceName={lastFocusedSequenceName}
-                                        updateBlurb={updateBlurb}
-                                        updateExpandedSummary={updateExpandedSummary}
-                                        updateFull={updateFull}
-                                        insertSequence={insertSequence}
-                                        deleteSequence={deleteSequence}
-                                        genres={genres}
-                                        problemTemplate={problemTemplate}
-                                        keywords={keywords}
-                                        characters={characters}
-                                        heroCharacterArchetype={heroCharacterArchetype}
-                                        dramaticQuestion={dramaticQuestion}
-                                        updateBlurbCompletions={updateBlurbCompletions}
-                                        updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                                        updateFullCompletions={updateFullCompletions}
-                                        setSequences={setSequences}
-
-                                        tokensRemaining={tokensRemaining}
-                                    />
-                                }
-                                {
-                                    blurbsIncomplete &&
-                                    <p>Not all blurbs have been completed. Additional expanded summaries will only appear when their corresponding blurb has been entered.</p>
-                                }
-
-                            </Tab>
-                            {
-                                userInfo && userInfo.userRoles.includes('admin') &&
-                                <Tab eventKey="full" title="4. Full">
-                                    <p>Expand the summaries into full prose or a screenplay.</p>
-
-                                    {
-                                        //deferredSequenceList
-                                        <SequenceList
-                                            sequenceType='full'
-                                            plotId={searchParams.get("id")}
-                                            sequences={sequences}
-                                            userInfo={userInfo}
-                                            logLineDescription={logLineDescription}
-                                            setLastFocusedSequenceName={setLastFocusedSequenceName}
-                                            lastFocusedSequenceName={lastFocusedSequenceName}
-                                            updateBlurb={updateBlurb}
-                                            updateExpandedSummary={updateExpandedSummary}
-                                            updateFull={updateFull}
-                                            insertSequence={insertSequence}
-                                            deleteSequence={deleteSequence}
-                                            genres={genres}
-                                            problemTemplate={problemTemplate}
-                                            keywords={keywords}
-                                            characters={characters}
-                                            heroCharacterArchetype={heroCharacterArchetype}
-                                            dramaticQuestion={dramaticQuestion}
-                                            updateBlurbCompletions={updateBlurbCompletions}
-                                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                                            updateFullCompletions={updateFullCompletions}
-                                            setSequences={setSequences}
-
-                                            tokensRemaining={tokensRemaining}
-                                        />
-                                    }
-                                    {
-                                        expandedSummariesIncomplete &&
-                                        <p>Not all blurbs and expanded summaries have been completed. Additional full text areas will only appear when their corresponding blurbs and expanded summary has been entered.</p>
-                                    }
-                                </Tab>
-                            }
-                        </Tabs>
-
-                    }
-                    <div className='row mb-4 pt-5 border-top'>
-                        <div className='col-8'>
-                            <button className='btn btn-primary' onClick={goToViewPlot}>View and Share</button>
-                        </div>
-                        <div className="col-2 form-check" title="check this box to make your plot public">
-                            <label className="form-check-label" htmlFor={isPublicCheckboxId}>
-                                Is Public
-                            </label>
-                            <input id={isPublicCheckboxId} className='form-check-input' type='checkbox' onChange={onIsPublicChange} checked={isPublic} />
-
-                        </div>
-                        <div className='col-2'>
-                            <p className='text-muted text-end'>
-                                {
-                                    lastSaveSuccess === null &&
-                                    <span>not yet saved in this session</span>
-                                }
-                                {
-                                    lastSaveSuccess !== null &&
-                                    <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
-                                }
-                                {
-                                    <>
-                                        <br />
-                                        <span>{totalTokens}/{2048 - 320} tokens</span>
-                                    </>
-                                }
-                            </p>
-                        </div>
-                    </div>
                 </>
             }
         </>

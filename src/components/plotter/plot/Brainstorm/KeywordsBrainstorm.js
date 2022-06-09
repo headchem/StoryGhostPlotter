@@ -49,10 +49,12 @@ const KeywordsBrainstorm = (
     }
 
     const addKeyword = (keyword) => {
-        console.log('existing keywords:')
-        console.log(keywords)
-        const newKeywords = [...keywords.map(k => ({ 'label': k, 'value': k })), { 'label': keyword, 'value': keyword }]
-        onKeywordsChange(newKeywords)
+        //console.log('existing keywords:')
+        //console.log(keywords)
+        if (keywords.indexOf(keyword) === -1) {
+            const newKeywords = [...keywords.map(k => ({ 'label': k, 'value': k })), { 'label': keyword, 'value': keyword }]
+            onKeywordsChange(newKeywords)
+        }
     }
 
     const aiKeywordsListItems = (aiKeywords ?? []).map((keyword, idx) =>
