@@ -7,6 +7,7 @@ import { useSearchParams, useNavigate, createSearchParams } from "react-router-d
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
+import DisplaySimple from './DisplaySimple'
 import DisplayAdvanced from './DisplayAdvanced'
 import { getTokenCount } from "../../../util/Tokenizer";
 
@@ -33,7 +34,7 @@ const PlotHome = (
         });
     }
 
-    const [displayMode, setDisplayMode] = useState('advanced') // options are "simple" and "advanced"
+    const [displayMode, setDisplayMode] = useState('simple') // options are "simple" and "advanced"
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
@@ -598,7 +599,7 @@ const PlotHome = (
             {
                 plotLoading === false && isNotFound === false &&
                 <>
-                    <div className='row d-none'>
+                    <div className='row'>
                         <div className='col-12'>
                             <div className="form-check form-switch">
                                 <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onChange={handleDisplayModeChange} checked={displayMode === 'advanced'} />
@@ -608,7 +609,78 @@ const PlotHome = (
                     </div>
                     {
                         displayMode === 'simple' &&
-                        <p>simple mode goes here!</p>
+                        <DisplaySimple
+                            userInfo={userInfo}
+                            plotId={searchParams.get("id")}
+                            mode={mode}
+                            genreOptions={genreOptions}
+                            genres={genres}
+                            onGenresChange={onGenresChange}
+                            onFocusChange={onFocusChange}
+                            setKeywords={setKeywords}
+                            setLogLineDescription={setLogLineDescription}
+                            setTitle={setTitle}
+                            setProblemTemplate={setProblemTemplate}
+                            setDramaticQuestion={setDramaticQuestion}
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            logLineIncomplete={logLineIncomplete}
+                            logLineDescription={logLineDescription}
+                            onLogLineDescriptionChange={onLogLineDescriptionChange}
+                            logLineDescriptionTokenCount={logLineDescriptionTokenCount}
+                            onTitleChange={onTitleChange}
+                            title={title}
+                            problemTemplate={problemTemplate}
+                            onProblemTemplateChange={onProblemTemplateChange}
+                            problemTemplateOptions={problemTemplateOptions}
+                            dramaticQuestion={dramaticQuestion}
+                            onDramaticQuestionChange={onDramaticQuestionChange}
+                            dramaticQuestionOptions={dramaticQuestionOptions}
+                            updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
+                            AILogLineDescriptions={AILogLineDescriptions}
+                            AITitles={AITitles}
+                            setAITitles={setAITitles}
+                            curFocusElName={curFocusElName}
+                            tokensRemaining={tokensRemaining}
+
+                            hideBlurbs={hideBlurbs}
+                            blurbsIncomplete={blurbsIncomplete}
+                            expandedSummariesIncomplete={expandedSummariesIncomplete}
+
+                            setCharacters={setCharacters}
+
+                            characters={characters}
+                            archetypeOptions={archetypeOptions}
+                            updateCharacterName={updateCharacterName}
+                            updateCharacterIsHero={updateCharacterIsHero}
+                            updateCharacterArchetype={updateCharacterArchetype}
+                            updateCharacterDescription={updateCharacterDescription}
+                            updateAICharacterCompletion={updateAICharacterCompletion}
+                            updateCharacterPersonality={updateCharacterPersonality}
+                            insertCharacter={insertCharacter}
+                            deleteCharacter={deleteCharacter}
+
+                            sequences={sequences}
+                            setLastFocusedSequenceName={setLastFocusedSequenceName}
+                            lastFocusedSequenceName={lastFocusedSequenceName}
+                            updateBlurb={updateBlurb}
+                            updateExpandedSummary={updateExpandedSummary}
+                            updateFull={updateFull}
+                            insertSequence={insertSequence}
+                            deleteSequence={deleteSequence}
+                            heroCharacterArchetype={heroCharacterArchetype}
+                            updateBlurbCompletions={updateBlurbCompletions}
+                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                            updateFullCompletions={updateFullCompletions}
+                            setSequences={setSequences}
+
+                            goToViewPlot={goToViewPlot}
+                            isPublicCheckboxId={isPublicCheckboxId}
+                            onIsPublicChange={onIsPublicChange}
+                            isPublic={isPublic}
+                            lastSaveSuccess={lastSaveSuccess}
+                            totalTokens={totalTokens}
+                        />
                     }
                     {
                         displayMode === 'advanced' &&
