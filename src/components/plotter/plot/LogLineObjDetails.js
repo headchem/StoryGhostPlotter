@@ -18,6 +18,7 @@ const LogLineObjDetails = (
         AILogLineDescriptions,
         AITitles,
         updateLogLineDescriptionCompletions,
+        setTitle,
         curFocusElName,
         genres,
         problemTemplate,
@@ -133,6 +134,7 @@ const LogLineObjDetails = (
                         <TitleBrainstorm
                             userInfo={userInfo}
                             plotId={plotId}
+                            setTitle={setTitle}
                             AITitles={AITitles}
                             logLineDescription={logLineDescription}
                             genres={genres}

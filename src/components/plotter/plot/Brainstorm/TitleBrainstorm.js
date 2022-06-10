@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { FaGhost } from 'react-icons/fa'
+import { FaGhost, FaCopy } from 'react-icons/fa'
 import Spinner from 'react-bootstrap/Spinner';
 import SignUpMessage from '../SignUpMessage'
 
@@ -10,6 +10,7 @@ const TitleBrainstorm = (
     {
         userInfo,
         plotId,
+        setTitle,
         AITitles,
         logLineDescription,
         genres,
@@ -60,7 +61,7 @@ const TitleBrainstorm = (
     }
 
     const aiTitlesListItems = (AITitles ?? []).map((t, idx) =>
-        <li key={idx}>{t}</li>
+        <li key={idx}>{t} <button title="select title" className="btn btn-link" onClick={() => setTitle(t)}><FaCopy /></button></li>
     )
 
     return (

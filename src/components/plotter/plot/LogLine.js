@@ -238,6 +238,7 @@ const LogLine = (
                     updateLogLineDescription={setLogLineDescription}
                     updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                     AILogLineDescriptions={AILogLineDescriptions}
+                    setTitle={setTitle}
                     AITitles={AITitles}
                     setAITitles={setAITitles}
                     curFocusElName={curFocusElName}
