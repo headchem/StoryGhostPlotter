@@ -107,6 +107,9 @@ const DisplaySimple = (
                             onGenresChange={onGenresChange}
                             onFocusChange={onFocusChange}
                             mode={mode}
+
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
                         />
                     }
                     {

@@ -17,7 +17,7 @@ const LogLineSelect = (
     }
 ) => {
 
-    const multiValues = value.map(keyword => ({ 'label': keyword, 'value': keyword }))
+    const multiValues = !value ? null : value.map(keyword => ({ 'label': keyword, 'value': keyword }))
 
     return (
         <div className='logLineSelectMulti' style={{ width: width }} onFocus={onFocusChange}>

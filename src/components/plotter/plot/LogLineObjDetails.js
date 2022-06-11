@@ -99,7 +99,6 @@ const LogLineObjDetails = (
                         <KeywordsBrainstorm
                             keywords={keywords}
                             onKeywordsChange={onKeywordsChange}
-                            userInfo={userInfo}
                             genres={genres}
                         />
                     }

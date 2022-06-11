@@ -1,10 +1,9 @@
 import React from 'react'
 import LimitedTextArea from './LimitedTextArea'
-import LogLineSelect from './LogLineSelect'
 import LogLineObjDetails from './LogLineObjDetails'
 import LogLineBrainstormAll from './Brainstorm/LogLineBrainstormAll'
-import { selectDarkTheme, selectLightTheme } from '../../../util/SelectTheme'
 import Genres from './Fields/Genres'
+import Keywords from './Fields/Keywords'
 
 const LogLine = (
     {
@@ -88,16 +87,12 @@ const LogLine = (
                         <label htmlFor="keywords" className="form-label">Keywords:</label>
                     </div>
                     <div className='col-md-9'>
-                        <div style={{ width: '100%' }}>
-                            <LogLineSelect
-                                selectTheme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
-                                placeholder='Keywords'
-                                isMultiSelect={true}
-                                onFocusChange={() => onFocusChange('keywords')}
-                                value={keywords}
-                                onChange={onKeywordsChange}
-                            />
-                        </div>
+                        <Keywords
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            onFocusChange={onFocusChange}
+                            mode={mode}
+                        />
                     </div>
                 </div>
 

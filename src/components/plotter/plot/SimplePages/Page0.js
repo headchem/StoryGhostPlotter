@@ -1,6 +1,8 @@
 import React from 'react'
 import Genres from '../Fields/Genres'
+import Keywords from '../Fields/Keywords'
 import GenresAdvice from '../Advice/GenresAdvice'
+import KeywordsBrainstorm from '../Brainstorm/KeywordsBrainstorm'
 
 const Page0 = (
     {
@@ -8,7 +10,10 @@ const Page0 = (
         genres,
         onGenresChange,
         onFocusChange,
-        mode
+        mode,
+
+        keywords,
+        onKeywordsChange,
     }
 ) => {
 
@@ -18,8 +23,6 @@ const Page0 = (
                 <div className="card">
 
                     <div className="card-body">
-                        {/* <h5 className="card-title">Card title</h5>
-                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. </p> */}
                         <Genres
                             genreOptions={genreOptions}
                             genres={genres}
@@ -27,16 +30,24 @@ const Page0 = (
                             onFocusChange={onFocusChange}
                             mode={mode}
                         />
-                        <GenresAdvice 
+                        <GenresAdvice
                             genres={genres}
                         />
                     </div>
                 </div>
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <p className="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-
+                        <Keywords
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            onFocusChange={onFocusChange}
+                            mode={mode}
+                        />
+                        <KeywordsBrainstorm
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            genres={genres}
+                        />
                     </div>
                 </div>
             </div>
