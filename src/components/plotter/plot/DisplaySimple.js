@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import Pagination from './SimplePages/Pagination'
 import Page0 from './SimplePages/Page0'
+import Page1 from './SimplePages/Page1'
+import Page2 from './SimplePages/Page2'
+import Page3 from './SimplePages/Page3'
+import Page4 from './SimplePages/Page4'
+import Page5 from './SimplePages/Page5'
 
 const DisplaySimple = (
     {
@@ -92,15 +97,27 @@ const DisplaySimple = (
         setCurPage(pageNum)
     }
 
-    const totalPages = 3
+    const totalPages = 6 // should match the number of pages in the SimplePages folder
 
     return (
 
         <>
             <div className='row pb-5'>
                 <div className='col-12'>
+                    <div className='row pb-5'>
+                        <div className='col'>
+                            <Pagination
+                                curPage={curPage}
+                                prevPage={prevPage}
+                                nextPage={nextPage}
+                                goToPage={goToPage}
+                                totalPages={totalPages}
+                            />
+                        </div>
+                    </div>
+
                     {
-                        curPage === 0 &&
+                        curPage === 0 && // genres and keywords
                         <Page0
                             genreOptions={genreOptions}
                             genres={genres}
@@ -113,33 +130,47 @@ const DisplaySimple = (
                         />
                     }
                     {
-                        curPage === 1 &&
-                        <div className="card-group">
-                            <div className="card">
+                        curPage === 1 && // logline desc and title
+                        <Page1
 
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. </p>
-                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">Card title</h5>
-                                    <p className="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                                </div>
-                            </div>
-                        </div>
+                        />
+                    }
+                    {
+                        curPage === 2 && // problem template and dramatic question
+                        <Page2
+
+                        />
+                    }
+                    {
+                        curPage === 3 && // logline overview
+                        <Page3
+
+                        />
+                    }
+                    {
+                        curPage === 4 && // characters
+                        <Page4
+
+                        />
+                    }
+                    {
+                        curPage === 5 && // sequences
+                        <Page5
+
+                        />
                     }
 
-                    <Pagination
-                        curPage={curPage}
-                        prevPage={prevPage}
-                        nextPage={nextPage}
-                        goToPage={goToPage}
-                        totalPages={totalPages}
-                    />
+                    <div className='row pt-5'>
+                        <div className='col'>
+                            <Pagination
+                                curPage={curPage}
+                                prevPage={prevPage}
+                                nextPage={nextPage}
+                                goToPage={goToPage}
+                                totalPages={totalPages}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

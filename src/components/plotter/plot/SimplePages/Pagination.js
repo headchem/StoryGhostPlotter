@@ -11,7 +11,7 @@ const Pagination = (
 ) => {
 
     return (
-        <nav className="pt-5" aria-label="Page navigation">
+        <nav aria-label="Page navigation">
             <ul className="pagination justify-content-center pagination-lg">
                 {
                     curPage === 0 &&
