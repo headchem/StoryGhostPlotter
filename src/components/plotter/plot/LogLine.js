@@ -1,9 +1,10 @@
 import React from 'react'
-import Select from 'react-select';
 import LimitedTextArea from './LimitedTextArea'
 import LogLineSelect from './LogLineSelect'
 import LogLineObjDetails from './LogLineObjDetails'
 import LogLineBrainstormAll from './Brainstorm/LogLineBrainstormAll'
+import { selectDarkTheme, selectLightTheme } from '../../../util/SelectTheme'
+import Genres from './Fields/Genres'
 
 const LogLine = (
     {
@@ -49,42 +50,6 @@ const LogLine = (
     }
 ) => {
 
-
-    var selectTheme = (theme) => {
-        if (mode === 'dark') {
-            const darkTheme = {
-                ...theme,
-                borderRadius: 0,
-                colors: {
-                    ...theme.colors,
-                    neutral0: '#222',
-                    neutral5: '#333',
-                    neutral10: '#444',
-                    neutral20: '#666',
-                    neutral30: '#888',
-                    neutral40: '#999',
-                    neutral50: '#aaa',
-                    neutral60: '#bbb',
-                    neutral70: '#ccc',
-                    neutral80: '#ddd',
-                    neutral90: '#eee',
-
-                    primary: '#444',
-                    primary25: '#333',
-                    primary50: '#444',
-                    primary75: '#555',
-
-                    danger: '#ffb3ab',
-                    dangerLight: '#601a13'
-                },
-            }
-
-            return darkTheme;
-        } else {
-            return theme
-        }
-    }
-
     return (
         <>
             <div className='col-md-7 logline'>
@@ -93,19 +58,13 @@ const LogLine = (
                         <label htmlFor="genres" className="form-label">Genres</label>
                     </div>
                     <div className='col-md-9'>
-                        <div style={{ width: '100%' }}>
-                            <Select
-                                defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
-                                isMulti
-                                name="genres"
-                                options={genreOptions}
-                                className="genres-multi-select"
-                                classNamePrefix="select"
-                                onChange={onGenresChange}
-                                onFocus={() => onFocusChange('genres')}
-                                theme={selectTheme}
-                            />
-                        </div>
+                        <Genres
+                            genreOptions={genreOptions}
+                            genres={genres}
+                            onGenresChange={onGenresChange}
+                            onFocusChange={onFocusChange}
+                            mode={mode}
+                        />
                     </div>
                 </div>
 
@@ -131,7 +90,7 @@ const LogLine = (
                     <div className='col-md-9'>
                         <div style={{ width: '100%' }}>
                             <LogLineSelect
-                                selectTheme={selectTheme}
+                                selectTheme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
                                 placeholder='Keywords'
                                 isMultiSelect={true}
                                 onFocusChange={() => onFocusChange('keywords')}

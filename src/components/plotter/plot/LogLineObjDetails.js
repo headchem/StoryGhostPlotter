@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
-import GenresDescription from './GenresDescription'
 import ProblemTemplateDescription from './ProblemTemplateDescription'
 import DramaticQuestionDescription from './DramaticQuestionDescription'
 import KeywordsBrainstorm from './Brainstorm/KeywordsBrainstorm'
 import TitleBrainstorm from './Brainstorm/TitleBrainstorm';
 import LogLineDescriptionBrainstorm from './Brainstorm/LogLineDescriptionBrainstorm'
+import { isNullOrEmpty } from '../../../util/Helpers';
+import GenresAdvice from './Advice/GenresAdvice';
 
 const LogLineObjDetails = (
     {
@@ -32,7 +33,6 @@ const LogLineObjDetails = (
     const navigate = useNavigate()
 
     const [descIsLoading, setDescIsLoading] = useState(false)
-    const [genresDescObjs, setGenresDescObjs] = useState(null)
     const [problemTemplateDescObj, setProblemTemplateDescObj] = useState(null)
     const [dramaticQuestionDescObj, setDramaticQuestionDescObj] = useState(null)
 
@@ -43,21 +43,10 @@ const LogLineObjDetails = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [curFocusElName, genres, problemTemplate, dramaticQuestion]);
 
-    const isNullOrEmpty = (val) => {
-        if (val === undefined) return true
-        if (val === null) return true
-        if (val === '') return true
-        if (val.length === 0) return true
-
-        return false
-    }
-
     const loadDescObj = async (elName) => {
         let url = ''
 
-        if (elName === 'genres' && !isNullOrEmpty(genres)) {
-            url = '/api/LogLine/GenresDescription?genres=' + genres.join(',')
-        } else if (elName === 'problem template' && !isNullOrEmpty(problemTemplate)) {
+        if (elName === 'problem template' && !isNullOrEmpty(problemTemplate)) {
             url = '/api/LogLine/ProblemTemplateDescription?problemTemplate=' + problemTemplate
         } else if (elName === 'dramatic question' && !isNullOrEmpty(dramaticQuestion)) {
             url = '/api/LogLine/DramaticQuestionDescription?dramaticQuestion=' + dramaticQuestion
@@ -78,9 +67,7 @@ const LogLineObjDetails = (
                     return Promise.reject(response);
                 }).then(function (data) {
 
-                    if (elName === 'genres') {
-                        setGenresDescObjs(data)
-                    } else if (elName === 'problem template') {
+                    if (elName === 'problem template') {
                         setProblemTemplateDescObj(data)
                     } else if (elName === 'dramatic question') {
                         setDramaticQuestionDescObj(data)
@@ -102,9 +89,9 @@ const LogLineObjDetails = (
                 descIsLoading === false &&
                 <>
                     {
-                        (curFocusElName === 'genres' && genresDescObjs !== null) &&
-                        <GenresDescription
-                            genresDescObjs={genresDescObjs}
+                        curFocusElName === 'genres' &&
+                        <GenresAdvice
+                            genres={genres}
                         />
                     }
                     {

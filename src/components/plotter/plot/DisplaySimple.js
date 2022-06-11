@@ -1,5 +1,6 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import Pagination from './SimplePages/Pagination'
+import Page0 from './SimplePages/Page0'
 
 const DisplaySimple = (
     {
@@ -77,12 +78,65 @@ const DisplaySimple = (
     }
 ) => {
 
+    const [curPage, setCurPage] = useState(0)
+
+    const prevPage = () => {
+        setCurPage(curPage - 1)
+    }
+
+    const nextPage = () => {
+        setCurPage(curPage + 1)
+    }
+
+    const goToPage = (pageNum) => {
+        setCurPage(pageNum)
+    }
+
+    const totalPages = 3
+
     return (
 
         <>
             <div className='row pb-5'>
                 <div className='col-12'>
-                    <p>Simple display goes here</p>
+                    {
+                        curPage === 0 &&
+                        <Page0
+                            genreOptions={genreOptions}
+                            genres={genres}
+                            onGenresChange={onGenresChange}
+                            onFocusChange={onFocusChange}
+                            mode={mode}
+                        />
+                    }
+                    {
+                        curPage === 1 &&
+                        <div className="card-group">
+                            <div className="card">
+
+                                <div className="card-body">
+                                    <h5 className="card-title">Card title</h5>
+                                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. With supporting text below as a natural lead-in to additional content. </p>
+                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">Card title</h5>
+                                    <p className="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                                    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <Pagination
+                        curPage={curPage}
+                        prevPage={prevPage}
+                        nextPage={nextPage}
+                        goToPage={goToPage}
+                        totalPages={totalPages}
+                    />
                 </div>
             </div>
         </>
