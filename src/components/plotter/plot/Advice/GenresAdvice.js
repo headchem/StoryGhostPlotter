@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import { isNullOrEmpty } from '../../../../util/Helpers';
+import { fetchData } from '../../../../util/FetchUtil';
 
 const GenresAdvice = (
     {
@@ -19,25 +20,7 @@ const GenresAdvice = (
 
         let url = '/api/LogLine/GenresDescription?genres=' + genres.join(',')
 
-        setIsLoading(true)
-
-        fetch(url)
-            .then(function (response) {
-                if (response.status === 401 || response.status === 403) {
-                    navigate('/plots')
-                } else {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }
-                return Promise.reject(response);
-            }).then(function (data) {
-                setData(data)
-            }).catch(function (error) {
-                console.warn(error);
-            }).finally(function () {
-                setIsLoading(false)
-            });
+        fetchData(url, setIsLoading, setData, navigate)
     }
 
     useEffect(() => {
