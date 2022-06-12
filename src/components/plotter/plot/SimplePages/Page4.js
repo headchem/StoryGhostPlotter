@@ -1,8 +1,18 @@
 import React from 'react'
+import SimpleCharacter from './SimpleCharacter'
 
 const Page4 = (
     {
-        characters
+        characters,
+
+        userInfo,
+        plotId,
+        updateCharacterName,
+        updateCharacterIsHero,
+        updateCharacterArchetype,
+        updateCharacterDescription,
+        updateAICharacterCompletion,
+        updateCharacterPersonality,
     }
 ) => {
 
@@ -12,7 +22,36 @@ const Page4 = (
                 <div className="card">
 
                     <div className="card-body">
-                        <p>Characters</p>
+                        {
+                            characters && characters.length > 0 &&
+                            <>
+                                {
+                                    characters
+                                        .map((character) => (
+                                            <SimpleCharacter
+                                                key={character.id}
+                                                userInfo={userInfo}
+                                                plotId={plotId}
+                                                //archetypeOptions={archetypeOptions}
+                                                character={character}
+                                                //characters={characters}
+                                                //onFocusChange={() => onFocusChange('character')}
+                                                updateCharacterName={updateCharacterName}
+                                                updateCharacterIsHero={updateCharacterIsHero}
+                                                updateCharacterArchetype={updateCharacterArchetype}
+                                                updateCharacterDescription={updateCharacterDescription}
+                                                updateAICharacterCompletion={updateAICharacterCompletion}
+                                                updateCharacterPersonality={updateCharacterPersonality}
+                                            //deleteCharacter={deleteCharacter}
+                                            //tokensRemaining={tokensRemaining}
+                                            />
+                                        ))
+                                }
+                            </>
+
+                        }
+
+                        <button className='btn btn-primary'>New Character</button>
                     </div>
 
                 </div>

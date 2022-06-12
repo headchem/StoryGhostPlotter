@@ -177,6 +177,16 @@ const DisplaySimple = (
                     {
                         curPage === 4 && // characters
                         <Page4
+
+                            userInfo={userInfo}
+                            plotId={plotId}
+                            updateCharacterName={updateCharacterName}
+                            updateCharacterIsHero={updateCharacterIsHero}
+                            updateCharacterArchetype={updateCharacterArchetype}
+                            updateCharacterDescription={updateCharacterDescription}
+                            updateAICharacterCompletion={updateAICharacterCompletion}
+                            updateCharacterPersonality={updateCharacterPersonality}
+
                             characters={characters}
                         />
                     }
