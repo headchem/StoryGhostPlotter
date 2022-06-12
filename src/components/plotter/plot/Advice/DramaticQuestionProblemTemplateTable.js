@@ -53,9 +53,9 @@ const DramaticQuestionProblemTemplateTable = (
             {
                 (isProblemTemplateLoading === false && isDramaticQuestionLoading === false && problemTemplateData && dramaticQuestionData) &&
                 <>
-                    <div className='row pt-5'>
+                    <div className='row'>
                         <div className='col-12'>
-                            <p>As the story progresses, the Hero and Enemy will move through the following phases:</p>
+                            <p>Problem Template: <strong>{problemTemplateData['name']}</strong>, Dramatic Question: <strong>{dramaticQuestionData['name']}</strong>. As the story progresses, the Hero and Enemy will move through the following phases:</p>
                         </div>
                     </div>
                     <div className="card-group">

@@ -132,6 +132,8 @@ const DisplaySimple = (
                     {
                         curPage === 1 && // logline desc and title
                         <Page1
+                            userInfo={userInfo}
+
                             genres={genres}
                             keywords={keywords}
 

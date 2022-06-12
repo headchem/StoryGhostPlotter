@@ -7,6 +7,8 @@ import { FaSyncAlt } from 'react-icons/fa'
 
 const Page1 = (
     {
+        userInfo,
+        
         genres,
         keywords,
         logLineDescription,
@@ -114,8 +116,10 @@ const Page1 = (
 
                         <p className='text-muted'><strong>Genres:</strong> {genres.join(', ')}. <strong>Keywords:</strong> {keywords.join(', ')}</p>
 
-                        <button onClick={loadLogLineDesc} className='btn btn-primary btn-lg mb-3' title='Replace existing text with a new story idea'><FaSyncAlt /> Brainstorm with AI</button>
-
+                        {
+                            userInfo && userInfo.userRoles.includes('customer') &&
+                            <button onClick={loadLogLineDesc} className='btn btn-primary btn-lg mb-3' title='Replace existing text with a new story idea'><FaSyncAlt /> Brainstorm with AI</button>
+                        }
                         {
                             (isLogLineDescLoading === true || isTitleLoading === true) && <Spinner animation="border" variant="secondary" />
                         }

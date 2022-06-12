@@ -69,11 +69,12 @@ const Page2 = (
                     </div>
                 </div>
             </div>
-
-            <DramaticQuestionProblemTemplateTable
-                problemTemplate={problemTemplate}
-                dramaticQuestion={dramaticQuestion}
-            />
+            <div className='pt-5'>
+                <DramaticQuestionProblemTemplateTable
+                    problemTemplate={problemTemplate}
+                    dramaticQuestion={dramaticQuestion}
+                />
+            </div>
         </>
     )
 }
