@@ -26,7 +26,7 @@ const DisplayAdvanced = (
         logLineIncomplete,
         logLineDescription,
         onLogLineDescriptionChange,
-        logLineDescriptionTokenCount,
+        //logLineDescriptionTokenCount,
         onTitleChange,
         title,
         problemTemplate,
@@ -106,7 +106,7 @@ const DisplayAdvanced = (
                     onKeywordsChange={onKeywordsChange}
                     logLineDescription={logLineDescription}
                     onLogLineDescriptionChange={onLogLineDescriptionChange}
-                    logLineDescriptionTokenCount={logLineDescriptionTokenCount}
+                    //logLineDescriptionTokenCount={logLineDescriptionTokenCount}
 
                     onTitleChange={onTitleChange}
                     title={title}

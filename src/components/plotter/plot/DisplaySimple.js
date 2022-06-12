@@ -132,31 +132,56 @@ const DisplaySimple = (
                     {
                         curPage === 1 && // logline desc and title
                         <Page1
+                            genres={genres}
+                            keywords={keywords}
 
+                            logLineDescription={logLineDescription}
+                            onLogLineDescriptionChange={onLogLineDescriptionChange}
+                            onFocusChange={onFocusChange}
+
+                            title={title}
+                            onTitleChange={onTitleChange}
+
+                            plotId={plotId}
+                            updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
+                            AILogLineDescriptions={AILogLineDescriptions}
+
+                            setAITitles={setAITitles}
                         />
                     }
                     {
                         curPage === 2 && // problem template and dramatic question
                         <Page2
-
+                            problemTemplate={problemTemplate}
+                            onProblemTemplateChange={onProblemTemplateChange}
+                            onFocusChange={onFocusChange}
+                            problemTemplateOptions={problemTemplateOptions}
+                            dramaticQuestion={dramaticQuestion}
+                            onDramaticQuestionChange={onDramaticQuestionChange}
+                            dramaticQuestionOptions={dramaticQuestionOptions}
                         />
                     }
                     {
                         curPage === 3 && // logline overview
                         <Page3
-
+                            title={title}
+                            logLineDescription={logLineDescription}
+                            genres={genres}
+                            keywords={keywords}
+                            problemTemplate={problemTemplate}
+                            dramaticQuestion={dramaticQuestion}
                         />
                     }
                     {
                         curPage === 4 && // characters
                         <Page4
-
+                            characters={characters}
                         />
                     }
                     {
                         curPage === 5 && // sequences
                         <Page5
-
+                            sequences={sequences}
                         />
                     }
 

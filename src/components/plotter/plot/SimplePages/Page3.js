@@ -1,23 +1,30 @@
 import React from 'react'
+import DramaticQuestionProblemTemplateTable from '../Advice/DramaticQuestionProblemTemplateTable'
 
 const Page3 = (
     {
-
+        title,
+        logLineDescription,
+        genres,
+        keywords,
+        problemTemplate,
+        dramaticQuestion
     }
 ) => {
 
     return (
-        <>
-            <div className="card-group">
-                <div className="card">
-
-                    <div className="card-body">
-                        <p>Summary of Log Line displayed here in more of a readable text format.</p>
-                    </div>
-
-                </div>
+        <div className='row'>
+            <div className='col-12'>
+                <p><strong>Genres: </strong>{genres.join(', ')}</p>
+                <p><strong>Keywords: </strong>{keywords.join(', ')}</p>
+                <h1>{title}</h1>
+                <p className='fs-5'>{logLineDescription}</p>
+                <DramaticQuestionProblemTemplateTable
+                    problemTemplate={problemTemplate}
+                    dramaticQuestion={dramaticQuestion}
+                />
             </div>
-        </>
+        </div>
     )
 }
 

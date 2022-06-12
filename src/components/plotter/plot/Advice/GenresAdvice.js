@@ -18,7 +18,7 @@ const GenresAdvice = (
     const load = async () => {
         if (isNullOrEmpty(genres)) return
 
-        let url = '/api/LogLine/GenresDescription?genres=' + genres.join(',')
+        const url = '/api/LogLine/GenresDescription?genres=' + genres.join(',')
 
         fetchData(url, setIsLoading, setData, navigate)
     }

@@ -2,7 +2,7 @@ import React from 'react'
 
 const Page4 = (
     {
-
+        characters
     }
 ) => {
 

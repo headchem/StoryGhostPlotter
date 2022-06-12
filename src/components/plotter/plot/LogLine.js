@@ -24,7 +24,7 @@ const LogLine = (
         onKeywordsChange,
         logLineDescription,
         onLogLineDescriptionChange,
-        logLineDescriptionTokenCount,
+        //logLineDescriptionTokenCount,
 
         onTitleChange,
         title,
@@ -108,7 +108,7 @@ const LogLine = (
                             setValue={(newValue) => onLogLineDescriptionChange(newValue)}
                             rows={4}
                             limit={700}
-                            curTokenCount={logLineDescriptionTokenCount}
+                            //curTokenCount={logLineDescriptionTokenCount}
                             showCount={true}
                             onFocus={() => onFocusChange('logLineDescription')}
                         />

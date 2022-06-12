@@ -2,7 +2,7 @@ import React from 'react'
 
 const Page5 = (
     {
-
+        sequences
     }
 ) => {
 
