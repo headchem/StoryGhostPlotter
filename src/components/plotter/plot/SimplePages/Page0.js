@@ -23,13 +23,15 @@ const Page0 = (
                 <div className="card">
 
                     <div className="card-body">
-                        <Genres
-                            genreOptions={genreOptions}
-                            genres={genres}
-                            onGenresChange={onGenresChange}
-                            onFocusChange={onFocusChange}
-                            mode={mode}
-                        />
+                        <div className='fs-5 mb-3'>
+                            <Genres
+                                genreOptions={genreOptions}
+                                genres={genres}
+                                onGenresChange={onGenresChange}
+                                onFocusChange={onFocusChange}
+                                mode={mode}
+                            />
+                        </div>
                         <GenresAdvice
                             genres={genres}
                         />
@@ -37,12 +39,14 @@ const Page0 = (
                 </div>
                 <div className="card">
                     <div className="card-body">
-                        <Keywords
-                            keywords={keywords}
-                            onKeywordsChange={onKeywordsChange}
-                            onFocusChange={onFocusChange}
-                            mode={mode}
-                        />
+                        <div className='fs-5 mb-3'>
+                            <Keywords
+                                keywords={keywords}
+                                onKeywordsChange={onKeywordsChange}
+                                onFocusChange={onFocusChange}
+                                mode={mode}
+                            />
+                        </div>
                         <KeywordsBrainstorm
                             keywords={keywords}
                             onKeywordsChange={onKeywordsChange}

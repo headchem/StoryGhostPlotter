@@ -37,7 +37,7 @@ const GenresAdvice = (
                 !isNullOrEmpty(data) &&
                 data.map((genreObj) => (
                     <div key={genreObj.name}>
-                        <h2>{genreObj.name}</h2>
+                        <h3>{genreObj.name}</h3>
                         <p>{genreObj.description}</p>
                     </div>
                 ))

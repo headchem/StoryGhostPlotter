@@ -8,7 +8,7 @@ import { FaSyncAlt } from 'react-icons/fa'
 const Page1 = (
     {
         userInfo,
-        
+
         genres,
         keywords,
         logLineDescription,
@@ -113,44 +113,51 @@ const Page1 = (
                 <div className="card">
 
                     <div className="card-body">
+                        <div className='row'>
+                            <div className='col-8'>
 
-                        <p className='text-muted'><strong>Genres:</strong> {genres.join(', ')}. <strong>Keywords:</strong> {keywords.join(', ')}</p>
+                                {
+                                    (isLogLineDescLoading === false && isTitleLoading === false) &&
+                                    <>
+                                        <input
+                                            type='text'
+                                            className='fs-5 form-control mb-3'
+                                            placeholder='Plot Title'
+                                            required
+                                            onChange={onTitleChange}
+                                            //defaultValue={title}
+                                            value={title}
+                                            onFocus={() => onFocusChange('title')}
+                                            aria-describedby="titleHelp"
+                                            id="title" />
 
-                        {
-                            userInfo && userInfo.userRoles.includes('customer') &&
-                            <button onClick={loadLogLineDesc} className='btn btn-primary btn-lg mb-3' title='Replace existing text with a new story idea'><FaSyncAlt /> Brainstorm with AI</button>
-                        }
-                        {
-                            (isLogLineDescLoading === true || isTitleLoading === true) && <Spinner animation="border" variant="secondary" />
-                        }
-                        {
-                            (isLogLineDescLoading === false && isTitleLoading === false) &&
-                            <>
-                                <input
-                                    type='text'
-                                    className='fs-5 form-control mb-3'
-                                    placeholder='Plot Title'
-                                    required
-                                    onChange={onTitleChange}
-                                    //defaultValue={title}
-                                    value={title}
-                                    onFocus={() => onFocusChange('title')}
-                                    aria-describedby="titleHelp"
-                                    id="title" />
-
-                                <LimitedTextArea
-                                    id='logLineDesc'
-                                    className="form-control"
-                                    value={logLineDescription}
-                                    setValue={(newValue) => onLogLineDescriptionChange(newValue)}
-                                    rows={4}
-                                    limit={700}
-                                    showCount={true}
-                                    onFocus={() => onFocusChange('logLineDescription')}
-                                />
-                            </>
-                        }
-
+                                        <LimitedTextArea
+                                            id='logLineDesc'
+                                            className="form-control"
+                                            value={logLineDescription}
+                                            setValue={(newValue) => onLogLineDescriptionChange(newValue)}
+                                            rows={4}
+                                            limit={700}
+                                            showCount={true}
+                                            onFocus={() => onFocusChange('logLineDescription')}
+                                        />
+                                    </>
+                                }
+                                <span className='float-end'>
+                                    {
+                                        userInfo && userInfo.userRoles.includes('customer') &&
+                                        <button onClick={loadLogLineDesc} className='btn btn-primary btn-lg mt-3' title='Replace existing text with a new story idea'><FaSyncAlt /> Brainstorm with AI</button>
+                                    }
+                                    {
+                                        (isLogLineDescLoading === true || isTitleLoading === true) && <Spinner animation="border" variant="secondary" />
+                                    }
+                                </span>
+                            </div>
+                            <div className='col-4'>
+                                <p><strong>Genres:</strong> {genres.join(', ')}.</p>
+                                <p><strong>Keywords:</strong> {keywords.join(', ')}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

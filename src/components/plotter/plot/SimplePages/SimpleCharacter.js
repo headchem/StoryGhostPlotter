@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import LimitedTextArea from '../LimitedTextArea'
 import Spinner from 'react-bootstrap/Spinner';
+import { isNullOrEmpty } from '../../../../util/Helpers';
 import { FaSyncAlt, FaStar } from 'react-icons/fa'
 import { getPersonalitySummary } from '../../../../util/PersonalityDescriptions'
 import { useNavigate } from "react-router-dom";
-import { fetchWithTimeout } from '../../../../util/FetchUtil'
+import { fetchWithTimeout, fetchData } from '../../../../util/FetchUtil'
 
 const SimpleCharacter = (
     {
@@ -29,6 +30,8 @@ const SimpleCharacter = (
     const navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isArchetypeLoading, setIsArchetypeLoading] = useState(false)
+    const [archetypeDescObj, setAchetypeDescObj] = useState('')
 
     const onCharacterNameChange = (event) => {
         updateCharacterName(curCharacterId, event.target.value)
@@ -38,6 +41,19 @@ const SimpleCharacter = (
 
     const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
 
+    useEffect(() => {
+        fetchArchetype()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [characters]);
+
+    const fetchArchetype = async () => {
+
+        if (isNullOrEmpty(character.archetype)) return
+
+        const url = '/api/LogLine/ArchetypeDescription?archetype=' + character.archetype
+
+        fetchData(url, setIsArchetypeLoading, setAchetypeDescObj, navigate)
+    }
 
     const rerollCharacter = async () => {
         console.log('reroll current character: ' + curCharacterId)
@@ -109,14 +125,9 @@ const SimpleCharacter = (
     }
 
     return (
-        <div className='row'>
-            <div className='col-12'>
-                {
-                    character['isHero'] === true &&
-                    <p><FaStar /> {character['name']} is the protagonist.</p>
-                }
-                <p>{characterArchetypeCapitalized}-type {character.name} is {personalitySummary}.</p>
-                <input type='text' className='fs-5 form-control' placeholder='Character Name' required onChange={onCharacterNameChange} value={character.name} />
+        <div className='row mb-5'>
+            <div className='col-8'>
+                <input type='text' className='fs-5 form-control mb-3' placeholder='Character Name' required onChange={onCharacterNameChange} value={character.name} />
                 <LimitedTextArea
                     id={curCharacterId + '_desc'}
                     className="form-control"
@@ -127,10 +138,32 @@ const SimpleCharacter = (
                     //curTokenCount={descriptionTokenCount}
                     showCount={true}
                 />
-                <button className='btn btn-secondary' onClick={rerollCharacter}><FaSyncAlt /> Reroll</button>
+                {
+                    isLoading === false &&
+                    <button className='btn btn-primary float-end mt-3' onClick={rerollCharacter}><FaSyncAlt /> Reroll</button>
+                }
+
                 {
                     isLoading === true &&
+                    <button className='btn btn-primary float-end mt-3' disabled><Spinner size="sm" as="span" animation="border" variant="secondary" /> Reroll</button>
+                }
+            </div>
+            <div className='col-4'>
+                {
+                    character['isHero'] === true &&
+                    <p><FaStar /> {character['name']} is the protagonist.</p>
+                }
+                <p>{characterArchetypeCapitalized}-type {character.name} is {personalitySummary}.</p>
+
+                {
+                    isArchetypeLoading &&
                     <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                }
+                {
+                    isArchetypeLoading === false &&
+                    <p>
+                        {archetypeDescObj['description']}
+                    </p>
                 }
             </div>
         </div>

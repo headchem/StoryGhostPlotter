@@ -107,6 +107,7 @@ const DisplaySimple = (
                     <div className='row pb-5'>
                         <div className='col'>
                             <Pagination
+                                showPrevNext={false}
                                 curPage={curPage}
                                 prevPage={prevPage}
                                 nextPage={nextPage}
@@ -204,6 +205,7 @@ const DisplaySimple = (
                     <div className='row pt-5'>
                         <div className='col'>
                             <Pagination
+                                showPrevNext={false}
                                 curPage={curPage}
                                 prevPage={prevPage}
                                 nextPage={nextPage}

@@ -22,7 +22,7 @@ const Page2 = (
 
                     <div className="card-body">
                         {/* <h5 class="card-title">Problem Template</h5> */}
-                        <label htmlFor="problemTemplate" className="form-label card-title">Problem Template</label>
+                        <label htmlFor="problemTemplate" className="form-label card-title fs-3">Problem Template</label>
                         <select
                             id='problemTemplate'
                             required
@@ -38,15 +38,17 @@ const Page2 = (
                                 })
                             }
                         </select>
-                        <ProblemTemplateAdvice
-                            problemTemplate={problemTemplate}
-                        />
+                        <div className='mt-3'>
+                            <ProblemTemplateAdvice
+                                problemTemplate={problemTemplate}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="card">
                     <div className="card-body">
                         {/* <h5 class="card-title">Dramatic Question</h5> */}
-                        <label htmlFor="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
+                        <label htmlFor="dramaticQuestion" className="form-label fs-3" title='also called the "theme"'>Dramatic Question</label>
 
                         <select
                             id='dramaticQuestion'
@@ -62,15 +64,17 @@ const Page2 = (
                                 })
                             }
                         </select>
-
-                        <DramaticQuestionAdvice
-                            dramaticQuestion={dramaticQuestion}
-                        />
+                        <div className='mt-3'>
+                            <DramaticQuestionAdvice
+                                dramaticQuestion={dramaticQuestion}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
             <div className='pt-5'>
                 <DramaticQuestionProblemTemplateTable
+                    showExplanation={true}
                     problemTemplate={problemTemplate}
                     dramaticQuestion={dramaticQuestion}
                 />

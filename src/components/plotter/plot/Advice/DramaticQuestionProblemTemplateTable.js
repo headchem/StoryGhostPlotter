@@ -6,6 +6,7 @@ import { fetchData } from '../../../../util/FetchUtil';
 
 const DramaticQuestionProblemTemplateTable = (
     {
+        showExplanation,
         problemTemplate,
         dramaticQuestion,
         heroName,
@@ -57,11 +58,15 @@ const DramaticQuestionProblemTemplateTable = (
             {
                 (isProblemTemplateLoading === false && isDramaticQuestionLoading === false && problemTemplateData && dramaticQuestionData) &&
                 <>
-                    <div className='row'>
-                        <div className='col-12'>
-                            <p>Problem Template: <strong>{problemTemplateData['name']}</strong>, Dramatic Question: <strong>{dramaticQuestionData['name']}</strong>. As the story progresses, the Hero and Enemy will move through the following phases:</p>
+                    {
+                        showExplanation &&
+                        <div className='row'>
+                            <div className='col-12'>
+                                <p>Problem Template: <strong>{problemTemplateData['name']}</strong>, Dramatic Question: <strong>{dramaticQuestionData['name']}</strong>.</p>
+                                <p>As the story progresses, the Hero and Enemy will move through the following phases:</p>
+                            </div>
                         </div>
-                    </div>
+                    }
                     {
                         heroArchetype &&
                         <div className="card-group">

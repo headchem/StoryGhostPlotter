@@ -3,6 +3,7 @@ import DramaticQuestionProblemTemplateTable from '../Advice/DramaticQuestionProb
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import { isNullOrEmpty } from '../../../../util/Helpers';
+import { fetchData } from '../../../../util/FetchUtil';
 
 const Page4 = (
     {
@@ -29,39 +30,20 @@ const Page4 = (
     }, [characters]);
 
     const fetchArchetype = async () => {
-        if (isNullOrEmpty(heroArchetype)) return;
 
-        setIsHeroArchetypeLoading(true)
+        if (isNullOrEmpty(heroArchetype)) return
 
         const url = '/api/LogLine/ArchetypeDescription?archetype=' + heroArchetype
 
-        fetch(url)
-            .then(function (response) {
-                if (response.status === 401 || response.status === 403) {
-                    navigate('/plots')
-                } else {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }
-                return Promise.reject(response);
-            }).then(function (data) {
-                setHeroArchetypeDescObj(data)
-
-                console.log(data)
-            }).catch(function (error) {
-                console.warn(error);
-            }).finally(function () {
-                setIsHeroArchetypeLoading(false)
-            });
+        fetchData(url, setIsHeroArchetypeLoading, setHeroArchetypeDescObj, navigate)
     }
 
     return (
         <div className='row'>
             <div className='col-9'>
 
-                <h1>{title}</h1>
-                <p className='fs-5'>{logLineDescription}</p>
+                <h1 className='pb-3'>{title}</h1>
+                <p className='fs-4 pb-3'>{logLineDescription}</p>
                 {
                     isHeroArchetypeLoading === true &&
                     <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -69,6 +51,7 @@ const Page4 = (
                 {
                     isHeroArchetypeLoading === false &&
                     <DramaticQuestionProblemTemplateTable
+                        showExplanation={false}
                         problemTemplate={problemTemplate}
                         dramaticQuestion={dramaticQuestion}
                         heroName={hero['name']}
