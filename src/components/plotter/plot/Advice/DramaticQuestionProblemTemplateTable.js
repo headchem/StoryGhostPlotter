@@ -7,7 +7,9 @@ import { fetchData } from '../../../../util/FetchUtil';
 const DramaticQuestionProblemTemplateTable = (
     {
         problemTemplate,
-        dramaticQuestion
+        dramaticQuestion,
+        heroName,
+        heroArchetype
     }
 ) => {
 
@@ -45,6 +47,8 @@ const DramaticQuestionProblemTemplateTable = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dramaticQuestion]);
 
+    const heroLabel = isNullOrEmpty(heroName) ? 'Hero' : heroName
+
     return (
         <>
             {
@@ -58,21 +62,48 @@ const DramaticQuestionProblemTemplateTable = (
                             <p>Problem Template: <strong>{problemTemplateData['name']}</strong>, Dramatic Question: <strong>{dramaticQuestionData['name']}</strong>. As the story progresses, the Hero and Enemy will move through the following phases:</p>
                         </div>
                     </div>
+                    {
+                        heroArchetype &&
+                        <div className="card-group">
+                            <div className="card">
+                                <div className="card-body bg-info">
+                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['orphanDesires']}
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body bg-warning">
+                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['wandererResponse']}
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body bg-danger">
+                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['shadowSide']}
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body bg-success">
+                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['warriorResponse']}
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
                     <div className="card-group">
 
                         <div className="card">
                             <div className="card-body bg-danger">
-                                Hero: {problemTemplateData.wandererAdjectives.heroAdjective}
+                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.heroAdjective}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-warning">
-                                Hero: {problemTemplateData.warriorAdjectives.heroAdjective}
+                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.heroAdjective}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-success">
-                                Hero: {problemTemplateData.martyrAdjectives.heroAdjective}
+                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.heroAdjective}
                             </div>
                         </div>
                     </div>
@@ -81,22 +112,22 @@ const DramaticQuestionProblemTemplateTable = (
 
                         <div className="card">
                             <div className="card-body bg-info">
-                                Hero: {dramaticQuestionData.contrary}
+                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contrary}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-warning">
-                                Hero: {dramaticQuestionData.contradiction}
+                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contradiction}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-danger">
-                                Hero: {dramaticQuestionData.negation}
+                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.negation}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-success">
-                                Hero: {dramaticQuestionData.positive}
+                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.positive}
                             </div>
                         </div>
                     </div>
@@ -105,17 +136,17 @@ const DramaticQuestionProblemTemplateTable = (
 
                         <div className="card">
                             <div className="card-body bg-success">
-                                Enemy: {problemTemplateData.wandererAdjectives.enemyAdjective}
+                                Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-danger">
-                                Enemy: {problemTemplateData.warriorAdjectives.enemyAdjective}
+                                Enemy ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.enemyAdjective}
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body bg-success">
-                                Enemy: {problemTemplateData.martyrAdjectives.enemyAdjective}
+                                Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}
                             </div>
                         </div>
                     </div>

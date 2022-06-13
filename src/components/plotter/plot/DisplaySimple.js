@@ -164,29 +164,33 @@ const DisplaySimple = (
                         />
                     }
                     {
-                        curPage === 3 && // logline overview
+                        curPage === 3 && // characters
                         <Page3
+
+                            userInfo={userInfo}
+                            plotId={plotId}
+                            logLineDescription={logLineDescription}
+                            updateCharacterName={updateCharacterName}
+                            // updateCharacterIsHero={updateCharacterIsHero}
+                            // updateCharacterArchetype={updateCharacterArchetype}
+                            updateCharacterDescription={updateCharacterDescription}
+                            //updateAICharacterCompletion={updateAICharacterCompletion}
+                            // updateCharacterPersonality={updateCharacterPersonality}
+                            setCharacters={setCharacters}
+
+                            characters={characters}
+                        />
+
+                    }
+                    {
+                        curPage === 4 && // logline overview
+                        <Page4
                             title={title}
                             logLineDescription={logLineDescription}
                             genres={genres}
                             keywords={keywords}
                             problemTemplate={problemTemplate}
                             dramaticQuestion={dramaticQuestion}
-                        />
-                    }
-                    {
-                        curPage === 4 && // characters
-                        <Page4
-
-                            userInfo={userInfo}
-                            plotId={plotId}
-                            updateCharacterName={updateCharacterName}
-                            updateCharacterIsHero={updateCharacterIsHero}
-                            updateCharacterArchetype={updateCharacterArchetype}
-                            updateCharacterDescription={updateCharacterDescription}
-                            updateAICharacterCompletion={updateAICharacterCompletion}
-                            updateCharacterPersonality={updateCharacterPersonality}
-
                             characters={characters}
                         />
                     }

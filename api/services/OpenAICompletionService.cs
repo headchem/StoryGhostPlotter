@@ -644,7 +644,73 @@ public class OpenAICompletionService : ICompletionService
         }, totalTokens);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters)
+    {
+        await ensureOwnership(userId, plotId);
+
+        // if no Hero is set yet, then this next character will be the Hero
+        var isHero = curCharacter != null ? curCharacter.IsHero : false;
+
+        if (existingCharacters.Where(c => c.IsHero).FirstOrDefault() == null)
+        {
+            isHero = true;
+        }
+
+        var name = getRandomCharacterName(existingCharacters);
+        var archetype = getRandomArchetype(existingCharacters);
+        var personality = getRandomPersonality(archetype);
+
+        var character = new Character
+        {
+            Id = curCharacter != null ? curCharacter.Id : Guid.NewGuid().ToString(),
+            Name = name,
+            Archetype = archetype,
+            Personality = personality,
+            Description = "",
+            IsHero = isHero
+        };
+
+        var tokensRemaining = await _userService.GetTokensRemaining(userId); // if no tokens remaining, return empty string for description
+
+        var characterResponse = new CompletionResponse();
+
+        if (tokensRemaining > 0)
+        {
+            // Generate Description for each Character based on Name, Archetype, Personality
+            characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
+            character.Description = characterResponse.Completion;
+        }
+
+        return (character, characterResponse);
+    }
+
+    ///<summary>Returns a random first name not already used in existingCharacters.</summary>
+    private string getRandomCharacterName(List<Character> existingCharacters)
+    {
+        var existingCharacterFirstNames = existingCharacters.Select(character => character.Name.Split(' ')[0]).ToList();
+        var remainingNames = CharacterNames.FirstNames.Where(name => existingCharacterFirstNames.Contains(name) == false).ToList();
+
+        var characterName = remainingNames.OrderBy(x => Guid.NewGuid()).ToList()[0];
+
+        return characterName;
+    }
+
+    private string getRandomArchetype(List<Character> existingCharacters)
+    {
+        var existingCharacterArchetypes = existingCharacters.Select(character => character.Archetype).ToList();
+        var remainingArchetypes = Factory.GetArchetypes().Where(archetype => existingCharacterArchetypes.Contains(archetype.Id) == false).ToList();
+
+        if (remainingArchetypes.Count == 0)
+        {
+            return Factory.GetArchetypes().OrderBy(x => Guid.NewGuid()).ToList().First().Id;
+        }
+
+        var remainingArchetypeNames = remainingArchetypes.Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+
+        return remainingArchetypeNames.First();
+    }
+
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription)
     {
         await ensureSufficientTokensAndOwnership(userId, plotId, false);
 
@@ -797,8 +863,7 @@ public class OpenAICompletionService : ICompletionService
 
     private async Task ensureSufficientTokensAndOwnership(string userId, string plotId, bool bypassTokenCheck)
     {
-        if (string.IsNullOrWhiteSpace(userId)) throw new Exception("UserId must not be empty");
-        if (string.IsNullOrWhiteSpace(plotId)) throw new Exception("PlotId must not be empty");
+        await ensureOwnership(userId, plotId);
 
         using (_logger.BeginScope(new Dictionary<string, object>
         {
@@ -806,13 +871,6 @@ public class OpenAICompletionService : ICompletionService
             ["PlotId"] = plotId
         }))
         {
-            // ensure that plotId is owned by userId
-            var plot = await _plotService.GetPlot(userId, plotId);
-            if (plot.UserId != userId)
-            {
-                throw new Exception($"UserId {userId} does not own PlotId {plotId}");
-            }
-
             var tokensRemaining = await _userService.GetTokensRemaining(userId);
 
             if (tokensRemaining <= -1 * 2048 * 16)
@@ -828,6 +886,26 @@ public class OpenAICompletionService : ICompletionService
                 {
                     throw new Exception("User is out of tokens, unable to generate completion");
                 }
+            }
+        }
+    }
+
+    private async Task ensureOwnership(string userId, string plotId)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new Exception("UserId must not be empty");
+        if (string.IsNullOrWhiteSpace(plotId)) throw new Exception("PlotId must not be empty");
+
+        using (_logger.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["PlotId"] = plotId
+        }))
+        {
+            // ensure that plotId is owned by userId
+            var plot = await _plotService.GetPlot(userId, plotId);
+            if (plot.UserId != userId)
+            {
+                throw new Exception($"UserId {userId} does not own PlotId {plotId}");
             }
         }
     }

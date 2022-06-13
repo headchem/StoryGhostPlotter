@@ -10,8 +10,8 @@ const CharacterBrainstormAll = (
         userInfo,
         plotId,
         logLineDescription,
-        problemTemplate,
-        dramaticQuestion,
+        // problemTemplate,
+        // dramaticQuestion,
         setCharacters,
         tokensRemaining
     }
@@ -35,8 +35,8 @@ const CharacterBrainstormAll = (
                 'seed': 123,
                 'id': plotId,
                 'logLineDescription': logLineDescription,
-                'problemTemplate': problemTemplate,
-                'dramaticQuestion': dramaticQuestion
+                // 'problemTemplate': problemTemplate,
+                // 'dramaticQuestion': dramaticQuestion
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {

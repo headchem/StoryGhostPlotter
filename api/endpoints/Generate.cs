@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -320,6 +321,45 @@ public class Generate
         }
     }
 
+    [FunctionName("GenerateRandomCharacter")]
+    public async Task<IActionResult> GenerateRandomCharacter([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateRandom")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
+        {
+            //log.LogInformation("An example of an Information level message");
+
+            var curCharacterId = req.Query.ContainsKey("curCharacterId") ? (req.Query["curCharacterId"][0]) : "";
+            var curCharacter = plot.Characters.Where(c => c.Id == curCharacterId).First();
+
+            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters);
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", completionResponse.PromptTokenCount + completionResponse.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Random Character", null, metrics);
+
+            return new OkObjectResult((result, completionResponse));
+        }
+    }
+
     [FunctionName("GenerateAllCharacters")]
     public async Task<IActionResult> GenerateAllCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
@@ -340,7 +380,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
+            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription);
 
             var timespan = stopwatch.Elapsed;
 

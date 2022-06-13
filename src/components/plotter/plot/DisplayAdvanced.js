@@ -145,8 +145,8 @@ const DisplayAdvanced = (
                                 userInfo={userInfo}
                                 plotId={plotId}
                                 logLineDescription={logLineDescription}
-                                problemTemplate={problemTemplate}
-                                dramaticQuestion={dramaticQuestion}
+                                // problemTemplate={problemTemplate}
+                                // dramaticQuestion={dramaticQuestion}
                                 setCharacters={setCharacters}
                                 tokensRemaining={tokensRemaining}
                             />

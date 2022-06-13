@@ -186,7 +186,62 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters)
+    {
+        var isHero = false;
+
+        if (existingCharacters.Where(c => c.IsHero).FirstOrDefault() == null)
+        {
+            isHero = true;
+        }
+
+        return (new Character
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "John",
+            Archetype = "explorer",
+            Personality = new Personality
+            {
+                ClosemindedToImaginative = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                DisciplinedToSpontaneous = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                IntrovertToExtrovert = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                ColdToEmpathetic = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                UnflappableToAnxious = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+            },
+            Description = "John's description goes here",
+            IsHero = isHero
+        }, new CompletionResponse
+        {
+            Prompt = "test",
+            PromptIsToxic = false,
+            PromptTokenCount = 123,
+            Completion = "test completion",
+            CompletionIsToxic = false,
+            CompletionTokenCount = 456
+        });
+    }
+
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription)
     {
         return (new List<Character> {
             new Character {

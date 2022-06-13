@@ -220,11 +220,16 @@ const PlotHome = (
     }
 
     const updateCharacterName = (id, newCharacterName) => {
-        setCharacters(
-            characters.map(
-                (character) => character.id === id ? { ...character, name: newCharacterName } : character
-            )
+        console.log('update character.id: ' + id + ' name to: ' + newCharacterName)
+
+        const updatedCharacters = characters.map(
+            (character) => character.id === id ? { ...character, name: newCharacterName } : character
         )
+
+        setCharacters(updatedCharacters)
+
+        console.log('updatedCharacters:')
+        console.log(updatedCharacters)
     }
 
     const updateCharacterIsHero = (id, isHero) => {
@@ -585,6 +590,7 @@ const PlotHome = (
         }
     };
 
+
     return (
         <>
             {
@@ -607,6 +613,7 @@ const PlotHome = (
                             </div>
                         </div>
                     </div>
+
                     {
                         displayMode === 'simple' &&
                         <DisplaySimple
