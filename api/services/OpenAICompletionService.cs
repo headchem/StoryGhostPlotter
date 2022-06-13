@@ -644,7 +644,7 @@ public class OpenAICompletionService : ICompletionService
         }, totalTokens);
     }
 
-    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription)
     {
         await ensureOwnership(userId, plotId);
 
@@ -656,7 +656,23 @@ public class OpenAICompletionService : ICompletionService
             isHero = true;
         }
 
-        var name = getRandomCharacterName(existingCharacters);
+        // find first names in log line desc, then identify which first names don't yet exist in existing characters
+        var namesInLogLineDesc = await getCharacterNamesInLogLineDescription(userId, plotId, LogLineDescription);
+        var firstNamesInLogLineDesc = namesInLogLineDesc.Select(n => n.Split(' ')[0]).ToList();
+        var existingFirstNames = existingCharacters.Select(character => character.Name.Split(' ')[0]).ToList();
+        var missingLogLineFirstNames = firstNamesInLogLineDesc.Where(n => existingFirstNames.Contains(n) == false).ToList();
+
+        var name = "";
+
+        if (missingLogLineFirstNames.Count > 0)
+        {
+            name = missingLogLineFirstNames.First();
+        }
+        else
+        {
+            name = getRandomCharacterName(existingFirstNames);
+        }
+
         var archetype = getRandomArchetype(existingCharacters);
         var personality = getRandomPersonality(archetype);
 
@@ -685,10 +701,9 @@ public class OpenAICompletionService : ICompletionService
     }
 
     ///<summary>Returns a random first name not already used in existingCharacters.</summary>
-    private string getRandomCharacterName(List<Character> existingCharacters)
+    private string getRandomCharacterName(List<string> existingFirstNames)
     {
-        var existingCharacterFirstNames = existingCharacters.Select(character => character.Name.Split(' ')[0]).ToList();
-        var remainingNames = CharacterNames.FirstNames.Where(name => existingCharacterFirstNames.Contains(name) == false).ToList();
+        var remainingNames = CharacterNames.FirstNames.Where(name => existingFirstNames.Contains(name) == false).ToList();
 
         var characterName = remainingNames.OrderBy(x => Guid.NewGuid()).ToList()[0];
 
@@ -717,47 +732,23 @@ public class OpenAICompletionService : ICompletionService
         var rand = new Random();
 
         var characters = new List<Character>();
-        var numCharacters = (int)rand.NextInt64(2, 5);
-
-        var names = await getCharacterNames(userId, plotId, LogLineDescription, numCharacters);
-
-        var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+        var numCharacters = 3;//(int)rand.NextInt64(2, 5); // 2,5=2min, 4max
 
         var totalTokenCount = 0;
 
-        foreach (var name in names)
+        for (var i = 0; i < numCharacters; i++)
         {
-            // foreach Character, choose a random Archetype which removes it from being an option for subsequent characters
-            var archetype = remainingArchetypes[0];
-            remainingArchetypes.Remove(archetype);
+            var (newCharacter, completionResponse) = await GenerateCharacter(userId, plotId, null, characters, LogLineDescription);
+            totalTokenCount += completionResponse.PromptTokenCount + completionResponse.CompletionTokenCount;
 
-            // Randomize Personality based on preferences of the Archetype - find old code that did this - any way to avoid personalities that are too similar to existing characters? Try without for now, maybe the archetype-without-replacement thing will help avoid naturally
-            var personality = getRandomPersonality(archetype);
-
-            var character = new Character
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = name,
-                Archetype = archetype,
-                Personality = personality,
-                Description = "",
-                IsHero = names.First() == name
-            };
-
-            // Generate Description for each Character based on Name, Archetype, Personality
-            var characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
-            totalTokenCount += characterResponse.PromptTokenCount + characterResponse.CompletionTokenCount;
-
-            character.Description = characterResponse.Completion;
-
-            characters.Add(character);
+            characters.Add(newCharacter);
         }
 
         return (characters, totalTokenCount);
     }
 
     ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>
-    private async Task<List<string>> getCharacterNames(string userId, string plotId, string LogLineDescription, int numCharacters)
+    private async Task<List<string>> getCharacterNamesInLogLineDescription(string userId, string plotId, string LogLineDescription)
     {
         // Ask GPT-3 to decide who the Hero is according to the LogLineDesc, and make them the first Character in list
 
@@ -798,20 +789,28 @@ public class OpenAICompletionService : ICompletionService
 
         results = results.Where(name => stopwords.Any(stopword => name.ToLower().StartsWith(stopword.ToLower()) == false)).ToList(); // filter out any that start with known stopwords, ex: "The townspeople"
 
-        // filter results by requiring that the first name appear in the list of known first names (~7000 most popular)
-        results = results.Where(name => CharacterNames.FirstNames.Contains(name.Split(' ')[0])).ToList();
+        var knownNames = new List<string>();
 
-        Random rand = new Random();
-
-        while (results.Count() < numCharacters)
+        // given a name like "Captain Jack Sparrow" we want to iterate through the name parts until we find "Jack"
+        foreach (var name in results)
         {
-            // randomly select more names until we've hit numCharacters
-            var newCharName = CharacterNames.FirstNames.ElementAt(rand.Next(CharacterNames.FirstNames.Count));
+            var parts = name.Split(' ').ToList();
 
-            results.Add(newCharName);
+            var foundPart = false;
+            var curPart = 0;
+
+            while (foundPart == false && curPart < parts.Count)
+            {
+                if (CharacterNames.FirstNames.Contains(parts[curPart]))
+                {
+                    knownNames.Add(parts[curPart]);
+                    foundPart = true;
+                }
+                curPart += 1;
+            }
         }
 
-        return results;
+        return knownNames;
     }
 
     private Personality getRandomPersonality(string archetype)

@@ -186,7 +186,7 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription)
     {
         var isHero = false;
 

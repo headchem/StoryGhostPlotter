@@ -344,7 +344,7 @@ public class Generate
             var curCharacterId = req.Query.ContainsKey("curCharacterId") ? (req.Query["curCharacterId"][0]) : "";
             var curCharacter = plot.Characters.Where(c => c.Id == curCharacterId).First();
 
-            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters);
+            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters, plot.LogLineDescription);
 
             var timespan = stopwatch.Elapsed;
 

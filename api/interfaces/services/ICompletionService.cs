@@ -20,7 +20,7 @@ public interface ICompletionService
     ///<summary>Returns a tuple where the first value is the completed Plot object, and second tuple is the total Token cost.</summary>
     public Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres);
 
-    public Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters);
+    public Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription);
 
     public Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription);
 

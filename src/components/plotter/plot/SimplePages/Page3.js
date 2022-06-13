@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SimpleCharacter from './SimpleCharacter'
+import Spinner from 'react-bootstrap/Spinner';
+import { fetchWithTimeout } from '../../../../util/FetchUtil'
+import { useNavigate } from "react-router-dom";
 
 const Page3 = (
     {
@@ -18,8 +21,40 @@ const Page3 = (
     }
 ) => {
 
-    const newCharacter = () => {
-        console.log('TODO: create new character')
+    const [isLoading, setIsLoading] = useState(false)
+
+    const navigate = useNavigate()
+
+    const generateAllCharacters = () => {
+        setIsLoading(true)
+
+        fetchWithTimeout('/api/Character/GenerateAll', {
+            timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'seed': 123,
+                'id': plotId,
+                'logLineDescription': logLineDescription,
+            })
+        }).then(function (response) {
+            if (response.status === 401 || response.status === 403) {
+                navigate('/plots')
+            } else {
+                if (response.ok) {
+                    return response.json();
+                }
+            }
+            return Promise.reject(response);
+        }).then(function (data) {
+            setCharacters(data)
+        }).catch(function (error) {
+            console.warn(error);
+        }).finally(function () {
+            setIsLoading(false)
+        });
     }
 
     return (
@@ -58,7 +93,15 @@ const Page3 = (
 
                         }
 
-                        <button onClick={newCharacter} className='btn btn-primary'>New Character</button>
+                        {
+                            isLoading === true &&
+                            <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                        }
+                        {
+                            isLoading === false && (!characters || characters.length === 0) &&
+                            <button onClick={generateAllCharacters} className='btn btn-primary'>Generate Characters</button>
+                        }
+
                     </div>
 
                 </div>
