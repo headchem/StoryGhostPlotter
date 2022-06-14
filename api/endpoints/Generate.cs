@@ -15,6 +15,8 @@ using StoryGhost.Interfaces;
 using System.Diagnostics;
 using Microsoft.ApplicationInsights;
 
+using StoryGhost.Util;
+
 namespace StoryGhost.Generate;
 
 public class Generate
@@ -439,5 +441,25 @@ public class Generate
 
             return new OkObjectResult(result);
         }
+    }
+
+    [FunctionName("GetRandomSequenceList")]
+    public IActionResult GetRandomSequenceList([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Sequence/GetRandomSequenceList")] HttpRequest req, ILogger log)
+    {
+        var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
+        var sequenceNames = Factory.GetRandomSequenceList(upToTargetSequenceExclusive);
+
+        var result = new List<UserSequence>();
+
+        foreach (var seqName in sequenceNames)
+        {
+            result.Add(new UserSequence
+            {
+                SequenceName = seqName
+            });
+        }
+
+        return new OkObjectResult(result);
+
     }
 }

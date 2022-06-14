@@ -25,4 +25,5 @@ public interface ICompletionService
     public Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription);
 
     public Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive);
+
 }

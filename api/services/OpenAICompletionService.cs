@@ -474,7 +474,7 @@ public class OpenAICompletionService : ICompletionService
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, false);
 
-        var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
+        var sequenceList = Factory.GetRandomSequenceList(upToTargetSequenceExclusive);
 
         var results = new List<UserSequence>();
 
@@ -499,117 +499,7 @@ public class OpenAICompletionService : ICompletionService
         return (results, totalTokenCount);
     }
 
-    // returns a list of target sequence names in a random plausible order. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
-    private List<string> getRandomSequenceList(string upToTargetSequenceExclusive)
-    {
-        // all sequences end with this order
-        var ending = new List<string>{
-            "Fun And Games",
-            "Midpoint",
-            "Bad Guys Close In",
-            "All Hope Is Lost",
-            "Dark Night Of The Soul",
-            "Break Into Three",
-            "Climax",
-            "Cooldown"
-        };
-
-        var variations = new List<List<string>>{
-            // Aladdin
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "Catalyst",
-                "B Story",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Whiplash
-            new List<string>{
-                "Opening Image",
-                "Theme Stated",
-                "Setup",
-                "Catalyst",
-                "Debate",
-                "Break Into Two",
-                "B Story"
-            },
-
-            // Star Wars
-            new List<string>{
-                "Opening Image",
-                "Theme Stated",
-                "Setup",
-                "Catalyst",
-                "B Story",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Iron Man
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "B Story",
-                "Catalyst",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Elf
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "Catalyst",
-                "Debate",
-                "Break Into Two",
-                "B Story",
-            },
-
-            // Soul
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Catalyst",
-                "Debate",
-                "Theme Stated",
-                "Break Into Two",
-                "B Story",
-            }
-        };
-
-        variations = variations.OrderBy(x => Guid.NewGuid()).ToList();
-
-        var randomList = variations.First();
-
-        randomList = randomList.Concat(ending).ToList();
-
-        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
-
-        return randomList;
-    }
-
-    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive)
-    {
-        // "All" is a special signal to return all sequences including Cooldown
-        if (upToTargetSequenceExclusive == "All") return sequences;
-
-        var results = new List<string>();
-
-        foreach (var sequence in sequences)
-        {
-            if (sequence == upToTargetSequenceExclusive) return results;
-
-            results.Add(sequence);
-        }
-
-        return results;
-    }
-
+    
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
         await ensureSufficientTokensAndOwnership(userId, plotId, false);

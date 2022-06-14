@@ -589,4 +589,115 @@ public static class Factory
         return adviceObj;
     }
 
+    // returns a list of target sequence names in a random plausible order. When upToTargetSequenceExclusive="All" then a full sequence list is returned, including Cooldown. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
+    public static List<string> GetRandomSequenceList(string upToTargetSequenceExclusive)
+    {
+        // all sequences end with this order
+        var ending = new List<string>{
+            "Fun And Games",
+            "Midpoint",
+            "Bad Guys Close In",
+            "All Hope Is Lost",
+            "Dark Night Of The Soul",
+            "Break Into Three",
+            "Climax",
+            "Cooldown"
+        };
+
+        var variations = new List<List<string>>{
+            // Aladdin
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Whiplash
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story"
+            },
+
+            // Star Wars
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Iron Man
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "B Story",
+                "Catalyst",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Elf
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story",
+            },
+
+            // Soul
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Theme Stated",
+                "Break Into Two",
+                "B Story",
+            }
+        };
+
+        variations = variations.OrderBy(x => Guid.NewGuid()).ToList();
+
+        var randomList = variations.First();
+
+        randomList = randomList.Concat(ending).ToList();
+
+        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
+
+        return randomList;
+    }
+
+    private static List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive)
+    {
+        // "All" is a special signal to return all sequences including Cooldown
+        if (upToTargetSequenceExclusive == "All") return sequences;
+
+        var results = new List<string>();
+
+        foreach (var sequence in sequences)
+        {
+            if (sequence == upToTargetSequenceExclusive) return results;
+
+            results.Add(sequence);
+        }
+
+        return results;
+    }
+
 }

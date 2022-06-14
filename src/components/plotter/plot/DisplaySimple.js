@@ -198,7 +198,17 @@ const DisplaySimple = (
                     {
                         curPage === 5 && // sequences
                         <Page5
+                            plotId={plotId}
+                            logLineDescription={logLineDescription}
+                            genres={genres}
+                            problemTemplate={problemTemplate}
+                            dramaticQuestion={dramaticQuestion}
+                            keywords={keywords}
                             sequences={sequences}
+                            characters={characters}
+                            setSequences={setSequences}
+                            updateBlurb={updateBlurb}
+                            updateSequenceCompletions={updateBlurbCompletions}
                         />
                     }
 
