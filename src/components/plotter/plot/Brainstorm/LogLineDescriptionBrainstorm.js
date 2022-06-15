@@ -50,8 +50,6 @@ const LogLineDescriptionBrainstorm = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            //console.log('save this data:')
-            //console.log(data)
             if (!completions || completions.length === 0) {
                 updateLogLineDescriptionCompletions([data])
             } else {
@@ -72,8 +70,6 @@ const LogLineDescriptionBrainstorm = (
     }
 
     const onSelectBrainstormChange = (idxToSelect, isSelected) => {
-        console.log('unset all selected brainstorms, then set idx: ' + idxToSelect + ' to: ' + isSelected.toString())
-
         // first set all completions isSelected to false
         const newCompletions = completions.map(
             (completion) => { return { ...completion, isSelected: false } }

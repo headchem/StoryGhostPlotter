@@ -115,8 +115,6 @@ const PlotHome = (
 
         const plotId = searchParams.get("id")
 
-        //console.log('plotId: ' + plotId)
-
         // if plotId is empty, this is most likely due to auth redirect stripping the query vars. In this case, redirect back to the main plot home page
         if (!plotId || plotId === '') {
             navigate('/plots')
@@ -220,16 +218,11 @@ const PlotHome = (
     }
 
     const updateCharacterName = (id, newCharacterName) => {
-        console.log('update character.id: ' + id + ' name to: ' + newCharacterName)
-
         const updatedCharacters = characters.map(
             (character) => character.id === id ? { ...character, name: newCharacterName } : character
         )
 
         setCharacters(updatedCharacters)
-
-        console.log('updatedCharacters:')
-        console.log(updatedCharacters)
     }
 
     const updateCharacterIsHero = (id, isHero) => {
@@ -405,9 +398,6 @@ const PlotHome = (
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-
-        //console.log('LOG LINE UPDATE')
-
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
@@ -429,7 +419,7 @@ const PlotHome = (
     const updateTotalTokens = async () => {
         if (!sequences || sequences.length === 0) return
         const allText = sequences.map(s => s.text).join(" ") + sequences.map(s => s.context).join(" ") + logLineDescription + characters.map(s => s.description).join(" ")
-        //console.log(allText)
+
         const numTokens = await getTokenCount(allText)
         setTotalTokens(numTokens)
     }
@@ -459,7 +449,6 @@ const PlotHome = (
         })
             .then(response => response.json())
             .then(data => {
-                //console.log(data)
                 setTokensRemaining(data)
             })
             .catch(error => {
@@ -478,16 +467,7 @@ const PlotHome = (
         updateTokensRemaining();
 
         const plotId = searchParams.get("id")
-        //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genres: ${genres}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
-
-        // let AILogLineDescriptionsDict = {};
-
-        // for (var key in AILogLineDescriptions) {
-        //     AILogLineDescriptionsDict[key] = AILogLineDescriptions[key]['completion']
-        // }
-
-        // console.log(AILogLineDescriptionsDict)
-
+        
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
             headers: {
@@ -545,7 +525,6 @@ const PlotHome = (
     }
 
     const onKeywordsChange = (inputValue) => {
-        //console.log(inputValue)
         setKeywords(inputValue.map(el => el.value))
     }
 
@@ -560,14 +539,6 @@ const PlotHome = (
     const onLogLineDescriptionChange = (val) => {
         setLogLineDescription(val)
     }
-
-    // const onAILogLineTitleChange = (val) => {
-    //     setAILogLineTitle(val)
-    // }
-
-    // const onAILogLineDescriptionsChange = (val) => {
-    //     setAILogLineDescriptions(val)
-    // }
 
     const goToViewPlot = () => {
         const plotId = searchParams.get("id")

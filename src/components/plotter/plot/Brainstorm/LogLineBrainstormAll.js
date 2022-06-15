@@ -48,7 +48,6 @@ const LogLineBrainstormAll = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            console.log(data)
             setKeywords(data['keywords'] ?? [])
             setLogLineDescription(data['logLineDescription'])
             setTitle(data['title'])

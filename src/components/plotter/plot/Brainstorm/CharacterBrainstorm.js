@@ -59,8 +59,6 @@ const CharacterBrainstorm = (
     }
 
     const onSelectBrainstormChange = (idxToSelect, isSelected) => {
-        console.log('unset all selected brainstorms, then set idx: ' + idxToSelect + ' to: ' + isSelected.toString())
-
         // first set all completions isSelected to false
         const newCompletions = character['aiCompletions'].map(
             (completion) => { return { ...completion, isSelected: false } }

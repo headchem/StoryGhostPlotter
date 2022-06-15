@@ -47,7 +47,6 @@ const Page5 = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            console.log(data)
             setSequences(data)
         }).catch(function (error) {
             console.warn(error);

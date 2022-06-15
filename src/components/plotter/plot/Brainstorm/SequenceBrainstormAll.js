@@ -52,8 +52,6 @@ const SequenceBrainstormAll = ({
             }
             return Promise.reject(response);
         }).then(function (data) {
-            //console.log('save this data:')
-            //console.log(data)
             setSequences(data)
         }).catch(function (error) {
             console.warn(error);

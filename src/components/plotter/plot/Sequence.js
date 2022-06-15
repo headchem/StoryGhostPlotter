@@ -45,7 +45,6 @@ const Sequence = ({
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
     const onInsertSequence = (nextSequenceName) => {
-        //console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
         insertSequence(sequence.sequenceName, nextSequenceName)
     }
 

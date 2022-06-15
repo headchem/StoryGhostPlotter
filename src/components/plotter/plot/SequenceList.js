@@ -101,8 +101,6 @@ const SequenceList = ({
             const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex + 1) // +1 to include self
             const prevSeqs = new Set(prevSeqsArr)
 
-            //console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
-
             // for each allowed Seq, check if that seq's prereq exists in prevSeqs
             allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
         }

@@ -31,9 +31,6 @@ const SimpleSequence = (
     const [isCompletionLoading, setIsCompletionLoading] = useState(false)
 
     const generateChoices = async () => {
-
-        console.log('generate 2 new choices and append to existing aiCompletions for this sequence');
-
         setIsCompletionLoading(true)
 
         const completions = sequence['blurbCompletions']
@@ -66,8 +63,6 @@ const SimpleSequence = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            //console.log('save this data:')
-            //console.log(data)
             if (!completions || completions.length === 0) {
                 updateSequenceCompletions(targetSequence, [data])
             } else {
@@ -99,8 +94,6 @@ const SimpleSequence = (
         )
 
         updateSequenceCompletions(targetSequence, newCompletionsWithSelected)
-
-        //console.log('select completion at idx: ' + idxOfCompletion)
     }
 
     const numChoices = 2

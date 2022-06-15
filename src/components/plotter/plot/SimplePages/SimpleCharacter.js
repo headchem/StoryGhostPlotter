@@ -56,8 +56,6 @@ const SimpleCharacter = (
     }
 
     const rerollCharacter = async () => {
-        console.log('reroll current character: ' + curCharacterId)
-
         setIsLoading(true)
 
         fetchWithTimeout('/api/Character/GenerateRandom?curCharacterId=' + curCharacterId, {
@@ -82,16 +80,8 @@ const SimpleCharacter = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-
-            console.log(data)
-
             const randChar = data['item1']
             const randCharCompletion = data['item2']
-
-            console.log('randChar:')
-            console.log(randChar)
-            console.log('randCharCompletion:')
-            console.log(randCharCompletion)
 
             let newAICompletions = null
 
@@ -112,9 +102,6 @@ const SimpleCharacter = (
                     aiCompletions: newAICompletions
                 } : c
             )
-
-            console.log('setCharacters:')
-            console.log(newCharacters)
 
             setCharacters(newCharacters)
         }).catch(function (error) {
