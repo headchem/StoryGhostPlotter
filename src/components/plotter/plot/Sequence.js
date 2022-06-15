@@ -4,7 +4,7 @@ import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 //import { getTokenCount } from "../../../util/Tokenizer";
-import SequenceAdvice from './SequenceAdvice'
+import SequenceAdvice from './Advice/SequenceAdvice'
 import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
 import SignUpMessage from './SignUpMessage'
 import { blurbLimits, expandedSummaryLimits, fullLimits } from '../../../util/SequenceTextCheck';

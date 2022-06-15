@@ -88,33 +88,38 @@ const SimpleSequence = (
 
         const textClass = sequence['blurb'] === brainstorm['completion'] ? 'fw-bold' : 'text-muted'
 
-        const card = <div key={idx} className="card" onClick={() => updateBlurb(sequence.sequenceName, brainstorm['completion'])}>
+        const card = <div key={idx + sequence['sequenceName']} className="card" onClick={() => updateBlurb(sequence.sequenceName, brainstorm['completion'])}>
             <div className="card-body">
                 <p className={textClass}>{brainstorm['completion']}</p>
             </div>
         </div>
 
         return card
-    }
-    )
+    })
 
     return (
         <div className='row'>
-            <div className='col-12 pb-5'>
-                <h3>{sequence['sequenceName']}</h3>
-                {
-                    isCompletionLoading === false &&
-                    <button onClick={generateChoices} className='btn btn-primary float-end'>Generate Choices</button>
-                }
-                {
-                    isCompletionLoading === true &&
-                    <Spinner size="sm" as="span" animation="border" variant="secondary" />
-                }
+            <div className='col'>
+                <div className='row'>
+                    <div className='col'>
+                        <h3 className='float-start'>{sequence['sequenceName']}</h3>
+                        <div className='float-end'>
+                            {
+                                isCompletionLoading === false &&
+                                <button onClick={generateChoices} className='btn btn-primary'>Generate Choices</button>
+                            }
+                            {
+                                isCompletionLoading === true &&
+                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                            }
+                        </div>
+                    </div>
+                </div>
 
-                <div className="card-group">
+                <div className="card-group mt-3">
                     {
                         mostRecentBrainstormsCompletions.every(completion => completion !== sequence['blurb']) &&
-                        <div key={'cur_selected_blurb'} className="card" onClick={() => updateBlurb(sequence.sequenceName, sequence['blurb'])}>
+                        <div key={'cur_selected_blurb_' + sequence['sequenceName']} className="card" onClick={() => updateBlurb(sequence.sequenceName, sequence['blurb'])}>
                             <div className="card-body">
                                 <p className='fw-bold'>{sequence['blurb']}</p>
                             </div>
@@ -136,8 +141,6 @@ const SimpleSequence = (
                         showCount={true}
                     />
                 </div>
-
-
             </div>
         </div>
     )

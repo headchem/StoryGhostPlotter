@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import { isNullOrEmpty } from '../../../../util/Helpers';
 import SimpleSequence from './SimpleSequence'
+import SequenceAdvice from '../Advice/SequenceAdvice'
 
 const Page5 = (
     {
@@ -17,10 +18,12 @@ const Page5 = (
         setSequences,
         updateBlurb,
         updateSequenceCompletions,
+        heroCharacterArchetype,
     }
 ) => {
 
     const [isNewSequencesLoading, setIsNewSequencesLoading] = useState(false)
+    const [showConfirmNewGame, setShowConfirmNewGame] = useState(false)
 
     const navigate = useNavigate()
 
@@ -54,48 +57,73 @@ const Page5 = (
         });
     }
 
-    const simpleSequences = sequences.map((sequence, idx) => {
+    const simpleSequenceRows = sequences.map((sequence, idx) => {
         if (idx === 0 || isNullOrEmpty(sequences[idx - 1]['blurb']) === false) {
-            return <SimpleSequence
-                key={sequence['sequenceName']}
-                plotId={plotId}
-                targetSequence={sequence['sequenceName']}
-                logLineDescription={logLineDescription}
-                genres={genres}
-                problemTemplate={problemTemplate}
-                dramaticQuestion={dramaticQuestion}
-                keywords={keywords}
-                sequences={sequences}
-                characters={characters}
-                //setSequences={setSequences}
-                updateBlurb={updateBlurb}
-                updateSequenceCompletions={updateSequenceCompletions}
-            />
+            return <div className='row pb-5' key={sequence['sequenceName']}>
+                <div className='col-8'>
+                    <SimpleSequence
+                        plotId={plotId}
+                        targetSequence={sequence['sequenceName']}
+                        logLineDescription={logLineDescription}
+                        genres={genres}
+                        problemTemplate={problemTemplate}
+                        dramaticQuestion={dramaticQuestion}
+                        keywords={keywords}
+                        sequences={sequences}
+                        characters={characters}
+                        //setSequences={setSequences}
+                        updateBlurb={updateBlurb}
+                        updateSequenceCompletions={updateSequenceCompletions}
+                    />
+                </div>
+                <div className='col-4'>
+                    <SequenceAdvice
+                        sequenceName={sequence.sequenceName}
+                        genres={genres}
+                        problemTemplate={problemTemplate}
+                        keywords={keywords}
+                        heroCharacterArchetype={heroCharacterArchetype}
+                        dramaticQuestion={dramaticQuestion}
+                    />
+                </div>
+            </div>
         }
-        return <></>
+        return null
     }
     );
 
     return (
         <>
             <div className="row">
-                <div className='col-8'>
-                    {
-                        simpleSequences
-                    }
-                </div>
-                <div className='col-4'>
+                <div className='col-12'>
                     {
                         isNewSequencesLoading === true &&
                         <Spinner size="sm" as="span" animation="border" variant="secondary" />
                     }
                     {
                         isNewSequencesLoading === false &&
-                        <button className='btn btn-primary float-end' onClick={generateNewSequences}>Start Game (warning: clears all values)</button>
+                        <>
+                            {
+                                showConfirmNewGame === false &&
+                                <button className='btn btn-primary mb-5' onClick={() => setShowConfirmNewGame(true)}>Start Game</button>
+                            }
+                            {
+                                showConfirmNewGame === true &&
+                                <>
+                                    <p>Are you sure? This will delete all text from existing sequences.</p>
+                                    <button className='btn btn-link me-3' onClick={() => setShowConfirmNewGame(false)}>Cancel</button>
+                                    <button className='btn btn-danger' onClick={generateNewSequences}>Yes, delete all sequences</button>
+                                </>
+                            }
+                            <p>Generate choices, then click on the choice that best meets the sequence advice.</p>
+                        </>
                     }
                 </div>
 
             </div>
+            {
+                simpleSequenceRows
+            }
         </>
     )
 }
