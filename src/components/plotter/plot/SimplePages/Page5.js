@@ -16,7 +16,7 @@ const Page5 = (
         sequences,
         characters,
         setSequences,
-        updateBlurb,
+        //updateBlurb,
         updateSequenceCompletions,
         heroCharacterArchetype,
     }
@@ -72,7 +72,7 @@ const Page5 = (
                         sequences={sequences}
                         characters={characters}
                         //setSequences={setSequences}
-                        updateBlurb={updateBlurb}
+                        //updateBlurb={updateBlurb}
                         updateSequenceCompletions={updateSequenceCompletions}
                     />
                 </div>

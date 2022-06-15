@@ -267,7 +267,11 @@ public static class Factory
         var genres = Factory.GetGenres(plot.Genres);
 
         var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
-        var charactersMentioned = getCharactersMentioned(curSequence.Blurb, plot.Characters);
+
+        var selectedBlurbCompletion = curSequence.BlurbCompletions == null ? null : curSequence.BlurbCompletions.Where(c => c.IsSelected).FirstOrDefault();
+        var curSequenceBlurbText = selectedBlurbCompletion != null ? selectedBlurbCompletion.Completion : curSequence.Blurb;
+
+        var charactersMentioned = getCharactersMentioned(curSequenceBlurbText, plot.Characters);
 
         var heroCharacter = charactersMentioned.Where(c => c.IsHero == true).FirstOrDefault();
         var heroCharacterContribution = "";
@@ -281,7 +285,11 @@ public static class Factory
             heroPersonalityDescription = PersonalityDescription.GetCharacterPrompt(heroCharacter);
             heroCharacterContribution = heroPersonalityDescription + $". {heroCharacter.Name} is the protagonist of the story.";
             //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
-            heroCharacterContribution += $" {heroCharacter.Description}";
+
+            var heroSelectedBrainstorm = heroCharacter.AICompletions == null ? null : heroCharacter.AICompletions.Where(c => c.IsSelected).FirstOrDefault();
+            var heroDescription = heroSelectedBrainstorm == null ? heroCharacter.Description : heroSelectedBrainstorm.Completion;
+
+            heroCharacterContribution += $" {heroDescription}";
         }
 
         var nonHeroCharacters = charactersMentioned.Where(c => c.IsHero == false).ToList();
@@ -292,7 +300,10 @@ public static class Factory
             var archetype = Factory.GetArchetype(character.Archetype);
             nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $". {character.Name} is a supporting character in this story.";
             //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
-            nonHeroCharacterContributions += $" {character.Description}";
+
+            var nonHeroSelectedBrainstorm = character.AICompletions == null ? null : character.AICompletions.Where(c => c.IsSelected).FirstOrDefault();
+            var nonHeroDescription = nonHeroSelectedBrainstorm == null ? character.Description : nonHeroSelectedBrainstorm.Completion;
+            nonHeroCharacterContributions += $" {nonHeroDescription}";
         }
 
         nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
@@ -331,7 +342,10 @@ public static class Factory
 
         var prevBlurbText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "blurb").Trim();
 
-        var plotTeaser = $"Plot teaser: {plot.LogLineDescription}";
+        var selectedLogLineDescription = plot.AILogLineDescriptions == null ? null : plot.AILogLineDescriptions.Where(c => c.IsSelected).FirstOrDefault();
+        var logLineDescription = selectedLogLineDescription == null ? plot.LogLineDescription : selectedLogLineDescription.Completion;
+
+        var plotTeaser = $"Plot teaser: {logLineDescription}";
 
         // TODO: check if only 1 genre, and output singular version of sentence instead (use expanded summaries prompt as example that already does this)
         var genresText = $"The genres of this story are: {string.Join(", ", plot.Genres)}.";
@@ -406,19 +420,19 @@ public static class Factory
         }
 
         var setupSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "setup").FirstOrDefault();
-        var setupSeqExpandedSummary = setupSeq == null ? "" : setupSeq.Text.Trim();
+        var setupSeqExpandedSummary = setupSeq == null ? "" : (string.IsNullOrWhiteSpace(setupSeq.Text) ? "" : setupSeq.Text).Trim();
         var themeSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "theme stated").FirstOrDefault();
-        var themeSeqExpandedSummary = themeSeq == null ? "" : themeSeq.Text.Trim();
+        var themeSeqExpandedSummary = themeSeq == null ? "" : (string.IsNullOrWhiteSpace(themeSeq.Text) ? "" : themeSeq.Text).Trim();
         var debateSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "debate").FirstOrDefault();
-        var debateSeqExpandedSummary = debateSeq == null ? "" : debateSeq.Text.Trim();
+        var debateSeqExpandedSummary = debateSeq == null ? "" : (string.IsNullOrWhiteSpace(debateSeq.Text) ? "" : debateSeq.Text).Trim();
         var funAndGamesSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "fun and games").FirstOrDefault();
-        var funAndGamesSeqExpandedSummary = funAndGamesSeq == null ? "" : funAndGamesSeq.Text.Trim();
+        var funAndGamesSeqExpandedSummary = funAndGamesSeq == null ? "" : (string.IsNullOrWhiteSpace(funAndGamesSeq.Text) ? "" : funAndGamesSeq.Text).Trim();
         var midpointSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "midpoint").FirstOrDefault();
-        var midpointSeqExpandedSummary = midpointSeq == null ? "" : midpointSeq.Text.Trim();
+        var midpointSeqExpandedSummary = midpointSeq == null ? "" : (string.IsNullOrWhiteSpace(midpointSeq.Text) ? "" : midpointSeq.Text).Trim();
         var badGuysCloseInSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "bad guys close in").FirstOrDefault();
-        var badGuysCloseInSeqExpandedSummary = badGuysCloseInSeq == null ? "" : badGuysCloseInSeq.Text.Trim();
+        var badGuysCloseInSeqExpandedSummary = badGuysCloseInSeq == null ? "" : (string.IsNullOrWhiteSpace(badGuysCloseInSeq.Text) ? "" : badGuysCloseInSeq.Text).Trim();
         var allHopeIsLostSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "all hope is lost").FirstOrDefault();
-        var allHopeIsLostSeqExpandedSummary = allHopeIsLostSeq == null ? "" : allHopeIsLostSeq.Text.Trim();
+        var allHopeIsLostSeqExpandedSummary = allHopeIsLostSeq == null ? "" : (string.IsNullOrWhiteSpace(allHopeIsLostSeq.Text) ? "" : allHopeIsLostSeq.Text).Trim();
 
         var prevKeyExpandedSummaries = targetSequence switch
         {

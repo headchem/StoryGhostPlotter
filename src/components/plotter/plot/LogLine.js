@@ -49,10 +49,12 @@ const LogLine = (
     }
 ) => {
 
+    const selectedLogLineBrainstorm = AILogLineDescriptions ? AILogLineDescriptions.filter(brainstorm => brainstorm['isSelected'] === true) : null
+
     return (
         <>
             <div className='col-md-7 logline'>
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('genres')}>
                     <div className='col-md-3'>
                         <label htmlFor="genres" className="form-label">Genres</label>
                     </div>
@@ -61,7 +63,7 @@ const LogLine = (
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}
-                            onFocusChange={onFocusChange}
+                            //onFocusChange={onFocusChange}
                             mode={mode}
                         />
                     </div>
@@ -82,7 +84,7 @@ const LogLine = (
                 }
 
 
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('keywords')}>
                     <div className='col-md-3'>
                         <label htmlFor="keywords" className="form-label">Keywords:</label>
                     </div>
@@ -90,32 +92,39 @@ const LogLine = (
                         <Keywords
                             keywords={keywords}
                             onKeywordsChange={onKeywordsChange}
-                            onFocusChange={onFocusChange}
+                            //onFocusChange={onFocusChange}
                             mode={mode}
                         />
                     </div>
                 </div>
 
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('logLineDescription')}>
                     <div className='col-md-3'>
                         <label htmlFor="logLineDesc" className="form-label">Log Line</label>
                     </div>
                     <div className='col-md-9'>
-                        <LimitedTextArea
-                            id='logLineDesc'
-                            className="form-control"
-                            value={logLineDescription}
-                            setValue={(newValue) => onLogLineDescriptionChange(newValue)}
-                            rows={4}
-                            limit={700}
-                            //curTokenCount={logLineDescriptionTokenCount}
-                            showCount={true}
-                            onFocus={() => onFocusChange('logLineDescription')}
-                        />
+                        {
+                            selectedLogLineBrainstorm && selectedLogLineBrainstorm.length > 0 &&
+                            <p>{selectedLogLineBrainstorm[0]['completion']}</p>
+                        }
+                        {
+                            (!selectedLogLineBrainstorm || selectedLogLineBrainstorm.length === 0) &&
+                            <LimitedTextArea
+                                id='logLineDesc'
+                                className="form-control"
+                                value={logLineDescription}
+                                setValue={(newValue) => onLogLineDescriptionChange(newValue)}
+                                rows={4}
+                                limit={700}
+                                //curTokenCount={logLineDescriptionTokenCount}
+                                showCount={true}
+                            />
+                        }
+
                     </div>
                 </div>
 
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('title')}>
                     <div className='col-md-3'>
                         <label htmlFor="title" className="form-label">Title</label>
                     </div>
@@ -128,13 +137,13 @@ const LogLine = (
                             onChange={onTitleChange}
                             //defaultValue={title}
                             value={title}
-                            onFocus={() => onFocusChange('title')}
+                            //onFocus={() => onFocusChange('title')}
                             aria-describedby="titleHelp"
                             id="title" />
                     </div>
                 </div>
 
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('problem template')}>
                     <div className='col-md-3'>
                         <label htmlFor="problemTemplate" className="form-label">Problem Template</label>
                     </div>
@@ -147,7 +156,8 @@ const LogLine = (
                                 value={!problemTemplate ? '' : problemTemplate}
                                 //defaultValue={problemTemplate}
                                 onChange={onProblemTemplateChange}
-                                onFocus={() => onFocusChange('problem template')}>
+                            //onFocus={() => onFocusChange('problem template')}
+                            >
                                 <option key="blank" value="" disabled>Problem Template</option>
                                 {
                                     problemTemplateOptions.map(function (o, idx) {
@@ -160,7 +170,7 @@ const LogLine = (
                     </div>
                 </div>
 
-                <div className='row pb-3'>
+                <div className='row pb-3' onClick={() => onFocusChange('dramatic question')}>
                     <div className='col-md-3'>
                         <label htmlFor="dramaticQuestion" className="form-label" title='also called the "theme"'>Dramatic Question</label>
                     </div>
@@ -171,7 +181,8 @@ const LogLine = (
                             className='fs-5 form-select dramaticQuestionSelect'
                             value={!dramaticQuestion ? '' : dramaticQuestion}
                             onChange={onDramaticQuestionChange}
-                            onFocus={() => onFocusChange('dramatic question')}>
+                        //onFocus={() => onFocusChange('dramatic question')}
+                        >
                             <option key="blank" value="" disabled>Dramatic Question</option>
                             {
                                 dramaticQuestionOptions.map(function (o) {

@@ -11,5 +11,6 @@ public class CompletionResponse
     public string Completion { get; set; }
     public bool CompletionIsToxic { get; set; }
     public int CompletionTokenCount { get; set; }
+    public bool IsSelected { get; set; }
 
 }

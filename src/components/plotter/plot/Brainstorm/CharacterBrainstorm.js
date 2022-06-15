@@ -53,9 +53,25 @@ const CharacterBrainstorm = (
         });
     }
 
-    const onSelectBrainstorm = (idxToSelect) => {
+    const onCopyBrainstorm = (idxToSelect) => {
         const selectedCompletion = character['aiCompletions'][idxToSelect]['completion']
         updateCharacterDescription(character.id, selectedCompletion)
+    }
+
+    const onSelectBrainstormChange = (idxToSelect, isSelected) => {
+        console.log('unset all selected brainstorms, then set idx: ' + idxToSelect + ' to: ' + isSelected.toString())
+
+        // first set all completions isSelected to false
+        const newCompletions = character['aiCompletions'].map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxToSelect ? { ...completion, isSelected: isSelected } : completion
+        )
+
+        updateAICharacterCompletion(character.id, newCompletionsWithSelected)
     }
 
     const onDeleteBrainstorm = (idxToDelete) => {
@@ -69,7 +85,9 @@ const CharacterBrainstorm = (
             isLoading={isCompletionLoading}
             onGenerateCompletion={fetchCompletion}
             completions={character['aiCompletions']}
-            onSelectBrainstorm={onSelectBrainstorm}
+            onCopyBrainstorm={onCopyBrainstorm}
+            onSelectBrainstormChange={onSelectBrainstormChange}
+            showSelectBrainstorm={false}
             onDeleteBrainstorm={onDeleteBrainstorm}
             temperature={temperature}
             setTemperature={setTemperature}

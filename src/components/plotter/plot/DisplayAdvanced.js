@@ -207,6 +207,7 @@ const DisplayAdvanced = (
                                         setSequences={setSequences}
 
                                         tokensRemaining={tokensRemaining}
+                                        AILogLineDescriptions={AILogLineDescriptions}
                                     />
                                 }
                             </>

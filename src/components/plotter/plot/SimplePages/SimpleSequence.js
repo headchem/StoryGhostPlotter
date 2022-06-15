@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import LimitedTextArea from '../LimitedTextArea'
+//import LimitedTextArea from '../LimitedTextArea'
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../../util/FetchUtil'
-import { blurbLimits } from '../../../../util/SequenceTextCheck';
+//import { blurbLimits } from '../../../../util/SequenceTextCheck';
 
 const SimpleSequence = (
     {
@@ -18,7 +18,7 @@ const SimpleSequence = (
         sequences,
         characters,
         //setSequences
-        updateBlurb,
+        //updateBlurb,
         updateSequenceCompletions
     }
 ) => {
@@ -82,13 +82,40 @@ const SimpleSequence = (
         });
     }
 
-    const mostRecentBrainstorms = (!sequence || !sequence['blurbCompletions']) ? [] : sequence['blurbCompletions'].slice(-2);
-    const mostRecentBrainstormsCompletions = mostRecentBrainstorms.map(brainstorm => brainstorm['completion'])
-    const mostRecentBrainstormsChoices = mostRecentBrainstorms.map((brainstorm, idx) => {
+    const selectCompletion = (brainstorm) => {
 
-        const textClass = sequence['blurb'] === brainstorm['completion'] ? 'fw-bold' : 'text-muted'
+        const idxOfCompletion = sequence['blurbCompletions'].findIndex(o => {
+            return o['completion'] === brainstorm['completion'];
+        });
 
-        const card = <div key={idx + sequence['sequenceName']} className="card" onClick={() => updateBlurb(sequence.sequenceName, brainstorm['completion'])}>
+        // first set all completions isSelected to false
+        const newCompletions = sequence['blurbCompletions'].map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxOfCompletion ? { ...completion, isSelected: true } : completion
+        )
+
+        updateSequenceCompletions(targetSequence, newCompletionsWithSelected)
+
+        //console.log('select completion at idx: ' + idxOfCompletion)
+    }
+
+    const numChoices = 2
+
+    const mostRecentBrainstorms = (!sequence || !sequence['blurbCompletions']) ? [] : sequence['blurbCompletions'].slice(-1 * numChoices);
+    const olderBrainstorms = (!sequence || !sequence['blurbCompletions']) ? [] : sequence['blurbCompletions'].slice(0, sequence['blurbCompletions'].length - numChoices);
+    const olderSelectedBrainstorm = olderBrainstorms.filter(brainstorm => brainstorm['isSelected'] === true)
+    const mostRecentBrainstormsWithSelected = olderSelectedBrainstorm.length > 0 ? olderSelectedBrainstorm.concat(mostRecentBrainstorms) : mostRecentBrainstorms
+    const isNoneSelected = !sequence || !sequence['blurbCompletions'] || sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length === 0
+
+    const mostRecentBrainstormsChoices = mostRecentBrainstormsWithSelected.map((brainstorm, idx) => {
+
+        const textClass = brainstorm['isSelected'] === true ? 'fw-bold' : 'text-muted'
+
+        const card = <div key={idx + sequence['sequenceName']} className="card" onClick={() => selectCompletion(brainstorm)}>
             <div className="card-body">
                 <p className={textClass}>{brainstorm['completion']}</p>
             </div>
@@ -96,6 +123,7 @@ const SimpleSequence = (
 
         return card
     })
+
 
     return (
         <div className='row'>
@@ -118,8 +146,8 @@ const SimpleSequence = (
 
                 <div className="card-group mt-3">
                     {
-                        mostRecentBrainstormsCompletions.every(completion => completion !== sequence['blurb']) &&
-                        <div key={'cur_selected_blurb_' + sequence['sequenceName']} className="card" onClick={() => updateBlurb(sequence.sequenceName, sequence['blurb'])}>
+                        isNoneSelected === true &&
+                        <div key={'cur_selected_blurb_' + sequence['sequenceName']} className="card">
                             <div className="card-body">
                                 <p className='fw-bold'>{sequence['blurb']}</p>
                             </div>
@@ -130,7 +158,7 @@ const SimpleSequence = (
                     }
                 </div>
 
-                <div className='d-none'>
+                {/* <div className='d-none'>
                     <LimitedTextArea
                         id={sequence.sequenceName + '_blurb_textarea'}
                         className="form-control"
@@ -140,7 +168,7 @@ const SimpleSequence = (
                         limit={blurbLimits[sequence.sequenceName]['max']}
                         showCount={true}
                     />
-                </div>
+                </div> */}
             </div>
         </div>
     )

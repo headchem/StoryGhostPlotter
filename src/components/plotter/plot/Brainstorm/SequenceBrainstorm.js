@@ -22,7 +22,8 @@ const SequenceBrainstorm = (
         updateSequenceCompletions,
         completionURL,
         textPropName,
-        tokensRemaining
+        tokensRemaining,
+        AILogLineDescriptions
     }
 ) => {
 
@@ -67,6 +68,7 @@ const SequenceBrainstorm = (
                 keywords: keywords,
                 sequences: sequences,
                 characters: characters,
+                AILogLineDescriptions: AILogLineDescriptions
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {
@@ -94,9 +96,25 @@ const SequenceBrainstorm = (
         });
     }
 
-    const onSelectBrainstorm = (idxToSelect) => {
+    const onCopyBrainstorm = (idxToSelect) => {
         const selectedCompletion = completions[idxToSelect]['completion']
         updateText(targetSequence, selectedCompletion)
+    }
+
+    const onSelectBrainstormChange = (idxToSelect, isSelected) => {
+        console.log('unset all selected brainstorms, then set idx: ' + idxToSelect + ' to: ' + isSelected.toString())
+
+        // first set all completions isSelected to false
+        const newCompletions = completions.map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxToSelect ? { ...completion, isSelected: isSelected } : completion
+        )
+
+        updateSequenceCompletions(targetSequence, newCompletionsWithSelected)
     }
 
     const onDeleteBrainstorm = (idxToDelete) => {
@@ -130,7 +148,9 @@ const SequenceBrainstorm = (
                                 isLoading={isCompletionLoading}
                                 onGenerateCompletion={fetchCompletion}
                                 completions={completions}
-                                onSelectBrainstorm={onSelectBrainstorm}
+                                onCopyBrainstorm={onCopyBrainstorm}
+                                onSelectBrainstormChange={onSelectBrainstormChange}
+                                showSelectBrainstorm={true}
                                 onDeleteBrainstorm={onDeleteBrainstorm}
                                 showTemperature={true}
                                 temperature={temperature}

@@ -4,9 +4,10 @@ import Spinner from 'react-bootstrap/Spinner';
 //import Tabs from 'react-bootstrap/Tabs'
 //import Tab from 'react-bootstrap/Tab'
 import DeleteCompletion from './DeleteCompletion'
-import SelectCompletion from './SelectCompletion'
+import CopyCompletionToText from './CopyCompletionToText'
 import SignUpMessage from '../SignUpMessage'
 import ToxicMessage from './ToxicMessage'
+import SelectCompletion from './SelectCompletion'
 
 const AICompletions = (
     {
@@ -14,7 +15,9 @@ const AICompletions = (
         isLoading,
         completions,
         onDeleteBrainstorm,
-        onSelectBrainstorm,
+        onCopyBrainstorm,
+        onSelectBrainstormChange,
+        showSelectBrainstorm,
         onGenerateCompletion,
         showTemperature,
         temperature,
@@ -46,7 +49,12 @@ const AICompletions = (
                             <div key={`completion-` + idx} className="card mb-2">
                                 <div className="card-body">
                                     <p className="card-text">{completion['completion']}</p>
-                                    <SelectCompletion idx={idx} onSelectBrainstorm={onSelectBrainstorm} />
+                                    {
+                                        showSelectBrainstorm === true &&
+                                        <SelectCompletion idx={idx} isSelected={completion['isSelected']} onSelectBrainstormChange={onSelectBrainstormChange} />
+                                    }
+
+                                    <CopyCompletionToText idx={idx} onCopyBrainstorm={onCopyBrainstorm} />
                                     <DeleteCompletion idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} />
                                     {
                                         completion['completionIsToxic']

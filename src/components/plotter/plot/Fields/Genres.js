@@ -7,7 +7,7 @@ const Genres = (
         genreOptions,
         genres,
         onGenresChange,
-        onFocusChange,
+        //onFocusChange,
         mode
     }
 ) => {
@@ -22,7 +22,7 @@ const Genres = (
                 className="genres-multi-select"
                 classNamePrefix="select"
                 onChange={onGenresChange}
-                onFocus={() => onFocusChange('genres')}
+                //onFocus={() => onFocusChange('genres')}
                 theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
             />
         </div>

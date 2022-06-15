@@ -23,7 +23,8 @@ const SequenceList = ({
     updateExpandedSummaryCompletions,
     updateFullCompletions,
     setSequences,
-    tokensRemaining
+    tokensRemaining,
+    AILogLineDescriptions
 }) => {
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
@@ -189,6 +190,7 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                             {
@@ -222,6 +224,7 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                             {
@@ -255,6 +258,7 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                         </div>

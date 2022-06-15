@@ -1,34 +1,26 @@
-import React, { useState } from 'react'
-import { FaCopy } from 'react-icons/fa'
+import React from 'react'
+import { FaStar, FaRegStar } from 'react-icons/fa'
 
 
 const SelectCompletion = (
     {
         idx,
-        onSelectBrainstorm
+        isSelected,
+        onSelectBrainstormChange
     }
 ) => {
-    const [showConfirm, setShowConfirm] = useState(false);
 
-    const onSelect = () => {
-        setShowConfirm(true)
-    }
 
     return (
         <span className='ms-3 card-link'>
             {
-                showConfirm === false &&
-                <FaCopy title='will prompt to confirm' onClick={onSelect} />
+                isSelected === false &&
+                <FaRegStar onClick={() => onSelectBrainstormChange(idx, true)} />
             }
             {
-                showConfirm === true &&
-                <span>
-                    <span title="WARNING: replaces existing text" className="btn btn-link" onClick={() => onSelectBrainstorm(idx)}>copy to textarea</span>
-                    /
-                    <span className="btn btn-link" onClick={() => setShowConfirm(false)}>cancel</span>
-                </span>
+                isSelected === true &&
+                <FaStar onClick={() => onSelectBrainstormChange(idx, false)} />
             }
-
         </span>
     )
 }

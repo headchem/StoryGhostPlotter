@@ -66,9 +66,25 @@ const LogLineDescriptionBrainstorm = (
         });
     }
 
-    const onSelectBrainstorm = (idxToSelect) => {
+    const onCopyBrainstorm = (idxToSelect) => {
         const selectedCompletion = completions[idxToSelect]['completion']
         updateLogLineDescription(selectedCompletion)
+    }
+
+    const onSelectBrainstormChange = (idxToSelect, isSelected) => {
+        console.log('unset all selected brainstorms, then set idx: ' + idxToSelect + ' to: ' + isSelected.toString())
+
+        // first set all completions isSelected to false
+        const newCompletions = completions.map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxToSelect ? { ...completion, isSelected: isSelected } : completion
+        )
+
+        updateLogLineDescriptionCompletions(newCompletionsWithSelected)
     }
 
     const onDeleteBrainstorm = (idxToDelete) => {
@@ -88,7 +104,9 @@ const LogLineDescriptionBrainstorm = (
                         isLoading={isCompletionLoading}
                         onGenerateCompletion={fetchCompletion}
                         completions={completions}
-                        onSelectBrainstorm={onSelectBrainstorm}
+                        onCopyBrainstorm={onCopyBrainstorm}
+                        onSelectBrainstormChange={onSelectBrainstormChange}
+                        showSelectBrainstorm={false}
                         onDeleteBrainstorm={onDeleteBrainstorm}
                         showTemperature={true}
                         temperature={temperature}

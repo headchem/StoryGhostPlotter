@@ -34,7 +34,8 @@ const Sequence = ({
     updateExpandedSummaryCompletions,
     updateFullCompletions,
     allowed,
-    tokensRemaining
+    tokensRemaining,
+    AILogLineDescriptions
 }) => {
 
     // const [blurbTokenCount, setBlurbTokenCount] = useState(0)
@@ -95,6 +96,8 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     ), [allowed]);
 
+    const selectedBlurbBrainstorm = sequence && sequence['blurbCompletions'] ? sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+
     return (
         <>
             <div className='row border-top mt-3 pt-3'>
@@ -123,21 +126,31 @@ const Sequence = ({
                         {
                             sequenceType === 'blurb' &&
                             <div className="float-start w-100 pt-3">
-                                <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+
                                 {
                                     sequence.text && sequence.text !== '' &&
-                                    <p>{sequence.text}</p>
+                                    <p>TEMP! {sequence.text}</p>
                                 }
-                                <LimitedTextArea
-                                    id={sequence.sequenceName + '_blurb_textarea'}
-                                    className="form-control"
-                                    value={sequence.blurb}
-                                    setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
-                                    rows={blurbLimits[sequence.sequenceName]['rows']}
-                                    limit={blurbLimits[sequence.sequenceName]['max']}
-                                    //curTokenCount={blurbTokenCount}
-                                    showCount={true}
-                                />
+                                {
+                                    selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
+                                    <p>{selectedBlurbBrainstorm[0]['completion']}</p>
+                                }
+                                {
+                                    (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) &&
+                                    <>
+                                        <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                                        <LimitedTextArea
+                                            id={sequence.sequenceName + '_blurb_textarea'}
+                                            className="form-control"
+                                            value={sequence.blurb}
+                                            setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
+                                            rows={blurbLimits[sequence.sequenceName]['rows']}
+                                            limit={blurbLimits[sequence.sequenceName]['max']}
+                                            //curTokenCount={blurbTokenCount}
+                                            showCount={true}
+                                        />
+                                    </>
+                                }
                             </div>
                         }
 
@@ -236,6 +249,7 @@ const Sequence = ({
                                                             completionURL={'GenerateBlurb'}
                                                             textPropName='blurb'
                                                             tokensRemaining={tokensRemaining}
+                                                            AILogLineDescriptions={AILogLineDescriptions}
                                                         />
                                                     </>
                                                 }

@@ -207,7 +207,7 @@ const DisplaySimple = (
                             sequences={sequences}
                             characters={characters}
                             setSequences={setSequences}
-                            updateBlurb={updateBlurb}
+                            //updateBlurb={updateBlurb}
                             updateSequenceCompletions={updateBlurbCompletions}
                             heroCharacterArchetype={heroCharacterArchetype}
                         />

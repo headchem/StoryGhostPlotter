@@ -50,6 +50,9 @@ const Character = ({
 
     const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
 
+    const selectedCharacterBrainstorm = (character && character['aiCompletions']) ? character['aiCompletions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+
+
     return (
         <>
             <div className='row border-top mt-3 pt-3' onClick={onFocusChange}>
@@ -209,17 +212,28 @@ const Character = ({
 
                     <div className='row'>
                         <div className='col-md-12'>
-                            <label htmlFor={character.id + '_desc'} className="form-label" title="1-3 sentences of backstory context that explains and exemplifies their personality.">Character notes</label>
-                            <LimitedTextArea
-                                id={character.id + '_desc'}
-                                className="form-control"
-                                value={character.description}
-                                setValue={(newValue) => updateCharacterDescription(character.id, newValue)}
-                                rows={5}
-                                limit={400}
-                                //curTokenCount={descriptionTokenCount}
-                                showCount={true}
-                            />
+
+                            {
+                                selectedCharacterBrainstorm && selectedCharacterBrainstorm.length > 0 &&
+                                <p>{selectedCharacterBrainstorm[0]['completion']}</p>
+                            }
+                            {
+                                (!selectedCharacterBrainstorm || selectedCharacterBrainstorm.length === 0) &&
+                                <>
+                                    <label htmlFor={character.id + '_desc'} className="form-label" title="1-3 sentences of backstory context that explains and exemplifies their personality.">Character notes</label>
+                                    <LimitedTextArea
+                                        id={character.id + '_desc'}
+                                        className="form-control"
+                                        value={character.description}
+                                        setValue={(newValue) => updateCharacterDescription(character.id, newValue)}
+                                        rows={5}
+                                        limit={400}
+                                        //curTokenCount={descriptionTokenCount}
+                                        showCount={true}
+                                    />
+                                </>
+                            }
+
                         </div>
 
 

@@ -6,7 +6,7 @@ const Keywords = (
     {
         keywords,
         onKeywordsChange,
-        onFocusChange,
+        //onFocusChange,
         mode
     }
 ) => {
@@ -17,7 +17,7 @@ const Keywords = (
                 selectTheme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
                 placeholder='Keywords'
                 isMultiSelect={true}
-                onFocusChange={() => onFocusChange('keywords')}
+                //onFocusChange={() => onFocusChange('keywords')}
                 value={keywords}
                 onChange={onKeywordsChange}
             />
