@@ -273,7 +273,7 @@ public static class Factory
 
         var charactersMentioned = getCharactersMentioned(curSequenceBlurbText, plot.Characters);
 
-        var heroCharacter = charactersMentioned.Where(c => c.IsHero == true).FirstOrDefault();
+        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
         var heroCharacterContribution = "";
         var heroPersonalityDescription = "";
         var heroShadowSide = "";

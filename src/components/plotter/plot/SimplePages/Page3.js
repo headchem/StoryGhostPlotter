@@ -98,7 +98,7 @@ const Page3 = (
                             <Spinner size="sm" as="span" animation="border" variant="secondary" />
                         }
                         {
-                            isLoading === false && (!characters || characters.length === 0) &&
+                            isLoading === false &&
                             <button onClick={generateAllCharacters} className='btn btn-primary'>Generate Characters</button>
                         }
 

@@ -53,6 +53,7 @@ const Page5 = (
             console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }).finally(function () {
             setIsNewSequencesLoading(false)
+            setShowConfirmNewGame(false)
         });
     }
 
@@ -64,7 +65,7 @@ const Page5 = (
         const prevSeqHasSelectedBrainstorm = !prevSequence['blurbCompletions'] ? false : prevSequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
         const showCurSequence = isOpeningImage || prevBlurbNotEmpty || prevSeqHasSelectedBrainstorm
 
-        if (showCurSequence) {
+        if (showCurSequence && sequences && sequences.length > 1) {
             return <div className='row pb-5' key={sequence['sequenceName']}>
                 <div className='col-8'>
                     <SimpleSequence

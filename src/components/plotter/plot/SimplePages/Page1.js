@@ -145,7 +145,7 @@ const Page1 = (
                                 }
                                 <span className='float-end'>
                                     {
-                                        userInfo && userInfo.userRoles.includes('customer') &&
+                                        userInfo && userInfo.userRoles.includes('customer') && isLogLineDescLoading === false && isTitleLoading === false &&
                                         <button onClick={loadLogLineDesc} className='btn btn-primary btn-lg mt-3' title='Replace existing text with a new story idea'><FaSyncAlt /> Brainstorm with AI</button>
                                     }
                                     {
