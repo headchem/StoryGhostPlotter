@@ -57,7 +57,14 @@ const Page5 = (
     }
 
     const simpleSequenceRows = sequences.map((sequence, idx) => {
-        if (idx === 0 || isNullOrEmpty(sequences[idx - 1]['blurb']) === false) {
+        // only show this sequence if: it's the Opening Image, or the previous sequence either has a blurb or has a selected brainstorm
+        const isOpeningImage = idx === 0
+        const prevSequence = isOpeningImage ? sequences[0] : sequences[idx - 1]
+        const prevBlurbNotEmpty = isNullOrEmpty(prevSequence['blurb']) === false
+        const prevSeqHasSelectedBrainstorm = !prevSequence['blurbCompletions'] ? false : prevSequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
+        const showCurSequence = isOpeningImage || prevBlurbNotEmpty || prevSeqHasSelectedBrainstorm
+
+        if (showCurSequence) {
             return <div className='row pb-5' key={sequence['sequenceName']}>
                 <div className='col-8'>
                     <SimpleSequence

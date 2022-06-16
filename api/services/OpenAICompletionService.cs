@@ -41,7 +41,7 @@ public class OpenAICompletionService : ICompletionService
         _plotService = plotService;
     }
 
-    private async Task<CompletionResponse> getResponse(string userId, string plotId, string engineURL, OpenAICompletionsRequest openAIRequest)
+    private async Task<List<CompletionResponse>> getResponse(string userId, string plotId, string engineURL, OpenAICompletionsRequest openAIRequest)
     {
         if (string.IsNullOrWhiteSpace(plotId))
         {
@@ -64,32 +64,41 @@ public class OpenAICompletionService : ICompletionService
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        var completionObjs = resultDeserialized.Choices;
 
-        var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
-        var completionIsToxic = await _analysisService.IsToxic(userId, completion);
+        var results = new List<CompletionResponse>();
 
         var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
-        var completionTokenCount = (await _encodingService.Encode(completion)).Count;
 
-        var totalTokens = promptTokenCount + completionTokenCount;
-
-        await _plotService.LogTokenUsage(userId, plotId, totalTokens);
-
-        await _userService.DeductTokens(userId, totalTokens);
-
-        var result = new CompletionResponse
+        foreach (var completion in completionObjs)
         {
-            Prompt = openAIRequest.Prompt,
-            PromptIsToxic = promptIsToxic,
-            PromptTokenCount = promptTokenCount,
-            Completion = completion,
-            CompletionIsToxic = completionIsToxic,
-            CompletionTokenCount = completionTokenCount
-        };
+            var completionText = completion == null ? "" : completion.Text.Trim();
 
-        return result;
+            var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
+            var completionIsToxic = await _analysisService.IsToxic(userId, completionText);
+
+            var completionTokenCount = (await _encodingService.Encode(completionText)).Count;
+
+            var totalTokens = promptTokenCount + completionTokenCount;
+
+            await _plotService.LogTokenUsage(userId, plotId, totalTokens);
+
+            await _userService.DeductTokens(userId, totalTokens);
+
+            var result = new CompletionResponse
+            {
+                Prompt = openAIRequest.Prompt,
+                PromptIsToxic = promptIsToxic,
+                PromptTokenCount = promptTokenCount,
+                Completion = completionText,
+                CompletionIsToxic = completionIsToxic,
+                CompletionTokenCount = completionTokenCount
+            };
+
+            results.Add(result);
+        }
+
+        return results;
     }
 
     private void addTokenVariationsIfFound(Dictionary<string, int> logitBias, string keyword, int keywordsLogitBias)
@@ -223,6 +232,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "curie:ft-personal-2022-06-07-05-37-00",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -238,7 +248,8 @@ public class OpenAICompletionService : ICompletionService
             }
         }
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var result = results[0];
 
         return result;
     }
@@ -276,7 +287,7 @@ public class OpenAICompletionService : ICompletionService
     //     return result;
     // }
 
-    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -289,6 +300,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-06-02-07-30-49",
             MaxTokens = maxTokens,
             Temperature = temperature,
+            NumCompletions = numCompletions,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -296,8 +308,16 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
 
+        foreach(var result in results) {
+            cleanCompletion(result);
+        }
+
+        return results;
+    }
+
+    private void cleanCompletion(CompletionResponse result) {
         var allSequences = Factory.GetSequences();
 
         // remove all of the sequence name prefixes
@@ -312,8 +332,6 @@ public class OpenAICompletionService : ICompletionService
                 result.Completion = result.Completion.Trim();
             }
         }
-
-        return result;
     }
 
     public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
@@ -329,6 +347,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-06-02-18-31-37",
             MaxTokens = maxTokens,
             Temperature = temperature,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -336,26 +355,10 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var result = results[0];
 
-        // if (result.CompletionIsToxic) {
-        //     result.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
-        // }
-
-        var allSequences = Factory.GetSequences();
-
-        // remove all of the sequence name prefixes
-        foreach (var seq in allSequences)
-        {
-            var replaceStr = (seq.Name + ":").ToUpper();
-            result.Completion = result.Completion.Trim();
-
-            if (result.Completion.StartsWith(replaceStr))
-            {
-                result.Completion = result.Completion.Replace(replaceStr, "");
-                result.Completion = result.Completion.Trim();
-            }
-        }
+        cleanCompletion(result);
 
         return result;
     }
@@ -390,6 +393,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-04-05-06-09-25",
             MaxTokens = 150, // longest character description completion was 88 tokens,
             Temperature = temperature,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -397,12 +401,8 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plotId, "completions", openAIRequest);
-
-        // if (result.CompletionIsToxic)
-        // {
-        //     result.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
-        // }
+        var results = await getResponse(userId, plotId, "completions", openAIRequest);
+        var result = results[0];
 
         return result;
     }
@@ -420,6 +420,7 @@ public class OpenAICompletionService : ICompletionService
             Prompt = prompt,
             MaxTokens = 50, // average movie title is max of 16 tokens but typically must less
             Temperature = 1.0,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = "",
             PresencePenalty = 0.9, // helped avoid same-y titles from being generated. We also don't expect much punctuation in Titles, so no concerns with suppressing common characters
@@ -427,11 +428,8 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var openAIResult = await getResponse(userId, plotId, "engines/text-curie-001/completions", openAIRequest);
-
-        // if (openAIResult.CompletionIsToxic) {
-        //     openAIResult.Completion = "The AI returned toxic results.";
-        // }
+        var openAIResults = await getResponse(userId, plotId, "engines/text-curie-001/completions", openAIRequest);
+        var openAIResult = openAIResults[0];
 
         var titleResults = removeListNumbers(openAIResult.Completion);
 
@@ -499,7 +497,7 @@ public class OpenAICompletionService : ICompletionService
         return (results, totalTokenCount);
     }
 
-    
+
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
         await ensureSufficientTokensAndOwnership(userId, plotId, false);
@@ -652,6 +650,7 @@ public class OpenAICompletionService : ICompletionService
             MaxTokens = 48,
             Temperature = 0.0, // low temp seems to work well for NER
             TopP = 1.0, // some names may be super weird, so we allow all token combinations
+            NumCompletions = 1,
             Stop = "6.", // if it gets this far, we want to stop and only consider the first 5 it finds
             PresencePenalty = 1.0, // high penalty to avoid repetition of already found names. Since we don't expect repeated punctuation due to the increasing numbers in the list, I think this higher penalty is ok
             FrequencyPenalty = 1.0,
@@ -659,7 +658,8 @@ public class OpenAICompletionService : ICompletionService
         };
 
         // smallest Ada model was usually accurate enough. NOTE: names like "Tinker Bell" or "Spiderman" will not appear in the list of 7000 most popular names, so they will be filtered out.
-        var result = await getResponse(userId, plotId, "engines/text-ada-001/completions", openAIRequest);
+        var completionResults = await getResponse(userId, plotId, "engines/text-ada-001/completions", openAIRequest);
+        var result = completionResults[0];
 
         var results = removeListNumbers(result.Completion);
 

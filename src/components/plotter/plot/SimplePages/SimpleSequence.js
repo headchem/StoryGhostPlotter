@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../../util/FetchUtil'
+import { isNullOrEmpty } from '../../../../util/Helpers';
 //import { blurbLimits } from '../../../../util/SequenceTextCheck';
 
 const SimpleSequence = (
@@ -34,26 +35,29 @@ const SimpleSequence = (
         setIsCompletionLoading(true)
 
         const completions = sequence['blurbCompletions']
-        const completionURL = 'GenerateBlurb'
         const temperature = 0.9
 
-        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, {
+        const body = JSON.stringify({
+            id: plotId,
+            logLineDescription: logLineDescription,
+            genres: genres,
+            problemTemplate: problemTemplate,
+            dramaticQuestion: dramaticQuestion,
+            keywords: keywords,
+            sequences: sequences,
+            characters: characters,
+        })
+
+        const fetchParams = {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                id: plotId,
-                logLineDescription: logLineDescription,
-                genres: genres,
-                problemTemplate: problemTemplate,
-                dramaticQuestion: dramaticQuestion,
-                keywords: keywords,
-                sequences: sequences,
-                characters: characters,
-            })
-        }).then(function (response) {
+            body: body
+        }
+
+        const checkSuccess = (response) => {
             if (response.status === 401 || response.status === 403) {
                 navigate('/plots')
             } else {
@@ -62,19 +66,42 @@ const SimpleSequence = (
                 }
             }
             return Promise.reject(response);
-        }).then(function (data) {
+        }
+
+        const handleResponse = (data) => {
             if (!completions || completions.length === 0) {
-                updateSequenceCompletions(targetSequence, [data])
+                updateSequenceCompletions(targetSequence, data)
             } else {
-                const newCompletionList = [...completions, data]
-                updateSequenceCompletions(targetSequence, newCompletionList)
+                const newCompletionListFirst = [...completions, data[0]]
+                const newCompletionListSecond = [...newCompletionListFirst, data[1]]
+                updateSequenceCompletions(targetSequence, newCompletionListSecond)
             }
-        }).catch(function (error) {
+        }
+
+        const handleError = (error) => {
             console.warn(error);
             console.warn('usually this means the model is still loading on the server or you have run out of tokens');
-        }).finally(function () {
-            setIsCompletionLoading(false)
-        });
+        }
+
+        const completionURL = 'GenerateBlurb'
+
+        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=2', fetchParams)
+            .then(checkSuccess)
+            .then(handleResponse)
+            .catch(handleError)
+            .finally(function () {
+
+                // this is a hack to call the completion endpoint twice
+                // fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, fetchParams)
+                //     .then(checkSuccess)
+                //     .then(handleResponse)
+                //     .catch(handleError)
+                //     .finally(function () {
+                //         setIsCompletionLoading(false)
+                //     });
+
+                setIsCompletionLoading(false)
+            });
     }
 
     const selectCompletion = (brainstorm) => {
@@ -139,7 +166,7 @@ const SimpleSequence = (
 
                 <div className="card-group mt-3">
                     {
-                        isNoneSelected === true &&
+                        isNoneSelected === true && isNullOrEmpty(sequence['blurb']) === false &&
                         <div key={'cur_selected_blurb_' + sequence['sequenceName']} className="card">
                             <div className="card-body">
                                 <p className='fw-bold'>{sequence['blurb']}</p>

@@ -44,6 +44,7 @@ public class AnalysisService : IAnalysisService
             Prompt = prompt,
             MaxTokens = 1,
             Temperature = 0.0,
+            NumCompletions = 1,
             TopP = 0.0,
             Logprobs = 5,
             LogitBias = new Dictionary<string, int>(),

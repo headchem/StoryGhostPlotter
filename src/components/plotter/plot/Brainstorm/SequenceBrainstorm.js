@@ -53,7 +53,7 @@ const SequenceBrainstorm = (
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, {
+        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=1', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -81,9 +81,9 @@ const SequenceBrainstorm = (
             return Promise.reject(response);
         }).then(function (data) {
             if (!completions || completions.length === 0) {
-                updateSequenceCompletions(targetSequence, [data])
+                updateSequenceCompletions(targetSequence, data)
             } else {
-                const newCompletionList = [...completions, data]
+                const newCompletionList = [...completions, data[0]]
                 updateSequenceCompletions(targetSequence, newCompletionList)
             }
         }).catch(function (error) {

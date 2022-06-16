@@ -60,7 +60,7 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
@@ -68,7 +68,7 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = "TODO";
         result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
     public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)

@@ -177,9 +177,11 @@ public class Generate
 
             var targetSequence = req.Query["targetSequence"][0];
             var temperature = double.Parse(req.Query["temperature"][0]);
+            var numCompletions = int.Parse(req.Query["numCompletions"][0]);
+            numCompletions = Math.Min(numCompletions, 2); // don't allow more than 2 completions
             var maxTokens = 256;
 
-            var result = await _completionService.GetBlurbCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+            var result = await _completionService.GetBlurbCompletion(userId, targetSequence, maxTokens, temperature, plot, false, numCompletions);
 
             var timespan = stopwatch.Elapsed;
 
@@ -188,9 +190,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Blurb", null, metrics);
 
