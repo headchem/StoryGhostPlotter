@@ -66,6 +66,14 @@ const PlotView = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const getText = (sequence, textPropName, completionPropName) => {
+        const selectedCompletions = !sequence[completionPropName] ? [] : sequence[completionPropName].filter(c => c['isSelected'] === true)
+
+        if (selectedCompletions.length > 0) {
+            return selectedCompletions[0]['completion']
+        }
+        return sequence[textPropName]
+    }
 
     return (
         <>
@@ -102,7 +110,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.blurb}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
                                             </span>
                                         ))
                                     }
@@ -111,7 +119,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.text}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
                                             </span>
                                         ))
                                     }
@@ -120,7 +128,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.full}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
                                             </span>
                                         ))
                                     }

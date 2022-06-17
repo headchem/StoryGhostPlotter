@@ -310,14 +310,16 @@ public class OpenAICompletionService : ICompletionService
 
         var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
 
-        foreach(var result in results) {
+        foreach (var result in results)
+        {
             cleanCompletion(result);
         }
 
         return results;
     }
 
-    private void cleanCompletion(CompletionResponse result) {
+    private void cleanCompletion(CompletionResponse result)
+    {
         var allSequences = Factory.GetSequences();
 
         // remove all of the sequence name prefixes
@@ -334,7 +336,7 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -356,14 +358,16 @@ public class OpenAICompletionService : ICompletionService
         };
 
         var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
-        var result = results[0];
 
-        cleanCompletion(result);
+        foreach (var result in results)
+        {
+            cleanCompletion(result);
+        }
 
-        return result;
+        return results;
     }
 
-    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
@@ -371,7 +375,7 @@ public class OpenAICompletionService : ICompletionService
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck)
     {
@@ -466,35 +470,6 @@ public class OpenAICompletionService : ICompletionService
         }
 
         return results;
-    }
-
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot plot, string upToTargetSequenceExclusive)
-    {
-        await ensureSufficientTokensAndOwnership(userId, plot.Id, false);
-
-        var sequenceList = Factory.GetRandomSequenceList(upToTargetSequenceExclusive);
-
-        var results = new List<UserSequence>();
-
-        var totalTokenCount = 0;
-
-        foreach (var targetSequence in sequenceList)
-        {
-            var sequenceResponse = await GetExpandedSummaryCompletion(userId, targetSequence, 256, 0.8, plot, true);
-            totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
-
-            var sequence = new UserSequence
-            {
-                SequenceName = targetSequence,
-                Text = sequenceResponse.Completion,
-                Completions = new List<CompletionResponse> { sequenceResponse }
-            };
-
-            results.Add(sequence);
-            plot.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
-        }
-
-        return (results, totalTokenCount);
     }
 
 

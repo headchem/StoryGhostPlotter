@@ -236,9 +236,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Expanded Summary", null, metrics);
 
@@ -279,9 +282,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Full", null, metrics);
 
@@ -401,48 +407,6 @@ public class Generate
             metrics.Add("token usage", totalTokenCount);
 
             _telemetry.TrackEvent("Completion All Characters", null, metrics);
-
-            return new OkObjectResult(result);
-        }
-    }
-
-
-    [FunctionName("GenerateAllSequences")]
-    public async Task<IActionResult> GenerateAllSequences([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
-    {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        using (log.BeginScope(new Dictionary<string, object>
-        {
-            ["UserId"] = userId,
-            ["User"] = user.Identity.Name,
-            ["PlotId"] = plot.Id,
-        }))
-        {
-            //log.LogInformation("An example of an Information level message");
-
-            var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
-
-            var (result, totalTokenCount) = await _completionService.GenerateAllSequences(userId, plot, upToTargetSequenceExclusive);
-
-            var timespan = stopwatch.Elapsed;
-
-            stopwatch.Stop();
-
-            //var metricsText = new Dictionary<string, string>();
-            //metricsText.Add("UserId", userId);
-
-            var metrics = new Dictionary<string, double>();
-            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", totalTokenCount);
-
-            _telemetry.TrackEvent("Completion All Sequences", null, metrics);
 
             return new OkObjectResult(result);
         }

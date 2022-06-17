@@ -1,4 +1,6 @@
-export const allSequencesHaveValues = (sequences, targetSequence, textPropName) => {
+// textPropName=blurb|text|full
+// completionPropName=blurbCompletions|completions|fullCompletions
+export const allSequencesHaveValues = (sequences, targetSequence, textPropName, completionPropName) => {
     if (!sequences || sequences.length === 0) {
         return false;
     }
@@ -11,7 +13,18 @@ export const allSequencesHaveValues = (sequences, targetSequence, textPropName) 
 
     let prevSeqsArr = sequences.slice(0, curSeqIndex)
 
-    const prevTexts = prevSeqsArr.map((seq) => seq[textPropName])
+    // get array of strings of either the selected brainstorm or none is selected, return the textarea text
+    const prevTexts = prevSeqsArr.map(seq => {
+        if (!seq || !seq[completionPropName]) return ''
+        const selectedCompletions = seq[completionPropName].filter(c => c['isSelected'] === true)
+
+        if (selectedCompletions.length > 0) {
+            return selectedCompletions[0]['completion']
+        }
+        return seq[textPropName]
+    })
+
+    //const prevTexts = prevSeqsArr.map((seq) =>  seq[textPropName])
 
     const isBlank = (str) => (!str || str.trim().length === 0);
 

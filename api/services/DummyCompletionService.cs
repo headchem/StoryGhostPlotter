@@ -71,7 +71,7 @@ public class DummyCompletionService : ICompletionService
         return new List<CompletionResponse> { result };
     }
 
-    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -96,10 +96,10 @@ public class DummyCompletionService : ICompletionService
 
         await _userService.DeductTokens(userId, totalTokens);
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
-    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
@@ -107,7 +107,7 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck)
@@ -167,11 +167,6 @@ public class DummyCompletionService : ICompletionService
                 CompletionTokenCount = 444
             }
         };
-    }
-
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
-    {
-        return (new List<UserSequence>(), 123);
     }
 
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)

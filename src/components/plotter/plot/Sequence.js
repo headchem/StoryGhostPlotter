@@ -126,10 +126,10 @@ const Sequence = ({
                             sequenceType === 'blurb' &&
                             <div className="float-start w-100 pt-3">
 
-                                {
+                                {/* {
                                     sequence.text && sequence.text !== '' &&
                                     <p>TEMP! {sequence.text}</p>
-                                }
+                                } */}
                                 {
                                     selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
                                     <p>{selectedBlurbBrainstorm[0]['completion']}</p>
@@ -154,11 +154,15 @@ const Sequence = ({
                         }
 
                         {
-                            sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                            (sequenceType === 'expandedSummary' && ((selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0) || (sequence.blurb && sequence.blurb !== ''))) &&
                             <div className="float-start w-100 pt-3">
                                 <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
-                                    sequence.blurb && sequence.blurb !== '' &&
+                                    selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
+                                    <p>{selectedBlurbBrainstorm[0]['completion']}</p>
+                                }
+                                {
+                                    (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) && sequence.blurb && sequence.blurb !== '' &&
                                     <p>{sequence.blurb}</p>
                                 }
                                 <LimitedTextArea
@@ -247,6 +251,7 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateBlurbCompletions}
                                                             completionURL={'GenerateBlurb'}
                                                             textPropName='blurb'
+                                                            completionPropName={'blurbCompletions'}
                                                             tokensRemaining={tokensRemaining}
                                                             AILogLineDescriptions={AILogLineDescriptions}
                                                         />
@@ -292,6 +297,7 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateExpandedSummaryCompletions}
                                                             completionURL={'GenerateExpandedSummary'}
                                                             textPropName='text'
+                                                            completionPropName={'completions'}
                                                             tokensRemaining={tokensRemaining}
                                                         />
                                                     </>
@@ -336,6 +342,7 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateFullCompletions}
                                                             completionURL={'GenerateFull'}
                                                             textPropName='full'
+                                                            completionPropName={'fullCompletions'}
                                                             tokensRemaining={tokensRemaining}
                                                         />
                                                     </>

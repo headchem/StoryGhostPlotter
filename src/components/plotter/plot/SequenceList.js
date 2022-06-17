@@ -192,7 +192,7 @@ const SequenceList = ({
                                 />
                             }
                             {
-                                sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                                (sequenceType === 'expandedSummary') &&
                                 <Sequence
                                     sequenceType={sequenceType}
                                     key={sequenceType + sequence.sequenceName}

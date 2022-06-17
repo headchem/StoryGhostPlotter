@@ -22,6 +22,7 @@ const SequenceBrainstorm = (
         updateSequenceCompletions,
         completionURL,
         textPropName,
+        completionPropName,
         tokensRemaining,
         AILogLineDescriptions
     }
@@ -121,7 +122,7 @@ const SequenceBrainstorm = (
 
     // return true if any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
     const brainstormDisabled = () => {
-        return allSequencesHaveValues(sequences, targetSequence, textPropName) === false
+        return allSequencesHaveValues(sequences, targetSequence, textPropName, completionPropName) === false
     }
 
     return (

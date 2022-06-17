@@ -549,8 +549,8 @@ const PlotHome = (
 
     const heroCharacterCheck = !characters ? [] : characters.filter(c => c.isHero === true)
     const hideBlurbs = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
-    const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
-    const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
+    const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb', 'blurbCompletions') === false
+    const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text', 'completions') === false
 
     const handleDisplayModeChange = e => {
         const target = e.target;
