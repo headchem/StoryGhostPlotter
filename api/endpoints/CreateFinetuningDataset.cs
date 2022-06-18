@@ -369,6 +369,11 @@ public class CreateFinetuningDataset
 
             var cooldownSeq = plotObj.Sequences.Where(s => s.SequenceName.ToLower() == "cooldown").FirstOrDefault();
 
+            if (cooldownSeq == null) {
+                // this plot is incomplete, so skip
+                continue;
+            }
+
             var cooldownHasContent = false;
 
             if (sequenceType == "blurb")
