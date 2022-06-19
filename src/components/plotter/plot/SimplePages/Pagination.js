@@ -7,18 +7,13 @@ const Pagination = (
         prevPage,
         nextPage,
         goToPage,
-        totalPages
+        pageNames
     }
 ) => {
 
-    const pageNames = [
-        'Genres/Keywords',
-        'Log Line',
-        'Problem/Theme',
-        'Characters',
-        'Review',
-        'Sequences'
-    ]
+    
+
+    const totalPages = pageNames.length
 
     return (
         <nav aria-label="Page navigation">

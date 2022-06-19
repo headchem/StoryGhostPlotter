@@ -97,7 +97,22 @@ const DisplaySimple = (
         setCurPage(pageNum)
     }
 
-    const totalPages = 6 // should match the number of pages in the SimplePages folder
+    const pageNames = (userInfo && userInfo.userRoles.includes('customer')) ? [
+        'Genres/Keywords',
+        'Log Line',
+        'Problem/Theme',
+        'Characters',
+        'Review',
+        'Sequences',
+        'Final'
+    ] : [
+        'Genres/Keywords',
+        'Log Line',
+        'Problem/Theme',
+        'Characters',
+        'Review',
+        'Final'
+    ]
 
     return (
 
@@ -112,7 +127,7 @@ const DisplaySimple = (
                                 prevPage={prevPage}
                                 nextPage={nextPage}
                                 goToPage={goToPage}
-                                totalPages={totalPages}
+                                pageNames={pageNames}
                             />
                         </div>
                     </div>
@@ -172,11 +187,7 @@ const DisplaySimple = (
                             plotId={plotId}
                             logLineDescription={logLineDescription}
                             updateCharacterName={updateCharacterName}
-                            // updateCharacterIsHero={updateCharacterIsHero}
-                            // updateCharacterArchetype={updateCharacterArchetype}
                             updateCharacterDescription={updateCharacterDescription}
-                            //updateAICharacterCompletion={updateAICharacterCompletion}
-                            // updateCharacterPersonality={updateCharacterPersonality}
                             setCharacters={setCharacters}
 
                             characters={characters}
@@ -195,23 +206,38 @@ const DisplaySimple = (
                             characters={characters}
                         />
                     }
+
                     {
-                        curPage === 5 && // sequences
-                        <Page5
-                            plotId={plotId}
-                            logLineDescription={logLineDescription}
-                            genres={genres}
-                            problemTemplate={problemTemplate}
-                            dramaticQuestion={dramaticQuestion}
-                            keywords={keywords}
-                            sequences={sequences}
-                            characters={characters}
-                            setSequences={setSequences}
-                            //updateBlurb={updateBlurb}
-                            updateSequenceCompletions={updateBlurbCompletions}
-                            heroCharacterArchetype={heroCharacterArchetype}
-                        />
+                        userInfo && userInfo.userRoles.includes('customer') &&
+                        <>
+                            {
+                                curPage === 5 && // sequences
+                                <Page5
+                                    plotId={plotId}
+                                    logLineDescription={logLineDescription}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    dramaticQuestion={dramaticQuestion}
+                                    keywords={keywords}
+                                    sequences={sequences}
+                                    characters={characters}
+                                    setSequences={setSequences}
+                                    updateSequenceCompletions={updateBlurbCompletions}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                />
+                            }
+                        </>
                     }
+
+                    {
+                        curPage === pageNames.length - 1 &&
+                        <>
+                            <p>Last page here. Paragraph explaining what to do next.</p>
+                            <p>Link to display story page?</p>
+                            <p>Link to advanced UI?</p>
+                        </>
+                    }
+
 
                     <div className='row pt-5'>
                         <div className='col'>
@@ -221,7 +247,7 @@ const DisplaySimple = (
                                 prevPage={prevPage}
                                 nextPage={nextPage}
                                 goToPage={goToPage}
-                                totalPages={totalPages}
+                                pageNames={pageNames}
                             />
                         </div>
                     </div>
