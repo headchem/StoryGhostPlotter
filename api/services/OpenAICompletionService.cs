@@ -507,7 +507,7 @@ public class OpenAICompletionService : ICompletionService
         }, totalTokens);
     }
 
-    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription, bool useTokens)
     {
         await ensureOwnership(userId, plotId);
 
@@ -520,7 +520,7 @@ public class OpenAICompletionService : ICompletionService
         }
 
         // find first names in log line desc, then identify which first names don't yet exist in existing characters
-        var namesInLogLineDesc = await getCharacterNamesInLogLineDescription(userId, plotId, LogLineDescription);
+        var namesInLogLineDesc = await getCharacterNamesInLogLineDescription(userId, plotId, LogLineDescription); // this makes a call to GPT-3 Ada, but we'll allow non-customers to use it because it's cheap
         var firstNamesInLogLineDesc = namesInLogLineDesc.Select(n => n.Split(' ')[0]).ToList();
         var existingFirstNames = existingCharacters.Select(character => character.Name.Split(' ')[0]).ToList();
         var missingLogLineFirstNames = firstNamesInLogLineDesc.Where(n => existingFirstNames.Contains(n) == false).ToList();
@@ -549,15 +549,18 @@ public class OpenAICompletionService : ICompletionService
             IsHero = isHero
         };
 
-        var tokensRemaining = await _userService.GetTokensRemaining(userId); // if no tokens remaining, return empty string for description
-
         var characterResponse = new CompletionResponse();
 
-        if (tokensRemaining > 0)
+        if (useTokens)  // if not using tokens or customer has no tokens remaining, return empty string for description
         {
-            // Generate Description for each Character based on Name, Archetype, Personality
-            characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
-            character.Description = characterResponse.Completion;
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+
+            if (tokensRemaining > 0)
+            {
+                // Generate Description for each Character based on Name, Archetype, Personality
+                characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
+                character.Description = characterResponse.Completion;
+            }
         }
 
         return (character, characterResponse);
@@ -588,9 +591,10 @@ public class OpenAICompletionService : ICompletionService
         return remainingArchetypeNames.First();
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, bool useTokens)
     {
-        await ensureSufficientTokensAndOwnership(userId, plotId, false);
+        var bypassTokenCheck = useTokens ? false : true;
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
 
         var rand = new Random();
 
@@ -601,7 +605,7 @@ public class OpenAICompletionService : ICompletionService
 
         for (var i = 0; i < numCharacters; i++)
         {
-            var (newCharacter, completionResponse) = await GenerateCharacter(userId, plotId, null, characters, LogLineDescription);
+            var (newCharacter, completionResponse) = await GenerateCharacter(userId, plotId, null, characters, LogLineDescription, useTokens);
             totalTokenCount += completionResponse.PromptTokenCount + completionResponse.CompletionTokenCount;
 
             characters.Add(newCharacter);

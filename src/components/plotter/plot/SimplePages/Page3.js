@@ -22,6 +22,7 @@ const Page3 = (
 ) => {
 
     const [isLoading, setIsLoading] = useState(false)
+    const [showConfirmReplace, setShowConfirmReplace] = useState(false)
 
     const navigate = useNavigate()
 
@@ -54,6 +55,7 @@ const Page3 = (
             console.warn(error);
         }).finally(function () {
             setIsLoading(false)
+            setShowConfirmReplace(false)
         });
     }
 
@@ -93,14 +95,33 @@ const Page3 = (
 
                         }
 
+
+
                         {
                             isLoading === true &&
                             <Spinner size="sm" as="span" animation="border" variant="secondary" />
                         }
                         {
                             isLoading === false &&
-                            <button onClick={generateAllCharacters} className='btn btn-primary'>Generate Characters</button>
+                            <>
+                                {
+                                    showConfirmReplace === false &&
+                                    <>
+                                        <button onClick={() => setShowConfirmReplace(true)} className='btn btn-primary' title='Delete and replace all characters'>Delete and Replace All Characters</button>
+                                    </>
+                                }
+                                {
+                                    showConfirmReplace === true &&
+                                    <>
+                                        <button className='btn btn-link pr-5' onClick={() => setShowConfirmReplace(false)}>cancel</button>
+                                        <button onClick={generateAllCharacters} className='btn btn-danger'>Confirm replace all characters</button>
+                                    </>
+                                }
+                            </>
                         }
+
+
+
 
                     </div>
 

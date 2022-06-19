@@ -338,8 +338,8 @@ public class Generate
     public async Task<IActionResult> GenerateRandomCharacter([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateRandom")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
+        var useTokens = user.IsInRole("customer");
+        //if (!user.IsInRole("customer")) return new UnauthorizedResult();
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         var stopwatch = new Stopwatch();
@@ -357,7 +357,7 @@ public class Generate
             var curCharacterId = req.Query.ContainsKey("curCharacterId") ? (req.Query["curCharacterId"][0]) : "";
             var curCharacter = plot.Characters.Where(c => c.Id == curCharacterId).First();
 
-            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters, plot.LogLineDescription);
+            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters, plot.LogLineDescription, useTokens);
 
             var timespan = stopwatch.Elapsed;
 
@@ -377,8 +377,9 @@ public class Generate
     public async Task<IActionResult> GenerateAllCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
-
+        var useTokens = user.IsInRole("customer");
+        //if (!user.IsInRole("customer")) return new UnauthorizedResult(); // we allow non-customers to generate Characters, but they won't get the descriptions
+        
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         var stopwatch = new Stopwatch();
@@ -393,7 +394,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription);
+            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, useTokens);
 
             var timespan = stopwatch.Elapsed;
 

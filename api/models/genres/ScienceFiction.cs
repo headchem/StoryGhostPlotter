@@ -231,7 +231,7 @@ public class Scifi : IGenre
                 "nemesis",
                 "superhero",
                 "resistance",
-                "Decepticons",
+                //"Decepticons",
                 "chance",
                 "extinction",
                 "U.S.",

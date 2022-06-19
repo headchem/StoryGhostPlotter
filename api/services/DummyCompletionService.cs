@@ -181,7 +181,7 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription, bool useTokens)
     {
         var isHero = false;
 
@@ -236,7 +236,7 @@ public class DummyCompletionService : ICompletionService
         });
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription)
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, bool useTokens)
     {
         return (new List<Character> {
             new Character {

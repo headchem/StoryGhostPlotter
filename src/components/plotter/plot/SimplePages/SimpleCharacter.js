@@ -126,14 +126,20 @@ const SimpleCharacter = (
                     showCount={true}
                 />
                 {
-                    isLoading === false &&
-                    <button className='btn btn-primary float-end mt-3' onClick={rerollCharacter}><FaSyncAlt /> Reroll</button>
+                    userInfo && userInfo.userRoles.includes('customer') &&
+                    <>
+                        {
+                            isLoading === false &&
+                            <button className='btn btn-primary float-end mt-3' onClick={rerollCharacter}><FaSyncAlt /> Reroll</button>
+                        }
+
+                        {
+                            isLoading === true &&
+                            <button className='btn btn-primary float-end mt-3' disabled><Spinner size="sm" as="span" animation="border" variant="secondary" /> Reroll</button>
+                        }
+                    </>
                 }
 
-                {
-                    isLoading === true &&
-                    <button className='btn btn-primary float-end mt-3' disabled><Spinner size="sm" as="span" animation="border" variant="secondary" /> Reroll</button>
-                }
             </div>
             <div className='col-4'>
                 {
