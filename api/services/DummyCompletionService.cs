@@ -47,6 +47,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
@@ -65,13 +66,14 @@ public class DummyCompletionService : ICompletionService
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
 
         return new List<CompletionResponse> { result };
     }
 
-    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -86,6 +88,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI EXPANDED SUMMARY completion for " + targetSequence + " goes here...";
 
@@ -99,11 +102,12 @@ public class DummyCompletionService : ICompletionService
         return new List<CompletionResponse> { result };
     }
 
-    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
@@ -125,6 +129,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
 
@@ -161,6 +166,7 @@ public class DummyCompletionService : ICompletionService
             },
             CompletionResponse = new CompletionResponse
             {
+                Id = Guid.NewGuid().ToString(),
                 Prompt = "titles prompt goes here",
                 Completion = "titles completion goes here",
                 PromptTokenCount = 123,
@@ -227,6 +233,7 @@ public class DummyCompletionService : ICompletionService
             IsHero = isHero
         }, new CompletionResponse
         {
+            Id = Guid.NewGuid().ToString(),
             Prompt = "test",
             PromptIsToxic = false,
             PromptTokenCount = 123,

@@ -201,6 +201,33 @@ const PlotHome = (
         )
     }
 
+    const editCompletion = (completionId, sequences, sequenceName, completionPropName, newCompletionText) => {
+        
+        const getNewCompletions = (sequence) => {
+            const newCompletions = sequence[completionPropName].map(
+                (completion) => completion['id'] === completionId ? { ...completion, completion: newCompletionText } : completion
+            )
+
+            return newCompletions
+        }
+
+        const getNewSequence = (sequence) => {
+            if (completionPropName === 'blurbCompletions') {
+                return { ...sequence, blurbCompletions: getNewCompletions(sequence) }
+            } else if (completionPropName === 'completions') {
+                return { ...sequence, completions: getNewCompletions(sequence) }
+            } else if (completionPropName === 'fullCompletions') {
+                return { ...sequence, fullCompletions: getNewCompletions(sequence) }
+            }
+        }
+
+        const newSequences = sequences.map(
+            (sequence) => sequence.sequenceName === sequenceName ? getNewSequence(sequence) : sequence
+        )
+
+        setSequences(newSequences)
+    }
+
     const updateExpandedSummaryCompletions = (sequenceName, completions) => {
         setSequences(
             sequences.map(
@@ -467,7 +494,7 @@ const PlotHome = (
         updateTokensRemaining();
 
         const plotId = searchParams.get("id")
-        
+
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
             headers: {
@@ -658,6 +685,8 @@ const PlotHome = (
                             isPublic={isPublic}
                             lastSaveSuccess={lastSaveSuccess}
                             totalTokens={totalTokens}
+
+                            editCompletion={editCompletion}
                         />
                     }
                     {
@@ -733,6 +762,8 @@ const PlotHome = (
                             isPublic={isPublic}
                             lastSaveSuccess={lastSaveSuccess}
                             totalTokens={totalTokens}
+
+                            editCompletion={editCompletion}
                         />
                     }
 

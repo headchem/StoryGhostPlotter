@@ -6,6 +6,7 @@ import Page2 from './SimplePages/Page2'
 import Page3 from './SimplePages/Page3'
 import Page4 from './SimplePages/Page4'
 import Page5 from './SimplePages/Page5'
+import Page6 from './SimplePages/Page6'
 
 const DisplaySimple = (
     {
@@ -80,6 +81,8 @@ const DisplaySimple = (
         lastSaveSuccess,
         totalTokens,
 
+        editCompletion
+
     }
 ) => {
 
@@ -103,7 +106,8 @@ const DisplaySimple = (
         'Problem/Theme',
         'Characters',
         'Review',
-        'Sequences',
+        'Blurbs',
+        'Expanded',
         'Final'
     ] : [
         'Genres/Keywords',
@@ -111,6 +115,8 @@ const DisplaySimple = (
         'Problem/Theme',
         'Characters',
         'Review',
+        'Blurbs',
+        'Expanded',
         'Final'
     ]
 
@@ -208,7 +214,7 @@ const DisplaySimple = (
                     }
 
                     {
-                        userInfo && userInfo.userRoles.includes('customer') &&
+                        //userInfo && userInfo.userRoles.includes('customer') &&
                         <>
                             {
                                 curPage === 5 && // sequences
@@ -224,6 +230,29 @@ const DisplaySimple = (
                                     setSequences={setSequences}
                                     updateSequenceCompletions={updateBlurbCompletions}
                                     heroCharacterArchetype={heroCharacterArchetype}
+                                    editCompletion={editCompletion}
+                                />
+                            }
+                        </>
+                    }
+
+                    {
+                        //userInfo && userInfo.userRoles.includes('customer') &&
+                        <>
+                            {
+                                curPage === 6 && // sequences
+                                <Page6
+                                    plotId={plotId}
+                                    logLineDescription={logLineDescription}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    dramaticQuestion={dramaticQuestion}
+                                    keywords={keywords}
+                                    sequences={sequences}
+                                    characters={characters}
+                                    updateSequenceCompletions={updateExpandedSummaryCompletions}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    editCompletion={editCompletion}
                                 />
                             }
                         </>
@@ -233,8 +262,9 @@ const DisplaySimple = (
                         curPage === pageNames.length - 1 &&
                         <>
                             <p>Last page here. Paragraph explaining what to do next.</p>
-                            <p>Link to display story page?</p>
-                            <p>Link to advanced UI?</p>
+                            <p>LEFT OFF: Both customers and non-customer get a link to Advanced Mode so they can continue editing the sequences. Set a parameter that auto-opens to the blurbs sequences tab.</p>
+                            <p>If customer, immediately display the View Plot component - make sure I can embed that directly in this page.</p>
+                            <p>Then reassess the entire experience as a non-customer, and push to main branch lauching to prod</p>
                         </>
                     }
 

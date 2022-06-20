@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-//import LimitedTextArea from '../LimitedTextArea'
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../../util/FetchUtil'
 import { isNullOrEmpty } from '../../../../util/Helpers';
-//import { blurbLimits } from '../../../../util/SequenceTextCheck';
+import SimpleBrainstorm from './SimpleBrainstorm';
 
 const SimpleSequence = (
     {
@@ -18,11 +17,14 @@ const SimpleSequence = (
         keywords,
         sequences,
         characters,
-        //setSequences
-        //updateBlurb,
-        updateSequenceCompletions
+        updateSequenceCompletions,
+        textPropName,
+        completionsPropName,
+        completionURL,
+        editCompletion
     }
 ) => {
+
 
     const navigate = useNavigate()
 
@@ -34,7 +36,7 @@ const SimpleSequence = (
     const generateChoices = async () => {
         setIsCompletionLoading(true)
 
-        const completions = sequence['blurbCompletions']
+        const completions = sequence[completionsPropName]
         const temperature = 0.9
 
         const body = JSON.stringify({
@@ -69,12 +71,19 @@ const SimpleSequence = (
         }
 
         const handleResponse = (data) => {
+            console.log(data)
+
             if (!completions || completions.length === 0) {
                 updateSequenceCompletions(targetSequence, data)
             } else {
                 const newCompletionListFirst = [...completions, data[0]]
-                const newCompletionListSecond = [...newCompletionListFirst, data[1]]
-                updateSequenceCompletions(targetSequence, newCompletionListSecond)
+
+                if (data.length === 1) {
+                    updateSequenceCompletions(targetSequence, newCompletionListFirst)
+                } else if (data.length > 1) {
+                    const newCompletionListSecond = [...newCompletionListFirst, data[1]]
+                    updateSequenceCompletions(targetSequence, newCompletionListSecond)
+                }
             }
         }
 
@@ -83,35 +92,23 @@ const SimpleSequence = (
             console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }
 
-        const completionURL = 'GenerateBlurb'
-
         fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=2', fetchParams)
             .then(checkSuccess)
             .then(handleResponse)
             .catch(handleError)
             .finally(function () {
-
-                // this is a hack to call the completion endpoint twice
-                // fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, fetchParams)
-                //     .then(checkSuccess)
-                //     .then(handleResponse)
-                //     .catch(handleError)
-                //     .finally(function () {
-                //         setIsCompletionLoading(false)
-                //     });
-
                 setIsCompletionLoading(false)
             });
     }
 
     const selectCompletion = (brainstorm) => {
 
-        const idxOfCompletion = sequence['blurbCompletions'].findIndex(o => {
+        const idxOfCompletion = sequence[completionsPropName].findIndex(o => {
             return o['completion'] === brainstorm['completion'];
         });
 
         // first set all completions isSelected to false
-        const newCompletions = sequence['blurbCompletions'].map(
+        const newCompletions = sequence[completionsPropName].map(
             (completion) => { return { ...completion, isSelected: false } }
         )
 
@@ -125,19 +122,23 @@ const SimpleSequence = (
 
     const numChoices = 2
 
-    const mostRecentBrainstorms = (!sequence || !sequence['blurbCompletions']) ? [] : sequence['blurbCompletions'].slice(-1 * numChoices);
-    const olderBrainstorms = (!sequence || !sequence['blurbCompletions']) ? [] : sequence['blurbCompletions'].slice(0, sequence['blurbCompletions'].length - numChoices);
+    const mostRecentBrainstorms = (!sequence || !sequence[completionsPropName]) ? [] : sequence[completionsPropName].slice(-1 * numChoices);
+    const olderBrainstorms = (!sequence || !sequence[completionsPropName]) ? [] : sequence[completionsPropName].slice(0, sequence[completionsPropName].length - numChoices);
     const olderSelectedBrainstorm = olderBrainstorms.filter(brainstorm => brainstorm['isSelected'] === true)
     const mostRecentBrainstormsWithSelected = olderSelectedBrainstorm.length > 0 ? olderSelectedBrainstorm.concat(mostRecentBrainstorms) : mostRecentBrainstorms
-    const isNoneSelected = !sequence || !sequence['blurbCompletions'] || sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length === 0
+    const isNoneSelected = !sequence || !sequence[completionsPropName] || sequence[completionsPropName].filter(brainstorm => brainstorm['isSelected'] === true).length === 0
 
     const mostRecentBrainstormsChoices = mostRecentBrainstormsWithSelected.map((brainstorm, idx) => {
 
-        const textClass = brainstorm['isSelected'] === true ? 'fw-bold' : 'text-muted'
-
         const card = <div key={idx + sequence['sequenceName']} className="card" onClick={() => selectCompletion(brainstorm)}>
             <div className="card-body">
-                <p className={textClass}>{brainstorm['completion']}</p>
+                <SimpleBrainstorm
+                    brainstorm={brainstorm}
+                    editCompletion={editCompletion}
+                    sequences={sequences}
+                    sequenceName={sequence['sequenceName']}
+                    completionPropName={completionsPropName}
+                />
             </div>
         </div>
 
@@ -166,10 +167,10 @@ const SimpleSequence = (
 
                 <div className="card-group mt-3">
                     {
-                        isNoneSelected === true && isNullOrEmpty(sequence['blurb']) === false &&
-                        <div key={'cur_selected_blurb_' + sequence['sequenceName']} className="card">
+                        isNoneSelected === true && isNullOrEmpty(sequence[textPropName]) === false &&
+                        <div key={'cur_selected_' + sequence['sequenceName']} className="card">
                             <div className="card-body">
-                                <p className='fw-bold'>{sequence['blurb']}</p>
+                                <p className='fw-bold'>{sequence[textPropName]}</p>
                             </div>
                         </div>
                     }
@@ -178,17 +179,6 @@ const SimpleSequence = (
                     }
                 </div>
 
-                {/* <div className='d-none'>
-                    <LimitedTextArea
-                        id={sequence.sequenceName + '_blurb_textarea'}
-                        className="form-control"
-                        value={sequence.blurb}
-                        setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
-                        rows={blurbLimits[sequence.sequenceName]['rows']}
-                        limit={blurbLimits[sequence.sequenceName]['max']}
-                        showCount={true}
-                    />
-                </div> */}
             </div>
         </div>
     )

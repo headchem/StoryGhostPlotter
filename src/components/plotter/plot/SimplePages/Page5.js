@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
-import { isNullOrEmpty } from '../../../../util/Helpers';
-import SimpleSequence from './SimpleSequence'
-import SequenceAdvice from '../Advice/SequenceAdvice'
+import SimpleSequenceList from '../SimplePages/SimpleSequenceList'
 
 const Page5 = (
     {
@@ -16,9 +14,9 @@ const Page5 = (
         sequences,
         characters,
         setSequences,
-        //updateBlurb,
         updateSequenceCompletions,
         heroCharacterArchetype,
+        editCompletion
     }
 ) => {
 
@@ -57,48 +55,6 @@ const Page5 = (
         });
     }
 
-    const simpleSequenceRows = sequences.map((sequence, idx) => {
-        // only show this sequence if: it's the Opening Image, or the previous sequence either has a blurb or has a selected brainstorm
-        const isOpeningImage = idx === 0
-        const prevSequence = isOpeningImage ? sequences[0] : sequences[idx - 1]
-        const prevBlurbNotEmpty = isNullOrEmpty(prevSequence['blurb']) === false
-        const prevSeqHasSelectedBrainstorm = !prevSequence['blurbCompletions'] ? false : prevSequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
-        const showCurSequence = isOpeningImage || prevBlurbNotEmpty || prevSeqHasSelectedBrainstorm
-
-        if (showCurSequence && sequences && sequences.length > 1) {
-            return <div className='row pb-5' key={sequence['sequenceName']}>
-                <div className='col-8'>
-                    <SimpleSequence
-                        plotId={plotId}
-                        targetSequence={sequence['sequenceName']}
-                        logLineDescription={logLineDescription}
-                        genres={genres}
-                        problemTemplate={problemTemplate}
-                        dramaticQuestion={dramaticQuestion}
-                        keywords={keywords}
-                        sequences={sequences}
-                        characters={characters}
-                        //setSequences={setSequences}
-                        //updateBlurb={updateBlurb}
-                        updateSequenceCompletions={updateSequenceCompletions}
-                    />
-                </div>
-                <div className='col-4'>
-                    <SequenceAdvice
-                        sequenceName={sequence.sequenceName}
-                        genres={genres}
-                        problemTemplate={problemTemplate}
-                        keywords={keywords}
-                        heroCharacterArchetype={heroCharacterArchetype}
-                        dramaticQuestion={dramaticQuestion}
-                    />
-                </div>
-            </div>
-        }
-        return null
-    }
-    );
-
     return (
         <>
             <div className="row">
@@ -129,7 +85,22 @@ const Page5 = (
 
             </div>
             {
-                simpleSequenceRows
+                <SimpleSequenceList
+                    plotId={plotId}
+                    logLineDescription={logLineDescription}
+                    genres={genres}
+                    problemTemplate={problemTemplate}
+                    dramaticQuestion={dramaticQuestion}
+                    keywords={keywords}
+                    sequences={sequences}
+                    characters={characters}
+                    updateSequenceCompletions={updateSequenceCompletions}
+                    heroCharacterArchetype={heroCharacterArchetype}
+                    textPropName={'blurb'}
+                    completionsPropName={'blurbCompletions'}
+                    completionURL={'GenerateBlurb'}
+                    editCompletion={editCompletion}
+                />
             }
         </>
     )

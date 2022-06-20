@@ -16,6 +16,7 @@ export const allSequencesHaveValues = (sequences, targetSequence, textPropName, 
     // get array of strings of either the selected brainstorm or none is selected, return the textarea text
     const prevTexts = prevSeqsArr.map(seq => {
         if (!seq) return ''
+
         const selectedCompletions = !seq[completionPropName] ? [] : seq[completionPropName].filter(c => c['isSelected'] === true)
 
         if (selectedCompletions.length > 0) {

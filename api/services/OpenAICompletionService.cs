@@ -87,6 +87,7 @@ public class OpenAICompletionService : ICompletionService
 
             var result = new CompletionResponse
             {
+                Id = Guid.NewGuid().ToString(),
                 Prompt = openAIRequest.Prompt,
                 PromptIsToxic = promptIsToxic,
                 PromptTokenCount = promptTokenCount,
@@ -336,7 +337,7 @@ public class OpenAICompletionService : ICompletionService
         }
     }
 
-    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -349,7 +350,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-06-02-18-31-37",
             MaxTokens = maxTokens,
             Temperature = temperature,
-            NumCompletions = 1,
+            NumCompletions = numCompletions,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -367,11 +368,12 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
@@ -550,6 +552,8 @@ public class OpenAICompletionService : ICompletionService
         };
 
         var characterResponse = new CompletionResponse();
+
+        characterResponse.Id = Guid.NewGuid().ToString();
 
         if (useTokens)  // if not using tokens or customer has no tokens remaining, return empty string for description
         {

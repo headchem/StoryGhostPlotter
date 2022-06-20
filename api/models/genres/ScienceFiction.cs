@@ -249,7 +249,7 @@ public class Scifi : IGenre
                 "conspiracy",
                 "genetic",
                 "teen",
-                "avengers",
+                //"avengers",
                 "consequences",
                 "daughter",
                 "United States",
