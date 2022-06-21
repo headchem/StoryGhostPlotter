@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-
+import { getText } from '../../../util/Helpers'
 
 const PlotView = (
     {
@@ -65,15 +65,6 @@ const PlotView = (
         return () => (isSubscribed = false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const getText = (sequence, textPropName, completionPropName) => {
-        const selectedCompletions = !sequence[completionPropName] ? [] : sequence[completionPropName].filter(c => c['isSelected'] === true)
-
-        if (selectedCompletions.length > 0) {
-            return selectedCompletions[0]['completion']
-        }
-        return sequence[textPropName]
-    }
 
     return (
         <>

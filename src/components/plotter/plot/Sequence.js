@@ -232,7 +232,7 @@ const Sequence = ({
                                         <div className='row'>
                                             <div className='col'>
                                                 {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    //userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
                                                         <p>Based on the log line, characters, and previous events, ask the AI to brainstorm a blurb for {sequence.sequenceName}.</p>
                                                         <SequenceBrainstorm
@@ -257,12 +257,12 @@ const Sequence = ({
                                                         />
                                                     </>
                                                 }
-                                                {
+                                                {/* {
                                                     (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                     <>
                                                         <SignUpMessage />
                                                     </>
-                                                }
+                                                } */}
                                             </div>
                                         </div>
                                     }
@@ -278,7 +278,7 @@ const Sequence = ({
                                         <div className='row'>
                                             <div className='col'>
                                                 {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    //userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
                                                         <p>Based on the log line, characters, and previous events, ask the AI to brainstorm an expanded summary for {sequence.sequenceName}.</p>
                                                         <SequenceBrainstorm
@@ -302,12 +302,12 @@ const Sequence = ({
                                                         />
                                                     </>
                                                 }
-                                                {
+                                                {/* {
                                                     (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                     <>
                                                         <SignUpMessage />
                                                     </>
-                                                }
+                                                } */}
                                             </div>
                                         </div>
                                     }

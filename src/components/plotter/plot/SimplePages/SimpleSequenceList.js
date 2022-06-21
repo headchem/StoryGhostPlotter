@@ -5,6 +5,7 @@ import SequenceAdvice from '../Advice/SequenceAdvice'
 
 const SimpleSequenceList = (
     {
+        userInfo,
         plotId,
         logLineDescription,
         genres,
@@ -34,6 +35,7 @@ const SimpleSequenceList = (
             return <div className='row pb-5' key={sequence['sequenceName']}>
                 <div className='col-8'>
                     <SimpleSequence
+                        userInfo={userInfo}
                         plotId={plotId}
                         targetSequence={sequence['sequenceName']}
                         logLineDescription={logLineDescription}

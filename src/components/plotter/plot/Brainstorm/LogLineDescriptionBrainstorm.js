@@ -32,13 +32,8 @@ const LogLineDescriptionBrainstorm = (
             },
             body: JSON.stringify({
                 id: plotId,
-                //logLineDescription: logLineDescription,
                 genres: genres,
-                //problemTemplate: problemTemplate,
-                //dramaticQuestion: dramaticQuestion,
                 keywords: keywords,
-                //sequences: sequences,
-                //characters: characters,
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {
@@ -94,7 +89,6 @@ const LogLineDescriptionBrainstorm = (
 
             {
                 <>
-                    <p>Select the brainstorm that best adheres to the advice for this sequence.</p>
                     <AICompletions
                         userInfo={userInfo}
                         isLoading={isCompletionLoading}

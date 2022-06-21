@@ -7,6 +7,7 @@ import Page3 from './SimplePages/Page3'
 import Page4 from './SimplePages/Page4'
 import Page5 from './SimplePages/Page5'
 import Page6 from './SimplePages/Page6'
+import { getText } from '../../../util/Helpers'
 
 const DisplaySimple = (
     {
@@ -219,6 +220,7 @@ const DisplaySimple = (
                             {
                                 curPage === 5 && // sequences
                                 <Page5
+                                    userInfo={userInfo}
                                     plotId={plotId}
                                     logLineDescription={logLineDescription}
                                     genres={genres}
@@ -242,6 +244,7 @@ const DisplaySimple = (
                             {
                                 curPage === 6 && // sequences
                                 <Page6
+                                    userInfo={userInfo}
                                     plotId={plotId}
                                     logLineDescription={logLineDescription}
                                     genres={genres}
@@ -261,10 +264,13 @@ const DisplaySimple = (
                     {
                         curPage === pageNames.length - 1 &&
                         <>
-                            <p>Last page here. Paragraph explaining what to do next.</p>
-                            <p>LEFT OFF: Both customers and non-customer get a link to Advanced Mode so they can continue editing the sequences. Set a parameter that auto-opens to the blurbs sequences tab.</p>
-                            <p>If customer, immediately display the View Plot component - make sure I can embed that directly in this page.</p>
-                            <p>Then reassess the entire experience as a non-customer, and push to main branch lauching to prod</p>
+                            {
+                                sequences.map((sequence) => (
+                                    <span key={sequence.sequenceName}>
+                                        <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
+                                    </span>
+                                ))
+                            }
                         </>
                     }
 

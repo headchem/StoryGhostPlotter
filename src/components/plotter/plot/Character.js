@@ -262,19 +262,23 @@ const Character = ({
                                         <ArchetypeDescription archetype={character.archetype} />
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="2">
-                                    <Accordion.Header>Brainstorm with AI</Accordion.Header>
-                                    <Accordion.Body>
-                                        <CharacterBrainstorm
-                                            userInfo={userInfo}
-                                            plotId={plotId}
-                                            character={character}
-                                            updateCharacterDescription={updateCharacterDescription}
-                                            updateAICharacterCompletion={updateAICharacterCompletion}
-                                            tokensRemaining={tokensRemaining}
-                                        />
-                                    </Accordion.Body>
-                                </Accordion.Item>
+                                {
+                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                    <Accordion.Item eventKey="2">
+                                        <Accordion.Header>Brainstorm with AI</Accordion.Header>
+                                        <Accordion.Body>
+                                            <CharacterBrainstorm
+                                                userInfo={userInfo}
+                                                plotId={plotId}
+                                                character={character}
+                                                updateCharacterDescription={updateCharacterDescription}
+                                                updateAICharacterCompletion={updateAICharacterCompletion}
+                                                tokensRemaining={tokensRemaining}
+                                            />
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                }
+
                             </Accordion>
                         </>
                     }

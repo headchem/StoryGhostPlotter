@@ -33,7 +33,7 @@ const SimpleBrainstorm = (
                         showCount={true}
                     />
 
-                    <button className='btn btn-outline-secondary float-end' onClick={() => setShowEditCompletion(false)}>
+                    <button className='btn btn-outline-secondary float-end mt-3' onClick={() => setShowEditCompletion(false)}>
                         <FaCheck />
                     </button>
                 </>
@@ -41,7 +41,7 @@ const SimpleBrainstorm = (
             {
                 showEditCompletion === false &&
                 <>
-                    <button className='btn btn-outline-secondary float-end' onClick={() => setShowEditCompletion(true)}>
+                    <button className='btn btn-outline-secondary float-end m-1' onClick={() => setShowEditCompletion(true)}>
                         <FaEdit />
                     </button>
                     <p className={textClass}>{brainstorm['completion']}</p>

@@ -78,20 +78,25 @@ const CharacterBrainstorm = (
     }
 
     return (
-        <AICompletions
-            userInfo={userInfo}
-            isLoading={isCompletionLoading}
-            onGenerateCompletion={fetchCompletion}
-            completions={character['aiCompletions']}
-            onCopyBrainstorm={onCopyBrainstorm}
-            onSelectBrainstormChange={onSelectBrainstormChange}
-            showSelectBrainstorm={false}
-            onDeleteBrainstorm={onDeleteBrainstorm}
-            temperature={temperature}
-            setTemperature={setTemperature}
-            showTemperature={true}
-            tokensRemaining={tokensRemaining}
-        />
+        <>
+            {
+                //userInfo && userInfo.userRoles.includes('customer') &&
+                <AICompletions
+                    userInfo={userInfo}
+                    isLoading={isCompletionLoading}
+                    onGenerateCompletion={fetchCompletion}
+                    completions={character['aiCompletions']}
+                    onCopyBrainstorm={onCopyBrainstorm}
+                    onSelectBrainstormChange={onSelectBrainstormChange}
+                    showSelectBrainstorm={false}
+                    onDeleteBrainstorm={onDeleteBrainstorm}
+                    temperature={temperature}
+                    setTemperature={setTemperature}
+                    showTemperature={true}
+                    tokensRemaining={tokensRemaining}
+                />
+            }
+        </>
     )
 }
 

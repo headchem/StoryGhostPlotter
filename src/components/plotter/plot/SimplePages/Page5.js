@@ -5,6 +5,7 @@ import SimpleSequenceList from '../SimplePages/SimpleSequenceList'
 
 const Page5 = (
     {
+        userInfo,
         plotId,
         logLineDescription,
         genres,
@@ -78,7 +79,11 @@ const Page5 = (
                                     <button className='btn btn-danger' onClick={generateNewSequences}>Yes, delete all sequences</button>
                                 </>
                             }
-                            <p>Generate choices, then click on the choice that best meets the sequence advice.</p>
+                            {
+                                userInfo && userInfo.userRoles.includes('customer') &&
+                                <p>Generate choices, then click on the choice that best meets the sequence advice.</p>
+                            }
+
                         </>
                     }
                 </div>
@@ -86,6 +91,7 @@ const Page5 = (
             </div>
             {
                 <SimpleSequenceList
+                    userInfo={userInfo}
                     plotId={plotId}
                     logLineDescription={logLineDescription}
                     genres={genres}

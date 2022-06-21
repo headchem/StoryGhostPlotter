@@ -92,7 +92,9 @@ const SimpleSequence = (
             console.warn('usually this means the model is still loading on the server or you have run out of tokens');
         }
 
-        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=2', fetchParams)
+        const numCompletions = (userInfo && userInfo.userRoles.includes('customer')) ? 2 : 1
+
+        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=' + numCompletions, fetchParams)
             .then(checkSuccess)
             .then(handleResponse)
             .catch(handleError)
@@ -121,8 +123,8 @@ const SimpleSequence = (
     }
 
     const numChoices = 2
-
-    const mostRecentBrainstorms = (!sequence || !sequence[completionsPropName]) ? [] : sequence[completionsPropName].slice(-1 * numChoices);
+    const allBrainstorms = (!sequence || !sequence[completionsPropName]) ? [] : sequence[completionsPropName]
+    const mostRecentBrainstorms = allBrainstorms.slice(-1 * numChoices);
     const olderBrainstorms = (!sequence || !sequence[completionsPropName]) ? [] : sequence[completionsPropName].slice(0, sequence[completionsPropName].length - numChoices);
     const olderSelectedBrainstorm = olderBrainstorms.filter(brainstorm => brainstorm['isSelected'] === true)
     const mostRecentBrainstormsWithSelected = olderSelectedBrainstorm.length > 0 ? olderSelectedBrainstorm.concat(mostRecentBrainstorms) : mostRecentBrainstorms
@@ -155,7 +157,12 @@ const SimpleSequence = (
                         <div className='float-end'>
                             {
                                 isCompletionLoading === false &&
-                                <button onClick={generateChoices} className='btn btn-primary'>Generate Choices</button>
+                                <>
+                                    {
+                                        ((userInfo && userInfo.userRoles.includes('customer')) || allBrainstorms.length <= 1) &&
+                                        <button onClick={generateChoices} className='btn btn-primary'>Generate Choices</button>
+                                    }
+                                </>
                             }
                             {
                                 isCompletionLoading === true &&

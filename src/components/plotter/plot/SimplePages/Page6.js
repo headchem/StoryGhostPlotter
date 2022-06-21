@@ -3,6 +3,7 @@ import SimpleSequenceList from './SimpleSequenceList'
 
 const Page6 = (
     {
+        userInfo,
         plotId,
         logLineDescription,
         genres,
@@ -21,6 +22,7 @@ const Page6 = (
         <>
             {
                 <SimpleSequenceList
+                    userInfo={userInfo}
                     plotId={plotId}
                     logLineDescription={logLineDescription}
                     genres={genres}

@@ -140,17 +140,17 @@ const DramaticQuestionProblemTemplateTable = (
                     <div className="card-group">
 
                         <div className="card">
-                            <div className="card-body bg-success">
+                            <div className="card-body bg-danger">
                                 Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-danger">
+                            <div className="card-body bg-success">
                                 Enemy ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.enemyAdjective}
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-success">
+                            <div className="card-body bg-danger">
                                 Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}
                             </div>
                         </div>
