@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../../util/FetchUtil'
 import { isNullOrEmpty } from '../../../../util/Helpers';
 import SimpleBrainstorm from './SimpleBrainstorm';
+import { getText } from '../../../../util/Helpers'
 
 const SimpleSequence = (
     {
@@ -171,6 +172,14 @@ const SimpleSequence = (
                         </div>
                     </div>
                 </div>
+                {
+                    textPropName === 'text' &&
+                    <div className='row'>
+                        <div className='col'>
+                            <p className='text-muted'>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
+                        </div>
+                    </div>
+                }
 
                 <div className="card-group mt-3">
                     {
