@@ -24,17 +24,18 @@ const SimpleSequenceList = (
 ) => {
 
     const simpleSequenceRows = sequences.map((sequence, idx) => {
+        
         // only show this sequence if: it's the Opening Image, or the previous sequence either has a blurb or has a selected brainstorm
         const isOpeningImage = idx === 0
         const prevSequence = isOpeningImage ? sequences[0] : sequences[idx - 1]
         const prevNotEmpty = isNullOrEmpty(prevSequence[textPropName]) === false
         const prevSeqHasSelectedBrainstorm = !prevSequence[completionsPropName] ? false : prevSequence[completionsPropName].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
 
-
         // if we're on expanded summaries, check that all previous blurbs have a value before showing current expanded summary
         const curBlurbHasSelectedBrainstorm = !sequence['blurbCompletions'] ? false : sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
+        const curBlurbHasValue = curBlurbHasSelectedBrainstorm || (sequence && sequence['blurb'] && sequence['blurb'] !== '')
 
-        const showCurSequence = (textPropName === 'text' && curBlurbHasSelectedBrainstorm === true && (prevSeqHasSelectedBrainstorm === true || isOpeningImage)) || (textPropName === 'blurb' && (isOpeningImage || prevNotEmpty || prevSeqHasSelectedBrainstorm))
+        const showCurSequence = (textPropName === 'text' && curBlurbHasValue === true && (prevSeqHasSelectedBrainstorm === true || isOpeningImage || prevNotEmpty)) || (textPropName === 'blurb' && (isOpeningImage || prevNotEmpty || prevSeqHasSelectedBrainstorm))
 
         if (showCurSequence && sequences && sequences.length > 1) {
             return <div className='row pb-5' key={sequence['sequenceName']}>
