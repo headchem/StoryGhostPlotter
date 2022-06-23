@@ -50,14 +50,7 @@ public class PlotService : IPlotService
                 Modified = DateTime.UtcNow,
                 IsDeleted = false,
                 IsPublic = false,
-                Characters = new List<Character>{
-                    new Character{
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "",
-                        Archetype = "",
-                        Description = ""
-                    }
-                }
+                Characters = new List<Character>()
             };
 
             var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");

@@ -29,11 +29,17 @@ const SimpleSequenceList = (
         const prevSequence = isOpeningImage ? sequences[0] : sequences[idx - 1]
         const prevNotEmpty = isNullOrEmpty(prevSequence[textPropName]) === false
         const prevSeqHasSelectedBrainstorm = !prevSequence[completionsPropName] ? false : prevSequence[completionsPropName].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
-        const showCurSequence = isOpeningImage || prevNotEmpty || prevSeqHasSelectedBrainstorm
+
+
+        // if we're on expanded summaries, check that all previous blurbs have a value before showing current expanded summary
+        const curBlurbHasSelectedBrainstorm = !sequence['blurbCompletions'] ? false : sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true).length > 0
+
+        const showCurSequence = (textPropName === 'text' && curBlurbHasSelectedBrainstorm === true && (prevSeqHasSelectedBrainstorm === true || isOpeningImage)) || (textPropName === 'blurb' && (isOpeningImage || prevNotEmpty || prevSeqHasSelectedBrainstorm))
 
         if (showCurSequence && sequences && sequences.length > 1) {
             return <div className='row pb-5' key={sequence['sequenceName']}>
                 <div className='col-8'>
+                    <p>{curBlurbHasSelectedBrainstorm.toString()} {prevSeqHasSelectedBrainstorm.toString()}</p>
                     <SimpleSequence
                         userInfo={userInfo}
                         plotId={plotId}

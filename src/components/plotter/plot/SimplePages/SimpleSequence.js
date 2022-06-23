@@ -72,8 +72,6 @@ const SimpleSequence = (
         }
 
         const handleResponse = (data) => {
-            console.log(data)
-
             if (!completions || completions.length === 0) {
                 updateSequenceCompletions(targetSequence, data)
             } else {
@@ -160,8 +158,12 @@ const SimpleSequence = (
                                 isCompletionLoading === false &&
                                 <>
                                     {
-                                        ((userInfo && userInfo.userRoles.includes('customer')) || allBrainstorms.length <= 1) &&
+                                        userInfo && userInfo.userRoles.includes('customer') &&
                                         <button onClick={generateChoices} className='btn btn-primary'>Generate Choices</button>
+                                    }
+                                    {
+                                        (userInfo && userInfo.userRoles.includes('customer') === false && allBrainstorms.length < 1) &&
+                                        <button onClick={generateChoices} className='btn btn-primary'>Create Text</button>
                                     }
                                 </>
                             }

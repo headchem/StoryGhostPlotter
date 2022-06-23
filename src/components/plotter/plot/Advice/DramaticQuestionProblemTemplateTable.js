@@ -51,7 +51,7 @@ const DramaticQuestionProblemTemplateTable = (
     const heroLabel = isNullOrEmpty(heroName) ? 'Hero' : heroName
 
     return (
-        <>
+        <div className='dramQProbTemplateTable'>
             {
                 (isProblemTemplateLoading === true || isDramaticQuestionLoading) && <Spinner animation="border" variant="secondary" />
             }
@@ -69,14 +69,14 @@ const DramaticQuestionProblemTemplateTable = (
                     }
                     {
                         heroArchetype &&
-                        <div className="card-group">
+                        <div className="card-group hero-archetype-table">
                             <div className="card">
-                                <div className="card-body bg-info">
+                                <div className="card-body bg-info-to-warning">
                                     {heroLabel} ({heroArchetype['name']}): {heroArchetype['orphanDesires']}
                                 </div>
                             </div>
                             <div className="card">
-                                <div className="card-body bg-warning">
+                                <div className="card-body bg-warning-to-danger">
                                     {heroLabel} ({heroArchetype['name']}): {heroArchetype['wandererResponse']}
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ const DramaticQuestionProblemTemplateTable = (
                                 </div>
                             </div>
                             <div className="card">
-                                <div className="card-body bg-success">
+                                <div className="card-body bg-danger-to-success">
                                     {heroLabel} ({heroArchetype['name']}): {heroArchetype['warriorResponse']}
                                 </div>
                             </div>
@@ -94,10 +94,10 @@ const DramaticQuestionProblemTemplateTable = (
                     }
 
 
-                    <div className="card-group">
+                    <div className="card-group hero-problem-template-table">
 
                         <div className="card">
-                            <div className="card-body bg-danger">
+                            <div className="card-body bg-danger-to-warning">
                                 {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.heroAdjective}
                             </div>
                         </div>
@@ -107,21 +107,21 @@ const DramaticQuestionProblemTemplateTable = (
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-success">
+                            <div className="card-body bg-warning-to-success">
                                 {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.heroAdjective}
                             </div>
                         </div>
                     </div>
 
-                    <div className="card-group">
+                    <div className="card-group dramatic-question-table">
 
                         <div className="card">
-                            <div className="card-body bg-info">
+                            <div className="card-body bg-info-to-warning">
                                 {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contrary}
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-warning">
+                            <div className="card-body bg-warning-to-danger">
                                 {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contradiction}
                             </div>
                         </div>
@@ -131,16 +131,16 @@ const DramaticQuestionProblemTemplateTable = (
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-success">
+                            <div className="card-body bg-danger-to-success">
                                 {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.positive}
                             </div>
                         </div>
                     </div>
 
-                    <div className="card-group">
+                    <div className="card-group enemy-problem-template-table">
 
                         <div className="card">
-                            <div className="card-body bg-danger">
+                            <div className="card-body bg-danger-to-success">
                                 Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}
                             </div>
                         </div>
@@ -150,7 +150,7 @@ const DramaticQuestionProblemTemplateTable = (
                             </div>
                         </div>
                         <div className="card">
-                            <div className="card-body bg-danger">
+                            <div className="card-body bg-success-to-danger">
                                 Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}
                             </div>
                         </div>
@@ -158,7 +158,7 @@ const DramaticQuestionProblemTemplateTable = (
 
                 </>
             }
-        </>
+        </div>
     )
 }
 

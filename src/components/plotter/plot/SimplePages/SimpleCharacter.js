@@ -14,6 +14,7 @@ const SimpleCharacter = (
         logLineDescription,
         //character,
         curCharacterId,
+        archetype,
         characters,
         updateCharacterName,
         //updateCharacterIsHero,
@@ -39,18 +40,18 @@ const SimpleCharacter = (
 
     const personalitySummary = getPersonalitySummary(character['personality'])
 
-    const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
+    const characterArchetypeCapitalized = !archetype ? 'Archetype not set' : archetype[0].toUpperCase() + archetype.slice(1)
 
     useEffect(() => {
         fetchArchetype()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [characters]);
+    }, [archetype]);
 
     const fetchArchetype = async () => {
 
-        if (isNullOrEmpty(character.archetype)) return
+        if (isNullOrEmpty(archetype)) return
 
-        const url = '/api/LogLine/ArchetypeDescription?archetype=' + character.archetype
+        const url = '/api/LogLine/ArchetypeDescription?archetype=' + archetype
 
         fetchData(url, setIsArchetypeLoading, setAchetypeDescObj, navigate)
     }

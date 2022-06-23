@@ -670,20 +670,33 @@ public class OpenAICompletionService : ICompletionService
             var parts = name.Split(' ').ToList();
 
             var foundPart = false;
-            var curPart = 0;
+            var curPartIdx = 0;
 
-            while (foundPart == false && curPart < parts.Count)
+            while (foundPart == false && curPartIdx < parts.Count)
             {
-                if (CharacterNames.FirstNames.Contains(parts[curPart]))
+                var curNamePart = parts[curPartIdx].Trim();
+                if (CharacterNames.FirstNames.Contains(curNamePart))
                 {
-                    knownNames.Add(parts[curPart]);
+                    knownNames.Add(curNamePart);
                     foundPart = true;
                 }
-                curPart += 1;
+                curPartIdx += 1;
             }
         }
 
-        return knownNames;
+        var namesInLogLineText = new List<string>();
+        var logLineDescLower = LogLineDescription.ToLower();
+
+        // when the log line contains no names, it hallucinates common names. So, we want to remove any names that don't appear in the log line description text
+        foreach (var name in knownNames)
+        {
+            if (logLineDescLower.Contains(name.ToLower().Trim()))
+            {
+                namesInLogLineText.Add(name);
+            }
+        }
+
+        return namesInLogLineText;
     }
 
     private Personality getRandomPersonality(string archetype)

@@ -60,6 +60,8 @@ const Page5 = (
         <>
             <div className="row">
                 <div className='col-12'>
+                    <p>Start with 1-2 sentences that describe the minimum logical events of each sequence. These are meant to be dry and nearly devoid of emotion. Focus on the mechanics of what happens.</p>
+
                     {
                         isNewSequencesLoading === true &&
                         <Spinner size="sm" as="span" animation="border" variant="secondary" />
@@ -69,7 +71,7 @@ const Page5 = (
                         <>
                             {
                                 showConfirmNewGame === false &&
-                                <button className='btn btn-primary mb-5' onClick={() => setShowConfirmNewGame(true)}>Start Game</button>
+                                <button className='btn btn-primary mb-5' onClick={() => setShowConfirmNewGame(true)}>Start Story</button>
                             }
                             {
                                 showConfirmNewGame === true &&

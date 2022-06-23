@@ -96,6 +96,10 @@ const Sequence = ({
     ), [allowed]);
 
     const selectedBlurbBrainstorm = sequence && sequence['blurbCompletions'] ? sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+    const selectedExpandedBrainstorm = sequence && sequence['completions'] ? sequence['completions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+
+    const blurbHasValue = (selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0) || (sequence && sequence.blurb && sequence.blurb !== '')
+    const expandedSummaryHasValue = (selectedExpandedBrainstorm && selectedExpandedBrainstorm.length > 0) || (sequence && sequence.text && sequence.text !== '')
 
     return (
         <>
@@ -154,7 +158,7 @@ const Sequence = ({
                         }
 
                         {
-                            (sequenceType === 'expandedSummary' && ((selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0) || (sequence.blurb && sequence.blurb !== ''))) &&
+                            (sequenceType === 'expandedSummary' && blurbHasValue) &&
                             <div className="float-start w-100 pt-3">
                                 <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
@@ -179,7 +183,14 @@ const Sequence = ({
                         }
 
                         {
-                            sequenceType === 'full' && sequence.text && sequence.text !== '' &&
+                            (sequenceType === 'expandedSummary' && !blurbHasValue) &&
+                            <div className="float-start w-100 pt-3">
+                                <p>The corresponding Blurb for this sequence does not have a value. Enter a blurb in the previous tab before returning here to expand upon it.</p>
+                            </div>
+                        }
+
+                        {
+                            sequenceType === 'full' && expandedSummaryHasValue &&
                             <div className="float-start w-100 pt-3">
                                 <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
@@ -200,6 +211,13 @@ const Sequence = ({
                                     //curTokenCount={fullTokenCount}
                                     showCount={true}
                                 />
+                            </div>
+                        }
+
+                        {
+                            (sequenceType === 'full' && !expandedSummaryHasValue) &&
+                            <div className="float-start w-100 pt-3">
+                                <p>The corresponding Expanded Summary for this sequence does not have a value. Enter an expanded summary in the previous tab before returning here to complete it in full.</p>
                             </div>
                         }
                     </div>

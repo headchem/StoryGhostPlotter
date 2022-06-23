@@ -73,14 +73,14 @@ const PlotHome = (
         setSequences(data['sequences'])
 
         // set default protagonist if array is blank
-        if (!data['characters'] || data['characters'].length === 0) {
-            data['characters'] = [{
-                id: uuid(),
-                name: '',
-                archetype: '',
-                description: ''
-            }]
-        }
+        // if (!data['characters'] || data['characters'].length === 0) {
+        //     data['characters'] = [{
+        //         id: uuid(),
+        //         name: '',
+        //         archetype: '',
+        //         description: ''
+        //     }]
+        // }
 
         setCharacters(data['characters'])
         setIsPublic(data['isPublic'])

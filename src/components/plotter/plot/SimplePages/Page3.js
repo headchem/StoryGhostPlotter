@@ -59,6 +59,8 @@ const Page3 = (
         });
     }
 
+    const generateAllBtnText = (!characters || characters.length === 0) ? 'Generate Characters' : 'Delete and Replace All Characters'
+
     return (
         <>
             <div className="card-group">
@@ -76,6 +78,7 @@ const Page3 = (
                                                 userInfo={userInfo}
                                                 plotId={plotId}
                                                 logLineDescription={logLineDescription}
+                                                archetype={character['archetype']}
                                                 //archetypeOptions={archetypeOptions}
                                                 //character={character}
                                                 curCharacterId={character.id}
@@ -107,22 +110,18 @@ const Page3 = (
                                 {
                                     showConfirmReplace === false &&
                                     <>
-                                        <button onClick={() => setShowConfirmReplace(true)} className='btn btn-primary' title='Delete and replace all characters'>Delete and Replace All Characters</button>
+                                        <button onClick={() => setShowConfirmReplace(true)} className='btn btn-primary'>{generateAllBtnText}</button>
                                     </>
                                 }
                                 {
                                     showConfirmReplace === true &&
                                     <>
                                         <button className='btn btn-link pr-5' onClick={() => setShowConfirmReplace(false)}>cancel</button>
-                                        <button onClick={generateAllCharacters} className='btn btn-danger'>Confirm replace all characters</button>
+                                        <button onClick={generateAllCharacters} className='btn btn-danger'>Confirm replace all (if any) characters</button>
                                     </>
                                 }
                             </>
                         }
-
-
-
-
                     </div>
 
                 </div>

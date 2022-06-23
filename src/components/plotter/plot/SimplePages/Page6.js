@@ -20,6 +20,12 @@ const Page6 = (
 
     return (
         <>
+            <div className="row">
+                <div className='col-12'>
+                    <p>Expand the previous sequence events into a full paragraph with more detail and emotion.</p>
+                </div>
+            </div>
+
             {
                 <SimpleSequenceList
                     userInfo={userInfo}

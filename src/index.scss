@@ -28,41 +28,91 @@
     //     background-color: rgb(211, 0, 0);
     // }
 
+    .bg-info-to-warning {
+        background: rgb(23,162,184);
+        background: linear-gradient(90deg, rgba(23,162,184,1) 0%, rgba(243,156,18,1) 100%)!important;
+    }
+
+    .bg-warning-to-danger {
+        background: rgb(243,156,18);
+        background: linear-gradient(90deg, rgba(243,156,18,1) 0%, rgba(231,76,60,1) 100%);
+    }
+
+    .bg-danger-to-success {
+        background: rgb(231,76,60);
+        background: linear-gradient(90deg, rgba(231,76,60,1) 0%, rgba(0,188,140,1) 100%);
+    }
+
+    .bg-danger-to-warning {
+        background: rgb(231,76,60);
+        background: linear-gradient(90deg, rgba(231,76,60,1) 0%, rgba(243,156,18,1) 100%);
+    }
+ 
+    .bg-warning-to-success {
+        background: rgb(243,156,18);
+        background: linear-gradient(90deg, rgba(243,156,18,1) 0%, rgba(0,188,140,1) 100%);
+    }
+
+    .bg-success-to-danger {
+        background: rgb(0,188,140);
+        background: linear-gradient(90deg, rgba(0,188,140,1) 0%, rgba(231,76,60,1) 100%);
+    }
     
-
-    .genres_advice {
-
-    }
-
-    .problem_template_advice {
-
-    }
-
-    .dramatic_question_advice {
-
-    }
-
-    .hero_archetype_advice {
-
-    }
 }
 
 @media (prefers-color-scheme: light) {
     // .btn-primary {
     //     background-color: rgb(211, 0, 0);
     // }
+
+    .bg-info-to-warning {
+        background: rgb(13, 202, 240);
+        background: linear-gradient(90deg, rgba(13, 202, 240,0.7) 0%, rgba(255, 193, 7,0.7) 100%)!important;
+    }
+
+    .bg-warning-to-danger {
+        background: rgb(255, 193, 7);
+        background: linear-gradient(90deg, rgba(255, 193, 7,0.7) 0%, rgba(220, 53, 69,0.7) 100%);
+    }
+
+    .bg-danger-to-success {
+        background: rgb(220, 53, 69);
+        background: linear-gradient(90deg, rgba(220, 53, 69,0.7) 0%, rgba(25, 135, 84,0.7) 100%);
+    }
+
+    .bg-danger-to-warning {
+        background: rgb(220, 53, 69);
+        background: linear-gradient(90deg, rgba(220, 53, 69,0.7) 0%, rgba(255, 193, 7,0.7) 100%);
+    }
+ 
+    .bg-warning-to-success {
+        background: rgb(255, 193, 7);
+        background: linear-gradient(90deg, rgba(255, 193, 7,0.7) 0%, rgba(25, 135, 84,0.7) 100%);
+    }
+
+    .bg-success-to-danger {
+        background: rgb(25, 135, 84);
+        background: linear-gradient(90deg, rgba(25, 135, 84,0.7) 0%, rgba(220, 53, 69,0.7) 100%);
+    }
+
+    .dramQProbTemplateTable .bg-danger {
+        background: rgba(220, 53, 69, 0.7)!important;
+    }
+
+    .dramQProbTemplateTable .bg-warning {
+        background: rgba(255, 193, 7, 0.7)!important;
+    }
+
+    .dramQProbTemplateTable .bg-success {
+        background: rgba(25, 135, 84, 0.7)!important;
+    }
 }
 
 
-.logLineSelect:required:invalid {
-    //color: rgb(128, 128, 128);
-}
 option[value=""][disabled] {
     display: none;
 }
-option {
-    //color: rgb(33, 37, 41);
-}
+
 
 .list-to-comma-str figcaption {
     display: inline;
@@ -102,18 +152,6 @@ option {
 
 .text-loading {
     opacity: 0.7;
-}
-
-.user-plot-row:nth-child(even) {
-    //background-color: #f2f2f2;
-}
-
-.user-plot-row:nth-child(odd) {
-    //background-color: #e9e9e9;
-}
-
-.user-plot-row:hover {
-    //box-shadow: inset 0px 0px 0px 1px #ccc;
 }
 
 .btn-block {
@@ -184,4 +222,8 @@ option {
 
 .btn-circle.btn-lg * {
     vertical-align: -7%;
+}
+
+.genres-multi-select {
+    z-index: 999;
 }
