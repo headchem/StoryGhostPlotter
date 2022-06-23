@@ -7,6 +7,7 @@ import { useSearchParams, useNavigate, createSearchParams } from "react-router-d
 import { useUniqueId } from '../../../util/GenerateUniqueId'
 import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
+import DisplaySimple from './DisplaySimple'
 import DisplayAdvanced from './DisplayAdvanced'
 import { getTokenCount } from "../../../util/Tokenizer";
 
@@ -33,7 +34,7 @@ const PlotHome = (
         });
     }
 
-    const [displayMode, setDisplayMode] = useState('advanced') // options are "simple" and "advanced"
+    const [displayMode, setDisplayMode] = useState('simple') // options are "simple" and "advanced"
 
     const [logLineDescription, setLogLineDescription] = useState('')
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
@@ -72,14 +73,14 @@ const PlotHome = (
         setSequences(data['sequences'])
 
         // set default protagonist if array is blank
-        if (!data['characters'] || data['characters'].length === 0) {
-            data['characters'] = [{
-                id: uuid(),
-                name: '',
-                archetype: '',
-                description: ''
-            }]
-        }
+        // if (!data['characters'] || data['characters'].length === 0) {
+        //     data['characters'] = [{
+        //         id: uuid(),
+        //         name: '',
+        //         archetype: '',
+        //         description: ''
+        //     }]
+        // }
 
         setCharacters(data['characters'])
         setIsPublic(data['isPublic'])
@@ -113,8 +114,6 @@ const PlotHome = (
         setPlotLoading(true)
 
         const plotId = searchParams.get("id")
-
-        //console.log('plotId: ' + plotId)
 
         // if plotId is empty, this is most likely due to auth redirect stripping the query vars. In this case, redirect back to the main plot home page
         if (!plotId || plotId === '') {
@@ -202,6 +201,33 @@ const PlotHome = (
         )
     }
 
+    const editCompletion = (completionId, sequences, sequenceName, completionPropName, newCompletionText) => {
+        
+        const getNewCompletions = (sequence) => {
+            const newCompletions = sequence[completionPropName].map(
+                (completion) => completion['id'] === completionId ? { ...completion, completion: newCompletionText } : completion
+            )
+
+            return newCompletions
+        }
+
+        const getNewSequence = (sequence) => {
+            if (completionPropName === 'blurbCompletions') {
+                return { ...sequence, blurbCompletions: getNewCompletions(sequence) }
+            } else if (completionPropName === 'completions') {
+                return { ...sequence, completions: getNewCompletions(sequence) }
+            } else if (completionPropName === 'fullCompletions') {
+                return { ...sequence, fullCompletions: getNewCompletions(sequence) }
+            }
+        }
+
+        const newSequences = sequences.map(
+            (sequence) => sequence.sequenceName === sequenceName ? getNewSequence(sequence) : sequence
+        )
+
+        setSequences(newSequences)
+    }
+
     const updateExpandedSummaryCompletions = (sequenceName, completions) => {
         setSequences(
             sequences.map(
@@ -219,11 +245,11 @@ const PlotHome = (
     }
 
     const updateCharacterName = (id, newCharacterName) => {
-        setCharacters(
-            characters.map(
-                (character) => character.id === id ? { ...character, name: newCharacterName } : character
-            )
+        const updatedCharacters = characters.map(
+            (character) => character.id === id ? { ...character, name: newCharacterName } : character
         )
+
+        setCharacters(updatedCharacters)
     }
 
     const updateCharacterIsHero = (id, isHero) => {
@@ -399,9 +425,6 @@ const PlotHome = (
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
-
-        //console.log('LOG LINE UPDATE')
-
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
@@ -423,7 +446,7 @@ const PlotHome = (
     const updateTotalTokens = async () => {
         if (!sequences || sequences.length === 0) return
         const allText = sequences.map(s => s.text).join(" ") + sequences.map(s => s.context).join(" ") + logLineDescription + characters.map(s => s.description).join(" ")
-        //console.log(allText)
+
         const numTokens = await getTokenCount(allText)
         setTotalTokens(numTokens)
     }
@@ -453,7 +476,6 @@ const PlotHome = (
         })
             .then(response => response.json())
             .then(data => {
-                //console.log(data)
                 setTokensRemaining(data)
             })
             .catch(error => {
@@ -472,15 +494,6 @@ const PlotHome = (
         updateTokensRemaining();
 
         const plotId = searchParams.get("id")
-        //console.log(`auto save logline for plotId: ${plotId}, title: ${title}, genres: ${genres}, problemTemplate: ${problemTemplate}, keywords: ${keywords}, heroArchetype: ${heroArchetype}, primalStakes: ${primalStakes}, enemyArchetype: ${enemyArchetype}, dramaticQuestion: ${dramaticQuestion}`);
-
-        // let AILogLineDescriptionsDict = {};
-
-        // for (var key in AILogLineDescriptions) {
-        //     AILogLineDescriptionsDict[key] = AILogLineDescriptions[key]['completion']
-        // }
-
-        // console.log(AILogLineDescriptionsDict)
 
         fetch('/api/SaveLogLine?id=' + plotId, {
             method: 'POST',
@@ -539,7 +552,6 @@ const PlotHome = (
     }
 
     const onKeywordsChange = (inputValue) => {
-        //console.log(inputValue)
         setKeywords(inputValue.map(el => el.value))
     }
 
@@ -555,14 +567,6 @@ const PlotHome = (
         setLogLineDescription(val)
     }
 
-    // const onAILogLineTitleChange = (val) => {
-    //     setAILogLineTitle(val)
-    // }
-
-    // const onAILogLineDescriptionsChange = (val) => {
-    //     setAILogLineDescriptions(val)
-    // }
-
     const goToViewPlot = () => {
         const plotId = searchParams.get("id")
 
@@ -572,8 +576,8 @@ const PlotHome = (
 
     const heroCharacterCheck = !characters ? [] : characters.filter(c => c.isHero === true)
     const hideBlurbs = (!characters || characters.length === 0 || characters.filter(c => c.name === '').length > 0 || heroCharacterCheck.length === 0 || (heroCharacterCheck.length > 0 && heroCharacter.archetype === ''))
-    const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb') === false
-    const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text') === false
+    const blurbsIncomplete = hideBlurbs || allSequencesHaveValues(sequences, 'Cooldown', 'blurb', 'blurbCompletions') === false
+    const expandedSummariesIncomplete = blurbsIncomplete || allSequencesHaveValues(sequences, 'Cooldown', 'text', 'completions') === false
 
     const handleDisplayModeChange = e => {
         const target = e.target;
@@ -583,6 +587,7 @@ const PlotHome = (
             setDisplayMode('simple');
         }
     };
+
 
     return (
         <>
@@ -598,7 +603,7 @@ const PlotHome = (
             {
                 plotLoading === false && isNotFound === false &&
                 <>
-                    <div className='row d-none'>
+                    <div className='row'>
                         <div className='col-12'>
                             <div className="form-check form-switch">
                                 <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onChange={handleDisplayModeChange} checked={displayMode === 'advanced'} />
@@ -606,13 +611,10 @@ const PlotHome = (
                             </div>
                         </div>
                     </div>
+
                     {
                         displayMode === 'simple' &&
-                        <p>simple mode goes here!</p>
-                    }
-                    {
-                        displayMode === 'advanced' &&
-                        <DisplayAdvanced
+                        <DisplaySimple
                             userInfo={userInfo}
                             plotId={searchParams.get("id")}
                             mode={mode}
@@ -683,6 +685,85 @@ const PlotHome = (
                             isPublic={isPublic}
                             lastSaveSuccess={lastSaveSuccess}
                             totalTokens={totalTokens}
+
+                            editCompletion={editCompletion}
+                        />
+                    }
+                    {
+                        displayMode === 'advanced' &&
+                        <DisplayAdvanced
+                            userInfo={userInfo}
+                            plotId={searchParams.get("id")}
+                            mode={mode}
+                            genreOptions={genreOptions}
+                            genres={genres}
+                            onGenresChange={onGenresChange}
+                            onFocusChange={onFocusChange}
+                            setKeywords={setKeywords}
+                            setLogLineDescription={setLogLineDescription}
+                            setTitle={setTitle}
+                            setProblemTemplate={setProblemTemplate}
+                            setDramaticQuestion={setDramaticQuestion}
+                            keywords={keywords}
+                            onKeywordsChange={onKeywordsChange}
+                            logLineIncomplete={logLineIncomplete}
+                            logLineDescription={logLineDescription}
+                            onLogLineDescriptionChange={onLogLineDescriptionChange}
+                            //logLineDescriptionTokenCount={logLineDescriptionTokenCount}
+                            onTitleChange={onTitleChange}
+                            title={title}
+                            problemTemplate={problemTemplate}
+                            onProblemTemplateChange={onProblemTemplateChange}
+                            problemTemplateOptions={problemTemplateOptions}
+                            dramaticQuestion={dramaticQuestion}
+                            onDramaticQuestionChange={onDramaticQuestionChange}
+                            dramaticQuestionOptions={dramaticQuestionOptions}
+                            updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
+                            AILogLineDescriptions={AILogLineDescriptions}
+                            AITitles={AITitles}
+                            setAITitles={setAITitles}
+                            curFocusElName={curFocusElName}
+                            tokensRemaining={tokensRemaining}
+
+                            hideBlurbs={hideBlurbs}
+                            blurbsIncomplete={blurbsIncomplete}
+                            expandedSummariesIncomplete={expandedSummariesIncomplete}
+
+                            setCharacters={setCharacters}
+
+                            characters={characters}
+                            archetypeOptions={archetypeOptions}
+                            updateCharacterName={updateCharacterName}
+                            updateCharacterIsHero={updateCharacterIsHero}
+                            updateCharacterArchetype={updateCharacterArchetype}
+                            updateCharacterDescription={updateCharacterDescription}
+                            updateAICharacterCompletion={updateAICharacterCompletion}
+                            updateCharacterPersonality={updateCharacterPersonality}
+                            insertCharacter={insertCharacter}
+                            deleteCharacter={deleteCharacter}
+
+                            sequences={sequences}
+                            setLastFocusedSequenceName={setLastFocusedSequenceName}
+                            lastFocusedSequenceName={lastFocusedSequenceName}
+                            updateBlurb={updateBlurb}
+                            updateExpandedSummary={updateExpandedSummary}
+                            updateFull={updateFull}
+                            insertSequence={insertSequence}
+                            deleteSequence={deleteSequence}
+                            heroCharacterArchetype={heroCharacterArchetype}
+                            updateBlurbCompletions={updateBlurbCompletions}
+                            updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
+                            updateFullCompletions={updateFullCompletions}
+                            setSequences={setSequences}
+
+                            goToViewPlot={goToViewPlot}
+                            isPublicCheckboxId={isPublicCheckboxId}
+                            onIsPublicChange={onIsPublicChange}
+                            isPublic={isPublic}
+                            lastSaveSuccess={lastSaveSuccess}
+                            totalTokens={totalTokens}
+
+                            editCompletion={editCompletion}
                         />
                     }
 

@@ -41,7 +41,7 @@ public class OpenAICompletionService : ICompletionService
         _plotService = plotService;
     }
 
-    private async Task<CompletionResponse> getResponse(string userId, string plotId, string engineURL, OpenAICompletionsRequest openAIRequest)
+    private async Task<List<CompletionResponse>> getResponse(string userId, string plotId, string engineURL, OpenAICompletionsRequest openAIRequest)
     {
         if (string.IsNullOrWhiteSpace(plotId))
         {
@@ -64,32 +64,42 @@ public class OpenAICompletionService : ICompletionService
         var apiResponse = await response.Content.ReadAsStringAsync();
         var resultDeserialized = JsonSerializer.Deserialize<OpenAICompletionsResponse>(apiResponse);
 
-        var completionObj = resultDeserialized.Choices.FirstOrDefault();
-        var completion = completionObj == null ? "" : completionObj.Text.Trim();
+        var completionObjs = resultDeserialized.Choices;
 
-        var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
-        var completionIsToxic = await _analysisService.IsToxic(userId, completion);
+        var results = new List<CompletionResponse>();
 
         var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
-        var completionTokenCount = (await _encodingService.Encode(completion)).Count;
 
-        var totalTokens = promptTokenCount + completionTokenCount;
-
-        await _plotService.LogTokenUsage(userId, plotId, totalTokens);
-
-        await _userService.DeductTokens(userId, totalTokens);
-
-        var result = new CompletionResponse
+        foreach (var completion in completionObjs)
         {
-            Prompt = openAIRequest.Prompt,
-            PromptIsToxic = promptIsToxic,
-            PromptTokenCount = promptTokenCount,
-            Completion = completion,
-            CompletionIsToxic = completionIsToxic,
-            CompletionTokenCount = completionTokenCount
-        };
+            var completionText = completion == null ? "" : completion.Text.Trim();
 
-        return result;
+            var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
+            var completionIsToxic = await _analysisService.IsToxic(userId, completionText);
+
+            var completionTokenCount = (await _encodingService.Encode(completionText)).Count;
+
+            var totalTokens = promptTokenCount + completionTokenCount;
+
+            await _plotService.LogTokenUsage(userId, plotId, totalTokens);
+
+            await _userService.DeductTokens(userId, totalTokens);
+
+            var result = new CompletionResponse
+            {
+                Id = Guid.NewGuid().ToString(),
+                Prompt = openAIRequest.Prompt,
+                PromptIsToxic = promptIsToxic,
+                PromptTokenCount = promptTokenCount,
+                Completion = completionText,
+                CompletionIsToxic = completionIsToxic,
+                CompletionTokenCount = completionTokenCount
+            };
+
+            results.Add(result);
+        }
+
+        return results;
     }
 
     private void addTokenVariationsIfFound(Dictionary<string, int> logitBias, string keyword, int keywordsLogitBias)
@@ -223,6 +233,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "curie:ft-personal-2022-06-07-05-37-00",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -238,7 +249,8 @@ public class OpenAICompletionService : ICompletionService
             }
         }
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var result = results[0];
 
         return result;
     }
@@ -276,7 +288,7 @@ public class OpenAICompletionService : ICompletionService
     //     return result;
     // }
 
-    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -289,6 +301,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-06-02-07-30-49",
             MaxTokens = maxTokens,
             Temperature = temperature,
+            NumCompletions = numCompletions,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -296,8 +309,18 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
 
+        foreach (var result in results)
+        {
+            cleanCompletion(result);
+        }
+
+        return results;
+    }
+
+    private void cleanCompletion(CompletionResponse result)
+    {
         var allSequences = Factory.GetSequences();
 
         // remove all of the sequence name prefixes
@@ -312,11 +335,9 @@ public class OpenAICompletionService : ICompletionService
                 result.Completion = result.Completion.Trim();
             }
         }
-
-        return result;
     }
 
-    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
     {
         await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
 
@@ -329,6 +350,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-06-02-18-31-37",
             MaxTokens = maxTokens,
             Temperature = temperature,
+            NumCompletions = numCompletions,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -336,39 +358,26 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
 
-        // if (result.CompletionIsToxic) {
-        //     result.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
-        // }
-
-        var allSequences = Factory.GetSequences();
-
-        // remove all of the sequence name prefixes
-        foreach (var seq in allSequences)
+        foreach (var result in results)
         {
-            var replaceStr = (seq.Name + ":").ToUpper();
-            result.Completion = result.Completion.Trim();
-
-            if (result.Completion.StartsWith(replaceStr))
-            {
-                result.Completion = result.Completion.Replace(replaceStr, "");
-                result.Completion = result.Completion.Trim();
-            }
+            cleanCompletion(result);
         }
 
-        return result;
+        return results;
     }
 
-    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck)
     {
@@ -390,6 +399,7 @@ public class OpenAICompletionService : ICompletionService
             Model = "davinci:ft-personal-2022-04-05-06-09-25",
             MaxTokens = 150, // longest character description completion was 88 tokens,
             Temperature = temperature,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
             PresencePenalty = 0.2, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
@@ -397,12 +407,8 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var result = await getResponse(userId, plotId, "completions", openAIRequest);
-
-        // if (result.CompletionIsToxic)
-        // {
-        //     result.Completion = "The AI returned a toxic result. This means that the text contains profane language, prejudiced or hateful language, sexual content, or text that portrays certain groups/people in a harmful manner. Please adjust any existing text to guide the AI away from these topics.";
-        // }
+        var results = await getResponse(userId, plotId, "completions", openAIRequest);
+        var result = results[0];
 
         return result;
     }
@@ -420,6 +426,7 @@ public class OpenAICompletionService : ICompletionService
             Prompt = prompt,
             MaxTokens = 50, // average movie title is max of 16 tokens but typically must less
             Temperature = 1.0,
+            NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
             Stop = "",
             PresencePenalty = 0.9, // helped avoid same-y titles from being generated. We also don't expect much punctuation in Titles, so no concerns with suppressing common characters
@@ -427,11 +434,8 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var openAIResult = await getResponse(userId, plotId, "engines/text-curie-001/completions", openAIRequest);
-
-        // if (openAIResult.CompletionIsToxic) {
-        //     openAIResult.Completion = "The AI returned toxic results.";
-        // }
+        var openAIResults = await getResponse(userId, plotId, "engines/text-curie-001/completions", openAIRequest);
+        var openAIResult = openAIResults[0];
 
         var titleResults = removeListNumbers(openAIResult.Completion);
 
@@ -470,145 +474,6 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot plot, string upToTargetSequenceExclusive)
-    {
-        await ensureSufficientTokensAndOwnership(userId, plot.Id, false);
-
-        var sequenceList = getRandomSequenceList(upToTargetSequenceExclusive);
-
-        var results = new List<UserSequence>();
-
-        var totalTokenCount = 0;
-
-        foreach (var targetSequence in sequenceList)
-        {
-            var sequenceResponse = await GetExpandedSummaryCompletion(userId, targetSequence, 256, 0.8, plot, true);
-            totalTokenCount += sequenceResponse.PromptTokenCount + sequenceResponse.CompletionTokenCount;
-
-            var sequence = new UserSequence
-            {
-                SequenceName = targetSequence,
-                Text = sequenceResponse.Completion,
-                Completions = new List<CompletionResponse> { sequenceResponse }
-            };
-
-            results.Add(sequence);
-            plot.Sequences = results; // we need to update the story sequences after each loop so that it has the previous events to include in the next sequence's prompt
-        }
-
-        return (results, totalTokenCount);
-    }
-
-    // returns a list of target sequence names in a random plausible order. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
-    private List<string> getRandomSequenceList(string upToTargetSequenceExclusive)
-    {
-        // all sequences end with this order
-        var ending = new List<string>{
-            "Fun And Games",
-            "Midpoint",
-            "Bad Guys Close In",
-            "All Hope Is Lost",
-            "Dark Night Of The Soul",
-            "Break Into Three",
-            "Climax",
-            "Cooldown"
-        };
-
-        var variations = new List<List<string>>{
-            // Aladdin
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "Catalyst",
-                "B Story",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Whiplash
-            new List<string>{
-                "Opening Image",
-                "Theme Stated",
-                "Setup",
-                "Catalyst",
-                "Debate",
-                "Break Into Two",
-                "B Story"
-            },
-
-            // Star Wars
-            new List<string>{
-                "Opening Image",
-                "Theme Stated",
-                "Setup",
-                "Catalyst",
-                "B Story",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Iron Man
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "B Story",
-                "Catalyst",
-                "Debate",
-                "Break Into Two"
-            },
-
-            // Elf
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Theme Stated",
-                "Catalyst",
-                "Debate",
-                "Break Into Two",
-                "B Story",
-            },
-
-            // Soul
-            new List<string>{
-                "Opening Image",
-                "Setup",
-                "Catalyst",
-                "Debate",
-                "Theme Stated",
-                "Break Into Two",
-                "B Story",
-            }
-        };
-
-        variations = variations.OrderBy(x => Guid.NewGuid()).ToList();
-
-        var randomList = variations.First();
-
-        randomList = randomList.Concat(ending).ToList();
-
-        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
-
-        return randomList;
-    }
-
-    private List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive)
-    {
-        // "All" is a special signal to return all sequences including Cooldown
-        if (upToTargetSequenceExclusive == "All") return sequences;
-
-        var results = new List<string>();
-
-        foreach (var sequence in sequences)
-        {
-            if (sequence == upToTargetSequenceExclusive) return results;
-
-            results.Add(sequence);
-        }
-
-        return results;
-    }
 
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
     {
@@ -644,54 +509,117 @@ public class OpenAICompletionService : ICompletionService
         }, totalTokens);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription, bool useTokens)
     {
-        await ensureSufficientTokensAndOwnership(userId, plotId, false);
+        await ensureOwnership(userId, plotId);
+
+        // if no Hero is set yet, then this next character will be the Hero
+        var isHero = curCharacter != null ? curCharacter.IsHero : false;
+
+        if (existingCharacters.Where(c => c.IsHero).FirstOrDefault() == null)
+        {
+            isHero = true;
+        }
+
+        // find first names in log line desc, then identify which first names don't yet exist in existing characters
+        var namesInLogLineDesc = await getCharacterNamesInLogLineDescription(userId, plotId, LogLineDescription); // this makes a call to GPT-3 Ada, but we'll allow non-customers to use it because it's cheap
+        var firstNamesInLogLineDesc = namesInLogLineDesc.Select(n => n.Split(' ')[0]).ToList();
+        var existingFirstNames = existingCharacters.Select(character => character.Name.Split(' ')[0]).ToList();
+        var missingLogLineFirstNames = firstNamesInLogLineDesc.Where(n => existingFirstNames.Contains(n) == false).ToList();
+
+        var name = "";
+
+        if (missingLogLineFirstNames.Count > 0)
+        {
+            name = missingLogLineFirstNames.First();
+        }
+        else
+        {
+            name = getRandomCharacterName(existingFirstNames);
+        }
+
+        var archetype = getRandomArchetype(existingCharacters);
+        var personality = getRandomPersonality(archetype);
+
+        var character = new Character
+        {
+            Id = curCharacter != null ? curCharacter.Id : Guid.NewGuid().ToString(),
+            Name = name,
+            Archetype = archetype,
+            Personality = personality,
+            Description = "",
+            IsHero = isHero
+        };
+
+        var characterResponse = new CompletionResponse();
+
+        characterResponse.Id = Guid.NewGuid().ToString();
+
+        if (useTokens)  // if not using tokens or customer has no tokens remaining, return empty string for description
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+
+            if (tokensRemaining > 0)
+            {
+                // Generate Description for each Character based on Name, Archetype, Personality
+                characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
+                character.Description = characterResponse.Completion;
+            }
+        }
+
+        return (character, characterResponse);
+    }
+
+    ///<summary>Returns a random first name not already used in existingCharacters.</summary>
+    private string getRandomCharacterName(List<string> existingFirstNames)
+    {
+        var remainingNames = CharacterNames.FirstNames.Where(name => existingFirstNames.Contains(name) == false).ToList();
+
+        var characterName = remainingNames.OrderBy(x => Guid.NewGuid()).ToList()[0];
+
+        return characterName;
+    }
+
+    private string getRandomArchetype(List<Character> existingCharacters)
+    {
+        var existingCharacterArchetypes = existingCharacters.Select(character => character.Archetype).ToList();
+        var remainingArchetypes = Factory.GetArchetypes().Where(archetype => existingCharacterArchetypes.Contains(archetype.Id) == false).ToList();
+
+        if (remainingArchetypes.Count == 0)
+        {
+            return Factory.GetArchetypes().OrderBy(x => Guid.NewGuid()).ToList().First().Id;
+        }
+
+        var remainingArchetypeNames = remainingArchetypes.Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+
+        return remainingArchetypeNames.First();
+    }
+
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, bool useTokens)
+    {
+        var bypassTokenCheck = useTokens ? false : true;
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
 
         var rand = new Random();
 
         var characters = new List<Character>();
-        var numCharacters = (int)rand.NextInt64(2, 5);
-
-        var names = await getCharacterNames(userId, plotId, LogLineDescription, numCharacters);
-
-        var remainingArchetypes = Factory.GetArchetypes().Select(a => a.Id).OrderBy(x => Guid.NewGuid()).ToList();
+        var numCharacters = 3;//(int)rand.NextInt64(2, 5); // 2,5=2min, 4max
 
         var totalTokenCount = 0;
 
-        foreach (var name in names)
+        for (var i = 0; i < numCharacters; i++)
         {
-            // foreach Character, choose a random Archetype which removes it from being an option for subsequent characters
-            var archetype = remainingArchetypes[0];
-            remainingArchetypes.Remove(archetype);
+            var (newCharacter, completionResponse) = await GenerateCharacter(userId, plotId, null, characters, LogLineDescription, useTokens);
+            totalTokenCount += completionResponse.PromptTokenCount + completionResponse.CompletionTokenCount;
 
-            // Randomize Personality based on preferences of the Archetype - find old code that did this - any way to avoid personalities that are too similar to existing characters? Try without for now, maybe the archetype-without-replacement thing will help avoid naturally
-            var personality = getRandomPersonality(archetype);
-
-            var character = new Character
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = name,
-                Archetype = archetype,
-                Personality = personality,
-                Description = "",
-                IsHero = names.First() == name
-            };
-
-            // Generate Description for each Character based on Name, Archetype, Personality
-            var characterResponse = await getFinetunedCharacterCompletion(userId, plotId, 0.95, character);
-            totalTokenCount += characterResponse.PromptTokenCount + characterResponse.CompletionTokenCount;
-
-            character.Description = characterResponse.Completion;
-
-            characters.Add(character);
+            characters.Add(newCharacter);
         }
 
         return (characters, totalTokenCount);
     }
 
     ///<summary>extract any names from LogLineDesc and use these names first, fallback to randomly selected names from a list if more characters are needed to fill a randomized 2-4 spots. The first name returned will always be the protagonist.</summary>
-    private async Task<List<string>> getCharacterNames(string userId, string plotId, string LogLineDescription, int numCharacters)
+    private async Task<List<string>> getCharacterNamesInLogLineDescription(string userId, string plotId, string LogLineDescription)
     {
         // Ask GPT-3 to decide who the Hero is according to the LogLineDesc, and make them the first Character in list
 
@@ -705,6 +633,7 @@ public class OpenAICompletionService : ICompletionService
             MaxTokens = 48,
             Temperature = 0.0, // low temp seems to work well for NER
             TopP = 1.0, // some names may be super weird, so we allow all token combinations
+            NumCompletions = 1,
             Stop = "6.", // if it gets this far, we want to stop and only consider the first 5 it finds
             PresencePenalty = 1.0, // high penalty to avoid repetition of already found names. Since we don't expect repeated punctuation due to the increasing numbers in the list, I think this higher penalty is ok
             FrequencyPenalty = 1.0,
@@ -712,7 +641,8 @@ public class OpenAICompletionService : ICompletionService
         };
 
         // smallest Ada model was usually accurate enough. NOTE: names like "Tinker Bell" or "Spiderman" will not appear in the list of 7000 most popular names, so they will be filtered out.
-        var result = await getResponse(userId, plotId, "engines/text-ada-001/completions", openAIRequest);
+        var completionResults = await getResponse(userId, plotId, "engines/text-ada-001/completions", openAIRequest);
+        var result = completionResults[0];
 
         var results = removeListNumbers(result.Completion);
 
@@ -732,20 +662,41 @@ public class OpenAICompletionService : ICompletionService
 
         results = results.Where(name => stopwords.Any(stopword => name.ToLower().StartsWith(stopword.ToLower()) == false)).ToList(); // filter out any that start with known stopwords, ex: "The townspeople"
 
-        // filter results by requiring that the first name appear in the list of known first names (~7000 most popular)
-        results = results.Where(name => CharacterNames.FirstNames.Contains(name.Split(' ')[0])).ToList();
+        var knownNames = new List<string>();
 
-        Random rand = new Random();
-
-        while (results.Count() < numCharacters)
+        // given a name like "Captain Jack Sparrow" we want to iterate through the name parts until we find "Jack"
+        foreach (var name in results)
         {
-            // randomly select more names until we've hit numCharacters
-            var newCharName = CharacterNames.FirstNames.ElementAt(rand.Next(CharacterNames.FirstNames.Count));
+            var parts = name.Split(' ').ToList();
 
-            results.Add(newCharName);
+            var foundPart = false;
+            var curPartIdx = 0;
+
+            while (foundPart == false && curPartIdx < parts.Count)
+            {
+                var curNamePart = parts[curPartIdx].Trim();
+                if (CharacterNames.FirstNames.Contains(curNamePart))
+                {
+                    knownNames.Add(curNamePart);
+                    foundPart = true;
+                }
+                curPartIdx += 1;
+            }
         }
 
-        return results;
+        var namesInLogLineText = new List<string>();
+        var logLineDescLower = LogLineDescription.ToLower();
+
+        // when the log line contains no names, it hallucinates common names. So, we want to remove any names that don't appear in the log line description text
+        foreach (var name in knownNames)
+        {
+            if (logLineDescLower.Contains(name.ToLower().Trim()))
+            {
+                namesInLogLineText.Add(name);
+            }
+        }
+
+        return namesInLogLineText;
     }
 
     private Personality getRandomPersonality(string archetype)
@@ -797,8 +748,7 @@ public class OpenAICompletionService : ICompletionService
 
     private async Task ensureSufficientTokensAndOwnership(string userId, string plotId, bool bypassTokenCheck)
     {
-        if (string.IsNullOrWhiteSpace(userId)) throw new Exception("UserId must not be empty");
-        if (string.IsNullOrWhiteSpace(plotId)) throw new Exception("PlotId must not be empty");
+        await ensureOwnership(userId, plotId);
 
         using (_logger.BeginScope(new Dictionary<string, object>
         {
@@ -806,13 +756,6 @@ public class OpenAICompletionService : ICompletionService
             ["PlotId"] = plotId
         }))
         {
-            // ensure that plotId is owned by userId
-            var plot = await _plotService.GetPlot(userId, plotId);
-            if (plot.UserId != userId)
-            {
-                throw new Exception($"UserId {userId} does not own PlotId {plotId}");
-            }
-
             var tokensRemaining = await _userService.GetTokensRemaining(userId);
 
             if (tokensRemaining <= -1 * 2048 * 16)
@@ -828,6 +771,26 @@ public class OpenAICompletionService : ICompletionService
                 {
                     throw new Exception("User is out of tokens, unable to generate completion");
                 }
+            }
+        }
+    }
+
+    private async Task ensureOwnership(string userId, string plotId)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new Exception("UserId must not be empty");
+        if (string.IsNullOrWhiteSpace(plotId)) throw new Exception("PlotId must not be empty");
+
+        using (_logger.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["PlotId"] = plotId
+        }))
+        {
+            // ensure that plotId is owned by userId
+            var plot = await _plotService.GetPlot(userId, plotId);
+            if (plot.UserId != userId)
+            {
+                throw new Exception($"UserId {userId} does not own PlotId {plotId}");
             }
         }
     }

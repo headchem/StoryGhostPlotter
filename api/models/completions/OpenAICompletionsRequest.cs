@@ -14,6 +14,9 @@ public class OpenAICompletionsRequest
 
     [JsonPropertyName("max_tokens")]
     public int MaxTokens { get; set; }
+    
+    [JsonPropertyName("n")]
+    public int NumCompletions { get; set; }
 
     [JsonPropertyName("temperature")]
     public double Temperature { get; set; }

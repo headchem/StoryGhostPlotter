@@ -26,7 +26,7 @@ const DisplayAdvanced = (
         logLineIncomplete,
         logLineDescription,
         onLogLineDescriptionChange,
-        logLineDescriptionTokenCount,
+        //logLineDescriptionTokenCount,
         onTitleChange,
         title,
         problemTemplate,
@@ -106,7 +106,7 @@ const DisplayAdvanced = (
                     onKeywordsChange={onKeywordsChange}
                     logLineDescription={logLineDescription}
                     onLogLineDescriptionChange={onLogLineDescriptionChange}
-                    logLineDescriptionTokenCount={logLineDescriptionTokenCount}
+                    //logLineDescriptionTokenCount={logLineDescriptionTokenCount}
 
                     onTitleChange={onTitleChange}
                     title={title}
@@ -145,8 +145,8 @@ const DisplayAdvanced = (
                                 userInfo={userInfo}
                                 plotId={plotId}
                                 logLineDescription={logLineDescription}
-                                problemTemplate={problemTemplate}
-                                dramaticQuestion={dramaticQuestion}
+                                // problemTemplate={problemTemplate}
+                                // dramaticQuestion={dramaticQuestion}
                                 setCharacters={setCharacters}
                                 tokensRemaining={tokensRemaining}
                             />
@@ -207,6 +207,7 @@ const DisplayAdvanced = (
                                         setSequences={setSequences}
 
                                         tokensRemaining={tokensRemaining}
+                                        AILogLineDescriptions={AILogLineDescriptions}
                                     />
                                 }
                             </>

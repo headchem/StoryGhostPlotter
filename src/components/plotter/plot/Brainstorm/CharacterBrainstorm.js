@@ -53,9 +53,23 @@ const CharacterBrainstorm = (
         });
     }
 
-    const onSelectBrainstorm = (idxToSelect) => {
+    const onCopyBrainstorm = (idxToSelect) => {
         const selectedCompletion = character['aiCompletions'][idxToSelect]['completion']
         updateCharacterDescription(character.id, selectedCompletion)
+    }
+
+    const onSelectBrainstormChange = (idxToSelect, isSelected) => {
+        // first set all completions isSelected to false
+        const newCompletions = character['aiCompletions'].map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxToSelect ? { ...completion, isSelected: isSelected } : completion
+        )
+
+        updateAICharacterCompletion(character.id, newCompletionsWithSelected)
     }
 
     const onDeleteBrainstorm = (idxToDelete) => {
@@ -64,18 +78,25 @@ const CharacterBrainstorm = (
     }
 
     return (
-        <AICompletions
-            userInfo={userInfo}
-            isLoading={isCompletionLoading}
-            onGenerateCompletion={fetchCompletion}
-            completions={character['aiCompletions']}
-            onSelectBrainstorm={onSelectBrainstorm}
-            onDeleteBrainstorm={onDeleteBrainstorm}
-            temperature={temperature}
-            setTemperature={setTemperature}
-            showTemperature={true}
-            tokensRemaining={tokensRemaining}
-        />
+        <>
+            {
+                //userInfo && userInfo.userRoles.includes('customer') &&
+                <AICompletions
+                    userInfo={userInfo}
+                    isLoading={isCompletionLoading}
+                    onGenerateCompletion={fetchCompletion}
+                    completions={character['aiCompletions']}
+                    onCopyBrainstorm={onCopyBrainstorm}
+                    onSelectBrainstormChange={onSelectBrainstormChange}
+                    showSelectBrainstorm={false}
+                    onDeleteBrainstorm={onDeleteBrainstorm}
+                    temperature={temperature}
+                    setTemperature={setTemperature}
+                    showTemperature={true}
+                    tokensRemaining={tokensRemaining}
+                />
+            }
+        </>
     )
 }
 

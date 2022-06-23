@@ -266,36 +266,8 @@ public static class Factory
         var dramaticQuestion = Factory.GetDramaticQuestion(plot.DramaticQuestion);
         var genres = Factory.GetGenres(plot.Genres);
 
-        var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
-        var charactersMentioned = getCharactersMentioned(curSequence.Blurb, plot.Characters);
-
-        var heroCharacter = charactersMentioned.Where(c => c.IsHero == true).FirstOrDefault();
-        var heroCharacterContribution = "";
-        var heroPersonalityDescription = "";
-        var heroShadowSide = "";
-
-        if (heroCharacter != null)
-        {
-            var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
-            heroShadowSide = "The protagonist has character flaws: " + heroArchetype.ShadowSide;
-            heroPersonalityDescription = PersonalityDescription.GetCharacterPrompt(heroCharacter);
-            heroCharacterContribution = heroPersonalityDescription + $". {heroCharacter.Name} is the protagonist of the story.";
-            //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
-            heroCharacterContribution += $" {heroCharacter.Description}";
-        }
-
-        var nonHeroCharacters = charactersMentioned.Where(c => c.IsHero == false).ToList();
-        var nonHeroCharacterContributions = "";
-
-        foreach (var character in nonHeroCharacters)
-        {
-            var archetype = Factory.GetArchetype(character.Archetype);
-            nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $". {character.Name} is a supporting character in this story.";
-            //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
-            nonHeroCharacterContributions += $" {character.Description}";
-        }
-
-        nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
+        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
+        var nonHeroCharacters = plot.Characters.Where(c => c.IsHero == false).ToList();
 
         var dramaticQuestionLogLineContribution = dramaticQuestion.GetLogLineContribution(plot.Seed, problemTemplate);
         var keywordsContribution = GetKeywordsSentence("The story involves the following key concepts:", plot.Keywords);
@@ -316,25 +288,89 @@ public static class Factory
 
         var prompt = sequenceType switch
         {
-            "blurb" => constructBlurbPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
-            "expanded summary" => constructExpandedSummaryPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
-            "full" => constructFullPrompt(targetSequence, plot, adviceWrapper, heroCharacterContribution, heroShadowSide, nonHeroCharacterContributions),
+            "blurb" => constructBlurbPrompt(targetSequence, plot, adviceWrapper),
+            "expanded summary" => constructExpandedSummaryPrompt(targetSequence, plot, adviceWrapper),
+            "full" => constructFullPrompt(targetSequence, plot, adviceWrapper),
             _ => throw new Exception($"Unknown sequenceType: {sequenceType}")
         };
 
         return prompt;
     }
 
-    private static string constructBlurbPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    private static string getHeroShadowSide(Character heroCharacter)
+    {
+        var heroShadowSide = "";
+
+        if (heroCharacter != null)
+        {
+            var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
+            heroShadowSide = "The protagonist has character flaws: " + heroArchetype.ShadowSide;
+        }
+
+        return heroShadowSide;
+    }
+
+    private static string getHeroContribution(Character heroCharacter)
+    {
+        if (heroCharacter != null)
+        {
+            var heroArchetype = Factory.GetArchetype(heroCharacter.Archetype);
+            var heroShadowSide = "The protagonist has character flaws: " + heroArchetype.ShadowSide;
+            var heroPersonalityDescription = PersonalityDescription.GetCharacterPrompt(heroCharacter);
+            var heroCharacterContribution = heroPersonalityDescription + $". {heroCharacter.Name} is the protagonist of the story.";
+            //heroCharacterContribution += $" Their archetype can be described as: {heroArchetype.Description}";
+
+            var heroSelectedBrainstorm = heroCharacter.AICompletions == null ? null : heroCharacter.AICompletions.Where(c => c.IsSelected).FirstOrDefault();
+            var heroDescription = heroSelectedBrainstorm == null ? heroCharacter.Description : heroSelectedBrainstorm.Completion;
+
+            heroCharacterContribution += $" {heroDescription}";
+
+            return heroCharacterContribution;
+        }
+        return "";
+    }
+
+    private static string getNonHeroContribution(List<Character> nonHeroCharacters)
+    {
+        var nonHeroCharacterContributions = "";
+
+        if (nonHeroCharacters == null || nonHeroCharacters.Count == 0) return "";
+
+        foreach (var character in nonHeroCharacters)
+        {
+            var archetype = Factory.GetArchetype(character.Archetype);
+            nonHeroCharacterContributions += " " + PersonalityDescription.GetCharacterPrompt(character) + $". {character.Name} is a supporting character in this story.";
+            //nonHeroCharacterContributions += " Their archetype can be described as: {archetype.Description}";
+
+            var nonHeroSelectedBrainstorm = character.AICompletions == null ? null : character.AICompletions.Where(c => c.IsSelected).FirstOrDefault();
+            var nonHeroDescription = nonHeroSelectedBrainstorm == null ? character.Description : nonHeroSelectedBrainstorm.Completion;
+            nonHeroCharacterContributions += $" {nonHeroDescription}";
+        }
+
+        nonHeroCharacterContributions = nonHeroCharacterContributions.Trim();
+
+        return nonHeroCharacterContributions;
+    }
+
+    private static string constructBlurbPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper)
     {
         // TODO: probably better to put the "STORY SO FAR" at the end of the prompt, to prime the model for continuation and reduce the risk of it repeating previous events. It's less likely to repeat previous phrases if they have occurred more recently.
 
         var prevBlurbText = CreateFinetuningDataset.GetSequenceTextUpTo(targetSequence, plot, "blurb").Trim();
 
-        var plotTeaser = $"Plot teaser: {plot.LogLineDescription}";
+        var selectedLogLineDescription = plot.AILogLineDescriptions == null ? null : plot.AILogLineDescriptions.Where(c => c.IsSelected).FirstOrDefault();
+        var logLineDescription = selectedLogLineDescription == null ? plot.LogLineDescription : selectedLogLineDescription.Completion;
+
+        var plotTeaser = $"Plot teaser: {logLineDescription}";
 
         // TODO: check if only 1 genre, and output singular version of sentence instead (use expanded summaries prompt as example that already does this)
         var genresText = $"The genres of this story are: {string.Join(", ", plot.Genres)}.";
+
+        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
+        var heroShadowSide = getHeroShadowSide(heroCharacter);
+
+        var heroCharacterContribution = getHeroContribution(heroCharacter);
+        var nonHeroCharacterContributions = getNonHeroContribution(plot.Characters.Where(c => c.IsHero == false).ToList()); // include all non-hero characters (expanded summaries only includes non-hero characters who were mentioned in the blurb)
 
         var prompt = targetSequence switch
         {
@@ -370,7 +406,49 @@ public static class Factory
         return prompt;
     }
 
-    private static string constructExpandedSummaryPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    private static string getSequenceBlurbText(Plot plot, string targetSequenceName)
+    {
+        var seq = plot.Sequences.Where(s => s.SequenceName.ToLower() == targetSequenceName.ToLower()).FirstOrDefault();
+
+        if (seq == null) return "";
+
+        if (seq.BlurbCompletions != null)
+        {
+            var selected = seq.BlurbCompletions.Where(s => s.IsSelected).ToList();
+
+            if (selected != null && selected.Count > 0)
+            {
+                return selected.First().Completion.Trim();
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(seq.Blurb)) return "";
+
+        return seq.Blurb.Trim();
+    }
+
+    private static string getSequenceExpandedSummaryText(Plot plot, string targetSequenceName)
+    {
+        var seq = plot.Sequences.Where(s => s.SequenceName.ToLower() == targetSequenceName.ToLower()).FirstOrDefault();
+
+        if (seq == null) return "";
+
+        if (seq.Completions != null)
+        {
+            var selected = seq.Completions.Where(s => s.IsSelected).ToList();
+
+            if (selected != null && selected.Count > 0)
+            {
+                return selected.First().Completion.Trim();
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(seq.Text)) return "";
+
+        return seq.Text.Trim();
+    }
+
+    private static string constructExpandedSummaryPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper)
     {
         // prompt design:
         //      log line
@@ -402,23 +480,16 @@ public static class Factory
         var prevExpandedSummary = "";
         if (prevSequence != null)
         {
-            prevExpandedSummary = $"{prevSequence.SequenceName.ToUpper()}: {prevSequence.Text}";
+            prevExpandedSummary = $"{prevSequence.SequenceName.ToUpper()}: {getSequenceExpandedSummaryText(plot, prevSequence.SequenceName)}";
         }
 
-        var setupSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "setup").FirstOrDefault();
-        var setupSeqExpandedSummary = setupSeq == null ? "" : setupSeq.Text.Trim();
-        var themeSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "theme stated").FirstOrDefault();
-        var themeSeqExpandedSummary = themeSeq == null ? "" : themeSeq.Text.Trim();
-        var debateSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "debate").FirstOrDefault();
-        var debateSeqExpandedSummary = debateSeq == null ? "" : debateSeq.Text.Trim();
-        var funAndGamesSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "fun and games").FirstOrDefault();
-        var funAndGamesSeqExpandedSummary = funAndGamesSeq == null ? "" : funAndGamesSeq.Text.Trim();
-        var midpointSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "midpoint").FirstOrDefault();
-        var midpointSeqExpandedSummary = midpointSeq == null ? "" : midpointSeq.Text.Trim();
-        var badGuysCloseInSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "bad guys close in").FirstOrDefault();
-        var badGuysCloseInSeqExpandedSummary = badGuysCloseInSeq == null ? "" : badGuysCloseInSeq.Text.Trim();
-        var allHopeIsLostSeq = plot.Sequences.Where(s => s.SequenceName.ToLower() == "all hope is lost").FirstOrDefault();
-        var allHopeIsLostSeqExpandedSummary = allHopeIsLostSeq == null ? "" : allHopeIsLostSeq.Text.Trim();
+        var setupSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "setup");
+        var themeSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "theme stated");
+        var debateSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "debate");
+        var funAndGamesSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "fun and games");
+        var midpointSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "midpoint");
+        var badGuysCloseInSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "bad guys close in");
+        var allHopeIsLostSeqExpandedSummary = getSequenceExpandedSummaryText(plot, "all hope is lost");
 
         var prevKeyExpandedSummaries = targetSequence switch
         {
@@ -431,6 +502,18 @@ public static class Factory
         };
 
         prevKeyExpandedSummaries = $"DETAILED SUMMARIES OF KEY MOMENTS: {prevKeyExpandedSummaries} {prevExpandedSummary}";
+
+        var heroCharacter = plot.Characters.Where(c => c.IsHero == true).FirstOrDefault();
+        var heroShadowSide = getHeroShadowSide(heroCharacter);
+        var heroCharacterContribution = getHeroContribution(heroCharacter);
+
+        var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
+        var selectedBlurbCompletion = curSequence.BlurbCompletions == null ? null : curSequence.BlurbCompletions.Where(c => c.IsSelected).FirstOrDefault();
+        var curSequenceBlurbText = selectedBlurbCompletion != null ? selectedBlurbCompletion.Completion : curSequence.Blurb;
+
+        // if a character wasn't mentioned in the blurb for this expanded summary, skip including their description in the prompt
+        var charactersMentioned = getCharactersMentioned(curSequenceBlurbText, plot.Characters);
+        var nonHeroCharacterContributions = getNonHeroContribution(charactersMentioned.Where(c => c.IsHero == false).ToList());
 
         var prompt = targetSequence switch
         {
@@ -465,8 +548,7 @@ public static class Factory
             prompt += $"\n\nAs an award-winning literary author, creatively expand upon the events of the {targetSequence.ToUpper()} moment per the given advice while remaining logically consistent with all previous events.";
         }
 
-        var curSequence = plot.Sequences.Where(s => s.SequenceName == targetSequence).First();
-        prompt += $" The short logical description of the {targetSequence.ToUpper()} moment is: {curSequence.Blurb}";
+        prompt += $" The short logical description of the {targetSequence.ToUpper()} moment is: {getSequenceBlurbText(plot, curSequence.SequenceName)}";
 
         return prompt;
     }
@@ -483,7 +565,7 @@ public static class Factory
         return null;
     }
 
-    private static string constructFullPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper, string heroCharacterContribution, string heroShadowSide, string nonHeroCharacterContributions)
+    private static string constructFullPrompt(string targetSequence, Plot plot, AdviceComponentsWrapper adviceWrapper)
     {
         return "TODO!";
     }
@@ -587,6 +669,117 @@ public static class Factory
         adviceObj.Events.ProblemTemplate = adviceObj.Events.ProblemTemplate ?? "";
 
         return adviceObj;
+    }
+
+    // returns a list of target sequence names in a random plausible order. When upToTargetSequenceExclusive="All" then a full sequence list is returned, including Cooldown. The various possible orders are from the training data. For example, sometime the B Story comes after Catalyst, sometimes after Theme Stated.
+    public static List<string> GetRandomSequenceList(string upToTargetSequenceExclusive)
+    {
+        // all sequences end with this order
+        var ending = new List<string>{
+            "Fun And Games",
+            "Midpoint",
+            "Bad Guys Close In",
+            "All Hope Is Lost",
+            "Dark Night Of The Soul",
+            "Break Into Three",
+            "Climax",
+            "Cooldown"
+        };
+
+        var variations = new List<List<string>>{
+            // Aladdin
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Whiplash
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story"
+            },
+
+            // Star Wars
+            new List<string>{
+                "Opening Image",
+                "Theme Stated",
+                "Setup",
+                "Catalyst",
+                "B Story",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Iron Man
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "B Story",
+                "Catalyst",
+                "Debate",
+                "Break Into Two"
+            },
+
+            // Elf
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Theme Stated",
+                "Catalyst",
+                "Debate",
+                "Break Into Two",
+                "B Story",
+            },
+
+            // Soul
+            new List<string>{
+                "Opening Image",
+                "Setup",
+                "Catalyst",
+                "Debate",
+                "Theme Stated",
+                "Break Into Two",
+                "B Story",
+            }
+        };
+
+        variations = variations.OrderBy(x => Guid.NewGuid()).ToList();
+
+        var randomList = variations.First();
+
+        randomList = randomList.Concat(ending).ToList();
+
+        randomList = keepUpToTargetSequence(randomList, upToTargetSequenceExclusive);
+
+        return randomList;
+    }
+
+    private static List<string> keepUpToTargetSequence(List<string> sequences, string upToTargetSequenceExclusive)
+    {
+        // "All" is a special signal to return all sequences including Cooldown
+        if (upToTargetSequenceExclusive == "All") return sequences;
+
+        var results = new List<string>();
+
+        foreach (var sequence in sequences)
+        {
+            if (sequence == upToTargetSequenceExclusive) return results;
+
+            results.Add(sequence);
+        }
+
+        return results;
     }
 
 }

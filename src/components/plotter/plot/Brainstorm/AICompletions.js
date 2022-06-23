@@ -4,9 +4,10 @@ import Spinner from 'react-bootstrap/Spinner';
 //import Tabs from 'react-bootstrap/Tabs'
 //import Tab from 'react-bootstrap/Tab'
 import DeleteCompletion from './DeleteCompletion'
-import SelectCompletion from './SelectCompletion'
-import SignUpMessage from '../SignUpMessage'
+import CopyCompletionToText from './CopyCompletionToText'
+//import SignUpMessage from '../SignUpMessage'
 import ToxicMessage from './ToxicMessage'
+import SelectCompletion from './SelectCompletion'
 
 const AICompletions = (
     {
@@ -14,7 +15,9 @@ const AICompletions = (
         isLoading,
         completions,
         onDeleteBrainstorm,
-        onSelectBrainstorm,
+        onCopyBrainstorm,
+        onSelectBrainstormChange,
+        showSelectBrainstorm,
         onGenerateCompletion,
         showTemperature,
         temperature,
@@ -36,18 +39,32 @@ const AICompletions = (
     return (
         <>
             {
-                userInfo && userInfo.userRoles.includes('customer') &&
+                //userInfo && userInfo.userRoles.includes('customer') &&
                 <>
-                    <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
-                    <hr />
+                    {
+                        userInfo && userInfo.userRoles.includes('customer') &&
+                        <>
+                            <p className="text-muted">Tokens remaining: {tokensRemaining}. The AI sometimes returns characters, locations, and events from existing stories. Add some twists of your own to ensure uniqueness.</p>
+                            <hr />
+                        </>
+                    }
 
                     {
                         completions && completions.length > 0 && completions.map((completion, idx) =>
                             <div key={`completion-` + idx} className="card mb-2">
                                 <div className="card-body">
                                     <p className="card-text">{completion['completion']}</p>
-                                    <SelectCompletion idx={idx} onSelectBrainstorm={onSelectBrainstorm} />
-                                    <DeleteCompletion idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} />
+                                    {
+                                        showSelectBrainstorm === true &&
+                                        <SelectCompletion idx={idx} isSelected={completion['isSelected']} onSelectBrainstormChange={onSelectBrainstormChange} />
+                                    }
+
+                                    <CopyCompletionToText idx={idx} onCopyBrainstorm={onCopyBrainstorm} />
+                                    {
+                                        userInfo && userInfo.userRoles.includes('customer') &&
+                                        <DeleteCompletion idx={idx} onDeleteBrainstorm={onDeleteBrainstorm} />
+                                    }
+
                                     {
                                         completion['completionIsToxic']
                                         &&
@@ -81,58 +98,62 @@ const AICompletions = (
                         </Tabs>
                     } */}
 
-
                     {
-                        showTemperature === true &&
-                        <div className='row'>
-                            <label className='form-label'>tame &lt;-&gt; wild <span>(temperature: {temperature})</span>
-                                <input className='form-range' type="range" min="0.5" max="1.3" step={0.05} defaultValue={temperature} onChange={(e) => setTemperature(e.target.value)} />
-                            </label>
-
-                        </div>
-                    }
-
-                    {
-                        tokensRemaining <= 0 &&
-                        <>
-                            <p>You have run out of tokens.</p>
-                        </>
-                    }
-                    {
-                        tokensRemaining > 0 &&
+                        userInfo && userInfo.userRoles.includes('customer') &&
                         <>
                             {
-                                completions && completions.length >= limit &&
+                                showTemperature === true &&
                                 <div className='row'>
-                                    <div className='col alert alert-primary'>
-                                        <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms before generating more.</p>
-                                    </div>
-                                </div>
+                                    <label className='form-label'>tame &lt;-&gt; wild <span>(temperature: {temperature})</span>
+                                        <input className='form-range' type="range" min="0.5" max="1.3" step={0.05} defaultValue={temperature} onChange={(e) => setTemperature(e.target.value)} />
+                                    </label>
 
+                                </div>
+                            }
+
+                            {
+                                tokensRemaining <= 0 &&
+                                <>
+                                    <p>You have run out of tokens.</p>
+                                </>
                             }
                             {
-                                (!completions || completions.length < limit) &&
-                                <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                                tokensRemaining > 0 &&
+                                <>
                                     {
-                                        isLoading === true &&
-                                        <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                        completions && completions.length >= limit &&
+                                        <div className='row'>
+                                            <div className='col alert alert-primary'>
+                                                <p>You have reached the maximum of {limit} brainstorms. Please delete some brainstorms before generating more.</p>
+                                            </div>
+                                        </div>
+
                                     }
                                     {
-                                        isLoading === false &&
-                                        <FaGhost />
+                                        (!completions || completions.length < limit) &&
+                                        <button disabled={isLoading} type="button" className="btn btn-info mt-2" onClick={onGenerateCompletion}>
+                                            {
+                                                isLoading === true &&
+                                                <Spinner size="sm" as="span" animation="border" variant="secondary" />
+                                            }
+                                            {
+                                                isLoading === false &&
+                                                <FaGhost />
+                                            }
+                                            <span> New AI Brainstorm</span>
+                                        </button>
                                     }
-                                    <span> New AI Brainstorm</span>
-                                </button>
+                                </>
                             }
                         </>
                     }
 
                 </>
             }
-            {
+            {/* {
                 (!userInfo || !userInfo.userRoles.includes('customer')) &&
                 <SignUpMessage />
-            }
+            } */}
 
         </>
     )

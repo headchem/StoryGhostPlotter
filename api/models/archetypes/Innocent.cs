@@ -52,7 +52,7 @@ public class Innocent : IArchetype
             };
         }
     }
-    public string ShadowSide { get { return "Addicted to feeling good, they represse and deny the genuine hurt of self or others. They show excessive deference to others, even if they know better."; } }
+    public string ShadowSide { get { return "Addicted to feeling good, they repress and deny the genuine hurt of self or others. They show excessive deference to others, even if they know better."; } }
     public List<string> Examples
     {
         get

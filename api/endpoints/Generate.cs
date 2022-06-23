@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -10,9 +11,12 @@ using System.Security.Claims;
 using Microsoft.Azure.Cosmos;
 using StoryGhost.Models;
 using StoryGhost.Interfaces;
+using StoryGhost.Models.Completions;
 
 using System.Diagnostics;
 using Microsoft.ApplicationInsights;
+
+using StoryGhost.Util;
 
 namespace StoryGhost.Generate;
 
@@ -156,7 +160,16 @@ public class Generate
     public async Task<IActionResult> GenerateBlurb([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateBlurb")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        if (!user.IsInRole("customer"))
+        {
+            return new OkObjectResult(new List<CompletionResponse>{
+                new CompletionResponse
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Completion = ""
+                }
+            });
+        }
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -174,9 +187,11 @@ public class Generate
 
             var targetSequence = req.Query["targetSequence"][0];
             var temperature = double.Parse(req.Query["temperature"][0]);
+            var numCompletions = int.Parse(req.Query["numCompletions"][0]);
+            numCompletions = Math.Min(numCompletions, 2); // don't allow more than 2 completions
             var maxTokens = 256;
 
-            var result = await _completionService.GetBlurbCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+            var result = await _completionService.GetBlurbCompletion(userId, targetSequence, maxTokens, temperature, plot, false, numCompletions);
 
             var timespan = stopwatch.Elapsed;
 
@@ -185,9 +200,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Blurb", null, metrics);
 
@@ -199,7 +217,16 @@ public class Generate
     public async Task<IActionResult> GenerateExpandedSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateExpandedSummary")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        if (!user.IsInRole("customer"))
+        {
+            return new OkObjectResult(new List<CompletionResponse>{
+                new CompletionResponse
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Completion = ""
+                }
+            });
+        }
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -217,9 +244,11 @@ public class Generate
 
             var targetSequence = req.Query["targetSequence"][0];
             var temperature = double.Parse(req.Query["temperature"][0]);
+            var numCompletions = int.Parse(req.Query["numCompletions"][0]);
+            numCompletions = Math.Min(numCompletions, 2); // don't allow more than 2 completions
             var maxTokens = 256;
 
-            var result = await _completionService.GetExpandedSummaryCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+            var result = await _completionService.GetExpandedSummaryCompletion(userId, targetSequence, maxTokens, temperature, plot, false, numCompletions);
 
             var timespan = stopwatch.Elapsed;
 
@@ -228,9 +257,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Expanded Summary", null, metrics);
 
@@ -242,7 +274,16 @@ public class Generate
     public async Task<IActionResult> GenerateFull([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateFull")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        if (!user.IsInRole("customer"))
+        {
+            return new OkObjectResult(new List<CompletionResponse>{
+                new CompletionResponse
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Completion = ""
+                }
+            });
+        }
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -260,9 +301,11 @@ public class Generate
 
             var targetSequence = req.Query["targetSequence"][0];
             var temperature = double.Parse(req.Query["temperature"][0]);
+            var numCompletions = int.Parse(req.Query["numCompletions"][0]);
+            numCompletions = Math.Min(numCompletions, 2); // don't allow more than 2 completions
             var maxTokens = 256;
 
-            var result = await _completionService.GetFullCompletion(userId, targetSequence, maxTokens, temperature, plot, false);
+            var result = await _completionService.GetFullCompletion(userId, targetSequence, maxTokens, temperature, plot, false, numCompletions);
 
             var timespan = stopwatch.Elapsed;
 
@@ -271,9 +314,12 @@ public class Generate
             //var metricsText = new Dictionary<string, string>();
             //metricsText.Add("UserId", userId);
 
+            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", result.PromptTokenCount + result.CompletionTokenCount);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Full", null, metrics);
 
@@ -320,11 +366,51 @@ public class Generate
         }
     }
 
+    [FunctionName("GenerateRandomCharacter")]
+    public async Task<IActionResult> GenerateRandomCharacter([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateRandom")] Plot plot, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        var useTokens = user.IsInRole("customer");
+        //if (!user.IsInRole("customer")) return new UnauthorizedResult();
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = plot.Id,
+        }))
+        {
+            //log.LogInformation("An example of an Information level message");
+
+            var curCharacterId = req.Query.ContainsKey("curCharacterId") ? (req.Query["curCharacterId"][0]) : "";
+            var curCharacter = plot.Characters.Where(c => c.Id == curCharacterId).First();
+
+            var (result, completionResponse) = await _completionService.GenerateCharacter(userId, plot.Id, curCharacter, plot.Characters, plot.LogLineDescription, useTokens);
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", completionResponse.PromptTokenCount + completionResponse.CompletionTokenCount);
+
+            _telemetry.TrackEvent("Completion Random Character", null, metrics);
+
+            return new OkObjectResult((result, completionResponse));
+        }
+    }
+
     [FunctionName("GenerateAllCharacters")]
     public async Task<IActionResult> GenerateAllCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Character/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        var useTokens = user.IsInRole("customer");
+        //if (!user.IsInRole("customer")) return new UnauthorizedResult(); // we allow non-customers to generate Characters, but they won't get the descriptions
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -340,7 +426,7 @@ public class Generate
         {
             //log.LogInformation("An example of an Information level message");
 
-            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, plot.ProblemTemplate, plot.DramaticQuestion);
+            var (result, totalTokenCount) = await _completionService.GenerateAllCharacters(userId, plot.Id, plot.LogLineDescription, useTokens);
 
             var timespan = stopwatch.Elapsed;
 
@@ -359,45 +445,23 @@ public class Generate
         }
     }
 
-
-    [FunctionName("GenerateAllSequences")]
-    public async Task<IActionResult> GenerateAllSequences([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateAll")] Plot plot, HttpRequest req, ILogger log)
+    [FunctionName("GetRandomSequenceList")]
+    public IActionResult GetRandomSequenceList([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Sequence/GetRandomSequenceList")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("customer")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+        var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
+        var sequenceNames = Factory.GetRandomSequenceList(upToTargetSequenceExclusive);
 
-        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+        var result = new List<UserSequence>();
 
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        using (log.BeginScope(new Dictionary<string, object>
+        foreach (var seqName in sequenceNames)
         {
-            ["UserId"] = userId,
-            ["User"] = user.Identity.Name,
-            ["PlotId"] = plot.Id,
-        }))
-        {
-            //log.LogInformation("An example of an Information level message");
-
-            var upToTargetSequenceExclusive = req.Query["upToTargetSequenceExclusive"][0];
-
-            var (result, totalTokenCount) = await _completionService.GenerateAllSequences(userId, plot, upToTargetSequenceExclusive);
-
-            var timespan = stopwatch.Elapsed;
-
-            stopwatch.Stop();
-
-            //var metricsText = new Dictionary<string, string>();
-            //metricsText.Add("UserId", userId);
-
-            var metrics = new Dictionary<string, double>();
-            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
-            metrics.Add("token usage", totalTokenCount);
-
-            _telemetry.TrackEvent("Completion All Sequences", null, metrics);
-
-            return new OkObjectResult(result);
+            result.Add(new UserSequence
+            {
+                SequenceName = seqName
+            });
         }
+
+        return new OkObjectResult(result);
+
     }
 }

@@ -311,7 +311,10 @@ public class CreateFinetuningDataset
 
         foreach (var sequence in plot.Sequences)
         {
-            if (sequence.SequenceName == targetSequenceExclusive) return result;
+            if (sequence.SequenceName == targetSequenceExclusive)
+            {
+                return result;
+            }
 
             result += sequenceToText(sequence, sequenceType);
         }
@@ -326,15 +329,18 @@ public class CreateFinetuningDataset
 
         if (sequenceType == "blurb")
         {
-            results += sequence.Blurb;
+            var selectedBlurbCompletion = sequence.BlurbCompletions == null ? null : sequence.BlurbCompletions.Where(c => c.IsSelected).FirstOrDefault();
+            results += (selectedBlurbCompletion == null ? sequence.Blurb : selectedBlurbCompletion.Completion);
         }
         else if (sequenceType == "expanded summary")
         {
-            results += sequence.Text;
+            var selectedExpandedSummaryCompletion = sequence.Completions == null ? null : sequence.Completions.Where(c => c.IsSelected).FirstOrDefault();
+            results += (selectedExpandedSummaryCompletion == null ? sequence.Text : selectedExpandedSummaryCompletion.Completion);
         }
         else if (sequenceType == "full")
         {
-            results += sequence.Full;
+            var selectedFullCompletion = sequence.FullCompletions == null ? null : sequence.FullCompletions.Where(c => c.IsSelected).FirstOrDefault();
+            results += (selectedFullCompletion == null ? sequence.Full : selectedFullCompletion.Completion);
         }
 
         results += "\n\n";
@@ -362,6 +368,11 @@ public class CreateFinetuningDataset
             var plotObj = plotResponse.Resource;
 
             var cooldownSeq = plotObj.Sequences.Where(s => s.SequenceName.ToLower() == "cooldown").FirstOrDefault();
+
+            if (cooldownSeq == null) {
+                // this plot is incomplete, so skip
+                continue;
+            }
 
             var cooldownHasContent = false;
 

@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react'
-//import Popover from 'react-bootstrap/Popover';
+import React, { useState } from 'react'
 import Accordion from 'react-bootstrap/Accordion';
-//import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
-//import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav'
-//import { useSearchParams } from "react-router-dom";
 import ArchetypeDescription from './ArchetypeDescription'
 import CharacterAnalysis from './CharacterAnalysis'
 import Personality from './Personality'
 import CharacterBrainstorm from './Brainstorm/CharacterBrainstorm'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
-import { getTokenCount } from "../../../util/Tokenizer";
+import { getPersonalitySummary } from '../../../util/PersonalityDescriptions'
 
 const Character = ({
     userInfo,
@@ -22,7 +18,6 @@ const Character = ({
     onFocusChange,
 
     archetypeOptions,
-
 
     character,
     characters,
@@ -37,31 +32,11 @@ const Character = ({
     tokensRemaining
 }) => {
 
-    const [descriptionTokenCount, setDescriptionTokenCount] = useState(0)
-
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
     const onDeleteCharacter = () => {
         deleteCharacter(character.id)
     }
-
-    const updateTokenCount = async () => {
-        //console.log('updating token count for character: ' + character.name)
-        const tokenCount = await getTokenCount(character.description)
-        setDescriptionTokenCount(tokenCount)
-    }
-
-    // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    useEffect(() => {
-        //console.log('character changed for: ' + character.name)
-        const timeout = setTimeout(() => {
-            updateTokenCount()
-        }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
-
-        return () => clearTimeout(timeout) //clear timeout (delete function execution)
-        
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [character]);
 
     const onCharacterNameChange = (event) => {
         updateCharacterName(character.id, event.target.value)
@@ -71,93 +46,12 @@ const Character = ({
         updateCharacterArchetype(character.id, event.target.value)
     }
 
-    const getPersonalityDescription = (closeminded_to_imaginative, closeminded_to_imaginative_aspect, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect, introvert_to_extrovert, introvert_to_extrovert_aspect, cold_to_empathetic, cold_to_empathetic_aspect, unflappable_to_anxious, unflappable_to_anxious_aspect) => {
-
-        const getOneWordDesc = (neutral_point, bigFiveAmount, aspectAmount, bigFiveNegAspectNeg, bigFiveNegAspectNeutral, bigFiveNegAspectPos, bigFiveTrueNeutral, bigFivePosAspectNeg, bigFivePosAspectNeutral, bigFivePosAspectPos) => {
-            if (bigFiveAmount < neutral_point * -1) {
-                if (aspectAmount < neutral_point * -1) {
-                    return bigFiveNegAspectNeg;
-                } else if (aspectAmount > neutral_point) {
-                    return bigFiveNegAspectPos;
-                } else {
-                    return bigFiveNegAspectNeutral;
-                }
-            } else if (bigFiveAmount > neutral_point) {
-                if (aspectAmount < neutral_point * -1) {
-                    return bigFivePosAspectNeg;
-                } else if (aspectAmount > neutral_point) {
-                    return bigFivePosAspectPos;
-                } else {
-                    return bigFivePosAspectNeutral;
-                }
-            } else {
-                return bigFiveTrueNeutral;
-            }
-        }
-
-        var neutral_point = 0.2;
-
-        let closeminded_to_imaginative_desc = getOneWordDesc(neutral_point, closeminded_to_imaginative, closeminded_to_imaginative_aspect,
-            'a closeminded fuddy duddy', 'generally closeminded', 'closeminded and mentally resistant',
-            'moderate',
-            'imaginative and artsy', 'generally imaginative', 'an imaginative brainstormer');
-
-        let disciplined_to_spontaneous_desc = getOneWordDesc(neutral_point, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect,
-            'disciplined and industrious', 'generally disciplined', 'disciplined and orderly',
-            'dynamic',
-            'spontaneous with their head in the clouds', 'generally spontaneous', 'spontaneous and sloppy');
-
-        let introvert_to_extrovert_desc = getOneWordDesc(neutral_point, introvert_to_extrovert, introvert_to_extrovert_aspect,
-            'introverted and glum', 'generally introverted', 'introverted and submissive',
-            'ambivert',
-            'extroverted and gung-ho', 'generally extroverted', 'extroverted and bossy');
-
-        let cold_to_empathetic_desc = getOneWordDesc(neutral_point, cold_to_empathetic, cold_to_empathetic_aspect,
-            'cold and unfeeling', 'generally cold', 'cold and rude',
-            'negotiator',
-            'empathetic and compassionate', 'generally empathetic', 'empathetic and polite');
-
-        let unflappable_to_anxious_desc = getOneWordDesc(neutral_point, unflappable_to_anxious, unflappable_to_anxious_aspect,
-            'unflappable and emotionally impervious', 'generally unflappable', 'unflappable and relaxed',
-            'responsive to stress',
-            'anxious and volatile', 'generally anxious', 'anxious and vulnerable');
-
-        return [closeminded_to_imaginative_desc, disciplined_to_spontaneous_desc, introvert_to_extrovert_desc, cold_to_empathetic_desc, unflappable_to_anxious_desc];
-    }
-
-    const characterPersonality = character['personality']
-
-    const closemindedToImaginativePrimary = !characterPersonality ? 0.0 : characterPersonality['closemindedToImaginative']['primary']
-    const closemindedToImaginativeAspect = !characterPersonality ? 0.0 : characterPersonality['closemindedToImaginative']['aspect']
-
-    const disciplinedToSpontaneousPrimary = !characterPersonality ? 0.0 : characterPersonality['disciplinedToSpontaneous']['primary']
-    const disciplinedToSpontaneousAspect = !characterPersonality ? 0.0 : characterPersonality['disciplinedToSpontaneous']['aspect']
-
-    const introvertToExtrovertPrimary = !characterPersonality ? 0.0 : characterPersonality['introvertToExtrovert']['primary']
-    const introvertToExtrovertAspect = !characterPersonality ? 0.0 : characterPersonality['introvertToExtrovert']['aspect']
-
-    const coldToEmpatheticPrimary = !characterPersonality ? 0.0 : characterPersonality['coldToEmpathetic']['primary']
-    const coldToEmpatheticAspect = !characterPersonality ? 0.0 : characterPersonality['coldToEmpathetic']['aspect']
-
-    const unflappableToAnxiousPrimary = !characterPersonality ? 0.0 : characterPersonality['unflappableToAnxious']['primary']
-    const unflappableToAnxiousAspect = !characterPersonality ? 0.0 : characterPersonality['unflappableToAnxious']['aspect']
-
-    const personalityStrs = getPersonalityDescription(
-        closemindedToImaginativePrimary,
-        closemindedToImaginativeAspect,
-        disciplinedToSpontaneousPrimary,
-        disciplinedToSpontaneousAspect,
-        introvertToExtrovertPrimary,
-        introvertToExtrovertAspect,
-        coldToEmpatheticPrimary,
-        coldToEmpatheticAspect,
-        unflappableToAnxiousPrimary,
-        unflappableToAnxiousAspect,
-    )
-
-    const personalitySummary = personalityStrs.slice(0, 5).join(', ')
+    const personalitySummary = getPersonalitySummary(character['personality'])
 
     const characterArchetypeCapitalized = !character.archetype ? 'Archetype not set' : character.archetype[0].toUpperCase() + character.archetype.slice(1)
+
+    const selectedCharacterBrainstorm = (character && character['aiCompletions']) ? character['aiCompletions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+
 
     return (
         <>
@@ -318,17 +212,28 @@ const Character = ({
 
                     <div className='row'>
                         <div className='col-md-12'>
-                            <label htmlFor={character.id + '_desc'} className="form-label" title="1-3 sentences of backstory context that explains and exemplifies their personality.">Character notes</label>
-                            <LimitedTextArea
-                                id={character.id + '_desc'}
-                                className="form-control"
-                                value={character.description}
-                                setValue={(newValue) => updateCharacterDescription(character.id, newValue)}
-                                rows={5}
-                                limit={400}
-                                curTokenCount={descriptionTokenCount}
-                                showCount={true}
-                            />
+
+                            {
+                                selectedCharacterBrainstorm && selectedCharacterBrainstorm.length > 0 &&
+                                <p>{selectedCharacterBrainstorm[0]['completion']}</p>
+                            }
+                            {
+                                (!selectedCharacterBrainstorm || selectedCharacterBrainstorm.length === 0) &&
+                                <>
+                                    <label htmlFor={character.id + '_desc'} className="form-label" title="1-3 sentences of backstory context that explains and exemplifies their personality.">Character notes</label>
+                                    <LimitedTextArea
+                                        id={character.id + '_desc'}
+                                        className="form-control"
+                                        value={character.description}
+                                        setValue={(newValue) => updateCharacterDescription(character.id, newValue)}
+                                        rows={5}
+                                        limit={400}
+                                        //curTokenCount={descriptionTokenCount}
+                                        showCount={true}
+                                    />
+                                </>
+                            }
+
                         </div>
 
 
@@ -357,19 +262,23 @@ const Character = ({
                                         <ArchetypeDescription archetype={character.archetype} />
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="2">
-                                    <Accordion.Header>Brainstorm with AI</Accordion.Header>
-                                    <Accordion.Body>
-                                        <CharacterBrainstorm
-                                            userInfo={userInfo}
-                                            plotId={plotId}
-                                            character={character}
-                                            updateCharacterDescription={updateCharacterDescription}
-                                            updateAICharacterCompletion={updateAICharacterCompletion}
-                                            tokensRemaining={tokensRemaining}
-                                        />
-                                    </Accordion.Body>
-                                </Accordion.Item>
+                                {
+                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                    <Accordion.Item eventKey="2">
+                                        <Accordion.Header>Brainstorm with AI</Accordion.Header>
+                                        <Accordion.Body>
+                                            <CharacterBrainstorm
+                                                userInfo={userInfo}
+                                                plotId={plotId}
+                                                character={character}
+                                                updateCharacterDescription={updateCharacterDescription}
+                                                updateAICharacterCompletion={updateAICharacterCompletion}
+                                                tokensRemaining={tokensRemaining}
+                                            />
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                }
+
                             </Accordion>
                         </>
                     }

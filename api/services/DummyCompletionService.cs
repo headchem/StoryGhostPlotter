@@ -47,6 +47,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
@@ -60,18 +61,19 @@ public class DummyCompletionService : ICompletionService
         return result;
     }
 
-    public async Task<CompletionResponse> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI BLURB completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
-    public async Task<CompletionResponse> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         using (_logger.BeginScope(new Dictionary<string, object> { ["UserId"] = userId }))
         {
@@ -86,6 +88,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI EXPANDED SUMMARY completion for " + targetSequence + " goes here...";
 
@@ -96,18 +99,19 @@ public class DummyCompletionService : ICompletionService
 
         await _userService.DeductTokens(userId, totalTokens);
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
-    public async Task<CompletionResponse> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck)
+    public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = "TODO";
         result.Completion = "AI FULL completion for " + targetSequence + " goes here...";
 
-        return result;
+        return new List<CompletionResponse> { result };
     }
 
     public async Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck)
@@ -125,6 +129,7 @@ public class DummyCompletionService : ICompletionService
 
         var result = new CompletionResponse();
 
+        result.Id = Guid.NewGuid().ToString();
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
 
@@ -161,17 +166,13 @@ public class DummyCompletionService : ICompletionService
             },
             CompletionResponse = new CompletionResponse
             {
+                Id = Guid.NewGuid().ToString(),
                 Prompt = "titles prompt goes here",
                 Completion = "titles completion goes here",
                 PromptTokenCount = 123,
                 CompletionTokenCount = 444
             }
         };
-    }
-
-    public async Task<(List<UserSequence>, int)> GenerateAllSequences(string userId, Plot story, string upToTargetSequenceExclusive)
-    {
-        return (new List<UserSequence>(), 123);
     }
 
     public async Task<(Plot, int)> GenerateAllLogLine(string userId, string plotId, List<string> genres)
@@ -186,7 +187,63 @@ public class DummyCompletionService : ICompletionService
         }, 123);
     }
 
-    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, string ProblemTemplate, string DramaticQuestion)
+    public async Task<(Character, CompletionResponse)> GenerateCharacter(string userId, string plotId, Character curCharacter, List<Character> existingCharacters, string LogLineDescription, bool useTokens)
+    {
+        var isHero = false;
+
+        if (existingCharacters.Where(c => c.IsHero).FirstOrDefault() == null)
+        {
+            isHero = true;
+        }
+
+        return (new Character
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "John",
+            Archetype = "explorer",
+            Personality = new Personality
+            {
+                ClosemindedToImaginative = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                DisciplinedToSpontaneous = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                IntrovertToExtrovert = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                ColdToEmpathetic = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+                UnflappableToAnxious = new PersonalityComponent
+                {
+                    Primary = 1.0,
+                    Aspect = -0.5
+                },
+            },
+            Description = "John's description goes here",
+            IsHero = isHero
+        }, new CompletionResponse
+        {
+            Id = Guid.NewGuid().ToString(),
+            Prompt = "test",
+            PromptIsToxic = false,
+            PromptTokenCount = 123,
+            Completion = "test completion",
+            CompletionIsToxic = false,
+            CompletionTokenCount = 456
+        });
+    }
+
+    public async Task<(List<Character>, int)> GenerateAllCharacters(string userId, string plotId, string LogLineDescription, bool useTokens)
     {
         return (new List<Character> {
             new Character {

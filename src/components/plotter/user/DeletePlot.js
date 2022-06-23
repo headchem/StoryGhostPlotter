@@ -59,7 +59,7 @@ const DeletePlot = ({ plotId, plotTitle, loadAllPlots }) => {
                     {
                         isDeleting === false &&
                         <>
-                            <button onClick={onDelete} className="btn btn-primary">Delete Plot</button>
+                            <button onClick={onDelete} className="btn btn-primary mt-3 mb-3">Delete Plot</button>
                             <p>This will delete the plot titled: {plotTitle}</p>
                         </>
                     }

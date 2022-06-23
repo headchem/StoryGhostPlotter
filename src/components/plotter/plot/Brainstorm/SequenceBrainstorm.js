@@ -22,7 +22,9 @@ const SequenceBrainstorm = (
         updateSequenceCompletions,
         completionURL,
         textPropName,
-        tokensRemaining
+        completionPropName,
+        tokensRemaining,
+        AILogLineDescriptions
     }
 ) => {
 
@@ -52,7 +54,7 @@ const SequenceBrainstorm = (
     const fetchCompletion = async () => {
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature, {
+        fetchWithTimeout('/api/Sequence/' + completionURL + '?targetSequence=' + targetSequence + '&temperature=' + temperature + '&numCompletions=1', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -67,6 +69,7 @@ const SequenceBrainstorm = (
                 keywords: keywords,
                 sequences: sequences,
                 characters: characters,
+                AILogLineDescriptions: AILogLineDescriptions
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {
@@ -78,12 +81,10 @@ const SequenceBrainstorm = (
             }
             return Promise.reject(response);
         }).then(function (data) {
-            //console.log('save this data:')
-            //console.log(data)
             if (!completions || completions.length === 0) {
-                updateSequenceCompletions(targetSequence, [data])
+                updateSequenceCompletions(targetSequence, data)
             } else {
-                const newCompletionList = [...completions, data]
+                const newCompletionList = [...completions, data[0]]
                 updateSequenceCompletions(targetSequence, newCompletionList)
             }
         }).catch(function (error) {
@@ -94,9 +95,23 @@ const SequenceBrainstorm = (
         });
     }
 
-    const onSelectBrainstorm = (idxToSelect) => {
+    const onCopyBrainstorm = (idxToSelect) => {
         const selectedCompletion = completions[idxToSelect]['completion']
         updateText(targetSequence, selectedCompletion)
+    }
+
+    const onSelectBrainstormChange = (idxToSelect, isSelected) => {
+        // first set all completions isSelected to false
+        const newCompletions = completions.map(
+            (completion) => { return { ...completion, isSelected: false } }
+        )
+
+        // second set just the newly selected completion to true
+        const newCompletionsWithSelected = newCompletions.map(
+            (completion, idx) => idx === idxToSelect ? { ...completion, isSelected: isSelected } : completion
+        )
+
+        updateSequenceCompletions(targetSequence, newCompletionsWithSelected)
     }
 
     const onDeleteBrainstorm = (idxToDelete) => {
@@ -107,7 +122,7 @@ const SequenceBrainstorm = (
 
     // return true if any of the previous texts are empty. We need all previous texts to be filled out in order to generate a correctly formatted completion prompt.
     const brainstormDisabled = () => {
-        return allSequencesHaveValues(sequences, targetSequence, textPropName) === false
+        return allSequencesHaveValues(sequences, targetSequence, textPropName, completionPropName) === false
     }
 
     return (
@@ -130,7 +145,9 @@ const SequenceBrainstorm = (
                                 isLoading={isCompletionLoading}
                                 onGenerateCompletion={fetchCompletion}
                                 completions={completions}
-                                onSelectBrainstorm={onSelectBrainstorm}
+                                onCopyBrainstorm={onCopyBrainstorm}
+                                onSelectBrainstormChange={onSelectBrainstormChange}
+                                showSelectBrainstorm={true}
                                 onDeleteBrainstorm={onDeleteBrainstorm}
                                 showTemperature={true}
                                 temperature={temperature}

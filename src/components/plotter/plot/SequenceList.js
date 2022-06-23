@@ -23,7 +23,8 @@ const SequenceList = ({
     updateExpandedSummaryCompletions,
     updateFullCompletions,
     setSequences,
-    tokensRemaining
+    tokensRemaining,
+    AILogLineDescriptions
 }) => {
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
@@ -99,8 +100,6 @@ const SequenceList = ({
             const curSeqIndex = existingSequenceNamesArr.indexOf(curSequenceName)
             const prevSeqsArr = existingSequenceNamesArr.slice(0, curSeqIndex + 1) // +1 to include self
             const prevSeqs = new Set(prevSeqsArr)
-
-            //console.log('curSequenceName: ' + curSequenceName + ', original allowedSequenceNames: ' + allowedSequenceNames + ', prevSeqsArr: ' + prevSeqsArr)
 
             // for each allowed Seq, check if that seq's prereq exists in prevSeqs
             allowedSequenceNames = allowedSequenceNames.filter(seqName => prevSeqs.has(seqTemporalDeps[seqName]))
@@ -189,10 +188,11 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                             {
-                                sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                                (sequenceType === 'expandedSummary') &&
                                 <Sequence
                                     sequenceType={sequenceType}
                                     key={sequenceType + sequence.sequenceName}
@@ -222,6 +222,7 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                             {
@@ -255,6 +256,7 @@ const SequenceList = ({
                                     updateFullCompletions={updateFullCompletions}
 
                                     tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
                                 />
                             }
                         </div>

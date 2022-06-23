@@ -50,14 +50,7 @@ public class PlotService : IPlotService
                 Modified = DateTime.UtcNow,
                 IsDeleted = false,
                 IsPublic = false,
-                Characters = new List<Character>{
-                    new Character{
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "",
-                        Archetype = "",
-                        Description = ""
-                    }
-                }
+                Characters = new List<Character>()
             };
 
             var plotsContainer = _db.GetContainer(databaseId: "Plotter", containerId: "Plots");
@@ -121,11 +114,11 @@ public class PlotService : IPlotService
         var plotPatchOps = new List<PatchOperation>();
 
         // enforce brainstorm limit on the server-side (client side has a lower number, so this is just a safeguard)
-        var brainstormLimit = 20;
+        var brainstormLimit = 30;
 
         if (plot.AILogLineDescriptions != null)
         {
-            plot.AILogLineDescriptions = plot.AILogLineDescriptions.Take(brainstormLimit).ToList();
+            plot.AILogLineDescriptions = plot.AILogLineDescriptions.TakeLast(brainstormLimit).ToList();
         }
 
         if (plot.Characters != null)
@@ -146,19 +139,19 @@ public class PlotService : IPlotService
             {
                 if (sequence.BlurbCompletions != null)
                 {
-                    sequence.BlurbCompletions = sequence.BlurbCompletions.Take(brainstormLimit).ToList();
+                    sequence.BlurbCompletions = sequence.BlurbCompletions.TakeLast(brainstormLimit).ToList();
                 }
                 sequence.Blurb = sequence.Blurb.Truncate(500);
 
                 if (sequence.Completions != null)
                 {
-                    sequence.Completions = sequence.Completions.Take(brainstormLimit).ToList();
+                    sequence.Completions = sequence.Completions.TakeLast(brainstormLimit).ToList();
                 }
                 sequence.Text = sequence.Text.Truncate(2000);
 
                 if (sequence.FullCompletions != null)
                 {
-                    sequence.FullCompletions = sequence.FullCompletions.Take(brainstormLimit).ToList();
+                    sequence.FullCompletions = sequence.FullCompletions.TakeLast(brainstormLimit).ToList();
                 }
                 sequence.Full = sequence.Full.Truncate(50000); // TODO: is this this right limit?
             }

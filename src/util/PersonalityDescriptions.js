@@ -165,3 +165,91 @@ export const getPersonalityDescriptions = (axis) => {
 
     return descriptions[axis]
 }
+
+export const getPersonalityOneWordDescriptions = (closeminded_to_imaginative, closeminded_to_imaginative_aspect, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect, introvert_to_extrovert, introvert_to_extrovert_aspect, cold_to_empathetic, cold_to_empathetic_aspect, unflappable_to_anxious, unflappable_to_anxious_aspect) => {
+
+    const getOneWordDesc = (neutral_point, bigFiveAmount, aspectAmount, bigFiveNegAspectNeg, bigFiveNegAspectNeutral, bigFiveNegAspectPos, bigFiveTrueNeutral, bigFivePosAspectNeg, bigFivePosAspectNeutral, bigFivePosAspectPos) => {
+        if (bigFiveAmount < neutral_point * -1) {
+            if (aspectAmount < neutral_point * -1) {
+                return bigFiveNegAspectNeg;
+            } else if (aspectAmount > neutral_point) {
+                return bigFiveNegAspectPos;
+            } else {
+                return bigFiveNegAspectNeutral;
+            }
+        } else if (bigFiveAmount > neutral_point) {
+            if (aspectAmount < neutral_point * -1) {
+                return bigFivePosAspectNeg;
+            } else if (aspectAmount > neutral_point) {
+                return bigFivePosAspectPos;
+            } else {
+                return bigFivePosAspectNeutral;
+            }
+        } else {
+            return bigFiveTrueNeutral;
+        }
+    }
+
+    var neutral_point = 0.2;
+
+    let closeminded_to_imaginative_desc = getOneWordDesc(neutral_point, closeminded_to_imaginative, closeminded_to_imaginative_aspect,
+        'a closeminded fuddy duddy', 'generally closeminded', 'closeminded and mentally resistant',
+        'moderate',
+        'imaginative and artsy', 'generally imaginative', 'an imaginative brainstormer');
+
+    let disciplined_to_spontaneous_desc = getOneWordDesc(neutral_point, disciplined_to_spontaneous, disciplined_to_spontaneous_aspect,
+        'disciplined and industrious', 'generally disciplined', 'disciplined and orderly',
+        'dynamic',
+        'spontaneous with their head in the clouds', 'generally spontaneous', 'spontaneous and sloppy');
+
+    let introvert_to_extrovert_desc = getOneWordDesc(neutral_point, introvert_to_extrovert, introvert_to_extrovert_aspect,
+        'introverted and glum', 'generally introverted', 'introverted and submissive',
+        'ambivert',
+        'extroverted and gung-ho', 'generally extroverted', 'extroverted and bossy');
+
+    let cold_to_empathetic_desc = getOneWordDesc(neutral_point, cold_to_empathetic, cold_to_empathetic_aspect,
+        'cold and unfeeling', 'generally cold', 'cold and rude',
+        'negotiator',
+        'empathetic and compassionate', 'generally empathetic', 'empathetic and polite');
+
+    let unflappable_to_anxious_desc = getOneWordDesc(neutral_point, unflappable_to_anxious, unflappable_to_anxious_aspect,
+        'unflappable and emotionally impervious', 'generally unflappable', 'unflappable and relaxed',
+        'responsive to stress',
+        'anxious and volatile', 'generally anxious', 'anxious and vulnerable');
+
+    return [closeminded_to_imaginative_desc, disciplined_to_spontaneous_desc, introvert_to_extrovert_desc, cold_to_empathetic_desc, unflappable_to_anxious_desc];
+}
+
+export const getPersonalitySummary = (personality) => {
+    const closemindedToImaginativePrimary = !personality ? 0.0 : personality['closemindedToImaginative']['primary']
+    const closemindedToImaginativeAspect = !personality ? 0.0 : personality['closemindedToImaginative']['aspect']
+
+    const disciplinedToSpontaneousPrimary = !personality ? 0.0 : personality['disciplinedToSpontaneous']['primary']
+    const disciplinedToSpontaneousAspect = !personality ? 0.0 : personality['disciplinedToSpontaneous']['aspect']
+
+    const introvertToExtrovertPrimary = !personality ? 0.0 : personality['introvertToExtrovert']['primary']
+    const introvertToExtrovertAspect = !personality ? 0.0 : personality['introvertToExtrovert']['aspect']
+
+    const coldToEmpatheticPrimary = !personality ? 0.0 : personality['coldToEmpathetic']['primary']
+    const coldToEmpatheticAspect = !personality ? 0.0 : personality['coldToEmpathetic']['aspect']
+
+    const unflappableToAnxiousPrimary = !personality ? 0.0 : personality['unflappableToAnxious']['primary']
+    const unflappableToAnxiousAspect = !personality ? 0.0 : personality['unflappableToAnxious']['aspect']
+
+    const personalityStrs = getPersonalityOneWordDescriptions(
+        closemindedToImaginativePrimary,
+        closemindedToImaginativeAspect,
+        disciplinedToSpontaneousPrimary,
+        disciplinedToSpontaneousAspect,
+        introvertToExtrovertPrimary,
+        introvertToExtrovertAspect,
+        coldToEmpatheticPrimary,
+        coldToEmpatheticAspect,
+        unflappableToAnxiousPrimary,
+        unflappableToAnxiousAspect,
+    )
+
+    const personalitySummary = personalityStrs.join(', ')
+
+    return personalitySummary
+}

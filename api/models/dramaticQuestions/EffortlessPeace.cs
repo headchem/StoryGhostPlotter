@@ -8,7 +8,7 @@ public class EffortlessPeace : IDramaticQuestion
     public string Id { get { return "effortlessPeace"; } }
     public string Name { get { return "Effortless Peace"; } }
     public string Description { get { return "Is effort required to attain peace?"; } }
-    public string Contrary { get { return "Consciously attempting to ignore strife"; } }
+    public string Contrary { get { return "Exertion to ignore strife"; } }
     public string Contradiction { get { return "Exertion to gain peace"; } }
     public string Negation { get { return "Exertion leading to strife"; } }
     public string Positive { get { return "Effortless peace"; } }

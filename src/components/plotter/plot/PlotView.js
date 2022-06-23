@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
-
+import { getText } from '../../../util/Helpers'
 
 const PlotView = (
     {
@@ -66,7 +66,6 @@ const PlotView = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     return (
         <>
             {
@@ -102,7 +101,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.blurb}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
                                             </span>
                                         ))
                                     }
@@ -111,7 +110,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.text}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
                                             </span>
                                         ))
                                     }
@@ -120,7 +119,7 @@ const PlotView = (
                                     {
                                         sequences.map((sequence) => (
                                             <span key={sequence.sequenceName}>
-                                                <p className='fs-5' title={sequence.sequenceName}>{sequence.full}</p>
+                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
                                             </span>
                                         ))
                                     }

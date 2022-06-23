@@ -4,9 +4,10 @@ import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 //import { getTokenCount } from "../../../util/Tokenizer";
-import SequenceAdvice from './SequenceAdvice'
+import SequenceAdvice from './Advice/SequenceAdvice'
 import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
 import SignUpMessage from './SignUpMessage'
+import { blurbLimits, expandedSummaryLimits, fullLimits } from '../../../util/SequenceTextCheck';
 
 const Sequence = ({
     userInfo,
@@ -33,245 +34,9 @@ const Sequence = ({
     updateExpandedSummaryCompletions,
     updateFullCompletions,
     allowed,
-    tokensRemaining
+    tokensRemaining,
+    AILogLineDescriptions
 }) => {
-
-    const blurbLimits = {
-        'Opening Image': {
-            'max': 200,
-            'rows': 2
-        },
-        'Setup': {
-            'max': 400,
-            'rows': 4
-        },
-        'Theme Stated': {
-            'max': 200,
-            'rows': 2
-        },
-        'Setup (Continued)': {
-            'max': 200,
-            'rows': 2
-        },
-        'Catalyst': {
-            'max': 200,
-            'rows': 2
-        },
-        'Debate': {
-            'max': 350,
-            'rows': 3
-        },
-        'B Story': {
-            'max': 150,
-            'rows': 2
-        },
-        'Debate (Continued)': {
-            'max': 100,
-            'rows': 1
-        },
-        'Break Into Two': {
-            'max': 250,
-            'rows': 2
-        },
-        'Fun And Games': {
-            'max': 400,
-            'rows': 5
-        },
-        'First Pinch Point': {
-            'max': 100,
-            'rows': 2
-        },
-        'Midpoint': {
-            'max': 200,
-            'rows': 2
-        },
-        'Bad Guys Close In': {
-            'max': 400,
-            'rows': 4
-        },
-        'Second Pinch Point': {
-            'max': 150,
-            'rows': 2
-        },
-        'All Hope Is Lost': {
-            'max': 300,
-            'rows': 3
-        },
-        'Dark Night Of The Soul': {
-            'max': 350,
-            'rows': 4
-        },
-        'Break Into Three': {
-            'max': 200,
-            'rows': 2
-        },
-        'Climax': {
-            'max': 400,
-            'rows': 4
-        },
-        'Cooldown': {
-            'max': 200,
-            'rows': 2
-        }
-    }
-
-    const expandedSummaryLimits = {
-        'Opening Image': {
-            'max': 400,
-            'rows': 4
-        },
-        'Setup': {
-            'max': 900,
-            'rows': 9
-        },
-        'Theme Stated': {
-            'max': 500,
-            'rows': 6
-        },
-        'Setup (Continued)': {
-            'max': 500,
-            'rows': 7
-        },
-        'Catalyst': {
-            'max': 500,
-            'rows': 7
-        },
-        'Debate': {
-            'max': 800,
-            'rows': 11
-        },
-        'B Story': {
-            'max': 400,
-            'rows': 5
-        },
-        'Debate (Continued)': {
-            'max': 300,
-            'rows': 5
-        },
-        'Break Into Two': {
-            'max': 650,
-            'rows': 8
-        },
-        'Fun And Games': {
-            'max': 1700,
-            'rows': 22
-        },
-        'First Pinch Point': {
-            'max': 150,
-            'rows': 2
-        },
-        'Midpoint': {
-            'max': 500,
-            'rows': 6
-        },
-        'Bad Guys Close In': {
-            'max': 1000,
-            'rows': 14
-        },
-        'Second Pinch Point': {
-            'max': 350,
-            'rows': 5
-        },
-        'All Hope Is Lost': {
-            'max': 500,
-            'rows': 7
-        },
-        'Dark Night Of The Soul': {
-            'max': 750,
-            'rows': 10
-        },
-        'Break Into Three': {
-            'max': 600,
-            'rows': 8
-        },
-        'Climax': {
-            'max': 1100,
-            'rows': 14
-        },
-        'Cooldown': {
-            'max': 600,
-            'rows': 8
-        }
-    }
-
-    const fullLimits = {
-        'Opening Image': {
-            'max': 4000,
-            'rows': 4
-        },
-        'Setup': {
-            'max': 9000,
-            'rows': 9
-        },
-        'Theme Stated': {
-            'max': 5000,
-            'rows': 6
-        },
-        'Setup (Continued)': {
-            'max': 5000,
-            'rows': 7
-        },
-        'Catalyst': {
-            'max': 5000,
-            'rows': 7
-        },
-        'Debate': {
-            'max': 8000,
-            'rows': 11
-        },
-        'B Story': {
-            'max': 4000,
-            'rows': 5
-        },
-        'Debate (Continued)': {
-            'max': 3000,
-            'rows': 5
-        },
-        'Break Into Two': {
-            'max': 6500,
-            'rows': 8
-        },
-        'Fun And Games': {
-            'max': 17000,
-            'rows': 22
-        },
-        'First Pinch Point': {
-            'max': 1500,
-            'rows': 2
-        },
-        'Midpoint': {
-            'max': 5000,
-            'rows': 6
-        },
-        'Bad Guys Close In': {
-            'max': 10000,
-            'rows': 14
-        },
-        'Second Pinch Point': {
-            'max': 3500,
-            'rows': 5
-        },
-        'All Hope Is Lost': {
-            'max': 5000,
-            'rows': 7
-        },
-        'Dark Night Of The Soul': {
-            'max': 7500,
-            'rows': 10
-        },
-        'Break Into Three': {
-            'max': 6000,
-            'rows': 8
-        },
-        'Climax': {
-            'max': 11000,
-            'rows': 14
-        },
-        'Cooldown': {
-            'max': 6000,
-            'rows': 8
-        }
-    }
 
     // const [blurbTokenCount, setBlurbTokenCount] = useState(0)
     // const [expandedSummaryTokenCount, setExpandedSummaryTokenCount] = useState(0)
@@ -280,7 +45,6 @@ const Sequence = ({
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
     const onInsertSequence = (nextSequenceName) => {
-        //console.log('insert new sequence: ' + sequence.sequenceName + ': ' + nextSequenceName)
         insertSequence(sequence.sequenceName, nextSequenceName)
     }
 
@@ -331,6 +95,12 @@ const Sequence = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     ), [allowed]);
 
+    const selectedBlurbBrainstorm = sequence && sequence['blurbCompletions'] ? sequence['blurbCompletions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+    const selectedExpandedBrainstorm = sequence && sequence['completions'] ? sequence['completions'].filter(brainstorm => brainstorm['isSelected'] === true) : null
+
+    const blurbHasValue = (selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0) || (sequence && sequence.blurb && sequence.blurb !== '')
+    const expandedSummaryHasValue = (selectedExpandedBrainstorm && selectedExpandedBrainstorm.length > 0) || (sequence && sequence.text && sequence.text !== '')
+
     return (
         <>
             <div className='row border-top mt-3 pt-3'>
@@ -359,30 +129,44 @@ const Sequence = ({
                         {
                             sequenceType === 'blurb' &&
                             <div className="float-start w-100 pt-3">
-                                <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                                {
+
+                                {/* {
                                     sequence.text && sequence.text !== '' &&
-                                    <p>{sequence.text}</p>
+                                    <p>TEMP! {sequence.text}</p>
+                                } */}
+                                {
+                                    selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
+                                    <p>{selectedBlurbBrainstorm[0]['completion']}</p>
                                 }
-                                <LimitedTextArea
-                                    id={sequence.sequenceName + '_blurb_textarea'}
-                                    className="form-control"
-                                    value={sequence.blurb}
-                                    setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
-                                    rows={blurbLimits[sequence.sequenceName]['rows']}
-                                    limit={blurbLimits[sequence.sequenceName]['max']}
-                                    //curTokenCount={blurbTokenCount}
-                                    showCount={true}
-                                />
+                                {
+                                    (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) &&
+                                    <>
+                                        <label title="short logic blurb describing the absolute minimum required to explain the story" htmlFor={sequence.sequenceName + '_blurb_textarea'} className="form-label w-100 d-none">Visible Events</label>
+                                        <LimitedTextArea
+                                            id={sequence.sequenceName + '_blurb_textarea'}
+                                            className="form-control"
+                                            value={sequence.blurb}
+                                            setValue={(newValue) => updateBlurb(sequence.sequenceName, newValue)}
+                                            rows={blurbLimits[sequence.sequenceName]['rows']}
+                                            limit={blurbLimits[sequence.sequenceName]['max']}
+                                            //curTokenCount={blurbTokenCount}
+                                            showCount={true}
+                                        />
+                                    </>
+                                }
                             </div>
                         }
 
                         {
-                            sequenceType === 'expandedSummary' && sequence.blurb && sequence.blurb !== '' &&
+                            (sequenceType === 'expandedSummary' && blurbHasValue) &&
                             <div className="float-start w-100 pt-3">
                                 <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
-                                    sequence.blurb && sequence.blurb !== '' &&
+                                    selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
+                                    <p>{selectedBlurbBrainstorm[0]['completion']}</p>
+                                }
+                                {
+                                    (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) && sequence.blurb && sequence.blurb !== '' &&
                                     <p>{sequence.blurb}</p>
                                 }
                                 <LimitedTextArea
@@ -399,7 +183,14 @@ const Sequence = ({
                         }
 
                         {
-                            sequenceType === 'full' && sequence.text && sequence.text !== '' &&
+                            (sequenceType === 'expandedSummary' && !blurbHasValue) &&
+                            <div className="float-start w-100 pt-3">
+                                <p>The corresponding Blurb for this sequence does not have a value. Enter a blurb in the previous tab before returning here to expand upon it.</p>
+                            </div>
+                        }
+
+                        {
+                            sequenceType === 'full' && expandedSummaryHasValue &&
                             <div className="float-start w-100 pt-3">
                                 <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
@@ -420,6 +211,13 @@ const Sequence = ({
                                     //curTokenCount={fullTokenCount}
                                     showCount={true}
                                 />
+                            </div>
+                        }
+
+                        {
+                            (sequenceType === 'full' && !expandedSummaryHasValue) &&
+                            <div className="float-start w-100 pt-3">
+                                <p>The corresponding Expanded Summary for this sequence does not have a value. Enter an expanded summary in the previous tab before returning here to complete it in full.</p>
                             </div>
                         }
                     </div>
@@ -452,7 +250,7 @@ const Sequence = ({
                                         <div className='row'>
                                             <div className='col'>
                                                 {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    //userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
                                                         <p>Based on the log line, characters, and previous events, ask the AI to brainstorm a blurb for {sequence.sequenceName}.</p>
                                                         <SequenceBrainstorm
@@ -471,16 +269,18 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateBlurbCompletions}
                                                             completionURL={'GenerateBlurb'}
                                                             textPropName='blurb'
+                                                            completionPropName={'blurbCompletions'}
                                                             tokensRemaining={tokensRemaining}
+                                                            AILogLineDescriptions={AILogLineDescriptions}
                                                         />
                                                     </>
                                                 }
-                                                {
+                                                {/* {
                                                     (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                     <>
                                                         <SignUpMessage />
                                                     </>
-                                                }
+                                                } */}
                                             </div>
                                         </div>
                                     }
@@ -496,7 +296,7 @@ const Sequence = ({
                                         <div className='row'>
                                             <div className='col'>
                                                 {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
+                                                    //userInfo && userInfo.userRoles.includes('customer') &&
                                                     <>
                                                         <p>Based on the log line, characters, and previous events, ask the AI to brainstorm an expanded summary for {sequence.sequenceName}.</p>
                                                         <SequenceBrainstorm
@@ -515,16 +315,17 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateExpandedSummaryCompletions}
                                                             completionURL={'GenerateExpandedSummary'}
                                                             textPropName='text'
+                                                            completionPropName={'completions'}
                                                             tokensRemaining={tokensRemaining}
                                                         />
                                                     </>
                                                 }
-                                                {
+                                                {/* {
                                                     (!userInfo || !userInfo.userRoles.includes('customer')) &&
                                                     <>
                                                         <SignUpMessage />
                                                     </>
-                                                }
+                                                } */}
                                             </div>
                                         </div>
                                     }
@@ -559,6 +360,7 @@ const Sequence = ({
                                                             updateSequenceCompletions={updateFullCompletions}
                                                             completionURL={'GenerateFull'}
                                                             textPropName='full'
+                                                            completionPropName={'fullCompletions'}
                                                             tokensRemaining={tokensRemaining}
                                                         />
                                                     </>

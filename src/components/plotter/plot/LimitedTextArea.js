@@ -11,7 +11,8 @@ const LimitedTextArea = ({
     className,
     setValue,
     showCount,
-    onFocus }) => {
+    onFocus
+}) => {
 
     const setTruncatedContent = React.useCallback(
         text => {
