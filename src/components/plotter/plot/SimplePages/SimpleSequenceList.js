@@ -39,7 +39,6 @@ const SimpleSequenceList = (
         if (showCurSequence && sequences && sequences.length > 1) {
             return <div className='row pb-5' key={sequence['sequenceName']}>
                 <div className='col-8'>
-                    <p>{curBlurbHasSelectedBrainstorm.toString()} {prevSeqHasSelectedBrainstorm.toString()}</p>
                     <SimpleSequence
                         userInfo={userInfo}
                         plotId={plotId}

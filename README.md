@@ -12,7 +12,7 @@ Either:
 	OR
 	On the repo main page, click "Compare & pull request" which is a shortcut to the above manual approach
 Click "Create pull request" and fill out the details, then click "Create pull request"
-	This immediately kicks off a GitHub Action to deploy a new Azure environment for this branch. Optionally test out on the live site by going to the Azure portal, navigate to the Static Web App -> Environments. You should see a new item until "Preview Deployments" with your branch name.
+	This immediately kicks off a GitHub Action to deploy a new Azure environment for this branch. Optionally test out on the live site by going to the Azure portal, navigate to the Static Web App -> Environments. You should see a new item until "Preview Deployments" with your branch name. NOTE: to log in, you will need to add the newly generated URL to the authentication providers as a redirect URL.
 Click "Merge pull request" fill out any comments, then "Confirm merge"
 	This immediately kicks off a GitHub action that DELETES the "Preview Deployment" from Azure
 Click the button "Delete branch" on the success message
