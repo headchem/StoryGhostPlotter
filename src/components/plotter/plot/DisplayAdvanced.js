@@ -26,7 +26,6 @@ const DisplayAdvanced = (
         logLineIncomplete,
         logLineDescription,
         onLogLineDescriptionChange,
-        //logLineDescriptionTokenCount,
         onTitleChange,
         title,
         problemTemplate,
@@ -78,7 +77,6 @@ const DisplayAdvanced = (
         onIsPublicChange,
         isPublic,
         lastSaveSuccess,
-        totalTokens,
 
     }
 ) => {
@@ -106,7 +104,6 @@ const DisplayAdvanced = (
                     onKeywordsChange={onKeywordsChange}
                     logLineDescription={logLineDescription}
                     onLogLineDescriptionChange={onLogLineDescriptionChange}
-                    //logLineDescriptionTokenCount={logLineDescriptionTokenCount}
 
                     onTitleChange={onTitleChange}
                     title={title}
@@ -313,12 +310,6 @@ const DisplayAdvanced = (
                         {
                             lastSaveSuccess !== null &&
                             <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
-                        }
-                        {
-                            <>
-                                <br />
-                                <span>{totalTokens}/{2048 - 320} tokens</span>
-                            </>
                         }
                     </p>
                 </div>

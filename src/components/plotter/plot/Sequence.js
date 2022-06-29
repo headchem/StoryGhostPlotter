@@ -3,7 +3,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
-//import { getTokenCount } from "../../../util/Tokenizer";
 import SequenceAdvice from './Advice/SequenceAdvice'
 import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
 import SignUpMessage from './SignUpMessage'
@@ -51,27 +50,6 @@ const Sequence = ({
     const onDeleteSequence = () => {
         deleteSequence(sequence.sequenceName)
     }
-
-    // const updateBlurbTokenCount = async () => {
-    //     const text = sequence.blurb ? sequence.blurb : ''
-
-    //     const tokenCount = await getTokenCount(text)
-    //     setBlurbTokenCount(tokenCount)
-    // }
-
-    // const updateExpandedSummaryTokenCount = async () => {
-    //     const text = sequence.text ? sequence.text : ''
-
-    //     const tokenCount = await getTokenCount(text)
-    //     setExpandedSummaryTokenCount(tokenCount)
-    // }
-
-    // const updateFullTokenCount = async () => {
-    //     const text = sequence.full ? sequence.full : ''
-
-    //     const tokenCount = await getTokenCount(text)
-    //     setFullTokenCount(tokenCount)
-    // }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {

@@ -9,7 +9,6 @@ import { allSequencesHaveValues } from '../../../util/SequenceTextCheck'
 
 import DisplaySimple from './DisplaySimple'
 import DisplayAdvanced from './DisplayAdvanced'
-import { getTokenCount } from "../../../util/Tokenizer";
 
 const PlotHome = (
     {
@@ -51,8 +50,6 @@ const PlotHome = (
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
     const [tokensRemaining, setTokensRemaining] = useState(9999999999)
-
-    const [logLineDescriptionTokenCount, setLogLineDescriptionTokenCount] = useState(0)
 
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -441,25 +438,10 @@ const PlotHome = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
 
-    const [totalTokens, setTotalTokens] = useState(0)
-
-    const updateTotalTokens = async () => {
-        if (!sequences || sequences.length === 0) return
-        const allText = sequences.map(s => s.text).join(" ") + sequences.map(s => s.context).join(" ") + logLineDescription + characters.map(s => s.description).join(" ")
-
-        const numTokens = await getTokenCount(allText)
-        setTotalTokens(numTokens)
-    }
-
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
         const timeout = setTimeout(async () => {
             savePlot()
-
-            const logLineTokenCount = await getTokenCount(logLineDescription ?? '')
-            setLogLineDescriptionTokenCount(logLineTokenCount)
-            updateTotalTokens()
-
         }, 2000) //ms timeout to execute this function if timeout will be not cleared
 
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
@@ -632,7 +614,6 @@ const PlotHome = (
                             logLineIncomplete={logLineIncomplete}
                             logLineDescription={logLineDescription}
                             onLogLineDescriptionChange={onLogLineDescriptionChange}
-                            logLineDescriptionTokenCount={logLineDescriptionTokenCount}
                             onTitleChange={onTitleChange}
                             title={title}
                             problemTemplate={problemTemplate}
@@ -684,7 +665,6 @@ const PlotHome = (
                             onIsPublicChange={onIsPublicChange}
                             isPublic={isPublic}
                             lastSaveSuccess={lastSaveSuccess}
-                            totalTokens={totalTokens}
 
                             editCompletion={editCompletion}
                         />
@@ -709,7 +689,6 @@ const PlotHome = (
                             logLineIncomplete={logLineIncomplete}
                             logLineDescription={logLineDescription}
                             onLogLineDescriptionChange={onLogLineDescriptionChange}
-                            //logLineDescriptionTokenCount={logLineDescriptionTokenCount}
                             onTitleChange={onTitleChange}
                             title={title}
                             problemTemplate={problemTemplate}
@@ -761,7 +740,6 @@ const PlotHome = (
                             onIsPublicChange={onIsPublicChange}
                             isPublic={isPublic}
                             lastSaveSuccess={lastSaveSuccess}
-                            totalTokens={totalTokens}
 
                             editCompletion={editCompletion}
                         />

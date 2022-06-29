@@ -22,4 +22,7 @@ public class OpenAICompletionsResponse
 
     [JsonPropertyName("choices")]
     public List<OpenAICompletionsChoice> Choices { get; set; }
+
+    [JsonPropertyName("usage")]
+    public OpenAICompletionsUsage Usage { get; set; }
 }

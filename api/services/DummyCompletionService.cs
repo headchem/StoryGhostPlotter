@@ -21,14 +21,12 @@ public class DummyCompletionService : ICompletionService
 
     private readonly ILogger<DummyCompletionService> _logger;
     private readonly HttpClient _httpClient;
-    private readonly IEncodingService _encodingService;
     private readonly IUserService _userService;
 
-    public DummyCompletionService(ILogger<DummyCompletionService> logger, HttpClient httpClient, IEncodingService encodingService, IUserService userService)
+    public DummyCompletionService(ILogger<DummyCompletionService> logger, HttpClient httpClient, IUserService userService)
     {
         _logger = logger;
         _httpClient = httpClient;
-        _encodingService = encodingService;
         _userService = userService;
     }
 
@@ -51,8 +49,8 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI Log Line Description completion goes here...";
 
-        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
-        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+        var promptTokenCount = 123;
+        var completionTokenCount = 456;
 
         var totalTokens = promptTokenCount + completionTokenCount;
 
@@ -92,8 +90,8 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI EXPANDED SUMMARY completion for " + targetSequence + " goes here...";
 
-        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
-        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+        var promptTokenCount = 123;
+        var completionTokenCount = 456;
 
         var totalTokens = promptTokenCount + completionTokenCount;
 
@@ -133,8 +131,8 @@ public class DummyCompletionService : ICompletionService
         result.Prompt = prompt;
         result.Completion = "AI CHARACTER completion goes here...";
 
-        var promptTokenCount = (await _encodingService.Encode(result.Prompt)).Count;
-        var completionTokenCount = (await _encodingService.Encode(result.Completion)).Count;
+        var promptTokenCount = 123;
+        var completionTokenCount = 456;
 
         var totalTokens = promptTokenCount + completionTokenCount;
 

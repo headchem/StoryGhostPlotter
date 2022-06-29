@@ -23,20 +23,18 @@ public class OpenAICompletionService : ICompletionService
     private readonly HttpClient _httpClient;
     private readonly IAnalysisService _analysisService;
     private readonly IKeywordsService _keywordService;
-    private readonly IEncodingService _encodingService;
     private readonly IUserService _userService;
     private readonly IPlotService _plotService;
     private readonly ILogger<OpenAICompletionService> _logger;
     private TelemetryClient _telemetry;
 
-    public OpenAICompletionService(ILogger<OpenAICompletionService> logger, TelemetryClient telemetry, HttpClient httpClient, IAnalysisService analysisService, IKeywordsService keywordsService, IEncodingService encodingService, IUserService userService, IPlotService plotService)
+    public OpenAICompletionService(ILogger<OpenAICompletionService> logger, TelemetryClient telemetry, HttpClient httpClient, IAnalysisService analysisService, IKeywordsService keywordsService, IUserService userService, IPlotService plotService)
     {
         _logger = logger;
         _telemetry = telemetry;
         _httpClient = httpClient;
         _analysisService = analysisService;
         _keywordService = keywordsService;
-        _encodingService = encodingService;
         _userService = userService;
         _plotService = plotService;
     }
@@ -68,7 +66,7 @@ public class OpenAICompletionService : ICompletionService
 
         var results = new List<CompletionResponse>();
 
-        var promptTokenCount = (await _encodingService.Encode(openAIRequest.Prompt)).Count;
+        var promptTokenCount = resultDeserialized.Usage.PromptTokens;
 
         foreach (var completion in completionObjs)
         {
@@ -77,9 +75,9 @@ public class OpenAICompletionService : ICompletionService
             var promptIsToxic = false;//await _analysisService.IsToxic(openAIRequest.Prompt);
             var completionIsToxic = await _analysisService.IsToxic(userId, completionText);
 
-            var completionTokenCount = (await _encodingService.Encode(completionText)).Count;
+            var completionTokenCount = resultDeserialized.Usage.CompletionTokens;
 
-            var totalTokens = promptTokenCount + completionTokenCount;
+            var totalTokens = resultDeserialized.Usage.TotalTokens;
 
             await _plotService.LogTokenUsage(userId, plotId, totalTokens);
 

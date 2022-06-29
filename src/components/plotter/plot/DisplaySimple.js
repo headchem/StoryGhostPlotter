@@ -28,7 +28,6 @@ const DisplaySimple = (
         logLineIncomplete,
         logLineDescription,
         onLogLineDescriptionChange,
-        logLineDescriptionTokenCount,
         onTitleChange,
         title,
         problemTemplate,
@@ -80,7 +79,6 @@ const DisplaySimple = (
         onIsPublicChange,
         isPublic,
         lastSaveSuccess,
-        totalTokens,
 
         editCompletion
 
