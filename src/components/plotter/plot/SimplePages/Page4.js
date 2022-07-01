@@ -40,7 +40,7 @@ const Page4 = (
 
     return (
         <div className='row'>
-            <div className='col-9'>
+            <div className='col-md-9'>
 
                 <h1 className='pb-3'>{title}</h1>
                 <p className='fs-4 pb-3'>{logLineDescription}</p>
@@ -59,7 +59,7 @@ const Page4 = (
                     />
                 }
             </div>
-            <div className="col-3">
+            <div className="col-md-3">
                 <p><strong>Genres: </strong>{genres.join(', ')}</p>
                 <p><strong>Keywords: </strong>{keywords.join(', ')}</p>
                 {

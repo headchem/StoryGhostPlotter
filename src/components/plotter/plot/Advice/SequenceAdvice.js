@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 const SequenceAdvice = ({
     sequenceName,
-
     genres,
     problemTemplate,
     keywords,
     heroCharacterArchetype,
-    dramaticQuestion
+    dramaticQuestion,
+    showAdviceHeader
 }) => {
 
     const navigate = useNavigate()
@@ -121,7 +121,11 @@ const SequenceAdvice = ({
 
     return (
         <>
-            <h3>Advice for {sequenceName}</h3>
+            {
+                showAdviceHeader === true &&
+                <h3>Advice for {sequenceName}</h3>
+            }
+
             {
                 contextAdviceIsEmpty === false &&
                 <>

@@ -152,7 +152,6 @@ const SimpleSequence = (
             <div className='col'>
                 <div className='row'>
                     <div className='col'>
-                        <h3 className='float-start'>{sequence['sequenceName']}</h3>
                         <div className='float-end'>
                             {
                                 isCompletionLoading === false &&

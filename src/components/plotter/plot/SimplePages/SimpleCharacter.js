@@ -12,16 +12,11 @@ const SimpleCharacter = (
         userInfo,
         plotId,
         logLineDescription,
-        //character,
         curCharacterId,
         archetype,
         characters,
         updateCharacterName,
-        //updateCharacterIsHero,
-        //updateCharacterArchetype,
         updateCharacterDescription,
-        //updateAICharacterCompletion,
-        //updateCharacterPersonality,
         setCharacters
     }
 ) => {
@@ -114,7 +109,7 @@ const SimpleCharacter = (
 
     return (
         <div className='row mb-5'>
-            <div className='col-8'>
+            <div className='col-md-8'>
                 <input type='text' className='fs-5 form-control mb-3' placeholder='Character Name' required onChange={onCharacterNameChange} value={character.name} />
                 <LimitedTextArea
                     id={curCharacterId + '_desc'}
@@ -142,7 +137,7 @@ const SimpleCharacter = (
                 }
 
             </div>
-            <div className='col-4'>
+            <div className='col-md-4'>
                 {
                     character['isHero'] === true &&
                     <p><FaStar /> {character['name']} is the protagonist.</p>

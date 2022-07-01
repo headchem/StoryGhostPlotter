@@ -100,18 +100,18 @@ const DisplaySimple = (
     }
 
     const pageNames = (userInfo && userInfo.userRoles.includes('customer')) ? [
-        'Genres/Keywords',
+        'Genres / Keywords',
         'Log Line',
-        'Problem/Theme',
+        'Problem / Theme',
         'Characters',
         'Review',
         'Blurbs',
         'Expanded',
         'Final'
     ] : [
-        'Genres/Keywords',
+        'Genres / Keywords',
         'Log Line',
-        'Problem/Theme',
+        'Problem / Theme',
         'Characters',
         'Review',
         'Blurbs',

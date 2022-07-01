@@ -22,7 +22,6 @@ const Page1 = (
         AILogLineDescriptions,
 
         setAITitles
-
     }
 ) => {
 
@@ -114,7 +113,11 @@ const Page1 = (
 
                     <div className="card-body">
                         <div className='row'>
-                            <div className='col-8'>
+                        <div className='col-md-4 order-md-2'>
+                                <p><strong>Genres:</strong> {genres.join(', ')}.</p>
+                                <p><strong>Keywords:</strong> {keywords.join(', ')}</p>
+                            </div>
+                            <div className='col-md-8 order-md-1'>
 
                                 {
                                     (isLogLineDescLoading === false && isTitleLoading === false) &&
@@ -153,10 +156,7 @@ const Page1 = (
                                     }
                                 </span>
                             </div>
-                            <div className='col-4'>
-                                <p><strong>Genres:</strong> {genres.join(', ')}.</p>
-                                <p><strong>Keywords:</strong> {keywords.join(', ')}</p>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

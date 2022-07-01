@@ -67,91 +67,122 @@ const DramaticQuestionProblemTemplateTable = (
                             </div>
                         </div>
                     }
-                    {
-                        heroArchetype &&
-                        <div className="card-group hero-archetype-table">
+
+                    <div className='d-md-none'>
+                        {
+                            heroArchetype &&
+                            <ol>
+                                <li>{heroLabel} ({heroArchetype['name']}): {heroArchetype['orphanDesires']}</li>
+                                <li>{heroLabel} ({heroArchetype['name']}): {heroArchetype['wandererResponse']}</li>
+                                <li>{heroLabel} ({heroArchetype['name']}): {heroArchetype['shadowSide']}</li>
+                                <li>{heroLabel} ({heroArchetype['name']}): {heroArchetype['warriorResponse']}</li>
+                            </ol>
+                        }
+                        <ol>
+                            <li>{heroLabel} ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.heroAdjective}</li>
+                            <li>{heroLabel} ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.heroAdjective}</li>
+                            <li>{heroLabel} ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.heroAdjective}</li>
+                        </ol>
+
+                        <ol>
+                            <li>{heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contrary}</li>
+                            <li>{heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contradiction}</li>
+                            <li>{heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.negation}</li>
+                            <li>{heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.positive}</li>
+                        </ol>
+
+                        <ol>
+                            <li>Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}</li>
+                            <li>Enemy ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.enemyAdjective}</li>
+                            <li>Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}</li>
+                        </ol>
+                    </div>
+                    <div className="d-none d-md-block">
+                        {
+                            heroArchetype &&
+                            <div className="card-group hero-archetype-table">
+                                <div className="card">
+                                    <div className="card-body bg-info-to-warning">
+                                        {heroLabel} ({heroArchetype['name']}): {heroArchetype['orphanDesires']}
+                                    </div>
+                                </div>
+                                <div className="card">
+                                    <div className="card-body bg-warning-to-danger">
+                                        {heroLabel} ({heroArchetype['name']}): {heroArchetype['wandererResponse']}
+                                    </div>
+                                </div>
+                                <div className="card">
+                                    <div className="card-body bg-danger">
+                                        {heroLabel} ({heroArchetype['name']}): {heroArchetype['shadowSide']}
+                                    </div>
+                                </div>
+                                <div className="card">
+                                    <div className="card-body bg-danger-to-success">
+                                        {heroLabel} ({heroArchetype['name']}): {heroArchetype['warriorResponse']}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div className="card-group hero-problem-template-table">
+
+                            <div className="card">
+                                <div className="card-body bg-danger-to-warning">
+                                    {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.heroAdjective}
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body bg-warning">
+                                    {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.heroAdjective}
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body bg-warning-to-success">
+                                    {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.heroAdjective}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card-group dramatic-question-table">
+
                             <div className="card">
                                 <div className="card-body bg-info-to-warning">
-                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['orphanDesires']}
+                                    {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contrary}
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-body bg-warning-to-danger">
-                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['wandererResponse']}
+                                    {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contradiction}
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-body bg-danger">
-                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['shadowSide']}
+                                    {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.negation}
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-body bg-danger-to-success">
-                                    {heroLabel} ({heroArchetype['name']}): {heroArchetype['warriorResponse']}
+                                    {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.positive}
                                 </div>
                             </div>
                         </div>
-                    }
 
+                        <div className="card-group enemy-problem-template-table">
 
-                    <div className="card-group hero-problem-template-table">
-
-                        <div className="card">
-                            <div className="card-body bg-danger-to-warning">
-                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.heroAdjective}
+                            <div className="card">
+                                <div className="card-body bg-danger-to-success">
+                                    Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}
+                                </div>
                             </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-warning">
-                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.heroAdjective}
+                            <div className="card">
+                                <div className="card-body bg-success">
+                                    Enemy ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.enemyAdjective}
+                                </div>
                             </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-warning-to-success">
-                                {heroLabel} ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.heroAdjective}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card-group dramatic-question-table">
-
-                        <div className="card">
-                            <div className="card-body bg-info-to-warning">
-                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contrary}
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-warning-to-danger">
-                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.contradiction}
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-danger">
-                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.negation}
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-danger-to-success">
-                                {heroLabel} ({dramaticQuestionData['name']}): {dramaticQuestionData.positive}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="card-group enemy-problem-template-table">
-
-                        <div className="card">
-                            <div className="card-body bg-danger-to-success">
-                                Enemy ({problemTemplateData['name']}): {problemTemplateData.wandererAdjectives.enemyAdjective}
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-success">
-                                Enemy ({problemTemplateData['name']}): {problemTemplateData.warriorAdjectives.enemyAdjective}
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-body bg-success-to-danger">
-                                Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}
+                            <div className="card">
+                                <div className="card-body bg-success-to-danger">
+                                    Enemy ({problemTemplateData['name']}): {problemTemplateData.martyrAdjectives.enemyAdjective}
+                                </div>
                             </div>
                         </div>
                     </div>
