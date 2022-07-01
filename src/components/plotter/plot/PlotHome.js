@@ -199,7 +199,7 @@ const PlotHome = (
     }
 
     const editCompletion = (completionId, sequences, sequenceName, completionPropName, newCompletionText) => {
-        
+
         const getNewCompletions = (sequence) => {
             const newCompletions = sequence[completionPropName].map(
                 (completion) => completion['id'] === completionId ? { ...completion, completion: newCompletionText } : completion

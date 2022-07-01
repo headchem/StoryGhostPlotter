@@ -285,6 +285,16 @@ const DisplaySimple = (
                             />
                         </div>
                     </div>
+                    <p className='text-muted text-end'>
+                        {
+                            lastSaveSuccess === null &&
+                            <span>not yet saved in this session</span>
+                        }
+                        {
+                            lastSaveSuccess !== null &&
+                            <span>last saved: {new Date(lastSaveSuccess).toLocaleTimeString()}</span>
+                        }
+                    </p>
                 </div>
             </div>
         </>

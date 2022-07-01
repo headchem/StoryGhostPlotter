@@ -51,10 +51,13 @@ function App() {
 
     return (
         <Router>
-            <ToastContainer
-                theme={mode}
-                style={{ width: "250px" }}
-            />
+            <div className="d-none d-md-block">
+                <ToastContainer
+                    theme={mode}
+                    style={{ width: "250px" }}
+                />
+            </div>
+
             <Header userInfo={userInfo} />
 
             <main className="flex-shrink-0 mt-5">
