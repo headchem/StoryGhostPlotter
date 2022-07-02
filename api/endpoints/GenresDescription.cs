@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -12,13 +13,21 @@ public static class GenresDescription
     [FunctionName("GenresDescription")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/GenresDescription")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+        try
+        {
+            var user = StaticWebAppsAuth.Parse(req);
+            if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
 
-        var genres = req.Query["genres"].ToString().Split(',').ToList();
+            var genres = req.Query["genres"].ToString().Split(',').ToList();
 
-        var genresObj = Factory.GetGenres(genres);
+            var genresObj = Factory.GetGenres(genres);
 
-        return new OkObjectResult(genresObj);
+            return new OkObjectResult(genresObj);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex.Message);
+            throw ex;
+        }
     }
 }

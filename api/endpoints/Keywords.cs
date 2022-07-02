@@ -30,24 +30,32 @@ public class Keywords
     [FunctionName("Keywords")]
     public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Keywords")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
-
-        string genresStr = req.Query["genres"];
-        string numKeywordsStr = req.Query["numKeywords"];
-        int numKeywords = int.Parse(numKeywordsStr);
-
-        List<string> genres = new List<string>();
-
-        foreach (var genre in genresStr.Split(','))
+        try
         {
-            genres.Add(genre.Trim());
+            var user = StaticWebAppsAuth.Parse(req);
+            if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+
+            string genresStr = req.Query["genres"];
+            string numKeywordsStr = req.Query["numKeywords"];
+            int numKeywords = int.Parse(numKeywordsStr);
+
+            List<string> genres = new List<string>();
+
+            foreach (var genre in genresStr.Split(','))
+            {
+                genres.Add(genre.Trim());
+            }
+
+            var keywords = _keywordsService.GetKeywords(genres, numKeywords);
+
+            _telemetry.TrackEvent("Generate Keywords");
+
+            return new OkObjectResult(keywords);
         }
-
-        var keywords = _keywordsService.GetKeywords(genres, numKeywords);
-
-        _telemetry.TrackEvent("Generate Keywords");
-
-        return new OkObjectResult(keywords);
+        catch (Exception ex)
+        {
+            log.LogError(ex.Message);
+            throw ex;
+        }
     }
 }

@@ -15,13 +15,21 @@ public static class DramaticQuestionDescription
     [FunctionName("DramaticQuestionDescription")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/DramaticQuestionDescription")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+        try
+        {
+            var user = StaticWebAppsAuth.Parse(req);
+            if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
 
-        string dramaticQuestion = req.Query["dramaticQuestion"];
+            string dramaticQuestion = req.Query["dramaticQuestion"];
 
-        var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
+            var dramaticQuestionObj = Factory.GetDramaticQuestion(dramaticQuestion);
 
-        return new OkObjectResult(dramaticQuestionObj);
+            return new OkObjectResult(dramaticQuestionObj);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex.Message);
+            throw ex;
+        }
     }
 }

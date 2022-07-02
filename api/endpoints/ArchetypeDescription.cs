@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -11,13 +12,21 @@ public static class ArchetypeDescription
     [FunctionName("ArchetypeDescription")]
     public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "LogLine/ArchetypeDescription")] HttpRequest req, ILogger log)
     {
-        var user = StaticWebAppsAuth.Parse(req);
-        if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+        try
+        {
+            var user = StaticWebAppsAuth.Parse(req);
+            if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
 
-        string archetype = req.Query["archetype"];
+            string archetype = req.Query["archetype"];
 
-        var archetypeObj = Factory.GetArchetype(archetype);
+            var archetypeObj = Factory.GetArchetype(archetype);
 
-        return new OkObjectResult(archetypeObj);
+            return new OkObjectResult(archetypeObj);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex.Message);
+            throw ex;
+        }
     }
 }
