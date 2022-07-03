@@ -155,7 +155,7 @@ export const expandedSummaryLimits = {
         'rows': 2
     },
     'Midpoint': {
-        'max': 500,
+        'max': 550,
         'rows': 6
     },
     'Bad Guys Close In': {

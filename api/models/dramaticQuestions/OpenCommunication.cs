@@ -11,7 +11,7 @@ public class OpenCommunication : IDramaticQuestion
 
     public string Contrary { get { return "Alienation"; } }
     public string Contradiction { get { return "Isolation"; } }
-    public string Negation { get { return "Insantiy"; } }
+    public string Negation { get { return "Insanity"; } }
     public string Positive { get { return "Open Communication"; } }
 
     public SequenceAdvices AdviceSequence

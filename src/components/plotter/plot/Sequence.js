@@ -108,10 +108,9 @@ const Sequence = ({
                             sequenceType === 'blurb' &&
                             <div className="float-start w-100 pt-3">
 
-                                {/* {
-                                    sequence.text && sequence.text !== '' &&
-                                    <p>TEMP! {sequence.text}</p>
-                                } */}
+                                {userInfo && userInfo.userRoles.includes('admin') && sequence.text && sequence.text !== '' &&
+                                    <p><span className='text-muted'>Expanded Summary (admin only): </span> {sequence.text}</p>
+                                }
                                 {
                                     selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
                                     <p>{selectedBlurbBrainstorm[0]['completion']}</p>
