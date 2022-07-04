@@ -53,7 +53,7 @@ export const blurbLimits = {
     },
     'Debate': {
         'max': 350,
-        'rows': 3
+        'rows': 4
     },
     'B Story': {
         'max': 150,
@@ -61,7 +61,7 @@ export const blurbLimits = {
     },
     'Debate (Continued)': {
         'max': 100,
-        'rows': 1
+        'rows': 2
     },
     'Break Into Two': {
         'max': 250,
@@ -80,8 +80,8 @@ export const blurbLimits = {
         'rows': 2
     },
     'Bad Guys Close In': {
-        'max': 400,
-        'rows': 4
+        'max': 600,
+        'rows': 5
     },
     'Second Pinch Point': {
         'max': 150,

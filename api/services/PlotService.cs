@@ -141,7 +141,7 @@ public class PlotService : IPlotService
                 {
                     sequence.BlurbCompletions = sequence.BlurbCompletions.TakeLast(brainstormLimit).ToList();
                 }
-                sequence.Blurb = sequence.Blurb.Truncate(500);
+                sequence.Blurb = sequence.Blurb.Truncate(700);
 
                 if (sequence.Completions != null)
                 {
