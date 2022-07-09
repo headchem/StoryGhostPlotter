@@ -21,7 +21,11 @@ public class KeywordsService : IKeywordsService
 
     public List<string> GetKeywords(List<string> genres, int numKeywords)
     {
-        if (genres == null || genres.Count == 0) throw new Exception("You must pass in at least one genre");
+        if (genres == null) throw new Exception("You must pass in at least one genre");
+
+        genres = genres.Where(g => string.IsNullOrWhiteSpace(g) == false).ToList();
+
+        if (genres.Count == 0) throw new Exception("You must pass in at least one genre");
 
         var genresObjs = Factory.GetGenres(genres);
 

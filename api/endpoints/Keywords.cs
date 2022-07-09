@@ -41,9 +41,17 @@ public class Keywords
 
             List<string> genres = new List<string>();
 
-            foreach (var genre in genresStr.Split(','))
+            if (!string.IsNullOrWhiteSpace(genresStr))
             {
-                genres.Add(genre.Trim());
+                foreach (var genre in genresStr.Split(','))
+                {
+                    genres.Add(genre.Trim());
+                }
+            }
+
+            // if no genres were passed in, select all genres, and use that to generate keywords across the entire list
+            if (genres.Count == 0) {
+                genres = Factory.GetGenres().Select(g => g.Name).ToList();
             }
 
             var keywords = _keywordsService.GetKeywords(genres, numKeywords);
