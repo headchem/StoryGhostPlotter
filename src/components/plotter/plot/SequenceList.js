@@ -10,7 +10,6 @@ const SequenceList = ({
     logLineDescription,
     updateBlurb,
     updateExpandedSummary,
-    updateFull,
     insertSequence,
     deleteSequence,
     genres,
@@ -24,7 +23,8 @@ const SequenceList = ({
     updateFullCompletions,
     setSequences,
     tokensRemaining,
-    AILogLineDescriptions
+    AILogLineDescriptions,
+    updateScenes,
 }) => {
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
@@ -168,7 +168,6 @@ const SequenceList = ({
                                     sequences={sequences}
                                     updateBlurb={updateBlurb}
                                     updateExpandedSummary={updateExpandedSummary}
-                                    updateFull={updateFull}
 
                                     insertSequence={insertSequence}
                                     deleteSequence={deleteSequence}
@@ -202,7 +201,6 @@ const SequenceList = ({
                                     sequences={sequences}
                                     updateBlurb={updateBlurb}
                                     updateExpandedSummary={updateExpandedSummary}
-                                    updateFull={updateFull}
 
                                     insertSequence={insertSequence}
                                     deleteSequence={deleteSequence}
@@ -226,7 +224,7 @@ const SequenceList = ({
                                 />
                             }
                             {
-                                sequenceType === 'full' && sequence.blurb && sequence.blurb !== '' && sequence.text && sequence.text !== '' &&
+                                sequenceType === 'scenes' &&
                                 <Sequence
                                     sequenceType={sequenceType}
                                     key={sequenceType + sequence.sequenceName}
@@ -236,7 +234,6 @@ const SequenceList = ({
                                     sequences={sequences}
                                     updateBlurb={updateBlurb}
                                     updateExpandedSummary={updateExpandedSummary}
-                                    updateFull={updateFull}
 
                                     insertSequence={insertSequence}
                                     deleteSequence={deleteSequence}
@@ -257,6 +254,7 @@ const SequenceList = ({
 
                                     tokensRemaining={tokensRemaining}
                                     AILogLineDescriptions={AILogLineDescriptions}
+                                    updateScenes={updateScenes}
                                 />
                             }
                         </div>

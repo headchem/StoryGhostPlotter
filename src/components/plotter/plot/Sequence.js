@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 import { FaMinusCircle } from 'react-icons/fa'
 import LimitedTextArea from './LimitedTextArea'
 import NextSequencesButtonGroup from './NextSequencesButtonGroup'
 import SequenceAdvice from './Advice/SequenceAdvice'
 import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
-import SignUpMessage from './SignUpMessage'
-import { blurbLimits, expandedSummaryLimits, fullLimits } from '../../../util/SequenceTextCheck';
+import { blurbLimits, expandedSummaryLimits } from '../../../util/SequenceTextCheck';
+import SceneList from './SceneList'
 
 const Sequence = ({
     userInfo,
@@ -26,20 +26,15 @@ const Sequence = ({
 
     updateBlurb,
     updateExpandedSummary,
-    updateFull,
     insertSequence,
     deleteSequence,
     updateBlurbCompletions,
     updateExpandedSummaryCompletions,
-    updateFullCompletions,
     allowed,
     tokensRemaining,
-    AILogLineDescriptions
+    AILogLineDescriptions,
+    updateScenes,
 }) => {
-
-    // const [blurbTokenCount, setBlurbTokenCount] = useState(0)
-    // const [expandedSummaryTokenCount, setExpandedSummaryTokenCount] = useState(0)
-    // const [fullTokenCount, setFullTokenCount] = useState(0)
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
@@ -52,18 +47,18 @@ const Sequence = ({
     }
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            // removing, too noisy, use simpler character counts as the limit
-            //updateBlurbTokenCount()
-            //updateExpandedSummaryTokenCount()
-            //updateFullTokenCount()
-        }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
+    // useEffect(() => {
+    //     const timeout = setTimeout(() => {
+    //         // removing, too noisy, use simpler character counts as the limit
+    //         //updateBlurbTokenCount()
+    //         //updateExpandedSummaryTokenCount()
+    //         //updateFullTokenCount()
+    //     }, 2000) //2000 - timeout to execute this function if timeout will be not cleared
 
-        return () => clearTimeout(timeout) //clear timeout (delete function execution)
+    //     return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sequence]);
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [sequence]);
 
     const NextSequencesButtonGroupMemo = useMemo(() => ( // useMemo prevents the buttons from flickering on keypress
         <NextSequencesButtonGroup
@@ -140,22 +135,29 @@ const Sequence = ({
                                 <label title="concrete events and interactions visible to the audience" htmlFor={sequence.sequenceName + '_expanded_summary_textarea'} className="form-label w-100 d-none">Visible Events</label>
                                 {
                                     selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
-                                    <p>{selectedBlurbBrainstorm[0]['completion']}</p>
+                                    <p className='text-muted'>{selectedBlurbBrainstorm[0]['completion']}</p>
                                 }
                                 {
                                     (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) && sequence.blurb && sequence.blurb !== '' &&
-                                    <p>{sequence.blurb}</p>
+                                    <p className='text-muted'>{sequence.blurb}</p>
                                 }
-                                <LimitedTextArea
-                                    id={sequence.sequenceName + '_expanded_summary_textarea'}
-                                    className="form-control"
-                                    value={sequence.text}
-                                    setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
-                                    rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
-                                    limit={expandedSummaryLimits[sequence.sequenceName]['max']}
-                                    //curTokenCount={expandedSummaryTokenCount}
-                                    showCount={true}
-                                />
+                                {
+                                    selectedExpandedBrainstorm && selectedExpandedBrainstorm.length > 0 &&
+                                    <p>{selectedExpandedBrainstorm[0]['completion']}</p>
+                                }
+                                {
+                                    (!selectedExpandedBrainstorm || selectedExpandedBrainstorm.length === 0) &&
+                                    <LimitedTextArea
+                                        id={sequence.sequenceName + '_expanded_summary_textarea'}
+                                        className="form-control"
+                                        value={sequence.text}
+                                        setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
+                                        rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
+                                        limit={expandedSummaryLimits[sequence.sequenceName]['max']}
+                                        //curTokenCount={expandedSummaryTokenCount}
+                                        showCount={true}
+                                    />
+                                }
                             </div>
                         }
 
@@ -167,34 +169,50 @@ const Sequence = ({
                         }
 
                         {
-                            sequenceType === 'full' && expandedSummaryHasValue &&
+                            sequenceType === 'scenes' && expandedSummaryHasValue &&
                             <div className="float-start w-100 pt-3">
-                                <label title="full screenplay for this sequence" htmlFor={sequence.sequenceName + '_full_textarea'} className="form-label w-100 d-none">Visible Events</label>
-                                {
-                                    sequence.blurb && sequence.blurb !== '' &&
-                                    <p>{sequence.blurb}</p>
+                                {/* {
+                                    selectedBlurbBrainstorm && selectedBlurbBrainstorm.length > 0 &&
+                                    <p className='text-muted'>{selectedBlurbBrainstorm[0]['completion']}</p>
                                 }
                                 {
-                                    sequence.text && sequence.text !== '' &&
-                                    <p>{sequence.text}</p>
+                                    (!selectedBlurbBrainstorm || selectedBlurbBrainstorm.length === 0) && sequence.blurb && sequence.blurb !== '' &&
+                                    <p className='text-muted'>{sequence.blurb}</p>
+                                } */}
+
+                                {
+                                    selectedExpandedBrainstorm && selectedExpandedBrainstorm.length > 0 &&
+                                    <p className='text-muted'>{selectedExpandedBrainstorm[0]['completion']}</p>
                                 }
-                                <LimitedTextArea
-                                    id={sequence.sequenceName + '_full_textarea'}
-                                    className="form-control"
-                                    value={sequence.full}
-                                    setValue={(newValue) => updateFull(sequence.sequenceName, newValue)}
-                                    rows={fullLimits[sequence.sequenceName]['rows']}
-                                    limit={fullLimits[sequence.sequenceName]['max']}
-                                    //curTokenCount={fullTokenCount}
-                                    showCount={true}
+                                {
+                                    (!selectedExpandedBrainstorm || selectedExpandedBrainstorm.length === 0) && sequence.text && sequence.text !== '' &&
+                                    <p className='text-muted'>{sequence.text}</p>
+                                }
+
+                                <SceneList
+                                    userInfo={userInfo}
+                                    plotId={plotId}
+                                    sequenceType={sequenceType}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    dramaticQuestion={dramaticQuestion}
+                                    logLineDescription={logLineDescription}
+                                    sequence={sequence}
+                                    sequences={sequences}
+                                    tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
+                                    updateScenes={updateScenes}
                                 />
                             </div>
                         }
 
                         {
-                            (sequenceType === 'full' && !expandedSummaryHasValue) &&
+                            (sequenceType === 'scenes' && !expandedSummaryHasValue) &&
                             <div className="float-start w-100 pt-3">
-                                <p>The corresponding Expanded Summary for this sequence does not have a value. Enter an expanded summary in the previous tab before returning here to complete it in full.</p>
+                                <p>The corresponding Expanded Summary for this sequence does not have a value. Enter an expanded summary in the previous tab before returning here to complete the Scene.</p>
                             </div>
                         }
                     </div>
@@ -309,51 +327,7 @@ const Sequence = ({
                                 </Accordion.Body>
                             </Accordion.Item>
                         }
-                        {
-                            sequenceType === 'full' &&
-                            <Accordion.Item eventKey="1">
-                                <Accordion.Header>Brainstorm Full with AI</Accordion.Header>
-                                <Accordion.Body>
-                                    {
-                                        <div className='row'>
-                                            <div className='col'>
-                                                {
-                                                    userInfo && userInfo.userRoles.includes('customer') &&
-                                                    <>
-                                                        <p>Based on the log line, characters, and previous events, ask the AI to brainstorm a full screenplay for {sequence.sequenceName}.</p>
-                                                        <SequenceBrainstorm
-                                                            userInfo={userInfo}
-                                                            plotId={plotId}
-                                                            logLineDescription={logLineDescription}
-                                                            genres={genres}
-                                                            problemTemplate={problemTemplate}
-                                                            dramaticQuestion={dramaticQuestion}
-                                                            keywords={keywords}
-                                                            sequences={sequences}
-                                                            characters={characters}
-                                                            completions={!sequence['fullCompletions'] ? [] : sequence['fullCompletions']}
-                                                            targetSequence={sequence.sequenceName}
-                                                            updateText={updateFull}
-                                                            updateSequenceCompletions={updateFullCompletions}
-                                                            completionURL={'GenerateFull'}
-                                                            textPropName='full'
-                                                            completionPropName={'fullCompletions'}
-                                                            tokensRemaining={tokensRemaining}
-                                                        />
-                                                    </>
-                                                }
-                                                {
-                                                    (!userInfo || !userInfo.userRoles.includes('customer')) &&
-                                                    <>
-                                                        <SignUpMessage />
-                                                    </>
-                                                }
-                                            </div>
-                                        </div>
-                                    }
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        }
+
                     </Accordion>
                 </div>
             </div>

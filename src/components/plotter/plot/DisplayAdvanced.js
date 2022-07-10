@@ -78,6 +78,7 @@ const DisplayAdvanced = (
         isPublic,
         lastSaveSuccess,
 
+        updateScenes
     }
 ) => {
 
@@ -249,13 +250,13 @@ const DisplayAdvanced = (
                     </Tab>
                     {
                         userInfo && userInfo.userRoles.includes('admin') &&
-                        <Tab eventKey="full" title="4. Full">
-                            <p>Expand the summaries into full prose or a screenplay.</p>
+                        <Tab eventKey="scenes" title="4. Scenes">
+                            <p>Expand the summaries into scenes.</p>
 
                             {
-                                hideBlurbs === false &&
+                                hideBlurbs === false && expandedSummariesIncomplete === false &&
                                 <SequenceList
-                                    sequenceType='full'
+                                    sequenceType='scenes'
                                     plotId={plotId}
                                     sequences={sequences}
                                     userInfo={userInfo}
@@ -277,13 +278,13 @@ const DisplayAdvanced = (
                                     updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
                                     updateFullCompletions={updateFullCompletions}
                                     setSequences={setSequences}
-
+                                    updateScenes={updateScenes}
                                     tokensRemaining={tokensRemaining}
                                 />
                             }
                             {
                                 expandedSummariesIncomplete &&
-                                <p>Not all blurbs and expanded summaries have been completed. Additional full text areas will only appear when their corresponding blurbs and expanded summary has been entered.</p>
+                                <p>Not all blurbs and expanded summaries have been completed. Additional Scenes will only appear when their corresponding blurbs and expanded summary have been entered.</p>
                             }
                         </Tab>
                     }

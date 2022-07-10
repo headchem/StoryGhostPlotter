@@ -182,13 +182,13 @@ const PlotHome = (
         )
     }
 
-    const updateFull = (sequenceName, text) => {
-        setSequences(
-            sequences.map(
-                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, full: text } : sequence
-            )
-        )
-    }
+    // const updateFull = (sequenceName, text) => {
+    //     setSequences(
+    //         sequences.map(
+    //             (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, full: text } : sequence
+    //         )
+    //     )
+    // }
 
     const updateBlurbCompletions = (sequenceName, completions) => {
         setSequences(
@@ -233,10 +233,10 @@ const PlotHome = (
         )
     }
 
-    const updateFullCompletions = (sequenceName, completions) => {
+    const updateScenes = (sequenceName, scenes) => {
         setSequences(
             sequences.map(
-                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, fullCompletions: completions } : sequence
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, scenes: scenes } : sequence
             )
         )
     }
@@ -651,13 +651,13 @@ const PlotHome = (
                             lastFocusedSequenceName={lastFocusedSequenceName}
                             updateBlurb={updateBlurb}
                             updateExpandedSummary={updateExpandedSummary}
-                            updateFull={updateFull}
+
                             insertSequence={insertSequence}
                             deleteSequence={deleteSequence}
                             heroCharacterArchetype={heroCharacterArchetype}
                             updateBlurbCompletions={updateBlurbCompletions}
                             updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                            updateFullCompletions={updateFullCompletions}
+
                             setSequences={setSequences}
 
                             goToViewPlot={goToViewPlot}
@@ -667,6 +667,8 @@ const PlotHome = (
                             lastSaveSuccess={lastSaveSuccess}
 
                             editCompletion={editCompletion}
+
+                            updateScenes={updateScenes}
                         />
                     }
                     {
@@ -726,13 +728,13 @@ const PlotHome = (
                             lastFocusedSequenceName={lastFocusedSequenceName}
                             updateBlurb={updateBlurb}
                             updateExpandedSummary={updateExpandedSummary}
-                            updateFull={updateFull}
+
                             insertSequence={insertSequence}
                             deleteSequence={deleteSequence}
                             heroCharacterArchetype={heroCharacterArchetype}
                             updateBlurbCompletions={updateBlurbCompletions}
                             updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
-                            updateFullCompletions={updateFullCompletions}
+
                             setSequences={setSequences}
 
                             goToViewPlot={goToViewPlot}
@@ -742,6 +744,8 @@ const PlotHome = (
                             lastSaveSuccess={lastSaveSuccess}
 
                             editCompletion={editCompletion}
+
+                            updateScenes={updateScenes}
                         />
                     }
 

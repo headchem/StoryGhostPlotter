@@ -17,9 +17,6 @@ public class UserSequence
     [JsonPropertyName("text")]
     public string Text { get; set; }
 
-    [JsonPropertyName("full")]
-    public string Full { get; set; }
-
 
     [JsonPropertyName("blurbCompletions")]
     public List<CompletionResponse> BlurbCompletions { get; set; }
@@ -28,6 +25,7 @@ public class UserSequence
     [JsonPropertyName("completions")]
     public List<CompletionResponse> Completions { get; set; }
 
-    [JsonPropertyName("fullCompletions")]
-    public List<CompletionResponse> FullCompletions { get; set; }
+
+    [JsonPropertyName("scenes")]
+    public List<UserScene> Scenes { get; set; }
 }
