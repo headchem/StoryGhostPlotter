@@ -19,6 +19,7 @@ const SceneList = ({
     AILogLineDescriptions,
     updateScenes,
     updateScene,
+    deleteScene,
 }) => {
 
     const addScene = () => {
@@ -61,6 +62,7 @@ const SceneList = ({
                             tokensRemaining={tokensRemaining}
                             AILogLineDescriptions={AILogLineDescriptions}
                             updateScene={updateScene}
+                            deleteScene={deleteScene}
                         />
 
                     ))

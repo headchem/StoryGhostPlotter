@@ -80,6 +80,7 @@ const DisplayAdvanced = (
 
         updateScenes,
         updateScene,
+        deleteScene,
     }
 ) => {
 
@@ -281,6 +282,7 @@ const DisplayAdvanced = (
                                     setSequences={setSequences}
                                     updateScenes={updateScenes}
                                     updateScene={updateScene}
+                                    deleteScene={deleteScene}
                                     tokensRemaining={tokensRemaining}
                                 />
                             }

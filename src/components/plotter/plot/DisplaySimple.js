@@ -81,7 +81,8 @@ const DisplaySimple = (
         lastSaveSuccess,
 
         editCompletion,
-        updateScenes
+        updateScenes,
+        deleteScene,
     }
 ) => {
 

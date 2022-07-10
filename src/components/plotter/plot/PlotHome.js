@@ -261,6 +261,28 @@ const PlotHome = (
         )
     }
 
+    const deleteScene = (sequenceName, sceneId) => {
+
+        console.log('delete scene: ' + sequenceName + ' ' + sceneId)
+        const sequence = sequences.filter(s => s.sequenceName === sequenceName)[0]
+
+        let newScenes = [...sequence.scenes]// sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'summary': newValue } : scene)
+
+        const curSceneIndex = newScenes.indexOf(newScenes.filter((scene) => scene.id === sceneId)[0])
+
+        newScenes.splice(curSceneIndex, 1);
+
+        console.log(newScenes)
+
+
+        // second set just the new character to the protagonist
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, scenes: newScenes } : sequence
+            )
+        )
+    }
+
     const updateCharacterName = (id, newCharacterName) => {
         const updatedCharacters = characters.map(
             (character) => character.id === id ? { ...character, name: newCharacterName } : character
@@ -690,6 +712,7 @@ const PlotHome = (
 
                             updateScenes={updateScenes}
                             updateScene={updateScene}
+                            deleteScene={deleteScene}
                         />
                     }
                     {
@@ -768,6 +791,7 @@ const PlotHome = (
 
                             updateScenes={updateScenes}
                             updateScene={updateScene}
+                            deleteScene={deleteScene}
                         />
                     }
 

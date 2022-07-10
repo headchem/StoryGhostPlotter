@@ -20,12 +20,13 @@ const Scene = ({
     tokensRemaining,
     AILogLineDescriptions,
     updateScene,
+    deleteScene,
 }) => {
 
 
     return (
         <>
-            <p>TODO: add a delete button with confirm.</p>
+            <button onClick={() => deleteScene(sequence.sequenceName, scene.id)}>Delete</button>
             <Tabs defaultActiveKey="summary" className="mb-3">
                 <Tab eventKey="summary" title="Summary">
                     <label htmlFor={sequence.sequenceName + '_scene_summary_textarea' + scene.id} className="form-label w-100 d-none">Scene Summary</label>
