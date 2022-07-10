@@ -78,7 +78,8 @@ const DisplayAdvanced = (
         isPublic,
         lastSaveSuccess,
 
-        updateScenes
+        updateScenes,
+        updateScene,
     }
 ) => {
 
@@ -279,6 +280,7 @@ const DisplayAdvanced = (
                                     updateFullCompletions={updateFullCompletions}
                                     setSequences={setSequences}
                                     updateScenes={updateScenes}
+                                    updateScene={updateScene}
                                     tokensRemaining={tokensRemaining}
                                 />
                             }

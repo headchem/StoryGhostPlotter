@@ -1,4 +1,7 @@
 import React from 'react'
+import LimitedTextArea from './LimitedTextArea'
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 
 
 const Scene = ({
@@ -13,16 +16,42 @@ const Scene = ({
     dramaticQuestion,
     logLineDescription,
     sequence,
-    sequences,
+    scene,
     tokensRemaining,
-    AILogLineDescriptions
+    AILogLineDescriptions,
+    updateScene,
 }) => {
 
 
     return (
         <>
-            <p>Single Scene goes here. LEFT OFF: add a textarea for summary and full, and corresponding update functions. And a delete button with confirm.</p>
-
+            <p>TODO: add a delete button with confirm.</p>
+            <Tabs defaultActiveKey="summary" className="mb-3">
+                <Tab eventKey="summary" title="Summary">
+                    <label htmlFor={sequence.sequenceName + '_scene_summary_textarea' + scene.id} className="form-label w-100 d-none">Scene Summary</label>
+                    <LimitedTextArea
+                        id={sequence.sequenceName + '_scene_summary_textarea' + scene.id}
+                        className="form-control"
+                        value={scene.summary}
+                        setValue={(newValue) => updateScene(sequence.sequenceName, scene.id, 'summary', newValue)}
+                        rows={5}
+                        limit={1000}
+                        showCount={true}
+                    />
+                </Tab>
+                <Tab eventKey="full" title="Full Screenplay">
+                    <label htmlFor={sequence.sequenceName + '_scene_full_textarea' + scene.id} className="form-label w-100 d-none">Scene Full</label>
+                    <LimitedTextArea
+                        id={sequence.sequenceName + '_scene_full_textarea' + scene.id}
+                        className="form-control"
+                        value={scene.full}
+                        setValue={(newValue) => updateScene(sequence.sequenceName, scene.id, 'full', newValue)}
+                        rows={5}
+                        limit={1000}
+                        showCount={true}
+                    />
+                </Tab>
+            </Tabs>
         </>
     )
 }

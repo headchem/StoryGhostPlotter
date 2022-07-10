@@ -241,6 +241,26 @@ const PlotHome = (
         )
     }
 
+    const updateScene = (sequenceName, sceneId, propName, newValue) => {
+        console.log('update scene: ' + sequenceName + ' ' + sceneId + ' ' + newValue)
+
+        const sequence = sequences.filter(s => s.sequenceName === sequenceName)[0]
+
+        let newScenes = null
+
+        if (propName === 'summary') {
+            newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'summary': newValue } : scene)
+        } else if (propName === 'full') {
+            newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'full': newValue } : scene)
+        }
+
+        setSequences(
+            sequences.map(
+                (sequence) => sequence.sequenceName === sequenceName ? { ...sequence, scenes: newScenes } : sequence
+            )
+        )
+    }
+
     const updateCharacterName = (id, newCharacterName) => {
         const updatedCharacters = characters.map(
             (character) => character.id === id ? { ...character, name: newCharacterName } : character
@@ -669,6 +689,7 @@ const PlotHome = (
                             editCompletion={editCompletion}
 
                             updateScenes={updateScenes}
+                            updateScene={updateScene}
                         />
                     }
                     {
@@ -746,6 +767,7 @@ const PlotHome = (
                             editCompletion={editCompletion}
 
                             updateScenes={updateScenes}
+                            updateScene={updateScene}
                         />
                     }
 

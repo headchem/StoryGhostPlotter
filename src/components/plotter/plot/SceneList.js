@@ -14,10 +14,11 @@ const SceneList = ({
     dramaticQuestion,
     logLineDescription,
     sequence,
-    sequences,
+    scenes,
     tokensRemaining,
     AILogLineDescriptions,
     updateScenes,
+    updateScene,
 }) => {
 
     const addScene = () => {
@@ -56,9 +57,10 @@ const SceneList = ({
                             dramaticQuestion={dramaticQuestion}
                             logLineDescription={logLineDescription}
                             sequence={sequence}
-                            sequences={sequences}
+                            scene={scene}
                             tokensRemaining={tokensRemaining}
                             AILogLineDescriptions={AILogLineDescriptions}
+                            updateScene={updateScene}
                         />
 
                     ))

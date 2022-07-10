@@ -34,6 +34,7 @@ const Sequence = ({
     tokensRemaining,
     AILogLineDescriptions,
     updateScenes,
+    updateScene,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -201,10 +202,11 @@ const Sequence = ({
                                     dramaticQuestion={dramaticQuestion}
                                     logLineDescription={logLineDescription}
                                     sequence={sequence}
-                                    sequences={sequences}
+                                    scenes={sequence.scenes}
                                     tokensRemaining={tokensRemaining}
                                     AILogLineDescriptions={AILogLineDescriptions}
                                     updateScenes={updateScenes}
+                                    updateScene={updateScene}
                                 />
                             </div>
                         }
