@@ -23,7 +23,6 @@ const SceneList = ({
 }) => {
 
     const addScene = () => {
-        console.log('add scene')
 
         const newScene = {
             'id': uuid(),
@@ -42,33 +41,40 @@ const SceneList = ({
 
     return (
         <>
-            <p>Scene List goes here for current Sequence</p>
-            {
-                sequence && sequence.scenes && sequence.scenes
-                    .map((scene) => (
-                        <Scene key={sequenceType + scene.id}
-                            userInfo={userInfo}
-                            plotId={plotId}
-                            sequenceType={sequenceType}
-                            genres={genres}
-                            problemTemplate={problemTemplate}
-                            keywords={keywords}
-                            characters={characters}
-                            heroCharacterArchetype={heroCharacterArchetype}
-                            dramaticQuestion={dramaticQuestion}
-                            logLineDescription={logLineDescription}
-                            sequence={sequence}
-                            scene={scene}
-                            tokensRemaining={tokensRemaining}
-                            AILogLineDescriptions={AILogLineDescriptions}
-                            updateScene={updateScene}
-                            deleteScene={deleteScene}
-                        />
+            <div className='row'>
+                <div className='col'>
+                    {
+                        sequence && sequence.scenes && sequence.scenes
+                            .map((scene) => (
+                                <Scene key={sequenceType + scene.id}
+                                    userInfo={userInfo}
+                                    plotId={plotId}
+                                    sequenceType={sequenceType}
+                                    genres={genres}
+                                    problemTemplate={problemTemplate}
+                                    keywords={keywords}
+                                    characters={characters}
+                                    heroCharacterArchetype={heroCharacterArchetype}
+                                    dramaticQuestion={dramaticQuestion}
+                                    logLineDescription={logLineDescription}
+                                    sequence={sequence}
+                                    scene={scene}
+                                    tokensRemaining={tokensRemaining}
+                                    AILogLineDescriptions={AILogLineDescriptions}
+                                    updateScene={updateScene}
+                                    deleteScene={deleteScene}
+                                />
 
-                    ))
-            }
+                            ))
+                    }
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col'>
 
-            <button className='btn btn-primary' onClick={addScene}>Add Scene</button>
+                    <button className='btn btn-primary' onClick={addScene}>Add Scene</button>
+                </div>
+            </div>
         </>
     )
 }
