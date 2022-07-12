@@ -151,6 +151,8 @@ public class PlotService : IPlotService
 
                 if (sequence.Scenes != null)
                 {
+                    sequence.Scenes = sequence.Scenes.Take(50).ToList(); // max of 50 Scenes allowed per Sequence
+
                     foreach (var scene in sequence.Scenes)
                     {
                         if (scene.SummaryCompletions != null)

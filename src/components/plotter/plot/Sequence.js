@@ -147,6 +147,12 @@ const Sequence = ({
                                     selectedExpandedBrainstorm && selectedExpandedBrainstorm.length > 0 &&
                                     <p>{selectedExpandedBrainstorm[0]['completion']}</p>
                                 }
+
+                                {
+                                    userInfo && userInfo.userRoles.includes('admin') && sequence.scenes && sequence.scenes.length > 0 &&
+                                    <p><span className='text-muted'>Scene Summaries (admin only): </span> {sequence.scenes.map((s) => s.summary).join(' ')}</p>
+                                }
+
                                 {
                                     (!selectedExpandedBrainstorm || selectedExpandedBrainstorm.length === 0) &&
                                     <LimitedTextArea
