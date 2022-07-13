@@ -159,7 +159,7 @@ export const expandedSummaryLimits = {
         'rows': 6
     },
     'Bad Guys Close In': {
-        'max': 1000,
+        'max': 1300,
         'rows': 14
     },
     'Second Pinch Point': {

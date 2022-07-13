@@ -154,8 +154,6 @@ const PlotView = (
                                                                 ))
                                                             }
                                                         </div>
-
-
                                                     </>
                                                 }
                                                 <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
