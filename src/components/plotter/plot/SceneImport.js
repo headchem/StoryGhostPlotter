@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { v4 as uuid } from 'uuid';
 import Modal from 'react-bootstrap/Modal'
 import LimitedTextArea from './LimitedTextArea'
+import { toTitleCase } from '../../../util/Helpers';
 
 
 const SceneImport = ({
@@ -11,13 +13,60 @@ const SceneImport = ({
     const [show, setShow] = useState(false);
     const [fullScreenplay, setFullScreenplay] = useState('')
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
     const completeImport = () => {
-        console.log(fullScreenplay)
+        //console.log(fullScreenplay)
 
-        // LEFT OFF: split on "\n# " to populate an ordered list, then the first line is SEQUENCE_NAME. Call setSequences to overwrite existing with new blank ones with the full scene text populated.
+        // LEFT OFF: split on "\n# " to populate an ordered list, then the first line is SEQUENCE_NAME. Call setSequences to overwrite existing with new blank ones with the full scene text populated, and the scene summary, if any.
 
+        const seqTexts = fullScreenplay.split('# ').filter(v => v.trim() !== '')
+
+        let newSequences = []
+
+        seqTexts.forEach(seq => {
+            const [seqName, ...rest] = seq.split('\n')
+            const seqScenes = rest.join('\n').trim()
+
+            const seqNameTitleCase = toTitleCase(seqName).replace('continued', 'Continued')
+
+            let newSequence = {
+                'sequenceName': seqNameTitleCase,
+                'blurb': 'todo',
+                'text': 'todo',
+                'blurbCompletions': null,
+                'completions': null,
+                'scenes': []
+            }
+
+            const scenes = seqScenes.split('= ').filter(v => v.trim() !== '')
+
+            scenes.forEach(scene => {
+                let newScene = {
+                    'id': uuid(),
+                    'summary': '',
+                    'full': '',
+                    'summaryCompletions': [],
+                    'fullCompletions': []
+                }
+
+                //console.log(seqName, scene)
+                const [sceneSummary, ...restScene] = scene.split('\n')
+                const sceneFull = restScene.join('\n').trim()
+
+                newScene['summary'] = sceneSummary
+                newScene['full'] = sceneFull
+
+                newSequence['scenes'].push(newScene)
+
+                //console.table([seqName, sceneSummary, sceneFull])
+            })
+
+            newSequences.push(newSequence)
+        });
+
+        console.log(newSequences)
+        setSequences(newSequences)
         setShow(false)
     }
 
