@@ -6,6 +6,7 @@ import LogLine from './LogLine'
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
 import CharacterBrainstormAll from './Brainstorm/CharacterBrainstormAll';
+import SceneImport from './SceneImport'
 
 const DisplayAdvanced = (
     {
@@ -257,7 +258,11 @@ const DisplayAdvanced = (
 
                             {
                                 userInfo && userInfo.userRoles.includes('admin') &&
-                                <p>TODO ADMIN MODAL HERE. Click button, opens modal with a single large text area. Paste in full Fountain. Warn to copy blurbs and expanded summaries from View Plot page. Upon clicking Save, split on "\n# " to populate an ordered list, then the first line is SEQUENCE_NAME. Call setSequences to overwrite existing with new blank ones with the full scene text populated.</p>
+                                <SceneImport
+                                    userInfo={userInfo}
+                                    setSequences={setSequences}
+                                />
+
                             }
 
                             {
