@@ -17,8 +17,9 @@ const Page4 = (
     }
 ) => {
 
-    const hero = !characters ? null : characters.filter(c => c['isHero'] === true)[0]
-    const heroArchetype = hero['archetype']
+    const hero = characters ? characters.filter(c => c['isHero'] === true)[0] : null
+    const heroArchetype = hero ? hero['archetype'] : ''
+    const heroName = hero ? hero['name']: ''
 
     const navigate = useNavigate()
     const [heroArchetypeDescObj, setHeroArchetypeDescObj] = useState('')
@@ -54,7 +55,7 @@ const Page4 = (
                         showExplanation={false}
                         problemTemplate={problemTemplate}
                         dramaticQuestion={dramaticQuestion}
-                        heroName={hero['name']}
+                        heroName={heroName}
                         heroArchetype={heroArchetypeDescObj}
                     />
                 }
@@ -65,8 +66,8 @@ const Page4 = (
                 {
                     isHeroArchetypeLoading === false &&
                     <>
-                        <p><strong>Hero {hero['name']}</strong> has the archetype of <strong>{heroArchetypeDescObj['name']}</strong>. {heroArchetypeDescObj['description']}</p>
-                        <p>{hero['description']}</p>
+                        <p><strong>Hero {heroName}</strong> has the archetype of <strong>{heroArchetypeDescObj['name']}</strong>. {heroArchetypeDescObj['description']}</p>
+                        <p>{hero && hero['description']}</p>
                     </>
                 }
             </div>

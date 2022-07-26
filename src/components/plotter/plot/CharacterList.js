@@ -26,7 +26,7 @@ const CharacterList = ({
         insertCharacter(unique_id)
     }
 
-    const limit = 7;
+    const limit = 10;
 
     return (
         <>
