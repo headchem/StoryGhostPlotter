@@ -113,26 +113,29 @@ const PlotView = (
                                         ))
                                     }
                                 </Tab>
-                                <Tab eventKey="scenes" title="Scenes">
-                                    {
-                                        sequences.map((sequence) => (
-                                            <span key={sequence.sequenceName}>
-                                                {
-                                                    <>
-                                                        {
-                                                            sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
-                                                                <span key={scene.id}>
-                                                                    <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
-                                                                </span>
-                                                            ))
-                                                        }
-                                                    </>
-                                                }
-                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
-                                            </span>
-                                        ))
-                                    }
-                                </Tab>
+                                {
+                                    userInfo && userInfo.userRoles.includes('admin') &&
+                                    <Tab eventKey="scenes" title="Scenes">
+                                        {
+                                            sequences.map((sequence) => (
+                                                <span key={sequence.sequenceName}>
+                                                    {
+                                                        <>
+                                                            {
+                                                                sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                    <span key={scene.id}>
+                                                                        <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                    </span>
+                                                                ))
+                                                            }
+                                                        </>
+                                                    }
+                                                    <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
+                                                </span>
+                                            ))
+                                        }
+                                    </Tab>
+                                }
                                 <Tab eventKey="all" title="All">
                                     {
                                         sequences.map((sequence) => (
@@ -145,15 +148,18 @@ const PlotView = (
                                                         <div className='col'>
                                                             <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
                                                         </div>
-                                                        <div className='col'>
-                                                            {
-                                                                sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
-                                                                    <span key={scene.id}>
-                                                                        <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
-                                                                    </span>
-                                                                ))
-                                                            }
-                                                        </div>
+                                                        {
+                                                            userInfo && userInfo.userRoles.includes('admin') &&
+                                                            <div className='col'>
+                                                                {
+                                                                    sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                        <span key={scene.id}>
+                                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                        </span>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        }
                                                     </>
                                                 }
                                                 <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
