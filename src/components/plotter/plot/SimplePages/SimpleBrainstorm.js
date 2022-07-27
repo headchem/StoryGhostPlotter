@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FaEdit, FaCheck } from 'react-icons/fa'
 import LimitedTextArea from '../LimitedTextArea'
-import { blurbLimits, expandedSummaryLimits, fullLimits } from '../../../../util/SequenceTextCheck';
+import { blurbLimits, expandedSummaryLimits } from '../../../../util/SequenceTextCheck';
 
 const SimpleBrainstorm = (
     {
@@ -19,7 +19,7 @@ const SimpleBrainstorm = (
 
     const textClass = brainstorm['isSelected'] === true ? 'fw-bold' : 'text-muted'
 
-    const limitObj = completionPropName === 'blurb' ? blurbLimits : (completionPropName === 'text' ? expandedSummaryLimits : fullLimits)
+    const limitObj = completionPropName === 'blurb' ? blurbLimits : expandedSummaryLimits
 
     const rows = limitObj[sequenceName]['rows']
     const charLimit = limitObj[sequenceName]['max']

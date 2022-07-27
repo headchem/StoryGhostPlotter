@@ -10,8 +10,7 @@ const Admin = () => {
     const [characterJSONL, setCharacterJSONL] = useState(null)
     const [sequenceBlurbJSONL, setSequenceBlurbJSONL] = useState(null)
     const [sequenceExpandedSummaryJSONL, setSequenceExpandedSummaryJSONL] = useState(null)
-    const [sequenceFullJSONL, setSequenceFullJSONL] = useState(null)
-
+    
     const [numTokensToAdd, setNumTokensToAdd] = useState(4096)
     const [tokensTargetUserId, setTokensTargetUserId] = useState('')
 
@@ -93,20 +92,6 @@ const Admin = () => {
             })
     }
 
-    const getSequenceFullFinetuningData = () => {
-        fetch('/api/SGAdmin/CreateSequenceFullFinetuningDataset', {
-            method: 'GET'
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setSequenceFullJSONL(data['jsonl'])
-            })
-            .catch(error => {
-                console.error(error)
-            })
-    }
-
     return (
         <div>
             <p>Export Top_10000_Movies from Google Sheets as CSV, run it through the Google Colab notebook "KeyBERT.ipynb" to attach keywords, then upload that CSV file here.</p>
@@ -137,12 +122,6 @@ const Admin = () => {
             <button onClick={getSequenceExpandedSummaryFinetuningData}>Get Sequence Expanded Summary Data</button>
             <label htmlFor="sequenceExpandedSummaryFinetune" className="fs-3">Sequence Expanded Summary Finetune</label>
             <textarea className="form-control" id="sequenceExpandedSummaryFinetune" rows="6" defaultValue={sequenceExpandedSummaryJSONL}></textarea>
-
-            <hr />
-
-            <button onClick={getSequenceFullFinetuningData}>Get Sequence Full Data</button>
-            <label htmlFor="sequenceFullFinetune" className="fs-3">Sequence Full Finetune</label>
-            <textarea className="form-control" id="sequenceFullFinetune" rows="6" defaultValue={sequenceFullJSONL}></textarea>
 
             <hr />
 

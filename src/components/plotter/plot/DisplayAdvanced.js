@@ -6,6 +6,7 @@ import LogLine from './LogLine'
 import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
 import CharacterBrainstormAll from './Brainstorm/CharacterBrainstormAll';
+import SceneImport from './SceneImport'
 
 const DisplayAdvanced = (
     {
@@ -78,6 +79,9 @@ const DisplayAdvanced = (
         isPublic,
         lastSaveSuccess,
 
+        updateScenes,
+        updateScene,
+        deleteScene,
     }
 ) => {
 
@@ -249,13 +253,22 @@ const DisplayAdvanced = (
                     </Tab>
                     {
                         userInfo && userInfo.userRoles.includes('admin') &&
-                        <Tab eventKey="full" title="4. Full">
-                            <p>Expand the summaries into full prose or a screenplay.</p>
+                        <Tab eventKey="scenes" title="4. Scenes">
+                            <p>Expand the summaries into scenes.</p>
 
                             {
-                                hideBlurbs === false &&
+                                userInfo && userInfo.userRoles.includes('admin') &&
+                                <SceneImport
+                                    userInfo={userInfo}
+                                    setSequences={setSequences}
+                                />
+
+                            }
+
+                            {
+                                hideBlurbs === false && expandedSummariesIncomplete === false &&
                                 <SequenceList
-                                    sequenceType='full'
+                                    sequenceType='scenes'
                                     plotId={plotId}
                                     sequences={sequences}
                                     userInfo={userInfo}
@@ -277,13 +290,15 @@ const DisplayAdvanced = (
                                     updateExpandedSummaryCompletions={updateExpandedSummaryCompletions}
                                     updateFullCompletions={updateFullCompletions}
                                     setSequences={setSequences}
-
+                                    updateScenes={updateScenes}
+                                    updateScene={updateScene}
+                                    deleteScene={deleteScene}
                                     tokensRemaining={tokensRemaining}
                                 />
                             }
                             {
                                 expandedSummariesIncomplete &&
-                                <p>Not all blurbs and expanded summaries have been completed. Additional full text areas will only appear when their corresponding blurbs and expanded summary has been entered.</p>
+                                <p>Not all blurbs and expanded summaries have been completed. Additional Scenes will only appear when their corresponding blurbs and expanded summary have been entered.</p>
                             }
                         </Tab>
                     }

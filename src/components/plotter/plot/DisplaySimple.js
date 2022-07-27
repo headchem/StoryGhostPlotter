@@ -80,8 +80,9 @@ const DisplaySimple = (
         isPublic,
         lastSaveSuccess,
 
-        editCompletion
-
+        editCompletion,
+        updateScenes,
+        deleteScene,
     }
 ) => {
 

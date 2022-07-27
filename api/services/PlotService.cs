@@ -149,11 +149,27 @@ public class PlotService : IPlotService
                 }
                 sequence.Text = sequence.Text.Truncate(2000);
 
-                if (sequence.FullCompletions != null)
+                if (sequence.Scenes != null)
                 {
-                    sequence.FullCompletions = sequence.FullCompletions.TakeLast(brainstormLimit).ToList();
+                    sequence.Scenes = sequence.Scenes.Take(50).ToList(); // max of 50 Scenes allowed per Sequence
+
+                    foreach (var scene in sequence.Scenes)
+                    {
+                        if (scene.SummaryCompletions != null)
+                        {
+                            scene.SummaryCompletions.TakeLast(brainstormLimit).ToList();
+                        }
+
+                        if (scene.FullCompletions != null)
+                        {
+                            scene.FullCompletions.TakeLast(brainstormLimit).ToList();
+                        }
+
+                        // TODO: are these the right limit values?
+                        scene.Summary = scene.Summary.Truncate(10000);
+                        scene.Full = scene.Full.Truncate(50000);
+                    }
                 }
-                sequence.Full = sequence.Full.Truncate(50000); // TODO: is this this right limit?
             }
         }
 

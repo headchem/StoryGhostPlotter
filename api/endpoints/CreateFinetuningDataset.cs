@@ -288,10 +288,6 @@ public class CreateFinetuningDataset
         {
             completionText = targetSeqObj.Text;
         }
-        else if (sequenceType == "full")
-        {
-            completionText = targetSeqObj.Full;
-        }
         else
         {
             throw new Exception($"unknown sequenceType: {sequenceType}");
@@ -337,11 +333,6 @@ public class CreateFinetuningDataset
             var selectedExpandedSummaryCompletion = sequence.Completions == null ? null : sequence.Completions.Where(c => c.IsSelected).FirstOrDefault();
             results += (selectedExpandedSummaryCompletion == null ? sequence.Text : selectedExpandedSummaryCompletion.Completion);
         }
-        else if (sequenceType == "full")
-        {
-            var selectedFullCompletion = sequence.FullCompletions == null ? null : sequence.FullCompletions.Where(c => c.IsSelected).FirstOrDefault();
-            results += (selectedFullCompletion == null ? sequence.Full : selectedFullCompletion.Completion);
-        }
 
         results += "\n\n";
 
@@ -383,10 +374,6 @@ public class CreateFinetuningDataset
             else if (sequenceType == "expanded summary")
             {
                 cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Text);
-            }
-            else if (sequenceType == "full")
-            {
-                cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Full);
             }
             else if (sequenceType == "character")
             {

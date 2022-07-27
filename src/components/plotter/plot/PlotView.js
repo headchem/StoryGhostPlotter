@@ -94,8 +94,6 @@ const PlotView = (
                     {
                         sequences &&
                         <>
-
-
                             <Tabs defaultActiveKey="blurbs" className="mb-3">
                                 <Tab eventKey="blurbs" title="Blurbs">
                                     {
@@ -115,12 +113,57 @@ const PlotView = (
                                         ))
                                     }
                                 </Tab>
-                                <Tab eventKey="full" title="Full">
+                                {
+                                    userInfo && userInfo.userRoles.includes('admin') &&
+                                    <Tab eventKey="scenes" title="Scenes">
+                                        {
+                                            sequences.map((sequence) => (
+                                                <span key={sequence.sequenceName}>
+                                                    {
+                                                        <>
+                                                            {
+                                                                sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                    <span key={scene.id}>
+                                                                        <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                    </span>
+                                                                ))
+                                                            }
+                                                        </>
+                                                    }
+                                                    <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
+                                                </span>
+                                            ))
+                                        }
+                                    </Tab>
+                                }
+                                <Tab eventKey="all" title="All">
                                     {
                                         sequences.map((sequence) => (
-                                            <span key={sequence.sequenceName}>
+                                            <div className='row border-bottom' key={sequence.sequenceName}>
+                                                {
+                                                    <>
+                                                        <div className='col'>
+                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
+                                                        </div>
+                                                        <div className='col'>
+                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
+                                                        </div>
+                                                        {
+                                                            userInfo && userInfo.userRoles.includes('admin') &&
+                                                            <div className='col'>
+                                                                {
+                                                                    sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                        <span key={scene.id}>
+                                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                        </span>
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </>
+                                                }
                                                 <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'full', 'fullCompletions')}</p>
-                                            </span>
+                                            </div>
                                         ))
                                     }
                                 </Tab>

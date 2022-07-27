@@ -1,4 +1,11 @@
-~130 tokens per $0.01
+Screenplay import process:
+	Create a new plot
+	Fill out log line
+	Run the VS Code Fountain analyzer to get the most important characters, enter the characters
+	Copy/paste the screenplay, which already has scene groupings (may be empty like "= ") and Sequence headings, then in the Scenes tab, click Import Scenes
+	Write/generate scene summaries, if not already imported
+	Write/generate sequence expanded
+	Write/generate sequence blurbs
 
 Git process:
 
