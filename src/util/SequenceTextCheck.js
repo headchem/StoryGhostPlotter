@@ -131,7 +131,7 @@ export const expandedSummaryLimits = {
         'rows': 7
     },
     'Debate': {
-        'max': 800,
+        'max': 1200,
         'rows': 11
     },
     'B Story': {
@@ -147,7 +147,7 @@ export const expandedSummaryLimits = {
         'rows': 8
     },
     'Fun And Games': {
-        'max': 1700,
+        'max': 2300,
         'rows': 22
     },
     'First Pinch Point': {
@@ -159,7 +159,7 @@ export const expandedSummaryLimits = {
         'rows': 6
     },
     'Bad Guys Close In': {
-        'max': 1300,
+        'max': 1600,
         'rows': 14
     },
     'Second Pinch Point': {
@@ -171,8 +171,8 @@ export const expandedSummaryLimits = {
         'rows': 7
     },
     'Dark Night Of The Soul': {
-        'max': 750,
-        'rows': 10
+        'max': 2100,
+        'rows': 20
     },
     'Break Into Three': {
         'max': 600,
