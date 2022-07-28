@@ -17,7 +17,7 @@ public static class SequenceAdvice
         try
         {
             var user = StaticWebAppsAuth.Parse(req);
-            if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
+            if (user == null || !user.IsInRole("authenticated")) return new UnauthorizedResult();
 
             string sequenceName = req.Query["sequenceName"];
 
