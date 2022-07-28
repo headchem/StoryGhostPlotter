@@ -170,6 +170,8 @@ public static class Factory
     /// <summary><c>sequenceName</c> is case sensitive.</summary>
     public static ISequence GetSequence(string sequenceName)
     {
+        if (string.IsNullOrWhiteSpace(sequenceName)) return null;
+
         ISequence sequenceObj = GetSequences().Where(s => s.Name == sequenceName).FirstOrDefault();
 
         return sequenceObj;
