@@ -55,7 +55,7 @@ const Scene = ({
                                 value={scene.summary}
                                 setValue={(newValue) => updateScene(sequence.sequenceName, scene.id, 'summary', newValue)}
                                 rows={5}
-                                limit={1000}
+                                limit={600}
                                 showCount={true}
                             />
                         </Tab>
@@ -67,7 +67,7 @@ const Scene = ({
                                 value={scene.full}
                                 setValue={(newValue) => updateScene(sequence.sequenceName, scene.id, 'full', newValue)}
                                 rows={parseInt(scene.full.length / 25)}
-                                limit={10000}
+                                limit={5000}
                                 showCount={true}
                             />
                         </Tab>
