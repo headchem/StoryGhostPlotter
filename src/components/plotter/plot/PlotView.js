@@ -143,21 +143,28 @@ const PlotView = (
                                                 {
                                                     <>
                                                         <div className='col'>
-                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
+                                                            <div className='sticky-md-top'>
+                                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'blurb', 'blurbCompletions')}</p>
+                                                            </div>
                                                         </div>
                                                         <div className='col'>
-                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
+                                                            <div className='sticky-md-top'>
+                                                                <p className='fs-5' title={sequence.sequenceName}>{getText(sequence, 'text', 'completions')}</p>
+
+                                                            </div>
                                                         </div>
                                                         {
                                                             userInfo && userInfo.userRoles.includes('admin') &&
                                                             <div className='col'>
-                                                                {
-                                                                    sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
-                                                                        <span key={scene.id}>
-                                                                            <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
-                                                                        </span>
-                                                                    ))
-                                                                }
+                                                                <div className='sticky-md-top'>
+                                                                    {
+                                                                        sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                            <span key={scene.id}>
+                                                                                <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                            </span>
+                                                                        ))
+                                                                    }
+                                                                </div>
                                                             </div>
                                                         }
                                                     </>

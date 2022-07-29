@@ -52,8 +52,8 @@ export const blurbLimits = {
         'rows': 2
     },
     'Debate': {
-        'max': 350,
-        'rows': 4
+        'max': 500,
+        'rows': 5
     },
     'B Story': {
         'max': 150,
@@ -68,8 +68,8 @@ export const blurbLimits = {
         'rows': 2
     },
     'Fun And Games': {
-        'max': 400,
-        'rows': 5
+        'max': 1000,
+        'rows': 12
     },
     'First Pinch Point': {
         'max': 100,
@@ -80,8 +80,8 @@ export const blurbLimits = {
         'rows': 2
     },
     'Bad Guys Close In': {
-        'max': 600,
-        'rows': 5
+        'max': 750,
+        'rows': 7
     },
     'Second Pinch Point': {
         'max': 150,
@@ -92,16 +92,16 @@ export const blurbLimits = {
         'rows': 3
     },
     'Dark Night Of The Soul': {
-        'max': 350,
-        'rows': 4
+        'max': 1400,
+        'rows': 16
     },
     'Break Into Three': {
         'max': 200,
         'rows': 2
     },
     'Climax': {
-        'max': 400,
-        'rows': 4
+        'max': 550,
+        'rows': 6
     },
     'Cooldown': {
         'max': 200,
@@ -171,7 +171,7 @@ export const expandedSummaryLimits = {
         'rows': 7
     },
     'Dark Night Of The Soul': {
-        'max': 2100,
+        'max': 2200,
         'rows': 20
     },
     'Break Into Three': {
