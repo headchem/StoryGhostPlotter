@@ -271,7 +271,7 @@ public class Generate
     }
 
     [FunctionName("GenerateSceneSummary")]
-    public async Task<IActionResult> GenerateSceneSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateSceneSummary")] Plot plot, HttpRequest req, ILogger log)
+    public async Task<IActionResult> GenerateSceneSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Scene/GenerateSceneSummary")] SceneSummaryDTO dto, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
         if (!user.IsInRole("customer"))
@@ -294,49 +294,31 @@ public class Generate
         {
             ["UserId"] = userId,
             ["User"] = user.Identity.Name,
-            ["PlotId"] = plot.Id,
+            ["PlotId"] = dto.PlotId,
         }))
         {
-            //log.LogInformation("An example of an Information level message");
+            var maxTokens = 128;
 
-            var sceneId = Guid.Parse(req.Query["sceneId"][0]);
-            var sceneFullScreenplay = "";
-
-            foreach (var sequence in plot.Sequences)
-            {
-                var scenes = sequence.Scenes;
-                if (scenes != null) {
-                    var scene = scenes.Where(s => s.Id == sceneId).FirstOrDefault();
-
-                    if (scene != null) {
-                        sceneFullScreenplay = scene.Full;
-                        break;
-                    }
-                }
-            }
-
-            var temperature = double.Parse(req.Query["temperature"][0]);
-            var numCompletions = int.Parse(req.Query["numCompletions"][0]);
-            numCompletions = Math.Min(numCompletions, 1); // don't allow more than 1 completions
-            var maxTokens = 64;
-
-            var result = await _completionService.GetSceneSummaryCompletion(userId, sceneFullScreenplay, maxTokens, temperature, plot, false, numCompletions);
+            var resultLowTemp = await _completionService.GetSceneSummaryCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
+            var resultHighTemp = await _completionService.GetSceneSummaryCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.85, false, 1);
 
             var timespan = stopwatch.Elapsed;
 
             stopwatch.Stop();
 
-            //var metricsText = new Dictionary<string, string>();
-            //metricsText.Add("UserId", userId);
-
-            var promptTokenCount = result.Sum(r => r.PromptTokenCount);
-            var completionTokenCount = result.Sum(r => r.CompletionTokenCount);
+            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
 
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
             metrics.Add("token usage", promptTokenCount + completionTokenCount);
 
             _telemetry.TrackEvent("Completion Scene Summary", null, metrics);
+
+            var result = new List<CompletionResponse> {
+                resultLowTemp[0],
+                resultHighTemp[0]
+            };
 
             return new OkObjectResult(result);
         }

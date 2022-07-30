@@ -366,11 +366,11 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
-    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string sceneFullScreenplay, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
+    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string plotId, string sceneFullScreenplay, List<string> characterNames, int maxTokens, double temperature, bool bypassTokenCheck, int numCompletions)
     {
-        await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
 
-        var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sceneFullScreenplay.Trim(), "", plot.Characters.Select(c => c.Name).ToList());
+        var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sceneFullScreenplay.Trim(), "", characterNames);
 
         var prompt = anonymizedFullText + CreateFinetuningDataset.PromptSuffix;;
         
@@ -390,11 +390,12 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
+        var results = await getResponse(userId, plotId, "completions", openAIRequest);
 
         foreach (var result in results)
         {
             cleanCompletion(result);
+            result.Completion = CharacterAnonymizer.DeAnonymize(result.Completion, namesToIndex, false);
         }
 
         return results;

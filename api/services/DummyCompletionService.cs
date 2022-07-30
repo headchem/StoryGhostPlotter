@@ -100,7 +100,7 @@ public class DummyCompletionService : ICompletionService
         return new List<CompletionResponse> { result };
     }
 
-    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string sceneFullScreenplay, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
+    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string plotId, string sceneFullScreenplay, List<string> characterNames, int maxTokens, double temperature, bool bypassTokenCheck, int numCompletions)
     {
         
         {

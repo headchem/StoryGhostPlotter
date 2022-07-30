@@ -12,7 +12,7 @@ public interface ICompletionService
 
     public Task<List<CompletionResponse>> GetBlurbCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions);
     public Task<List<CompletionResponse>> GetExpandedSummaryCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions);
-    public Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string sceneFullScreenplay, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions);
+    public Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string plotId, string sceneFullScreenplay, List<string> characterNames, int maxTokens, double temperature, bool bypassTokenCheck, int numCompletions);
     public Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions);
 
     public Task<CompletionResponse> GetCharacterCompletion(string userId, string plotId, double temperature, Character character, bool bypassTokenCheck);
