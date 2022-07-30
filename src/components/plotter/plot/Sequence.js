@@ -7,6 +7,7 @@ import SequenceAdvice from './Advice/SequenceAdvice'
 import SequenceBrainstorm from './Brainstorm/SequenceBrainstorm'
 import { blurbLimits, expandedSummaryLimits } from '../../../util/SequenceTextCheck';
 import SceneList from './SceneList'
+import SummaryReducer from './SummaryReducer'
 
 const Sequence = ({
     userInfo,
@@ -126,6 +127,18 @@ const Sequence = ({
                                             //curTokenCount={blurbTokenCount}
                                             showCount={true}
                                         />
+                                        {
+                                            userInfo && userInfo.userRoles.includes('admin') &&
+                                            <>
+                                                <SummaryReducer
+                                                    userInfo={userInfo}
+                                                    plotId={plotId}
+                                                    characters={characters}
+                                                    longText={sequence.text}
+                                                    tokensRemaining={tokensRemaining}
+                                                />
+                                            </>
+                                        }
                                     </>
                                 }
                             </div>
@@ -155,16 +168,31 @@ const Sequence = ({
 
                                 {
                                     (!selectedExpandedBrainstorm || selectedExpandedBrainstorm.length === 0) &&
-                                    <LimitedTextArea
-                                        id={sequence.sequenceName + '_expanded_summary_textarea'}
-                                        className="form-control"
-                                        value={sequence.text}
-                                        setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
-                                        rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
-                                        limit={expandedSummaryLimits[sequence.sequenceName]['max']}
-                                        //curTokenCount={expandedSummaryTokenCount}
-                                        showCount={true}
-                                    />
+                                    <>
+                                        <LimitedTextArea
+                                            id={sequence.sequenceName + '_expanded_summary_textarea'}
+                                            className="form-control"
+                                            value={sequence.text}
+                                            setValue={(newValue) => updateExpandedSummary(sequence.sequenceName, newValue)}
+                                            rows={expandedSummaryLimits[sequence.sequenceName]['rows']}
+                                            limit={expandedSummaryLimits[sequence.sequenceName]['max']}
+                                            //curTokenCount={expandedSummaryTokenCount}
+                                            showCount={true}
+                                        />
+
+                                        {
+                                            userInfo && userInfo.userRoles.includes('admin') &&
+                                            <>
+                                                <SummaryReducer
+                                                    userInfo={userInfo}
+                                                    plotId={plotId}
+                                                    characters={characters}
+                                                    longText={sequence.scenes.map((s) => s.summary).join(' ')}
+                                                    tokensRemaining={tokensRemaining}
+                                                />
+                                            </>
+                                        }
+                                    </>
                                 }
                             </div>
                         }

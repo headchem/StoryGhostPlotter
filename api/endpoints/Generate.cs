@@ -271,7 +271,7 @@ public class Generate
     }
 
     [FunctionName("GenerateSceneSummary")]
-    public async Task<IActionResult> GenerateSceneSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Scene/GenerateSceneSummary")] SceneSummaryDTO dto, HttpRequest req, ILogger log)
+    public async Task<IActionResult> GenerateSceneSummary([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Scene/GenerateSceneSummary")] SummaryDTO dto, HttpRequest req, ILogger log)
     {
         var user = StaticWebAppsAuth.Parse(req);
         if (!user.IsInRole("customer"))
@@ -323,6 +323,61 @@ public class Generate
             return new OkObjectResult(result);
         }
     }
+
+    [FunctionName("GenerateSummaryReducer")]
+    public async Task<IActionResult> GenerateSummaryReducer([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateSummaryReducer")] SummaryDTO dto, HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("customer"))
+        {
+            return new OkObjectResult(new List<CompletionResponse>{
+                new CompletionResponse
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Completion = ""
+                }
+            });
+        }
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        using (log.BeginScope(new Dictionary<string, object>
+        {
+            ["UserId"] = userId,
+            ["User"] = user.Identity.Name,
+            ["PlotId"] = dto.PlotId,
+        }))
+        {
+            var maxTokens = 256;
+
+            var resultLowTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
+            var resultHighTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.85, false, 1);
+
+            var timespan = stopwatch.Elapsed;
+
+            stopwatch.Stop();
+
+            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
+
+            var metrics = new Dictionary<string, double>();
+            metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
+            metrics.Add("token usage", promptTokenCount + completionTokenCount);
+
+            _telemetry.TrackEvent("Completion Scene Summary", null, metrics);
+
+            var result = new List<CompletionResponse> {
+                resultLowTemp[0],
+                resultHighTemp[0]
+            };
+
+            return new OkObjectResult(result);
+        }
+    }
+
 
     [FunctionName("GenerateFull")]
     public async Task<IActionResult> GenerateFull([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Sequence/GenerateFull")] Plot plot, HttpRequest req, ILogger log)

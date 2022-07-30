@@ -129,6 +129,35 @@ public class DummyCompletionService : ICompletionService
         return new List<CompletionResponse> { result };
     }
 
+    public async Task<List<CompletionResponse>> GetSummaryReducerCompletion(string userId, string plotId, string longText, List<string> characterNames, int maxTokens, double temperature, bool bypassTokenCheck, int numCompletions)
+    {
+        
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
+        var prompt = longText;
+
+        var result = new CompletionResponse();
+
+        result.Id = Guid.NewGuid().ToString();
+        result.Prompt = prompt;
+        result.Completion = "AI summary reducer goes here...";
+
+        var promptTokenCount = 123;
+        var completionTokenCount = 456;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
+        return new List<CompletionResponse> { result };
+    }
+
     public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens

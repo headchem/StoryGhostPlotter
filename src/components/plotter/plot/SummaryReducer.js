@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { fetchWithTimeout } from '../../../util/FetchUtil'
 
-const SceneSummarizer = ({
+const SummaryReducer = ({
     userInfo,
     plotId,
     characters,
-    scene,
+    longText,
     tokensRemaining
 }) => {
     const navigate = useNavigate()
@@ -16,14 +16,12 @@ const SceneSummarizer = ({
 
 
     const generateSummary = async () => {
-        //console.log(scene.full)
 
         const characterNames = characters.map(c => c.name)
-        //console.log(characterNames)
 
         setIsCompletionLoading(true)
 
-        fetchWithTimeout('/api/Scene/GenerateSceneSummary', {
+        fetchWithTimeout('/api/Sequence/GenerateSummaryReducer', {
             timeout: 515 * 1000,  // this is the max timeout on the Function side, but in testing, it seems the browser upper limit is still enforced, so the real limit is 300 sec (5 min)
             method: 'POST',
             headers: {
@@ -32,7 +30,7 @@ const SceneSummarizer = ({
             body: JSON.stringify({
                 plotId: plotId,
                 characterNames: characterNames,
-                full: scene.full
+                full: longText
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {
@@ -54,7 +52,7 @@ const SceneSummarizer = ({
     }
 
     const completionsList = completions.map((c, i) =>
-        <li title={i===0?'low temp':'high temp'} key={i}>{c.completion}</li>
+        <li title={i === 0 ? 'low temp' : 'high temp'} key={i}>{c.completion}</li>
     )
 
     return (
@@ -65,7 +63,7 @@ const SceneSummarizer = ({
                     <p>loading...</p>
                 }
                 {
-                    isCompletionLoading === false && scene && scene.full && scene.full !== '' &&
+                    isCompletionLoading === false && longText && longText !== '' &&
                     <button className="btn btn-secondary" onClick={generateSummary}>generate summary</button>
                 }
 
@@ -77,4 +75,4 @@ const SceneSummarizer = ({
     )
 }
 
-export default SceneSummarizer
+export default SummaryReducer

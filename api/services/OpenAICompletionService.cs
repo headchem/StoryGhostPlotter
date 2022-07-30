@@ -372,8 +372,8 @@ public class OpenAICompletionService : ICompletionService
 
         var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sceneFullScreenplay.Trim(), "", characterNames);
 
-        var prompt = anonymizedFullText + CreateFinetuningDataset.PromptSuffix;;
-        
+        var prompt = anonymizedFullText + CreateFinetuningDataset.PromptSuffix; ;
+
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
@@ -400,6 +400,42 @@ public class OpenAICompletionService : ICompletionService
 
         return results;
     }
+
+    public async Task<List<CompletionResponse>> GetSummaryReducerCompletion(string userId, string plotId, string longText, List<string> characterNames, int maxTokens, double temperature, bool bypassTokenCheck, int numCompletions)
+    {
+        await ensureSufficientTokensAndOwnership(userId, plotId, bypassTokenCheck);
+
+        var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(longText.Trim(), "", characterNames);
+
+        var prompt = anonymizedFullText + CreateFinetuningDataset.PromptSuffix; ;
+
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            // openai api fine_tunes.create -t "summaryReducer.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.05
+            Model = "davinci:ft-personal-2022-07-30-19-01-17",
+            MaxTokens = maxTokens,
+            Temperature = temperature, // for summarizing, a lower temp, like 0.2-0.5 seems to work better.
+            NumCompletions = numCompletions,
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
+        };
+
+        var results = await getResponse(userId, plotId, "completions", openAIRequest);
+
+        foreach (var result in results)
+        {
+            cleanCompletion(result);
+            result.Completion = CharacterAnonymizer.DeAnonymize(result.Completion, namesToIndex, false);
+        }
+
+        return results;
+    }
+
+
 
     public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {

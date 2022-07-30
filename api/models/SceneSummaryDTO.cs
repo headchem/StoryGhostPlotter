@@ -5,7 +5,7 @@ using StoryGhost.Models.Completions;
 
 namespace StoryGhost.Models;
 
-public class SceneSummaryDTO
+public class SummaryDTO
 {
     public string PlotId { get; set; }
 
