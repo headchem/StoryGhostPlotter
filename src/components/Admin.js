@@ -11,6 +11,7 @@ const Admin = () => {
     const [sequenceBlurbJSONL, setSequenceBlurbJSONL] = useState(null)
     const [sequenceExpandedSummaryJSONL, setSequenceExpandedSummaryJSONL] = useState(null)
     const [sceneSummaryJSONL, setSceneSummaryJSONL] = useState(null)
+    const [summaryReducerJSONL, setSummaryReducerJSONL] = useState(null)
     
     const [numTokensToAdd, setNumTokensToAdd] = useState(4096)
     const [tokensTargetUserId, setTokensTargetUserId] = useState('')
@@ -107,6 +108,20 @@ const Admin = () => {
             })
     }
 
+    const getSummaryReducerFinetuningData = () => {
+        fetch('/api/SGAdmin/CreateSummaryReducerFinetuningDataset', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setSummaryReducerJSONL(data['jsonl'])
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+
     return (
         <div>
             <p>Export Top_10000_Movies from Google Sheets as CSV, run it through the Google Colab notebook "KeyBERT.ipynb" to attach keywords, then upload that CSV file here.</p>
@@ -143,6 +158,12 @@ const Admin = () => {
             <button onClick={getSceneSummaryFinetuningData}>Get Scene Summary Data</button>
             <label htmlFor="sceneSummaryFinetune" className="fs-3">Scene Summary Finetune</label>
             <textarea className="form-control" id="sceneSummaryFinetune" rows="6" defaultValue={sceneSummaryJSONL}></textarea>
+
+            <hr />
+
+            <button onClick={getSummaryReducerFinetuningData}>Get Summary Reducer Data</button>
+            <label htmlFor="summaryReducerFinetune" className="fs-3">Summary Reducer Finetune</label>
+            <textarea className="form-control" id="summaryReducerFinetune" rows="6" defaultValue={summaryReducerJSONL}></textarea>
 
             <hr />
 

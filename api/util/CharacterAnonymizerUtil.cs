@@ -75,9 +75,9 @@ namespace StoryGhost.Util
         public static async Task<(string, string, Dictionary<string, int>)> AnonymizeCharacters(string originalFull, string originalSummary, List<string> knownCharacterNames)
         {
             // bypassing using NER for name detection, because it picks up on too much, like the Angela Rose boat name, or names of bars, etc. As long as I add enough characters for each story, that should be sufficient for mostly anonymizing. Plus it runs much faster.
-            var detectedNames = new List<string>();//await GetCharacterNames(originalFull + "\n\n" + originalSummary, knownCharacterNames);
+            var detectedNames = new List<string>(); //knownCharacterNames;//await GetCharacterNames(originalFull + "\n\n" + originalSummary, knownCharacterNames);
             var detectedNamesLower = detectedNames.Select(n => n.ToLower()).ToList();
-            //Console.WriteLine("DETECTED: " + string.Join(", ", detectedNames));
+            Console.WriteLine("DETECTED: " + string.Join(", ", detectedNames));
 
             var namesToIndex = new Dictionary<string, int>();
 
@@ -96,12 +96,14 @@ namespace StoryGhost.Util
                 var upperOrigName = name.ToUpper();
 
                 var allNames = new List<string>{
-                    name,
-                    upperOrigName
-                };
+            name,
+            upperOrigName
+        };
 
                 var origNameFirst = "";
                 var origNameFirstUpper = "";
+                var origNameLast = "";
+                var origNameLastUpper = "";
 
                 if (name.Contains(" "))
                 {
@@ -110,8 +112,17 @@ namespace StoryGhost.Util
 
                     allNames.Add(origNameFirst);
                     allNames.Add(origNameFirstUpper);
+
+                    origNameLast = name.Split(' ').Last();
+                    origNameLastUpper = origNameLast.ToUpper();
+
+                    if (allNames.Contains(origNameLast) == false) {
+                        allNames.Add(origNameLast);
+                        allNames.Add(origNameLastUpper);
+                    }
                 }
 
+                // ensure the full or summary text contains either full name or first name
                 if (allNames.Any(name => originalFull.Contains(name)) == false && allNames.Any(name => originalSummary.Contains(name)) == false)
                 {
                     continue;
@@ -187,8 +198,11 @@ namespace StoryGhost.Util
             foreach (var name in namesToIndex.Keys.OrderByDescending(x => x.Length))
             {
                 //Console.WriteLine($"replacing: {name}");
-                result = result.Replace(name, $"CHARACTER{namesToIndex[name]}");
-                result = result.Replace(name.ToUpper(), $"CHARACTER{namesToIndex[name]}");
+                //result = result.Replace(name, $"CHARACTER{namesToIndex[name]}");
+                //result = result.Replace(name.ToUpper(), $"CHARACTER{namesToIndex[name]}");
+
+                result = result.ReplaceWholeWord(name, $"CHARACTER{namesToIndex[name]}");
+                result = result.ReplaceWholeWord(name.ToUpper(), $"CHARACTER{namesToIndex[name]}");
             }
 
             var resultParts = result.Split(separator);

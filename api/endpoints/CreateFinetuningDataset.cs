@@ -268,8 +268,6 @@ public class CreateFinetuningDataset
                         {
                             // we are going from the full screenplay (prompt) to the scene summary (completion)
 
-                            //var anonymizer = new CharacterAnonymizer();
-
                             var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(scene.Full.Trim(), scene.Summary.Trim(), knownCharacterNames);
 
                             var prompt = anonymizedFullText;
@@ -294,6 +292,63 @@ public class CreateFinetuningDataset
 
         return new OkObjectResult(results);
     }
+
+
+    [FunctionName("CreateSummaryReducerFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateSummaryReducerFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSummaryReducerFinetuningDataset")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var finetuningRows = new List<FinetuningRow>();
+
+        var plots = await getTrainingPlots("summary reducer");
+
+        foreach (var plot in plots)
+        {
+            var plotObj = await getPlot(plot);
+
+            List<string> knownCharacterNames = plotObj.Characters.Select(c => c.Name.Trim()).ToList();
+
+            foreach (var sequence in plotObj.Sequences)
+            {
+                if (!string.IsNullOrWhiteSpace(sequence.Text) && !string.IsNullOrWhiteSpace(sequence.Blurb))
+                {
+                    var (anonymizedLongerText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sequence.Text.Trim(), sequence.Blurb.Trim(), knownCharacterNames);
+
+                    var prompt = anonymizedLongerText;
+                    var completion = anonymizedSummaryText;
+
+                    finetuningRows.Add(getFinetuningRow(prompt, completion));
+                }
+
+                // only include Scene summary if ALL scenes have a scene summary for the entire Sequence
+                if (sequence.Scenes != null && sequence.Scenes.Count > 0 && sequence.Scenes.All(scene => !string.IsNullOrWhiteSpace(scene.Summary)))
+                {
+                    var sceneGroupSummary = string.Join(' ', sequence.Scenes.Select(scene => scene.Summary));
+
+                    var (anonymizedLongerText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sceneGroupSummary.Trim(), sequence.Text.Trim(), knownCharacterNames);
+
+                    var prompt = anonymizedLongerText;
+                    var completion = anonymizedSummaryText;
+
+                    finetuningRows.Add(getFinetuningRow(prompt, completion));
+                }
+            }
+        }
+
+        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
+
+        var results = new
+        {
+            jsonl = resultText
+        };
+
+        return new OkObjectResult(results);
+    }
+
 
 
 
@@ -430,7 +485,7 @@ public class CreateFinetuningDataset
             {
                 cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Text);
             }
-            else if (sequenceType == "character" || sequenceType == "scene summary")
+            else if (sequenceType == "character" || sequenceType == "scene summary" || sequenceType == "summary reducer")
             {
                 cooldownHasContent = true; // hardcoded because these types don't care about the sequences
             }
