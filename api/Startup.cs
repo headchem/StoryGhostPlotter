@@ -26,6 +26,7 @@ namespace MyNamespace
             // builder.Services.AddTransient<SalesforceTokenService>();
             // builder.Services.AddTransient<ISalesforceTokenService, CachedSalesforceTokenService>();
 
+            Catalyst.Models.English.Register(); //You need to pre-register each language (and install the respective NuGet Packages)
 
             var isDebug = false; // toggle the dummy completion service or the real OpenAI service
 

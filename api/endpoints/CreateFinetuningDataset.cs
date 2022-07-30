@@ -242,6 +242,60 @@ public class CreateFinetuningDataset
         return new OkObjectResult(results);
     }
 
+    [FunctionName("CreateSceneSummaryFinetuningDataset")] // NOTE: "Admin" is a reserved route by Azure Functions, so we call ours something different
+    public async Task<IActionResult> CreateSceneSummaryFinetuningDataset([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "SGAdmin/CreateSceneSummaryFinetuningDataset")] HttpRequest req, ILogger log)
+    {
+        var user = StaticWebAppsAuth.Parse(req);
+        if (!user.IsInRole("admin")) return new UnauthorizedResult(); // even though I defined allowed roles per route in staticwebapp.config.json, I was still able to reach this point via Postman on localhost. So, I'm adding this check here just in case.
+
+        var finetuningRows = new List<FinetuningRow>();
+
+        var plots = await getTrainingPlots("scene summary");
+
+        foreach (var plot in plots)
+        {
+            var plotObj = await getPlot(plot);
+
+            List<string> knownCharacterNames = plotObj.Characters.Select(c => c.Name.Trim()).ToList();
+
+            foreach (var sequence in plotObj.Sequences)
+            {
+                if (sequence.Scenes != null)
+                {
+                    foreach (var scene in sequence.Scenes)
+                    {
+                        if (!string.IsNullOrWhiteSpace(scene.Full) && !string.IsNullOrWhiteSpace(scene.Summary))
+                        {
+                            // we are going from the full screenplay (prompt) to the scene summary (completion)
+
+                            var anonymizer = new CharacterAnonymizer();
+
+                            var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await anonymizer.AnonymizeCharacters(scene.Full.Trim(), scene.Summary.Trim(), knownCharacterNames);
+
+                            var prompt = anonymizedFullText;
+                            var completion = anonymizedSummaryText;
+
+                            finetuningRows.Add(getFinetuningRow(prompt, completion));
+                        }
+                    }
+                }
+            }
+
+        }
+
+        finetuningRows = finetuningRows.OrderBy(r => Guid.NewGuid()).ToList(); // randomize order of rows, just in case finetuning doesn't already do this
+
+        var resultText = string.Join("\n", finetuningRows.Select(r => getJSONLRow(r)));
+
+        var results = new
+        {
+            jsonl = resultText
+        };
+
+        return new OkObjectResult(results);
+    }
+
+
 
     // not all sequences will have a finetuning model - for example First Pinch Point. Not all stories have this sequence, so there aren't enough data points to train a model
     private List<string> allFinetuningSequenceNames = new List<string>{
@@ -360,7 +414,8 @@ public class CreateFinetuningDataset
 
             var cooldownSeq = plotObj.Sequences.Where(s => s.SequenceName.ToLower() == "cooldown").FirstOrDefault();
 
-            if (cooldownSeq == null) {
+            if (cooldownSeq == null)
+            {
                 // this plot is incomplete, so skip
                 continue;
             }
@@ -375,9 +430,9 @@ public class CreateFinetuningDataset
             {
                 cooldownHasContent = !string.IsNullOrWhiteSpace(cooldownSeq.Text);
             }
-            else if (sequenceType == "character")
+            else if (sequenceType == "character" || sequenceType == "scene summary")
             {
-                cooldownHasContent = true; // hardcoded because character doesn't care about the sequences
+                cooldownHasContent = true; // hardcoded because these types don't care about the sequences
             }
             else
             {

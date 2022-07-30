@@ -184,7 +184,7 @@ public static class Factory
             new Setup(),
             new ThemeStated(),
             new SetupContinued(),
-            new Catalyst(),
+            new StoryGhost.Models.Sequences.Catalyst(),
             new Debate(),
             new BStory(),
             new DebateContinued(),
