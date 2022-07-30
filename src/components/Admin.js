@@ -146,7 +146,7 @@ const Admin = () => {
 
             <hr />
 
-            <label htmlFor="addTokens">Add Tokens to User</label>
+            <label htmlFor="addTokens">Add Tokens to UserId (GUID)</label>
             <input type="text" id="tokensTargetUserId" value={tokensTargetUserId} onChange={e => setTokensTargetUserId(e.target.value)} />
             <input type="number" id="addTokens" value={numTokensToAdd} onChange={e => setNumTokensToAdd(e.target.value)} />
             <button onClick={addTokens}>Add Tokens</button>

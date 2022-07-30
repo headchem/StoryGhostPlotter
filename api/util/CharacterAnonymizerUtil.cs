@@ -13,16 +13,16 @@ using System.Text.RegularExpressions;
 
 namespace StoryGhost.Util
 {
-    public class CharacterAnonymizer
+    public static class CharacterAnonymizer
     {
 
-        public string ToTitleCase(string text)
+        public static string ToTitleCase(string text)
         {
             TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
             return myTI.ToTitleCase(text.ToLower());
         }
 
-        public string AllCapsToTitleCase(string text)
+        public static string AllCapsToTitleCase(string text)
         {
             string pattern = @"\b[A-Z]{2,}\b";
 
@@ -31,45 +31,51 @@ namespace StoryGhost.Util
             return res;
         }
 
-        // public static async Task<List<string>> GetCharacterNames(string text, List<string> knownCharacterNames)
-        // {
-        //     text = AllCapsToTitleCase(text);
-        //     var nlp = await Pipeline.ForAsync(Language.English);
-        //     //nlp.RemoveAllNeuralizers();
-        //     nlp.RemoveAll(p => true); // remove previously added entities
-        //     nlp = await Pipeline.ForAsync(Language.English);
-
-        //     nlp.Add(await AveragePerceptronEntityRecognizer.FromStoreAsync(language: Language.English, version: Version.Latest, tag: "WikiNER"));
-
-        //     //var neuralizer = new Neuralyzer(Language.English, 0, "WikiNER-sample-fixes");
-
-        //     var spotter = new Spotter(Language.Any, 0, "character name", "Person");
-
-        //     foreach (var knownCharacter in knownCharacterNames)
-        //     {
-        //         //Teach the Neuralyzer class to add the entity type Person for a match for the single token "knownCharacter"
-        //         //neuralizer.TeachAddPattern("Person", knownCharacter, mp => mp.Add(new PatternUnit(P.Single().WithToken(knownCharacter))));
-        //         //neuralizer.TeachAddPattern("Person", knownCharacter.ToUpper(), mp => mp.Add(new PatternUnit(P.Single().WithToken(knownCharacter.ToUpper()))));
-        //         spotter.AddEntry(knownCharacter);
-        //         spotter.AddEntry(knownCharacter.ToUpper());
-        //     }
-
-        //     //nlp.UseNeuralyzer(neuralizer);
-
-        //     nlp.Add(spotter);
-
-        //     var doc = new Document(text, Language.English);
-
-        //     nlp.ProcessSingle(doc);
-
-        //     var results = doc.SelectMany(span => span.GetEntities()).Where(e => e.EntityType.Type == "Person").Select(e => $"{e.Value}").Distinct().ToList();
-
-        //     return results;
-        // }
-
-        public async Task<(string, string, Dictionary<string, int>)> AnonymizeCharacters(string originalFull, string originalSummary, List<string> knownCharacterNames)
+        public static async Task<List<string>> GetCharacterNames(string text, List<string> knownCharacterNames)
         {
-            var detectedNames = knownCharacterNames;//await GetCharacterNames(originalFull + "\n\n" + originalSummary, knownCharacterNames);
+            text = AllCapsToTitleCase(text);
+            var nlp = await Pipeline.ForAsync(Language.English);
+            nlp.RemoveAllNeuralizers();
+            nlp.RemoveAll(p => true); // remove previously added entities
+            nlp = await Pipeline.ForAsync(Language.English);
+
+            nlp.Add(await AveragePerceptronEntityRecognizer.FromStoreAsync(language: Language.English, version: Version.Latest, tag: "WikiNER"));
+
+            var neuralizer = new Neuralyzer(Language.English, 0, "WikiNER-sample-fixes");
+
+            var spotter = new Spotter(Language.Any, 0, "character name", "Person");
+
+            foreach (var knownCharacter in knownCharacterNames)
+            {
+                if (text.Contains(knownCharacter) == false && text.Contains(knownCharacter.ToUpper()) == false)
+                {
+                    continue;
+                }
+
+                //Teach the Neuralyzer class to add the entity type Person for a match for the single token "knownCharacter"
+                neuralizer.TeachAddPattern("Person", knownCharacter, mp => mp.Add(new PatternUnit(P.Single().WithToken(knownCharacter))));
+                neuralizer.TeachAddPattern("Person", knownCharacter.ToUpper(), mp => mp.Add(new PatternUnit(P.Single().WithToken(knownCharacter.ToUpper()))));
+                spotter.AddEntry(knownCharacter);
+                spotter.AddEntry(knownCharacter.ToUpper());
+            }
+
+            nlp.UseNeuralyzer(neuralizer);
+
+            nlp.Add(spotter);
+
+            var doc = new Document(text, Language.English);
+
+            nlp.ProcessSingle(doc);
+
+            var results = doc.SelectMany(span => span.GetEntities()).Where(e => e.EntityType.Type == "Person").Select(e => $"{e.Value}").Distinct().ToList();
+
+            return results;
+        }
+
+        public static async Task<(string, string, Dictionary<string, int>)> AnonymizeCharacters(string originalFull, string originalSummary, List<string> knownCharacterNames)
+        {
+            // bypassing using NER for name detection, because it picks up on too much, like the Angela Rose boat name, or names of bars, etc. As long as I add enough characters for each story, that should be sufficient for mostly anonymizing. Plus it runs much faster.
+            var detectedNames = new List<string>();//await GetCharacterNames(originalFull + "\n\n" + originalSummary, knownCharacterNames);
             var detectedNamesLower = detectedNames.Select(n => n.ToLower()).ToList();
             //Console.WriteLine("DETECTED: " + string.Join(", ", detectedNames));
 
@@ -87,7 +93,36 @@ namespace StoryGhost.Util
 
             foreach (var name in knownCharacterNames)
             {
+                var upperOrigName = name.ToUpper();
+
+                var allNames = new List<string>{
+                    name,
+                    upperOrigName
+                };
+
+                var origNameFirst = "";
+                var origNameFirstUpper = "";
+
+                if (name.Contains(" "))
+                {
+                    origNameFirst = name.Split(' ')[0];
+                    origNameFirstUpper = origNameFirst.ToUpper();
+
+                    allNames.Add(origNameFirst);
+                    allNames.Add(origNameFirstUpper);
+                }
+
+                if (allNames.Any(name => originalFull.Contains(name)) == false && allNames.Any(name => originalSummary.Contains(name)) == false)
+                {
+                    continue;
+                }
+
                 namesToIndex.Add(name, curNameNum);
+
+                if (namesToIndex.ContainsKey(name.ToUpper()) == false)
+                {
+                    namesToIndex.Add(name.ToUpper(), curNameNum);
+                }
 
                 var nameParts = name.Split(' ').ToList();
 
@@ -161,7 +196,7 @@ namespace StoryGhost.Util
             return (resultParts[0], resultParts[1], namesToIndex);
         }
 
-        public string DeAnonymize(string text, Dictionary<string, int> namesToIndex, bool useShortestName)
+        public static string DeAnonymize(string text, Dictionary<string, int> namesToIndex, bool useShortestName)
         {
             // given a string like "CHARACTER0 talks with CHARACTER1" we use namesToIndex to replace them with the shortest real names found
 

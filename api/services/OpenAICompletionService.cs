@@ -366,6 +366,40 @@ public class OpenAICompletionService : ICompletionService
         return results;
     }
 
+    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string sceneFullScreenplay, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
+    {
+        await ensureSufficientTokensAndOwnership(userId, plot.Id, bypassTokenCheck);
+
+        var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(sceneFullScreenplay.Trim(), "", plot.Characters.Select(c => c.Name).ToList());
+
+        var prompt = anonymizedFullText + CreateFinetuningDataset.PromptSuffix;;
+        
+        var openAIRequest = new OpenAICompletionsRequest
+        {
+            Prompt = prompt,
+            // TODO: when I get more data, make sure to specify the learning rate, I think default is 0.05 for amount of data I have
+            // openai api fine_tunes.create -t "sceneSummaries.jsonl" -m davinci --n_epochs 2 
+            Model = "davinci:ft-personal-2022-07-30-05-25-33",
+            MaxTokens = maxTokens,
+            Temperature = temperature, // for summarizing, a lower temp, like 0.2-0.5 seems to work better.
+            NumCompletions = numCompletions,
+            TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.
+            Stop = CreateFinetuningDataset.CompletionStopSequence, // IMPORTANT: this must match exactly what we used during finetuning
+            PresencePenalty = 0.0, // daveshap sets penalties to 0.5 by default, maybe try? Or should I only modify if there are problems?
+            FrequencyPenalty = 0.0,
+            LogitBias = new Dictionary<string, int>()
+        };
+
+        var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
+
+        foreach (var result in results)
+        {
+            cleanCompletion(result);
+        }
+
+        return results;
+    }
+
     public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens

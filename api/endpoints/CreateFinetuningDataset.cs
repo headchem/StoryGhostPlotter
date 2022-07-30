@@ -268,9 +268,9 @@ public class CreateFinetuningDataset
                         {
                             // we are going from the full screenplay (prompt) to the scene summary (completion)
 
-                            var anonymizer = new CharacterAnonymizer();
+                            //var anonymizer = new CharacterAnonymizer();
 
-                            var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await anonymizer.AnonymizeCharacters(scene.Full.Trim(), scene.Summary.Trim(), knownCharacterNames);
+                            var (anonymizedFullText, anonymizedSummaryText, namesToIndex) = await CharacterAnonymizer.AnonymizeCharacters(scene.Full.Trim(), scene.Summary.Trim(), knownCharacterNames);
 
                             var prompt = anonymizedFullText;
                             var completion = anonymizedSummaryText;

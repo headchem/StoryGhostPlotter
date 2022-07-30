@@ -100,6 +100,35 @@ public class DummyCompletionService : ICompletionService
         return new List<CompletionResponse> { result };
     }
 
+    public async Task<List<CompletionResponse>> GetSceneSummaryCompletion(string userId, string sceneFullScreenplay, int maxTokens, double temperature, Plot plot, bool bypassTokenCheck, int numCompletions)
+    {
+        
+        {
+            var tokensRemaining = await _userService.GetTokensRemaining(userId);
+            if (tokensRemaining <= 0)
+            {
+                throw new Exception("User is out of tokens, unable to generate completion");
+            }
+        }
+
+        var prompt = sceneFullScreenplay;
+
+        var result = new CompletionResponse();
+
+        result.Id = Guid.NewGuid().ToString();
+        result.Prompt = prompt;
+        result.Completion = "AI SCENE SUMMARY goes here...";
+
+        var promptTokenCount = 123;
+        var completionTokenCount = 456;
+
+        var totalTokens = promptTokenCount + completionTokenCount;
+
+        await _userService.DeductTokens(userId, totalTokens);
+
+        return new List<CompletionResponse> { result };
+    }
+
     public async Task<List<CompletionResponse>> GetFullCompletion(string userId, string targetSequence, int maxTokens, double temperature, Plot story, bool bypassTokenCheck, int numCompletions)
     {
         // TODO: check if tokens exist, deduct tokens
