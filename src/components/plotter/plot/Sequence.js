@@ -187,7 +187,7 @@ const Sequence = ({
                                                     userInfo={userInfo}
                                                     plotId={plotId}
                                                     characters={characters}
-                                                    longText={sequence.scenes.map((s) => s.summary).join(' ')}
+                                                    longText={!sequence.scenes ? '' : sequence.scenes.map((s) => s.summary).join(' ')}
                                                     tokensRemaining={tokensRemaining}
                                                 />
                                             </>
