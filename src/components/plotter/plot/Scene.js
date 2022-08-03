@@ -61,18 +61,6 @@ const Scene = ({
                                 limit={600}
                                 showCount={true}
                             />
-                            {
-                                userInfo && userInfo.userRoles.includes('admin') &&
-                                <>
-                                    <SceneSummarizer
-                                        userInfo={userInfo}
-                                        plotId={plotId}
-                                        characters={characters}
-                                        scene={scene}
-                                        tokensRemaining={tokensRemaining}
-                                    />
-                                </>
-                            }
                         </Tab>
                         <Tab eventKey="full" title="Full Screenplay">
                             <label htmlFor={sequence.sequenceName + '_scene_full_textarea' + scene.id} className="form-label w-100 d-none">Scene Full</label>
@@ -87,6 +75,19 @@ const Scene = ({
                             />
                         </Tab>
                     </Tabs>
+
+                    {
+                        userInfo && userInfo.userRoles.includes('admin') &&
+                        <>
+                            <SceneSummarizer
+                                userInfo={userInfo}
+                                plotId={plotId}
+                                characters={characters}
+                                scene={scene}
+                                tokensRemaining={tokensRemaining}
+                            />
+                        </>
+                    }
 
                     <div className='row w-100'>
                         <div className='col'>
