@@ -88,7 +88,12 @@ const Scene = ({
                         </Tab>
                     </Tabs>
 
-                    <button className='btn btn-primary mb-3' onClick={() => insertScene(sceneIdx)}>Add Scene</button>
+                    <div className='row w-100'>
+                        <div className='col'>
+                            <button className='btn btn-primary mb-3' onClick={() => insertScene(sceneIdx)}>Add Scene</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </>
