@@ -237,7 +237,6 @@ const Sequence = ({
                                     dramaticQuestion={dramaticQuestion}
                                     logLineDescription={logLineDescription}
                                     sequence={sequence}
-                                    scenes={sequence.scenes}
                                     tokensRemaining={tokensRemaining}
                                     AILogLineDescriptions={AILogLineDescriptions}
                                     updateScenes={updateScenes}

@@ -23,6 +23,8 @@ const Scene = ({
     AILogLineDescriptions,
     updateScene,
     deleteScene,
+    sceneIdx,
+    insertScene,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -85,6 +87,8 @@ const Scene = ({
                             />
                         </Tab>
                     </Tabs>
+
+                    <button className='btn btn-primary mb-3' onClick={() => insertScene(sceneIdx)}>Add Scene</button>
                 </div>
             </div>
         </>
