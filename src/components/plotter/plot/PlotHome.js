@@ -622,7 +622,8 @@ const PlotHome = (
                 <>
                     <div className='row'>
                         <div className='col-12'>
-                            <div className="form-check form-switch">
+                            <h1>{title}</h1>
+                            <div className="form-check form-switch fs-5 mb-4 mt-4">
                                 <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" onChange={handleDisplayModeChange} checked={displayMode === 'advanced'} />
                                 <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Advanced Mode</label>
                             </div>

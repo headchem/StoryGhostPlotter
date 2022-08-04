@@ -69,7 +69,7 @@ const Scene = ({
                                 className="form-control"
                                 value={scene.full}
                                 setValue={(newValue) => updateScene(sequence.sequenceName, scene.id, 'full', newValue)}
-                                rows={parseInt(scene.full.length / 25)}
+                                //rows={parseInt(scene.full.length / 35)}
                                 limit={5000}
                                 showCount={true}
                             />
