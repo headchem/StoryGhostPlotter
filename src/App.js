@@ -61,58 +61,76 @@ function App() {
             <Header userInfo={userInfo} />
 
             <main className="flex-shrink-0 mt-5">
-                <div className="container mt-5">
-                    {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
-                    <Routes>
-                        <Route path="/" element={<About />} />
-                        <Route path="/plots" element={
-                            <>
-                                {userInfo &&
-                                    <>
-                                        <UserHome userInfo={userInfo} />
-                                    </>
-                                }
-                                {
-                                    !userInfo &&
-                                    <>
-                                        <p>You must log in to access your plots</p>
-                                    </>
-                                }
 
-                            </>
-                        } />
-                        <Route path="/plot" element={
-                            <>
-                                {userInfo &&
+                {/* A <Routes> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                <Routes>
+                    <Route path="/" element={
+                        <div className="container mt-5">
+                            <About />
+                        </div>
+                    } />
+                    <Route path="/plots" element={
+                        <>
+                            {userInfo &&
+                                <>
+                                    <div className="container mt-5">
+                                        <UserHome userInfo={userInfo} />
+                                    </div>
+                                </>
+                            }
+                            {
+                                !userInfo &&
+                                <>
+                                    <div className="container mt-5">
+                                        <p>You must log in to access your plots</p>
+                                    </div>
+                                </>
+                            }
+
+                        </>
+                    } />
+                    <Route path="/plot" element={
+                        <>
+                            {userInfo &&
+                                <div className="container mt-5">
                                     <PlotHome
                                         userInfo={userInfo}
                                         mode={mode}
                                     />
-                                }
-                                {
-                                    !userInfo &&
-                                    <>
+                                </div>
+                            }
+                            {
+                                !userInfo &&
+                                <>
+                                    <div className="container mt-5">
                                         <p>You must log in to access this page</p>
-                                    </>
-                                }
-                            </>
+                                    </div>
+                                </>
+                            }
+                        </>
 
-                        } />
-                        <Route path="/view" element={
-                            <>
+                    } />
+                    <Route path="/view" element={
+                        <>
+                            <div className="container-fluid mt-5">
                                 <PlotView userInfo={userInfo} />
-                            </>
+                            </div>
+                        </>
 
+                    } />
+
+                    {userInfo && userInfo.userRoles.includes('admin') &&
+                        <Route path="/admin" element={
+                            <div className="container mt-5">
+                                <Admin />
+                            </div>
                         } />
+                    }
+                </Routes>
 
-                        {userInfo && userInfo.userRoles.includes('admin') &&
-                            <Route path="/admin" element={<Admin />} />
-                        }
-                    </Routes>
-                </div>
             </main>
             <Footer />
-        </Router>
+        </Router >
     )
 
 }

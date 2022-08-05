@@ -155,17 +155,31 @@ const PlotView = (
                                                         </div>
                                                         {
                                                             userInfo && userInfo.userRoles.includes('admin') &&
-                                                            <div className='col'>
-                                                                <div className='sticky-md-top'>
-                                                                    {
-                                                                        sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
-                                                                            <span key={scene.id}>
-                                                                                <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
-                                                                            </span>
-                                                                        ))
-                                                                    }
+                                                            <>
+                                                                <div className='col'>
+                                                                    <div className='sticky-md-top'>
+                                                                        {
+                                                                            sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                                <span key={scene.id}>
+                                                                                    <p className='fs-5' title={sequence.sequenceName}>{getText(scene, 'summary', 'fullsummaryCompletions')}</p>
+                                                                                </span>
+                                                                            ))
+                                                                        }
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+
+                                                                <div className='col'>
+                                                                    <div className='sticky-md-top'>
+                                                                        {
+                                                                            sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
+                                                                                <span key={scene.id}>
+                                                                                    <p className='fs-5' style={{'whiteSpace': 'pre-line'}} title={sequence.sequenceName}>{scene.full}</p>
+                                                                                </span>
+                                                                            ))
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </>
                                                         }
                                                     </>
                                                 }
