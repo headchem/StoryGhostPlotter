@@ -53,8 +53,14 @@ const SceneSummarizer = ({
         });
     }
 
+    const getSummaryLabel = (idx) => {
+        if (idx === 0) return 'zero temp'
+        if (idx === 1) return 'low temp'
+        if (idx === 2) return 'high temp'
+    }
+
     const completionsList = completions.map((c, i) =>
-        <li title={i===0?'low temp':'high temp'} key={i}>{c.completion}</li>
+        <li title={getSummaryLabel(i)} key={i}>{c.completion}</li>
     )
 
     return (

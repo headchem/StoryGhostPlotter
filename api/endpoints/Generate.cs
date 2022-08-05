@@ -297,17 +297,18 @@ public class Generate
             ["PlotId"] = dto.PlotId,
         }))
         {
-            var maxTokens = 128;
+            var maxTokens = 192;
 
-            var resultLowTemp = await _completionService.GetSceneSummaryCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
+            var resultLowTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.1, false, 1);
+            var resultMediumTemp = await _completionService.GetSceneSummaryCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
             var resultHighTemp = await _completionService.GetSceneSummaryCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.85, false, 1);
 
             var timespan = stopwatch.Elapsed;
 
             stopwatch.Stop();
 
-            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
-            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
+            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultMediumTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultMediumTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
 
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
@@ -317,6 +318,7 @@ public class Generate
 
             var result = new List<CompletionResponse> {
                 resultLowTemp[0],
+                resultMediumTemp[0],
                 resultHighTemp[0]
             };
 
@@ -353,15 +355,16 @@ public class Generate
         {
             var maxTokens = 256;
 
-            var resultLowTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
+            var resultLowTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.1, false, 1);
+            var resultMediumTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.35, false, 1);
             var resultHighTemp = await _completionService.GetSummaryReducerCompletion(userId, dto.PlotId, dto.Full, dto.CharacterNames, maxTokens, 0.85, false, 1);
 
             var timespan = stopwatch.Elapsed;
 
             stopwatch.Stop();
 
-            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
-            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
+            var promptTokenCount = resultLowTemp.Sum(r => r.PromptTokenCount) + resultMediumTemp.Sum(r => r.PromptTokenCount) + resultHighTemp.Sum(r => r.PromptTokenCount);
+            var completionTokenCount = resultLowTemp.Sum(r => r.CompletionTokenCount) + resultMediumTemp.Sum(r => r.CompletionTokenCount) + resultHighTemp.Sum(r => r.CompletionTokenCount);
 
             var metrics = new Dictionary<string, double>();
             metrics.Add("duration in seconds", timespan.TotalMilliseconds / 1000);
@@ -371,6 +374,7 @@ public class Generate
 
             var result = new List<CompletionResponse> {
                 resultLowTemp[0],
+                resultMediumTemp[0],
                 resultHighTemp[0]
             };
 

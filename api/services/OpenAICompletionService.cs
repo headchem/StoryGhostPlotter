@@ -377,9 +377,8 @@ public class OpenAICompletionService : ICompletionService
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            // TODO: when I get more data, make sure to specify the learning rate, I think default is 0.05 for amount of data I have
-            // openai api fine_tunes.create -t "sceneSummaries.jsonl" -m davinci --n_epochs 2 
-            Model = "davinci:ft-personal-2022-07-30-05-25-33",
+            // openai api fine_tunes.create -t "sceneSummaries.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.06
+            Model = "davinci:ft-personal-2022-08-05-04-47-42",
             MaxTokens = maxTokens,
             Temperature = temperature, // for summarizing, a lower temp, like 0.2-0.5 seems to work better.
             NumCompletions = numCompletions,
