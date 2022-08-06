@@ -4,6 +4,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { FaMinusCircle } from 'react-icons/fa'
 import SceneSummarizer from './SceneSummarizer'
+import SceneEmotions from './SceneEmotions'
 
 
 const Scene = ({
@@ -79,6 +80,11 @@ const Scene = ({
                     {
                         userInfo && userInfo.userRoles.includes('admin') &&
                         <>
+                            <SceneEmotions
+                                sequence={sequence}
+                                scene={scene}
+                                updateScene={updateScene}
+                            />
                             <SceneSummarizer
                                 userInfo={userInfo}
                                 plotId={plotId}

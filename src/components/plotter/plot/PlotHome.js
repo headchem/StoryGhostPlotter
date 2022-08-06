@@ -250,6 +250,10 @@ const PlotHome = (
             newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'summary': newValue } : scene)
         } else if (propName === 'full') {
             newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'full': newValue } : scene)
+        } else if (propName === 'startEmotion') {
+            newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'startEmotion': newValue } : scene)
+        } else if (propName === 'endEmotion') {
+            newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'endEmotion': newValue } : scene)
         }
 
         setSequences(

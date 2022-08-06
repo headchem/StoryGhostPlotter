@@ -21,4 +21,9 @@ public class UserScene
     [JsonPropertyName("fullCompletions")]
     public List<CompletionResponse> FullCompletions { get; set; }
 
+    [JsonPropertyName("startEmotion")]
+    public SceneEmotion StartEmotion {get;set;}
+
+    [JsonPropertyName("endEmotion")]
+    public SceneEmotion EndEmotion {get;set;}
 }
