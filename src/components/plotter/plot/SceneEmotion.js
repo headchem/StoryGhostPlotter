@@ -50,9 +50,9 @@ const SceneEmotion = ({
     ]
 
     return (
-        <div className='row pb-3'>
-            <p>{startOrEnd}</p>
-            <div className='col-md-6'>
+        <>
+            {/* <p>{startOrEnd}</p> */}
+            <div className='col-md-6 p-0'>
                 <select required className='fs-5 form-select form-inline' value={!emotion['intensity'] ? 'intense' : emotion['intensity']} onChange={onIntensityChange}>
                     {
                         intensityList.map(function (o) {
@@ -61,7 +61,7 @@ const SceneEmotion = ({
                     }
                 </select>
             </div>
-            <div className='col-md-6'>
+            <div className='col-md-6 p-0'>
                 <select required className='fs-5 form-select form-inline' value={!emotion['emotion'] ? '' : emotion['emotion']} onChange={onEmotionChange}>
                     {
                         emotionList.map(function (o) {
@@ -70,7 +70,7 @@ const SceneEmotion = ({
                     }
                 </select>
             </div>
-        </div>
+        </>
     )
 }
 
