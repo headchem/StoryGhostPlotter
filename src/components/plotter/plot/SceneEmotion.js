@@ -44,6 +44,7 @@ const SceneEmotion = ({
     ]
 
     const intensityList = [
+        { 'value': 'none', 'label': 'n/a' },
         { 'value': 'mild', 'label': 'mild(ly)' },
         { 'value': 'moderate', 'label': 'moderate(ly)' },
         { 'value': 'intense', 'label': 'intense' },
@@ -62,13 +63,16 @@ const SceneEmotion = ({
                 </select>
             </div>
             <div className='col-md-6 p-0'>
-                <select required className='fs-5 form-select form-inline' value={!emotion['emotion'] ? '' : emotion['emotion']} onChange={onEmotionChange}>
-                    {
-                        emotionList.map(function (o) {
-                            return <option key={o['intense']} value={o['intense']}>{!emotion['intensity'] ? 'intense' : o[emotion['intensity']]}</option>
-                        })
-                    }
-                </select>
+                {
+                    emotion['intensity'] && emotion['intensity'] !== 'none' &&
+                    <select required className='fs-5 form-select form-inline' value={!emotion['emotion'] ? '' : emotion['emotion']} onChange={onEmotionChange}>
+                        {
+                            emotionList.map(function (o) {
+                                return <option key={o['intense']} value={o['intense']}>{!emotion['intensity'] ? 'intense' : o[emotion['intensity']]}</option>
+                            })
+                        }
+                    </select>
+                }
             </div>
         </>
     )
