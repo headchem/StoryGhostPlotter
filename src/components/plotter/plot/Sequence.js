@@ -12,6 +12,7 @@ import SummaryReducer from './SummaryReducer'
 const Sequence = ({
     userInfo,
     plotId,
+    mode,
 
     sequenceType,
     genres,
@@ -37,6 +38,8 @@ const Sequence = ({
     updateScenes,
     updateScene,
     deleteScene,
+
+    emotionsOptions,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -228,6 +231,7 @@ const Sequence = ({
                                 <SceneList
                                     userInfo={userInfo}
                                     plotId={plotId}
+                                    mode={mode}
                                     sequenceType={sequenceType}
                                     genres={genres}
                                     problemTemplate={problemTemplate}
@@ -242,6 +246,8 @@ const Sequence = ({
                                     updateScenes={updateScenes}
                                     updateScene={updateScene}
                                     deleteScene={deleteScene}
+
+                                    emotionsOptions={emotionsOptions}
                                 />
                             </div>
                         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using StoryGhost.Interfaces;
+using StoryGhost.Models.Emotions;
 using StoryGhost.Models.Genres;
 using StoryGhost.Models.ProblemTemplates;
 using StoryGhost.Models.Archetypes;
@@ -14,6 +15,18 @@ using StoryGhost.Models;
 namespace StoryGhost.Util;
 public static class Factory
 {
+
+    public static List<IEmotion> GetEmotions()
+    {
+        return new List<IEmotion> {
+            new Serenity(),
+            new Joy(),
+            new Ecstasy(),
+            new Pensiveness(),
+            new Sadness(),
+            new Grief(),
+        };
+    }
 
     public static List<IGenre> GetGenres()
     {

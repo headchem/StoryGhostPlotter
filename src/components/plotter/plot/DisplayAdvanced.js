@@ -15,6 +15,7 @@ const DisplayAdvanced = (
         mode,
         genreOptions,
         genres,
+        emotionsOptions,
         onGenresChange,
         onFocusChange,
         setKeywords,
@@ -270,6 +271,7 @@ const DisplayAdvanced = (
                                 <SequenceList
                                     sequenceType='scenes'
                                     plotId={plotId}
+                                    mode={mode}
                                     sequences={sequences}
                                     userInfo={userInfo}
                                     logLineDescription={logLineDescription}
@@ -280,6 +282,7 @@ const DisplayAdvanced = (
                                     updateFull={updateFull}
                                     insertSequence={insertSequence}
                                     deleteSequence={deleteSequence}
+                                    emotionsOptions={emotionsOptions}
                                     genres={genres}
                                     problemTemplate={problemTemplate}
                                     keywords={keywords}

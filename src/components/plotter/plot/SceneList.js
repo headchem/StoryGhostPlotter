@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid'
 const SceneList = ({
     userInfo,
     plotId,
+    mode,
     sequenceType,
     genres,
     problemTemplate,
@@ -19,6 +20,8 @@ const SceneList = ({
     updateScenes,
     updateScene,
     deleteScene,
+
+    emotionsOptions,
 }) => {
 
     const getNewScene = () => {
@@ -80,6 +83,7 @@ const SceneList = ({
                             <Scene key={idx + sequenceType + scene.id}
                                 userInfo={userInfo}
                                 plotId={plotId}
+                                mode={mode}
                                 sequenceType={sequenceType}
                                 genres={genres}
                                 problemTemplate={problemTemplate}
@@ -96,6 +100,8 @@ const SceneList = ({
                                 deleteScene={deleteScene}
                                 sceneIdx={idx + 1}
                                 insertScene={insertScene}
+
+                                emotionsOptions={emotionsOptions}
                             />
 
                         ))
