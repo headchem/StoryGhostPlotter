@@ -23,10 +23,4 @@ public class UserScene
 
     [JsonPropertyName("emotions")]
     public List<string> Emotions { get; set; }
-
-    [JsonPropertyName("startEmotion")]
-    public SceneEmotion StartEmotion { get; set; }
-
-    [JsonPropertyName("endEmotion")]
-    public SceneEmotion EndEmotion { get; set; }
 }

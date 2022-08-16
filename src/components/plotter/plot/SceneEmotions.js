@@ -34,6 +34,13 @@ const SceneEmotions = ({
                             classNamePrefix="select"
                             onChange={onEmotionsChange}
                             theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
+
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                            styles={{
+                                menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menu: (provided) => ({ ...provided, zIndex: 9999 })
+                            }}
                         />
                     </div>
                 }
