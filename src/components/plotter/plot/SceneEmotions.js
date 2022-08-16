@@ -3,8 +3,6 @@ import React from 'react'
 import Select from 'react-select'
 import { selectDarkTheme, selectLightTheme } from '../../../util/SelectTheme'
 
-import SceneEmotion from './SceneEmotion'
-
 const SceneEmotions = ({
     mode,
     sequence,
@@ -12,13 +10,6 @@ const SceneEmotions = ({
     updateScene,
     emotionsOptions,
 }) => {
-
-    const getBlankEmotion = () => {
-        return {
-            'emotion': 'ecstacy',
-            'intensity': 'intense'
-        }
-    }
 
     const onEmotionsChange = (inputValue) => {
         const newEmotions = inputValue.map(el => el.value)
@@ -31,7 +22,7 @@ const SceneEmotions = ({
         <>
             <div className='row w-100 m-0 mb-3'>
                 {
-                    <div style={{ width: '100%' }}>
+                    <div className='m-0 p-0' style={{ width: '100%' }}>
 
                         <Select
                             defaultValue={filteredEmotionsValues}
@@ -46,24 +37,6 @@ const SceneEmotions = ({
                         />
                     </div>
                 }
-            </div>
-            <div className='row w-100 m-0 mb-3'>
-                <SceneEmotion
-                    sequence={sequence}
-                    scene={scene}
-                    emotion={!scene['startEmotion'] ? getBlankEmotion() : scene['startEmotion']}
-                    updateScene={updateScene}
-                    startOrEnd={'start'}
-                />
-            </div>
-            <div className='row w-100 m-0 mb-3'>
-                <SceneEmotion
-                    sequence={sequence}
-                    scene={scene}
-                    emotion={!scene['endEmotion'] ? getBlankEmotion() : scene['endEmotion']}
-                    updateScene={updateScene}
-                    startOrEnd={'end'}
-                />
             </div>
         </>
     )
