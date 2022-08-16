@@ -10,6 +10,7 @@ import SceneEmotions from './SceneEmotions'
 const Scene = ({
     userInfo,
     plotId,
+    mode,
     sequenceType,
     genres,
     problemTemplate,
@@ -26,6 +27,8 @@ const Scene = ({
     deleteScene,
     sceneIdx,
     insertScene,
+
+    emotionsOptions,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -81,9 +84,11 @@ const Scene = ({
                         userInfo && userInfo.userRoles.includes('admin') &&
                         <>
                             <SceneEmotions
+                                mode={mode}
                                 sequence={sequence}
                                 scene={scene}
                                 updateScene={updateScene}
+                                emotionsOptions={emotionsOptions}
                             />
                             <SceneSummarizer
                                 userInfo={userInfo}

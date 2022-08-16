@@ -42,6 +42,10 @@ public static class LogLineOptions
             var dramaticQuestionsOptions = dramaticQuestions.Select(x => (x.Id, x.Name)).OrderBy(x => x.Name).ToList();
             options.Add("dramaticQuestions", dramaticQuestionsOptions);
 
+            var emotions = Factory.GetEmotions();
+            var emotionsOptions = emotions.Select(x => (x.Id, x.Name)).OrderBy(x => x.Name).ToList();
+            options.Add("emotionDescriptions", emotionsOptions);
+
             return new OkObjectResult(options);
         }
         catch (Exception ex)

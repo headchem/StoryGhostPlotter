@@ -95,11 +95,13 @@ const PlotHome = (
         const mappedProblemTemplateOptions = mapToSelectOptions(data['problemTemplates'])
         const mappedArchetypeOptions = mapToSelectOptions(data['archetypes'])
         const mappedDramaticQuestionsOptions = mapToSelectOptions(data['dramaticQuestions'])
+        const mappedEmotionsOptions = mapToSelectOptions(data['emotionDescriptions'])
 
         setGenreOptions(mappedGenreOptions)
         setProblemTemplateOptions(mappedProblemTemplateOptions)
         setArchetypeOptions(mappedArchetypeOptions)
         setDramaticQuestionOptions(mappedDramaticQuestionsOptions)
+        setEmotionOptions(mappedEmotionsOptions)
     }
 
     // on page load, this is called, which waits for both LogLineOptions and GetPlot to complete before setting any values (LogLineOptions must populate dropdowns before we can set values)
@@ -250,6 +252,8 @@ const PlotHome = (
             newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'summary': newValue } : scene)
         } else if (propName === 'full') {
             newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'full': newValue } : scene)
+        } else if (propName === 'emotions') {
+            newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'emotions': newValue } : scene)
         } else if (propName === 'startEmotion') {
             newScenes = sequence.scenes.map((scene) => scene.id === sceneId ? { ...scene, 'startEmotion': newValue } : scene)
         } else if (propName === 'endEmotion') {
@@ -433,6 +437,7 @@ const PlotHome = (
 
     const [plotLoading, setPlotLoading] = useState(false)
 
+    const [emotionOptions, setEmotionOptions] = useState([])
     const [genreOptions, setGenreOptions] = useState([])
     const [problemTemplateOptions, setProblemTemplateOptions] = useState([])
     const [archetypeOptions, setArchetypeOptions] = useState([])
@@ -719,6 +724,7 @@ const PlotHome = (
                             userInfo={userInfo}
                             plotId={searchParams.get("id")}
                             mode={mode}
+                            emotionsOptions={emotionOptions}
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}

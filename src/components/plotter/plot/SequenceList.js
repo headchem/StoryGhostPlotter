@@ -5,6 +5,7 @@ import Sequence from './Sequence'
 const SequenceList = ({
     sequenceType,
     plotId,
+    mode,
     sequences,
     userInfo,
     logLineDescription,
@@ -27,6 +28,8 @@ const SequenceList = ({
     updateScenes,
     updateScene,
     deleteScene,
+
+    emotionsOptions,
 }) => {
 
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
@@ -190,6 +193,8 @@ const SequenceList = ({
 
                                     tokensRemaining={tokensRemaining}
                                     AILogLineDescriptions={AILogLineDescriptions}
+
+                                    emotionsOptions={emotionsOptions}
                                 />
                             }
                             {
@@ -223,12 +228,15 @@ const SequenceList = ({
 
                                     tokensRemaining={tokensRemaining}
                                     AILogLineDescriptions={AILogLineDescriptions}
+
+                                    emotionsOptions={emotionsOptions}
                                 />
                             }
                             {
                                 sequenceType === 'scenes' &&
                                 <Sequence
                                     sequenceType={sequenceType}
+                                    mode={mode}
                                     key={sequenceType + sequence.sequenceName}
                                     userInfo={userInfo}
                                     plotId={plotId}
@@ -259,6 +267,8 @@ const SequenceList = ({
                                     updateScenes={updateScenes}
                                     updateScene={updateScene}
                                     deleteScene={deleteScene}
+
+                                    emotionsOptions={emotionsOptions}
                                 />
                             }
                         </div>
