@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.Emotions;

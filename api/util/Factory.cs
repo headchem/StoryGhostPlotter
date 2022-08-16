@@ -22,9 +22,71 @@ public static class Factory
             new Serenity(),
             new Joy(),
             new Ecstasy(),
+
+            new Peaceful(),
+            new Caring(),
+            new Love(),
+
+            new Acceptance(),
+            new Trust(),
+            new Admiration(),
+
+            new Docile(),
+            new Deference(),
+            new Submission(),
+
+            new Apprehension(),
+            new Fear(),
+            new Terror(),
+
+            new Impressed(),
+            new Inspiration(),
+            new Awe(),
+
+            new Distraction(),
+            new Surprise(),
+            new Amazement(),
+
+            new Dislike(),
+            new Criticism(),
+            new Disapproval(),
+
             new Pensiveness(),
             new Sadness(),
             new Grief(),
+
+            new Regret(),
+            new Guilt(),
+            new Remorse(),
+
+            new Boredom(),
+            new Disgust(),
+            new Loathing(),
+
+            new Distaste(),
+            new Condescension(),
+            new Contempt(),
+
+            new Annoyance(),
+            new Anger(),
+            new Rage(),
+
+            new Pushy(),
+            new Demanding(),
+            new Aggressiveness(),
+
+            new Interest(),
+            new Anticipation(),
+            new Vigilance(),
+
+            new Easiness(),
+            new Hope(),
+            new Optimism(),
+
+            // NON-Plutchik's wheel emotions
+            new Grasping(),
+            new Possessive(), // should this be "envy"?
+            new Jealousy(),
         };
     }
 

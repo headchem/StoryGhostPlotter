@@ -21,10 +21,7 @@ const SceneEmotions = ({
     }
 
     const onEmotionsChange = (inputValue) => {
-        console.log(inputValue)
-
         const newEmotions = inputValue.map(el => el.value)
-        console.log(newEmotions)
         updateScene(sequence.sequenceName, scene.id, 'emotions', newEmotions)
     }
 
@@ -34,12 +31,10 @@ const SceneEmotions = ({
         <>
             <div className='row w-100 m-0 mb-3'>
                 {
-                    //emotionsOptions && scene && scene['emotions'] &&
                     <div style={{ width: '100%' }}>
 
                         <Select
                             defaultValue={filteredEmotionsValues}
-                            //value={filteredEmotionsValues}
                             isMulti
                             placeholder='Emotions'
                             name="emotions"
@@ -47,7 +42,6 @@ const SceneEmotions = ({
                             className="emotions-multi-select"
                             classNamePrefix="select"
                             onChange={onEmotionsChange}
-                            //onFocus={() => onFocusChange('genres')}
                             theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
                         />
                     </div>
