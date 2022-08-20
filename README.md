@@ -536,3 +536,297 @@ Survive
 
 32854 words total after 30 stories
 
+
+
+Related to object properties
+	Interest, curiosity, enthusiasm - Indifference, habituation, boredom
+	Attraction, desire, admiration - Aversion, disgust, revulsion
+	Surprise, amusement - Alarm, panic
+Future appraisal
+	Hope, excitement - Fear, anxiety, dread
+Event-related
+	Gratitude, thankfulness - Anger, rage
+	Joy, elation, triumph, jubilation - Sorrow, grief
+	Patience - Frustration, restlessness
+	Contentment - Discontentment, disappointment
+Self-appraisal
+	Humility, modesty - Pride, arrogance
+Social
+	Charity - Avarice, greed, miserliness, envy, jealousy
+	Sympathy - Cruelty
+
+
+Negative and forceful
+	Anger
+	Annoyance
+	Contempt
+	Disgust
+	Irritation
+
+Negative and not in control
+	Anxiety
+	Embarrassment
+	Fear
+	Helplessness
+	Powerlessness
+	Worry
+
+Negative thoughts
+	Pride
+	Doubt
+	Envy
+	Frustration
+	Guilt
+	Shame
+
+Negative and passive
+	Boredom
+	Despair
+	Disappointment
+	Hurt
+	Sadness
+
+Agitation
+	Stress
+	Shock
+	Tension
+
+Positive and lively
+	Amusement
+	Delight
+	Elation
+	Excitement
+	Happiness
+	Joy
+	Pleasure
+
+Caring
+	Affection
+	Empathy
+	Friendliness
+	Love
+
+Positive thoughts
+	Courage
+	Hope
+	Humility
+	Satisfaction
+	Trust
+
+Quiet positive
+	Calmness
+	Contentment
+	Relaxation
+	Relief
+	Serenity
+
+Reactive
+	Interest
+	Politeness
+	Surprise
+
+
+Top level, clockwise-ish:
+1. Joy
+	B3. admiration
+		EARLCategory: PositiveThoughts, PositiveAndLively, Caring, QuietPositive, NegativeAndNotInControl, Agitation, NegativeAndForceful, NegativeThoughts, NegativeAndPassive, Reactive
+		Kind: RelatedToObjectProperties, FutureAppraisal, EventRelated, SelfAppraisal, Social, Cathected
+		JoyToSadness: 
+		TrustToDisgust: 
+		FearToAnger: 
+		SurpriseToAnticipation: 
+		AnxietyToConfidence: 
+		BoredomToFascination: 
+		FrustrationToEuphoria: 
+		DispiritedToEncouraged: 
+		TerrorToEnchantment: 
+		HumiliationToPride: 
+		PleasureToDispleasure: 
+		ArousalToNonarousal: 
+		DominanceToSubmissiveness: 
+
+	B4. adoration
+	B6. interest
+	B7. entrancement
+	E2. Satisfaction
+	E3. Courage
+	E4. Trust
+	E5. Hope
+	E6. Pleasure
+	E7. Happiness
+	E8. Amusement
+	E9. Delight
+	E10. Excitement
+	E11. Elation	
+	E12. Joy
+	E35. Pride
+	C1. curiosity
+	C2. enthusiasm
+	C13. triumph
+	C14. jubilation
+	C21. arrogance
+	P3. Cheerfulness
+	P20. Optimism (diff from Hope?)
+	P35. Morbidness
+	P36. Derisiveness
+	P39. Victorious
+	P42. Bittersweetness
+	Ecstasy (high intensity Joy)
+	Peaceful
+	Caring
+	Easiness
+	Comfort
+	Confident
+	Intrigue
+	Insightful
+	Enlightenment
+	Epiphany
+	Thrilled
+	Pleased (with oneself, not the same as pleasure)
+	Satisfied
+	
+2. Love
+	L5. compassion
+	B8. craving
+	B9. sexual desire
+	B10. romance
+	B11. nostalgia
+	B12. empathic pain (Sympathy)
+	B13. satisfaction
+	E13. Love	
+	E14. Affection
+	E15. Empathy
+	E16. Friendliness
+	E17. Calmness
+	E18. Serenity
+	E19. Contentment
+	E20. Relaxation
+	E21. Relief
+	E48. Politeness
+	C4. habituation
+	C5. Attraction
+	C17. Patience
+	C22. Charity
+	P5. Acceptance
+	P6. Tolerance
+	Grasping
+	longing
+	Docile
+	Deference
+	Pity
+3. Fear
+	B18. horror
+	E22. Fear
+	E23. Helplessness
+	E24. Worry
+	E25. Anxiety
+	E29. Tension
+	E30. Stress
+	E36. Doubt
+	C8. Alarm
+	C9. Panic
+	C10. dread
+	P9. Apprehension
+	P12. Terror
+	P16. Expectancy
+	P29. Submission
+	P30. Modesty
+	P45. Frozenness (fear+anger)
+	Hysteria
+	insecurity
+4. Anger
+	E31. Anger
+	E32. Annoyance
+	E33. Irritation
+	E37. Frustration
+	E38. Envy
+	L10a. jealousy (more negative than envy)
+	C12. rage
+	C24. greed
+	C25. miserliness
+	C26. Hate
+	P11. Hostility
+	P13. Fury
+	P24. Outrage
+	P37. Aggressiveness
+	P38. Vengeance
+	P41. Dominance
+	Possessive
+	Pushy
+	Demanding
+5. Disgust
+	E34. Contempt
+	E35. Disgust
+	E41. Boredom
+	C3. Indifference
+	C6. Aversion
+	C7. revulsion (same as contempt?)
+	C18. restlessness
+	C19. Discontentment
+	C23. Avarice
+	C26. Cruelty
+	P7. Dislike
+	P8. Loathing
+	P21. Disapproval
+	P31. Scorn
+	P32. Cynicism
+	P43. Ambivalence
+	Criticism
+	Distaste
+	Condescension
+	Discomfort
+	Ennui
+6. Sadness
+	L13. depression
+	B23. awkwardness
+	E26. Embarrassment
+	E27. Powerlessness
+	L14. shame (Shame is a feeling that your whole self is wrong, and it may not be related to a specific behavior or event.)
+	L14a. guilt (Guilt is a feeling you get when you did something wrong, or perceived you did something wrong.)
+	E42. Hurt
+	E43. Sadness
+	E44. Despair
+	E45. Disappointment
+	P1. Pensiveness
+	P2. Gloominess
+	P4. Dejection
+	P10. Dismay
+	P22. Fatalism
+	P25. Remorse
+	P26. Misery
+	P27. Sullenness (like sadness + anger)
+	P28. Pessimism (sad + anticipation)
+	P33. Sentimentality
+	P34. Resignation
+	P40. Prudishness
+	Regret
+	Dispirited
+	Dissatisfied
+	Embarrassed
+	Self-conscious
+7. Surprise
+	L16. gratitude
+	B24. confusion (surprise+anticipation)
+	B26. awe
+	B27. aesthetic appreciation
+	E1. Humility
+	E28. Shock
+	E46. Surprise
+	E47. Interest
+	C11. thankfulness
+	C15. Sorrow
+	C16. grief
+	C20. modesty
+	P14. Attentiveness
+	P15. Anticipation
+	P17. Amazement
+	P18. Astonishment
+	P19. Vigilance
+	P23. Unbelief
+	Impressed
+	Inspiration
+	Distraction
+	Puzzlement
+
+
+IDEA: The nearest points via cosine are the ordered ranking. Will need way to ensure I don't have near duplicate vectors for different words, which is a way to identify synonyms.
