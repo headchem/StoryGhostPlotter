@@ -5,20 +5,20 @@ const EmotionFinder = ({
     emotions,
 }) => {
 
-    // const cosinesim = (A, B) => {
-    //     var dotproduct = 0;
-    //     var mA = 0;
-    //     var mB = 0;
-    //     for (let i = 0; i < A.length; i++) {
-    //         dotproduct += (A[i] * B[i]);
-    //         mA += (A[i] * A[i]);
-    //         mB += (B[i] * B[i]);
-    //     }
-    //     mA = Math.sqrt(mA);
-    //     mB = Math.sqrt(mB);
-    //     var similarity = (dotproduct) / ((mA) * (mB))
-    //     return similarity;
-    // }
+    const cosinesim = (A, B) => {
+        var dotproduct = 0;
+        var mA = 0;
+        var mB = 0;
+        for (let i = 0; i < A.length; i++) {
+            dotproduct += (A[i] * B[i]);
+            mA += (A[i] * A[i]);
+            mB += (B[i] * B[i]);
+        }
+        mA = Math.sqrt(mA);
+        mB = Math.sqrt(mB);
+        var similarity = (dotproduct) / ((mA) * (mB))
+        return similarity;
+    }
 
     const [joyToSadness, setJoyToSadness] = useState(0.0)
     const [trustToDisgust, setTrustToDisgust] = useState(0.0)
@@ -53,7 +53,24 @@ const EmotionFinder = ({
         var array2 = [1,0,0,0];
 
         var p = cosinesim(array1,array2);
+        // store key/value where the key is the emotion name, and the value is the distance, sort by value, then return top/bottom keys
         */
+
+        let results = {}
+
+        emotions.forEach(emotion => {
+            //console.log(emotion)
+            var searchVector = [joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation]
+            var curEmoVector = [emotion.joyToSadness, emotion.trustToDisgust, emotion.fearToAnger, emotion.surpriseToAnticipation]
+            var dist = cosinesim(searchVector,curEmoVector);
+
+            //console.log(dist)
+
+            results[emotion.id] = dist
+        });
+
+        console.log(results)
+
     }
 
     return (
