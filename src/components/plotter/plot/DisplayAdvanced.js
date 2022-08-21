@@ -83,6 +83,8 @@ const DisplayAdvanced = (
         updateScenes,
         updateScene,
         deleteScene,
+
+        emotions,
     }
 ) => {
 
@@ -297,6 +299,8 @@ const DisplayAdvanced = (
                                     updateScene={updateScene}
                                     deleteScene={deleteScene}
                                     tokensRemaining={tokensRemaining}
+
+                                    emotions={emotions}
                                 />
                             }
                             {

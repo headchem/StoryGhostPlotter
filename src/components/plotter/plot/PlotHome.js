@@ -50,6 +50,7 @@ const PlotHome = (
     const [isNotFound, setIsNotFound] = useState(false)
     const [lastSaveSuccess, setLastSaveSuccess] = useState(null)
     const [tokensRemaining, setTokensRemaining] = useState(9999999999)
+    const [emotions, setEmotions] = useState(null)
 
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -120,7 +121,8 @@ const PlotHome = (
         } else {
             Promise.all([
                 fetch('/api/LogLine/LogLineOptions'),
-                fetch('/api/GetPlot?id=' + plotId)
+                fetch('/api/GetPlot?id=' + plotId),
+                fetch('/api/Emotions')
             ]).then(function (responses) {
                 if (responses[1].status === 401 || responses[1].status === 403) {
                     navigate('/plots')
@@ -153,6 +155,7 @@ const PlotHome = (
                 }
 
                 populatePlot(plotData)
+                setEmotions(data[2])
 
             }).catch(function (error) {
                 console.log(error);
@@ -792,6 +795,8 @@ const PlotHome = (
                             updateScenes={updateScenes}
                             updateScene={updateScene}
                             deleteScene={deleteScene}
+
+                            emotions={emotions}
                         />
                     }
 

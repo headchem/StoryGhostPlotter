@@ -22,6 +22,7 @@ const SceneList = ({
     deleteScene,
 
     emotionsOptions,
+    emotions,
 }) => {
 
     const getNewScene = () => {
@@ -102,6 +103,7 @@ const SceneList = ({
                                 insertScene={insertScene}
 
                                 emotionsOptions={emotionsOptions}
+                                emotions={emotions}
                             />
 
                         ))

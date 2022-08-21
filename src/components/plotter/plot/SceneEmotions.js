@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Select from 'react-select'
 import { selectDarkTheme, selectLightTheme } from '../../../util/SelectTheme'
+
+import EmotionFinder from './EmotionFinder'
 
 const SceneEmotions = ({
     mode,
@@ -9,7 +11,10 @@ const SceneEmotions = ({
     scene,
     updateScene,
     emotionsOptions,
+    emotions,
 }) => {
+
+    const [showEmotionFinder, setShowEmotionFinder] = useState(false)
 
     const onEmotionsChange = (inputValue) => {
         const newEmotions = inputValue.map(el => el.value)
@@ -21,6 +26,25 @@ const SceneEmotions = ({
     return (
         <>
             <div className='row w-100 m-0 mb-3'>
+
+                <div className='col'>
+                    {
+                        showEmotionFinder === true &&
+                        <button className='btn btn-link' onClick={() => setShowEmotionFinder(false)}>hide emotion finder</button>
+                    }
+                    {
+                        showEmotionFinder === false &&
+                        <button className='btn btn-link' onClick={() => setShowEmotionFinder(true)}>show emotion finder</button>
+                    }
+
+                    {
+                        showEmotionFinder === true &&
+                        <EmotionFinder
+                            emotions={emotions}
+                        />
+                    }
+                </div>
+
                 {
                     <div className='m-0 p-0' style={{ width: '100%' }}>
 

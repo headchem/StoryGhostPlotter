@@ -9,22 +9,9 @@ public class Jealousy : IEmotion
     public string Id { get { return "jealousy"; } }
     public string Name { get { return "Jealousy"; } }
     public string Description { get { return "Jealousy generally refers to the thoughts or feelings of insecurity, fear, and concern over a relative lack of possessions or safety."; } }
-    public List<string> Synonyms { get { return new List<string> { "envy", "bitterness" }; } }
+    public List<string> Synonyms { get { return new List<string> { "envy" }; } }
 
-    public string EARLCategory
-    {
-        get
-        {
-            return EARLCategoryEnum.NegativeThoughts;
-        }
-    }
-    public string Kind
-    {
-        get
-        {
-            return EmotionKindEnum.Social;
-        }
-    }
+    public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
     public double JoyToSadness { get { return .33; } }
     public double TrustToDisgust { get { return .66; } }
@@ -41,4 +28,6 @@ public class Jealousy : IEmotion
     public double PleasureToDispleasure { get { return 1.0; } }
     public double ArousalToNonarousal { get { return -.33; } }
     public double DominanceToSubmissiveness { get { return -.33; } }
+
+    public double InnerFocusToOutwardTarget { get { return 1.0; } }
 }

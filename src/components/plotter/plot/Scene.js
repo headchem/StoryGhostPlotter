@@ -29,6 +29,7 @@ const Scene = ({
     insertScene,
 
     emotionsOptions,
+    emotions,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -89,6 +90,7 @@ const Scene = ({
                                 scene={scene}
                                 updateScene={updateScene}
                                 emotionsOptions={emotionsOptions}
+                                emotions={emotions}
                             />
                             <SceneSummarizer
                                 userInfo={userInfo}

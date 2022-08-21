@@ -12,8 +12,7 @@ public interface IEmotion
     public string Description { get; }
     public List<string> Synonyms { get; }
 
-    public string EARLCategory { get; } // Positive thoughts, Positive and lively, Caring, Quiet positive, Negative and not in control, Agitation, Negative and forceful, Negative thoughts, Negative and passive, Reactive
-    public string Kind { get; } // Related to object properties, Future appraisal, Event-related, Self-appraisal, Social, Cathected
+    public List<string> Kinds { get; } // Related to object properties, Future appraisal, Event-related, Self-appraisal, Social, Cathected
 
     // Plutchik
 
@@ -29,7 +28,7 @@ public interface IEmotion
     ///<summary>amazement, surprise, distraction, interest, anticipation, vigilance</summary>
     public double SurpriseToAnticipation { get; }
 
-    // MIT 6 emotion axes
+    // MIT 6 emotion axes (seem focused on learning-related emotions, consider dropping? But learning in everyday life is important, so maybe our emotions in screenplay scenes are useful to "learn" how people behave, or to help us navigate interesting situations)
 
     ///<summary>Anxiety, Worry, Discomfort - Comfort, Hopeful, Confident</summary>
     public double AnxietyToConfidence { get; }
@@ -57,6 +56,16 @@ public interface IEmotion
     ///<summary>The Arousal-Nonarousal Scale measures how energized or soporific one feels. It is not the intensity of the emotion -- for grief and depression can be low arousal intense feelings. While both anger and rage are unpleasant emotions, rage has a higher intensity or a higher arousal state. However boredom, which is also an unpleasant state, has a low arousal value.</summary>
     public double ArousalToNonarousal { get; }
 
-    ///<summary>The Dominance-Submissiveness Scale represents the controlling and dominant versus controlled or submissive one feels. For instance while both fear and anger are unpleasant emotions, anger is a dominant emotion, while fear is a submissive emotion.</summary>
+    ///<summary>The Dominance-Submissiveness Scale represents the controlling and dominant versus controlled by/reactive or submissive one feels. For instance while both fear and anger are unpleasant emotions, anger is a dominant emotion, while fear is a submissive emotion.
+    ///</summary>
     public double DominanceToSubmissiveness { get; }
+
+    // HUMAINE's proposal for EARL: The emotion annotation and representation language (EARL) proposed by the Human-Machine Interaction Network on Emotion (HUMAINE) classifies 48 emotions.
+
+    ///<summary>
+    /// Inner thoughts/focus examples: pride, doubt, envy, frustration, guilt, shame, courage, hope, humility, satisfaction, trust<br/>
+    /// Outward target examples: surprise, interest, polieness, anger, annoyance, contempt, dusgust, irritation, amusement, delight, elation, excitement, happiness, joy, pleasure, empathy, friendliness, love
+    ///</summary>
+    public double InnerFocusToOutwardTarget { get; }
+
 }
