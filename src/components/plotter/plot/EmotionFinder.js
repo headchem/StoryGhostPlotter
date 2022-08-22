@@ -48,7 +48,7 @@ const EmotionFinder = ({
     const [surpriseToAnticipation, setSurpriseToAnticipation] = useState(0.0)
 
     const [bestEmotionMatches, setBestEmotionMatches] = useState([])
-    const [worstEmotionMatches, setWorstEmotionMatches] = useState([])
+    //const [worstEmotionMatches, setWorstEmotionMatches] = useState([])
 
     const onJoyToSadnessChange = (val) => {
         setJoyToSadness(val)
