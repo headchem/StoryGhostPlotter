@@ -657,9 +657,8 @@ Top level, clockwise-ish:
 	Enlightenment
 	Epiphany
 	Thrilled
-	Pleased (with oneself, not the same as pleasure)
+	Pleased (Chuffed, with oneself, not the same as pleasure)
 	Satisfied
-	
 2. Love
 	L5. compassion
 	B8. craving

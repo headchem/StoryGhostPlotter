@@ -220,7 +220,7 @@ const EmotionFinder = ({
             return first[1] - second[1];
         });
 
-        const top_n = 3
+        const top_n = 4
 
         let cosineTop = cosineItems.slice(0, top_n).map((i) => i[0])
         let eucTop = eucItems.slice(0, top_n).map((i) => i[0])
@@ -237,8 +237,34 @@ const EmotionFinder = ({
         // }
     }
 
-    const bestCosineMatchesListItems = bestCosineEmotionMatches.map((emo) => <li key={emo}>{emo}</li>)
-    const bestEuclideanMatchesListItems = bestEuclideanEmotionMatches.map((emo) => <li key={emo}>{emo}</li>)
+    const bestCosineMatchesListItems = bestCosineEmotionMatches.map((emo) => <li key={emo}>
+        {
+            bestEuclideanEmotionMatches.includes(emo) === true &&
+            <strong>
+                {emo}
+            </strong>
+        }
+        {
+            bestEuclideanEmotionMatches.includes(emo) === false &&
+            <>
+                {emo}
+            </>
+        }
+    </li >)
+    const bestEuclideanMatchesListItems = bestEuclideanEmotionMatches.map((emo) => <li key={emo}>
+        {
+            bestCosineEmotionMatches.includes(emo) === true &&
+            <strong>
+                {emo}
+            </strong>
+        }
+        {
+            bestCosineEmotionMatches.includes(emo) === false &&
+            <>
+                {emo}
+            </>
+        }
+    </li>)
 
     return (
         <>
@@ -251,58 +277,58 @@ const EmotionFinder = ({
                                 <input className='form-check-input' id={unique_id + 'includeJoyToSadness'} type="checkbox" checked={includeJoyToSadness} value={includeJoyToSadness} onChange={(e) => onIncludeJoyToSadnessChange(!includeJoyToSadness)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeJoyToSadness'}>Include JoyToSadness</label>
                             </div>
-                            <label for={unique_id + 'joyToSadness'} className='form-label'>Joy - Sadness <span>{joyToSadness}</span></label>
-                            <input id={unique_id + 'joyToSadness'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onJoyToSadnessChange(parseFloat(e.target.value))} value={joyToSadness} />
+                            <label htmlFor={unique_id + 'joyToSadness'} className='form-label'>Joy - Sadness <span>{joyToSadness}</span></label>
+                            <input id={unique_id + 'joyToSadness'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onJoyToSadnessChange(parseFloat(e.target.value))} value={joyToSadness} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeTrustToDisgust'} type="checkbox" checked={includeTrustToDisgust} value={includeTrustToDisgust} onChange={(e) => onIncludeTrustToDisgustChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeTrustToDisgust'}>Include TrustToDisgust</label>
                             </div>
-                            <label for={unique_id + 'trustToDisgust'} className='form-label'>Trust - Disgust <span>{trustToDisgust}</span></label>
-                            <input id={unique_id + 'trustToDisgust'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onTrustToDisgustChange(parseFloat(e.target.value))} value={trustToDisgust} />
+                            <label htmlFor={unique_id + 'trustToDisgust'} className='form-label'>Trust - Disgust <span>{trustToDisgust}</span></label>
+                            <input id={unique_id + 'trustToDisgust'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onTrustToDisgustChange(parseFloat(e.target.value))} value={trustToDisgust} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeFearToAnger'} type="checkbox" checked={includeFearToAnger} value={includeFearToAnger} onChange={(e) => onIncludeFearToAngerChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeFearToAnger'}>Include FearToAnger</label>
                             </div>
-                            <label for={unique_id + 'fearToAnger'} className='form-label'>Fear - Anger <span>{fearToAnger}</span></label>
-                            <input id={unique_id + 'fearToAnger'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onFearToAngerChange(parseFloat(e.target.value))} value={fearToAnger} />
+                            <label htmlFor={unique_id + 'fearToAnger'} className='form-label'>Fear - Anger <span>{fearToAnger}</span></label>
+                            <input id={unique_id + 'fearToAnger'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onFearToAngerChange(parseFloat(e.target.value))} value={fearToAnger} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeSurpriseToAnticipation'} type="checkbox" checked={includeSurpriseToAnticipation} value={includeSurpriseToAnticipation} onChange={(e) => onIncludeSurpriseToAnticipationChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeSurpriseToAnticipation'}>Include SurpriseToAnticipation</label>
                             </div>
-                            <label for={unique_id + 'surpriseToAnticipation'} className='form-label'>Surprise - Anticipation <span>{surpriseToAnticipation}</span></label>
-                            <input id={unique_id + 'surpriseToAnticipation'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onSurpriseToAnticipationChange(parseFloat(e.target.value))} value={surpriseToAnticipation} />
+                            <label htmlFor={unique_id + 'surpriseToAnticipation'} className='form-label'>Surprise - Anticipation <span>{surpriseToAnticipation}</span></label>
+                            <input id={unique_id + 'surpriseToAnticipation'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onSurpriseToAnticipationChange(parseFloat(e.target.value))} value={surpriseToAnticipation} />
                         </div>
                         <div className='col-6'>
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includePleasureToDispleasure'} type="checkbox" checked={includePleasureToDispleasure} value={includePleasureToDispleasure} onChange={(e) => onIncludePleasureToDispleasureChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includePleasureToDispleasure'}>Include PleasureToDispleasure</label>
                             </div>
-                            <label for={unique_id + 'pleasureToDispleasure'} className='form-label'>Pleasure - Displeasure <span>{pleasureToDispleasure}</span></label>
-                            <input id={unique_id + 'pleasureToDispleasure'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onPleasureToDispleasureChange(parseFloat(e.target.value))} value={pleasureToDispleasure} />
+                            <label htmlFor={unique_id + 'pleasureToDispleasure'} className='form-label'>Pleasure - Displeasure <span>{pleasureToDispleasure}</span></label>
+                            <input id={unique_id + 'pleasureToDispleasure'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onPleasureToDispleasureChange(parseFloat(e.target.value))} value={pleasureToDispleasure} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeArousalToNonarousal'} type="checkbox" checked={includeArousalToNonarousal} value={includeArousalToNonarousal} onChange={(e) => onIncludeArousalToNonarousalChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeArousalToNonarousal'}>Include ArousalToNonarousal</label>
                             </div>
-                            <label for={unique_id + 'arousalToNonarousal'} className='form-label'>Arousal - Nonarousal <span>{arousalToNonarousal}</span></label>
-                            <input id={unique_id + 'arousalToNonarousal'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onArousalToNonarousalChange(parseFloat(e.target.value))} value={arousalToNonarousal} />
+                            <label htmlFor={unique_id + 'arousalToNonarousal'} className='form-label'>Arousal - Nonarousal <span>{arousalToNonarousal}</span></label>
+                            <input id={unique_id + 'arousalToNonarousal'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onArousalToNonarousalChange(parseFloat(e.target.value))} value={arousalToNonarousal} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeDominanceToSubmissiveness'} type="checkbox" checked={includeDominanceToSubmissiveness} value={includeDominanceToSubmissiveness} onChange={(e) => onIncludeDominanceToSubmissivenessChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeDominanceToSubmissiveness'}>Include DominanceToSubmissiveness</label>
                             </div>
-                            <label for={unique_id + 'dominanceToSubmissiveness'} className='form-label'>Dominance - Submissiveness <span>{dominanceToSubmissiveness}</span></label>
-                            <input id={unique_id + 'dominanceToSubmissiveness'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onDominanceToSubmissivenessChange(parseFloat(e.target.value))} value={dominanceToSubmissiveness} />
+                            <label htmlFor={unique_id + 'dominanceToSubmissiveness'} className='form-label'>Dominance - Submissiveness <span>{dominanceToSubmissiveness}</span></label>
+                            <input id={unique_id + 'dominanceToSubmissiveness'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onDominanceToSubmissivenessChange(parseFloat(e.target.value))} value={dominanceToSubmissiveness} />
 
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeInnerFocusToOutwardTarget'} type="checkbox" checked={includeInnerFocusToOutwardTarget} value={includeInnerFocusToOutwardTarget} onChange={(e) => onIncludeInnerFocusToOutwardTargetChange(e.currentTarget.checked)} />
                                 <label className='form-check-label' htmlFor={unique_id + 'includeInnerFocusToOutwardTarget'}>Include InnerFocusToOutwardTarget</label>
                             </div>
-                            <label for={unique_id + 'innerFocusToOutwardTarget'} className='form-label'>Inner Focus - Outward Target <span>{innerFocusToOutwardTarget}</span></label>
-                            <input id={unique_id + 'innerFocusToOutwardTarget'} class='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onInnerFocusToOutwardTargetChange(parseFloat(e.target.value))} value={innerFocusToOutwardTarget} />
+                            <label htmlFor={unique_id + 'innerFocusToOutwardTarget'} className='form-label'>Inner Focus - Outward Target <span>{innerFocusToOutwardTarget}</span></label>
+                            <input id={unique_id + 'innerFocusToOutwardTarget'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onInnerFocusToOutwardTargetChange(parseFloat(e.target.value))} value={innerFocusToOutwardTarget} />
                         </div>
                     </div>
 
