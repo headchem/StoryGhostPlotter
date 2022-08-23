@@ -25,9 +25,9 @@ public class DisapprovalModerate : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return .5; } }
+    public double ArousalToNonarousal { get { return -.1; } }
+    public double DominanceToSubmissiveness { get { return .23; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return .5; } }
 }

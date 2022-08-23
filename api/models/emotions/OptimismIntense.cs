@@ -25,9 +25,9 @@ public class OptimismIntense : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return -.87; } }
+    public double ArousalToNonarousal { get { return -.12; } }
+    public double DominanceToSubmissiveness { get { return -.61; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return .7; } }
 }

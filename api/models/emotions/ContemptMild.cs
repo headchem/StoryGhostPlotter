@@ -25,9 +25,9 @@ public class ContemptMild : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return .3; } }
+    public double ArousalToNonarousal { get { return -.08; } }
+    public double DominanceToSubmissiveness { get { return .06; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return 1.0; } }
 }

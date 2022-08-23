@@ -25,9 +25,9 @@ public class Jealousy : IEmotion
     public double TerrorToEnchantment { get { return 0; } }
     public double HumiliationToPride { get { return -.5; } }
 
-    public double PleasureToDispleasure { get { return 1.0; } }
-    public double ArousalToNonarousal { get { return -.33; } }
-    public double DominanceToSubmissiveness { get { return -.33; } }
+    public double PleasureToDispleasure { get { return .68; } }
+    public double ArousalToNonarousal { get { return -.64; } }
+    public double DominanceToSubmissiveness { get { return .17; } }
 
     public double InnerFocusToOutwardTarget { get { return 1.0; } }
 }

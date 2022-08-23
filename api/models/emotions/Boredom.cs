@@ -25,9 +25,9 @@ public class Boredom : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return .68; } }
+    public double ArousalToNonarousal { get { return .69; } }
+    public double DominanceToSubmissiveness { get { return .55; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return -1.0; } }
 }

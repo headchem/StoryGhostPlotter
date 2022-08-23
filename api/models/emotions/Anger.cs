@@ -25,9 +25,9 @@ public class Anger : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return .8; } }
+    public double ArousalToNonarousal { get { return -.72; } }
+    public double DominanceToSubmissiveness { get { return -.12; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return .4; } }
 }

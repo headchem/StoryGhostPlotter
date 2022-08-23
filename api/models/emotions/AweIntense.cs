@@ -25,9 +25,9 @@ public class AweIntense : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return -0.34; } }
+    public double ArousalToNonarousal { get { return -0.53; } }
+    public double DominanceToSubmissiveness { get { return -0.26; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return 1.0; } }
 }

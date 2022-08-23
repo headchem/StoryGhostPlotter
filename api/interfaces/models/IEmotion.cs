@@ -56,7 +56,7 @@ public interface IEmotion
     ///<summary>The Arousal-Nonarousal Scale measures how energized or soporific one feels. It is not the intensity of the emotion -- for grief and depression can be low arousal intense feelings. While both anger and rage are unpleasant emotions, rage has a higher intensity or a higher arousal state. However boredom, which is also an unpleasant state, has a low arousal value.</summary>
     public double ArousalToNonarousal { get; }
 
-    ///<summary>The Dominance-Submissiveness Scale represents the controlling and dominant versus controlled by/reactive or submissive one feels. For instance while both fear and anger are unpleasant emotions, anger is a dominant emotion, while fear is a submissive emotion.
+    ///<summary>The Dominance-Submissiveness Scale represents the controlling and dominant versus controlled by/reactive or submissive one feels. For instance while both fear and anger are unpleasant emotions, anger is a dominant emotion, while fear is a submissive emotion. Are you driving the emotion (dominant) or is the emotion happening to you (submissive)?
     ///</summary>
     public double DominanceToSubmissiveness { get; }
 

@@ -25,9 +25,9 @@ public class Ecstasy : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return -0.67; } }
+    public double ArousalToNonarousal { get { return -0.69; } }
+    public double DominanceToSubmissiveness { get { return -0.4; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return .5; } }
 }

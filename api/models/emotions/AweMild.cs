@@ -25,9 +25,9 @@ public class AweMild : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return .1111111; } }
-    public double ArousalToNonarousal { get { return .1111111; } }
-    public double DominanceToSubmissiveness { get { return .1111111; } }
+    public double PleasureToDispleasure { get { return -0.14; } }
+    public double ArousalToNonarousal { get { return -0.25; } }
+    public double DominanceToSubmissiveness { get { return -0.1; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .1111111; } }
+	public double InnerFocusToOutwardTarget { get { return 0.5; } }
 }

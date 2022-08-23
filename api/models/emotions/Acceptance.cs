@@ -25,9 +25,9 @@ public class Acceptance : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return -.5; } }
-    public double ArousalToNonarousal { get { return .33; } }
-    public double DominanceToSubmissiveness { get { return .25; } }
+    public double PleasureToDispleasure { get { return -.67; } }
+    public double ArousalToNonarousal { get { return .36; } }
+    public double DominanceToSubmissiveness { get { return -.28; } }
 
     public double InnerFocusToOutwardTarget { get { return .33; } }
 }
