@@ -627,8 +627,9 @@ Reactive
 
 
 Top level, clockwise-ish:
+LEFT OFF: go through list, don't worry about synonyms for now, we can use the vectors to identify them later in a data-driven way. Once all emotions are added, return to labeling scene emotions. ONLY mark as DONE when 
 1. Joy
-	B4. adoration
+	B4. adoration - DONE
 	B7. entrancement
 	E2. Satisfaction
 	E3. Courage
@@ -696,7 +697,6 @@ Top level, clockwise-ish:
 	C8. Alarm
 	C9. Panic
 	C10. dread
-	P9. Apprehension
 	P16. Expectancy
 	P30. Modesty
 	P45. Frozenness (fear+anger)

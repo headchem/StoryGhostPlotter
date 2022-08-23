@@ -31,7 +31,6 @@ const EmotionFinder = ({
 
     const [bestCosineEmotionMatches, setBestCosineEmotionMatches] = useState([])
     const [bestEuclideanEmotionMatches, setBestEuclideanEmotionMatches] = useState([])
-    //const [worstEmotionMatches, setWorstEmotionMatches] = useState([])
 
     const onJoyToSadnessChange = (val) => {
         setJoyToSadness(val)
@@ -128,11 +127,11 @@ const EmotionFinder = ({
     }
 
     const cosineSim = (a, b) => {
-        for (let i = 0; i < a.length; i++) {
-            // change scale from -1/+1 to 0/+1
-            a[i] = (parseFloat(a[i]) + 1) / 2
-            b[i] = (parseFloat(b[i]) + 1) / 2
-        }
+        // for (let i = 0; i < a.length; i++) {
+        //     // change scale from -1/+1 to 0/+1
+        //     a[i] = (parseFloat(a[i]) + 1) / 2
+        //     b[i] = (parseFloat(b[i]) + 1) / 2
+        // }
 
         return dotproduct(a, b) / norm2(a) / norm2(b);
     }
@@ -143,6 +142,8 @@ const EmotionFinder = ({
         //     a[i] = (parseFloat(a[i]) + 1) / 2
         //     b[i] = (parseFloat(b[i]) + 1) / 2
         // }
+
+        if (a.length === 0) return 0.0
 
         return a
             .map((x, i) => Math.abs(x - b[i]) ** 2) // square the difference
@@ -227,15 +228,17 @@ const EmotionFinder = ({
 
         setBestCosineEmotionMatches(cosineTop)
         setBestEuclideanEmotionMatches(eucTop)
-
-        // const intersection = cosineTop.filter(value => eucTop.includes(value));
-
-        // if (!intersection || intersection.length === 0) {
-        //     setBestEmotionMatches([cosineTop[0], eucTop[0]])
-        // } else {
-        //     setBestEmotionMatches(intersection.slice(0, top_n))
-        // }
     }
+
+    const searchLabel = (includeJoyToSadness ? (joyToSadness < 0 ? 'Joy + ' : 'Sadness + ') : '')
+        + (includeTrustToDisgust ? (trustToDisgust < 0 ? 'Trust + ' : 'Disgust + ') : '')
+        + (includeFearToAnger ? (fearToAnger < 0 ? 'Fear + ' : 'Anger + ') : '')
+        + (includeSurpriseToAnticipation ? (surpriseToAnticipation < 0 ? 'Surprise + ' : 'Anticipation + ') : '')
+        + (includePleasureToDispleasure ? (pleasureToDispleasure < 0 ? 'Pleasure + ' : 'Displeasure + ') : '')
+        + (includeArousalToNonarousal ? (arousalToNonarousal < 0 ? 'Arousal + ' : 'Nonarousal + ') : '')
+        + (includeDominanceToSubmissiveness ? (dominanceToSubmissiveness < 0 ? 'Dominance + ' : 'Submissiveness + ') : '')
+        + (includeInnerFocusToOutwardTarget ? (innerFocusToOutwardTarget < 0 ? 'Inner Focus + ' : 'Outward Target + ') : '')
+
 
     const bestCosineMatchesListItems = bestCosineEmotionMatches.map((emo) => <li key={emo}>
         {
@@ -332,6 +335,15 @@ const EmotionFinder = ({
                         </div>
                     </div>
 
+                    {
+                        searchLabel && searchLabel.length > 0 &&
+                        <div className='row'>
+                            <div className='col'>
+                                <h3>{searchLabel.slice(0, searchLabel.lastIndexOf("+"))}</h3>
+                            </div>
+
+                        </div>
+                    }
                     <div className='row'>
                         <div className='col'>
                             <p>Cosine distance</p>

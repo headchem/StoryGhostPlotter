@@ -12,6 +12,7 @@ public interface IEmotion
     public string Description { get; }
     public List<string> Synonyms { get; }
 
+    ///<summary>Refer to: https://en.wikipedia.org/wiki/Emotion_classification#Contrasting_basic_emotions</summary>
     public List<string> Kinds { get; } // Related to object properties, Future appraisal, Event-related, Self-appraisal, Social, Cathected
 
     // Plutchik
