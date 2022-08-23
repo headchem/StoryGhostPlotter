@@ -32,84 +32,91 @@ const EmotionFinder = ({
     const [bestCosineEmotionMatches, setBestCosineEmotionMatches] = useState([])
     const [bestEuclideanEmotionMatches, setBestEuclideanEmotionMatches] = useState([])
 
+    const [emotionKindFilter, setEmotionKindFilter] = useState('')
+
     const onJoyToSadnessChange = (val) => {
         setJoyToSadness(val)
-        search(val, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, val, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onTrustToDisgustChange = (val) => {
         setTrustToDisgust(val)
-        search(joyToSadness, val, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, val, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onFearToAngerChange = (val) => {
         setFearToAnger(val)
-        search(joyToSadness, trustToDisgust, val, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, val, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onSurpriseToAnticipationChange = (val) => {
         setSurpriseToAnticipation(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, val, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, val, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onPleasureToDispleasureChange = (val) => {
         setPleasureToDispleasure(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, val, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, val, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
     const onArousalToNonarousalChange = (val) => {
         setArousalToNonarousal(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, val, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, val, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
     const onDominanceToSubmissivenessChange = (val) => {
         setDominanceToSubmissiveness(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, val, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, val, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onInnerFocusToOutwardTargetChange = (val) => {
         setInnerFocusToOutwardTarget(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, val, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, val, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
 
 
     const onIncludeJoyToSadnessChange = (val) => {
         setIncludeJoyToSadness(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, val, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, val, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onIncludeTrustToDisgustChange = (val) => {
         setIncludeTrustToDisgust(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, val, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, val, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onIncludeFearToAngerChange = (val) => {
         setIncludeFearToAnger(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, val, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, val, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onIncludeSurpriseToAnticipationChange = (val) => {
         setIncludeSurpriseToAnticipation(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, val, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, val, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
 
     const onIncludePleasureToDispleasureChange = (val) => {
         setIncludePleasureToDispleasure(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, val, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, val, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
     const onIncludeArousalToNonarousalChange = (val) => {
         setIncludeArousalToNonarousal(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, val, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, val, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
     }
     const onIncludeDominanceToSubmissivenessChange = (val) => {
         setIncludeDominanceToSubmissiveness(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, val, includeInnerFocusToOutwardTarget)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, val, includeInnerFocusToOutwardTarget)
     }
 
     const onIncludeInnerFocusToOutwardTargetChange = (val) => {
         setIncludeInnerFocusToOutwardTarget(val)
-        search(joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, val)
+        search(emotionKindFilter, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, val)
     }
 
+
+    const onEmotionKindFilterChange = (e) => {
+        setEmotionKindFilter(e.target.value)
+        search(e.target.value, joyToSadness, trustToDisgust, fearToAnger, surpriseToAnticipation, pleasureToDispleasure, arousalToNonarousal, dominanceToSubmissiveness, innerFocusToOutwardTarget, includeJoyToSadness, includeTrustToDisgust, includeFearToAnger, includeSurpriseToAnticipation, includePleasureToDispleasure, includeArousalToNonarousal, includeDominanceToSubmissiveness, includeInnerFocusToOutwardTarget)
+    }
 
 
     const dotproduct = (a, b) => {
@@ -151,11 +158,13 @@ const EmotionFinder = ({
             ** (1 / 2)
     }
 
-    const search = (searchJoyToSadness, searchTrustToDisgust, searchFearToAnger, searchSurpriseToAnticipation, searchPleasureToDispleasure, searchArousalToNonarousal, searchDominanceToSubmissiveness, searchInnerFocusToOutwardTarget, curIncludeJoyToSadness, curIncludeTrustToDisgust, curIncludeFearToAnger, curIncludeSurpriseToAnticipation, curIncludePleasureToDispleasure, curIncludeArousalToNonarousal, curIncludeDominanceToSubmissiveness, curIncludeInnerFocusToOutwardTarget) => {
+    const search = (searchEmotionKindFilter, searchJoyToSadness, searchTrustToDisgust, searchFearToAnger, searchSurpriseToAnticipation, searchPleasureToDispleasure, searchArousalToNonarousal, searchDominanceToSubmissiveness, searchInnerFocusToOutwardTarget, curIncludeJoyToSadness, curIncludeTrustToDisgust, curIncludeFearToAnger, curIncludeSurpriseToAnticipation, curIncludePleasureToDispleasure, curIncludeArousalToNonarousal, curIncludeDominanceToSubmissiveness, curIncludeInnerFocusToOutwardTarget) => {
         let cosineResults = {}
         let euclideanResults = {}
 
-        emotions.forEach(emotion => {
+        const filteredEmotions = searchEmotionKindFilter === '' ? emotions : emotions.filter(emotion => emotion.kinds.includes(searchEmotionKindFilter))
+
+        filteredEmotions.forEach(emotion => {
             var searchVector = [];
             var curEmoVector = [];
 
@@ -274,6 +283,19 @@ const EmotionFinder = ({
             {
                 emotions &&
                 <>
+                    <div className='row'>
+                        <div className='col mb-3'>
+                            <select required className='fs-5 form-select form-inline' value={emotionKindFilter} onChange={onEmotionKindFilterChange}>
+                                <option value="">All Emotion Types</option>
+                                <option value="related to object properties">Related to object properties</option>
+                                <option value="future appraisal">Future appraisal</option>
+                                <option value="event-related">Event-related</option>
+                                <option value="self-appraisal">Self-appraisal</option>
+                                <option value="social">Social</option>
+                                <option value="cathected">Cathected</option>
+                            </select>
+                        </div>
+                    </div>
                     <div className='row'>
                         <div className='col-6'>
                             <div className='form-check'>

@@ -25,7 +25,7 @@ public class Worry : IEmotion
     public double TerrorToEnchantment { get { return .1111111; } }
     public double HumiliationToPride { get { return .1111111; } }
 
-    public double PleasureToDispleasure { get { return -0.76; } }
+    public double PleasureToDispleasure { get { return 0.76; } }
     public double ArousalToNonarousal { get { return -.51; } }
     public double DominanceToSubmissiveness { get { return .34; } }
 
