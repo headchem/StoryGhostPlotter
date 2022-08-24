@@ -86,7 +86,7 @@ public static class Factory
             new Cheerfulness(),
             new Triumph(),
             new Insightful(),
-            // new Delight(),
+            new Delight(),
             // new Excitement(),
             // new Elation(),
             // new Curiosity(),
