@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { v4 as uuid } from 'uuid';
+import EmotionFinderSingle from './EmotionFinderSingle'
 
 const EmotionFinder = ({
     emotions,
@@ -33,6 +34,8 @@ const EmotionFinder = ({
     const [bestEuclideanEmotionMatches, setBestEuclideanEmotionMatches] = useState([])
 
     const [emotionKindFilter, setEmotionKindFilter] = useState('')
+
+    const emotionMap = Object.assign({}, ...emotions.map((x) => ({ [x.id]: x }))); // convert array of emotions into a dictionary
 
     const onJoyToSadnessChange = (val) => {
         setJoyToSadness(val)
@@ -203,6 +206,8 @@ const EmotionFinder = ({
                 curEmoVector.push(emotion.innerFocusToOutwardTarget)
             }
 
+            if (searchVector.length === 0) return
+
             var cosineDist = cosineSim(searchVector, curEmoVector);
             var euclideanDist = euclideanSim(searchVector, curEmoVector)
 
@@ -232,8 +237,8 @@ const EmotionFinder = ({
 
         const top_n = 4
 
-        let cosineTop = cosineItems.slice(0, top_n).map((i) => i[0])
-        let eucTop = eucItems.slice(0, top_n).map((i) => i[0])
+        const cosineTop = cosineItems.slice(0, top_n).map((i) => i[0])
+        const eucTop = eucItems.slice(0, top_n).map((i) => i[0])
 
         setBestCosineEmotionMatches(cosineTop)
         setBestEuclideanEmotionMatches(eucTop)
@@ -248,33 +253,23 @@ const EmotionFinder = ({
         + (includeDominanceToSubmissiveness ? (dominanceToSubmissiveness < 0 ? 'Dominance + ' : 'Submissiveness + ') : '')
         + (includeInnerFocusToOutwardTarget ? (innerFocusToOutwardTarget < 0 ? 'Inner Focus + ' : 'Outward Target + ') : '')
 
+    const getEmotion = (emoName, isInCommon) => {
+        if (!emoName || emoName === '') return <></>
+
+        return <EmotionFinderSingle
+            emotion={emotionMap[emoName]}
+            isInCommon={isInCommon}
+        />
+    }
 
     const bestCosineMatchesListItems = bestCosineEmotionMatches.map((emo) => <li key={emo}>
         {
-            bestEuclideanEmotionMatches.includes(emo) === true &&
-            <strong>
-                {emo}
-            </strong>
-        }
-        {
-            bestEuclideanEmotionMatches.includes(emo) === false &&
-            <>
-                {emo}
-            </>
+            getEmotion(emo, bestEuclideanEmotionMatches.includes(emo))
         }
     </li >)
     const bestEuclideanMatchesListItems = bestEuclideanEmotionMatches.map((emo) => <li key={emo}>
         {
-            bestCosineEmotionMatches.includes(emo) === true &&
-            <strong>
-                {emo}
-            </strong>
-        }
-        {
-            bestCosineEmotionMatches.includes(emo) === false &&
-            <>
-                {emo}
-            </>
+            getEmotion(emo, bestCosineEmotionMatches.includes(emo))
         }
     </li>)
 
