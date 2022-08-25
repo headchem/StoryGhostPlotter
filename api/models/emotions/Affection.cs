@@ -8,8 +8,8 @@ public class Affection : IEmotion
 {
     public string Id { get { return "affection"; } }
     public string Name { get { return "Affection"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A gentle feeling of fondness or liking."; } }
+    public List<string> Synonyms { get { return new List<string> { "fondness", "liking", "endearment" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

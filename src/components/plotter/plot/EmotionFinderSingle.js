@@ -16,8 +16,9 @@ const EmotionFinderSingle = ({
                 {
                     showDetails === true &&
                     <span className='ps-2'>
-                        <span className='d-block'><span className='text-muted'>Types:</span> {emotion.kinds.join(', ')}</span>
-                        <span className='d-block'><span className='text-muted'>Definition:</span> {emotion.description}</span>
+                        <span className='d-block p-1'><span className='text-muted'>Definition:</span> {emotion.description}</span>
+                        <span className='d-block p-1'><span className='text-muted'>Synonyms:</span> {emotion.synonyms.join(', ')}</span>
+                        <span className='d-block p-1'><span className='text-muted'>Types:</span> {emotion.kinds.join(', ')}</span>
                     </span>
                 }
             </span>

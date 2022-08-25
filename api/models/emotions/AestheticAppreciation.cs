@@ -8,8 +8,8 @@ public class AestheticAppreciation : IEmotion
 {
     public string Id { get { return "aesthetic-appreciation"; } }
     public string Name { get { return "Aesthetic Appreciation"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The extent to which a stimulus is enjoyed because of its beauty or some other factor associated with aesthetic preference."; } }
+    public List<string> Synonyms { get { return new List<string> { "moved", "awed" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

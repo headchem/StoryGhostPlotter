@@ -8,8 +8,8 @@ public class Adoration : IEmotion
 {
     public string Id { get { return "adoration"; } }
     public string Name { get { return "Adoration"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Deep love and respect. Worship and veneration. Adoration is respect, reverence, strong admiration, or love in a certain person, place, or thing."; } }
+    public List<string> Synonyms { get { return new List<string> { "love", "devotion", "fondness", "affection", "praise", "revere", "exalt", "laud" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Cathected }; } }
 
