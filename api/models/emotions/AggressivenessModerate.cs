@@ -8,8 +8,8 @@ public class AggressivenessModerate : IEmotion
 {
     public string Id { get { return "aggressiveness-moderate"; } }
     public string Name { get { return "Moderate Aggressiveness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { "demanding" }; } }
+    public string Description { get { return "Hostile or violent behavior. Determination and forcefulness."; } }
+    public List<string> Synonyms { get { return new List<string> { "demanding", "ambitious", "in-your-face" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.FutureAppraisal }; } }
 

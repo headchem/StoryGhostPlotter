@@ -8,8 +8,8 @@ public class Alarm : IEmotion
 {
     public string Id { get { return "alarm"; } }
     public string Name { get { return "Alarm"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An anxious awareness of danger. Cause (someone) to feel frightened, disturbed, or in danger."; } }
+    public List<string> Synonyms { get { return new List<string> { "fear", "anxiety", "trepidation", "unease", "frighten", "startle", "distress" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
