@@ -8,8 +8,8 @@ public class Deference : IEmotion
 {
     public string Id { get { return "deference"; } }
     public string Name { get { return "Deference"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Humble submission and respect."; } }
+    public List<string> Synonyms { get { return new List<string> { "yielding", "capitulation", "respect", "regard", "esteem", "consideration", "reverence", "acquiescense" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

@@ -8,8 +8,8 @@ public class DisapprovalMild : IEmotion
 {
     public string Id { get { return "disapproval-mild"; } }
     public string Name { get { return "Mild Disapproval"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Refusal to accept as right or desirable"; } }
+    public List<string> Synonyms { get { return new List<string> { "disfavor", "dislike", "displeasure" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties, EmotionKindEnum.EventRelated }; } }
 

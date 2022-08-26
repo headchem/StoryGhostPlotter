@@ -8,8 +8,8 @@ public class Distaste : IEmotion
 {
     public string Id { get { return "distaste"; } }
     public string Name { get { return "Distaste"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Mild dislike or aversion."; } }
+    public List<string> Synonyms { get { return new List<string> { "dislike", "aversion", "disdain" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

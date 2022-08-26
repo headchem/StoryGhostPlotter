@@ -8,8 +8,8 @@ public class Disappointment : IEmotion
 {
     public string Id { get { return "disappointment"; } }
     public string Name { get { return "Disappointment"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The emotion felt when one's expectations are not met."; } }
+    public List<string> Synonyms { get { return new List<string> { "dismay", "letdown" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

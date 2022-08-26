@@ -8,8 +8,8 @@ public class Dislike : IEmotion
 {
     public string Id { get { return "dislike"; } }
     public string Name { get { return "Dislike"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A strong feeling of not liking or approving. Refusal to accept as right or desirable."; } }
+    public List<string> Synonyms { get { return new List<string> { "disinclination", "averseness", "disfavor" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Demanding : IEmotion
 {
     public string Id { get { return "demanding"; } }
     public string Name { get { return "Demanding"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Making others work hard or meet high standards."; } }
+    public List<string> Synonyms { get { return new List<string> { "nagging", "insistent", "clamorous" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

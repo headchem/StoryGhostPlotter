@@ -8,8 +8,8 @@ public class Discontentment : IEmotion
 {
     public string Id { get { return "discontentment"; } }
     public string Name { get { return "Discontentment"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The condition of being dissatisfied with one's situation."; } }
+    public List<string> Synonyms { get { return new List<string> { "disgruntled" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

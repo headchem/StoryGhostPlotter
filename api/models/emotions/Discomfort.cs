@@ -8,8 +8,8 @@ public class Discomfort : IEmotion
 {
     public string Id { get { return "discomfort"; } }
     public string Name { get { return "Discomfort"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To trouble the mind of; to make uneasy."; } }
+    public List<string> Synonyms { get { return new List<string> { "agitate", "bother", "disquiet", "frazzle", "unsettle" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

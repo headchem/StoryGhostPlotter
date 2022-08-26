@@ -8,8 +8,8 @@ public class Derisiveness : IEmotion
 {
     public string Id { get { return "derisiveness"; } }
     public string Name { get { return "Derisiveness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "So foolish or pointless as to be worthy of scornful laughter."; } }
+    public List<string> Synonyms { get { return new List<string> { "absurd", "farcical", "laughable", "ludicrous", "comical", "preposterous", "risible" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties, EmotionKindEnum.Social }; } }
 

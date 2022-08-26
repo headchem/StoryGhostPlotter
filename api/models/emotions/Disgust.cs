@@ -8,8 +8,8 @@ public class Disgust : IEmotion
 {
     public string Id { get { return "disgust"; } }
     public string Name { get { return "Disgust"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A dislike so strong as to cause stomach upset or queasiness."; } }
+    public List<string> Synonyms { get { return new List<string> { "nausea", "repugnance", "abhorrence" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

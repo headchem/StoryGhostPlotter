@@ -8,8 +8,8 @@ public class Distraction : IEmotion
 {
     public string Id { get { return "distraction"; } }
     public string Name { get { return "Distraction"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Agitation of the mind or emotions. Not giving full attention to something else."; } }
+    public List<string> Synonyms { get { return new List<string> { "diversion", "interrupted" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

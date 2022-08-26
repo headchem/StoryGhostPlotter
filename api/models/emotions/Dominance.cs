@@ -8,8 +8,8 @@ public class Dominance : IEmotion
 {
     public string Id { get { return "dominance"; } }
     public string Name { get { return "Dominance"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Power and influence over others."; } }
+    public List<string> Synonyms { get { return new List<string> { "supremacy", "superiority", "ascendancy", "preeminence" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social, EmotionKindEnum.FutureAppraisal }; } }
 

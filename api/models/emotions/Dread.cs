@@ -8,8 +8,8 @@ public class Dread : IEmotion
 {
     public string Id { get { return "dread"; } }
     public string Name { get { return "Dread"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Anticipate with great apprehension or fear."; } }
+    public List<string> Synonyms { get { return new List<string> { "fear", "anxiety", "terrifying" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

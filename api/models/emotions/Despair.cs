@@ -8,8 +8,8 @@ public class Despair : IEmotion
 {
     public string Id { get { return "despair"; } }
     public string Name { get { return "Despair"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Utter loss of hope."; } }
+    public List<string> Synonyms { get { return new List<string> { "desperation", "hopelessness", "forlornness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Dissatisfied : IEmotion
 {
     public string Id { get { return "dissatisfied"; } }
     public string Name { get { return "Dissatisfied"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To fall short in satisfying the expectation or hope of. Having a feeling that one has been wronged or thwarted in one's ambitions. To make discontented"; } }
+    public List<string> Synonyms { get { return new List<string> { "discontented", "disgruntled", "let down", "malcontent" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

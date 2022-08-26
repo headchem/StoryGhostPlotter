@@ -8,8 +8,8 @@ public class Dejection : IEmotion
 {
     public string Id { get { return "dejection"; } }
     public string Name { get { return "Dejection"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A sad and depressed state; low spirits."; } }
+    public List<string> Synonyms { get { return new List<string> { "despondency", "downheartedness", "discouragement", "forlornness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

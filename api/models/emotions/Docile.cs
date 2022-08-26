@@ -8,8 +8,8 @@ public class Docile : IEmotion
 {
     public string Id { get { return "docile"; } }
     public string Name { get { return "Docile"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Ready to accept control or instruction; submissive."; } }
+    public List<string> Synonyms { get { return new List<string> { "compliant", "obedient", "dutiful", "submissive" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Depression : IEmotion
 {
     public string Id { get { return "depression"; } }
     public string Name { get { return "Depression"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state or spell of low spirits."; } }
+    public List<string> Synonyms { get { return new List<string> { "dejection", "despondency", "doldrums", "dreary", "mournfulness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

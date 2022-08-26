@@ -8,8 +8,8 @@ public class Dispirited : IEmotion
 {
     public string Id { get { return "dispirited"; } }
     public string Name { get { return "Dispirited"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To lessen the courage or confidence of."; } }
+    public List<string> Synonyms { get { return new List<string> { "discouraged", "demoralized", "unnerved" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

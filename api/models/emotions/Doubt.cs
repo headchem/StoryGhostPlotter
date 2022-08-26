@@ -8,8 +8,8 @@ public class Doubt : IEmotion
 {
     public string Id { get { return "doubt"; } }
     public string Name { get { return "Doubt"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of uncertainty or lack of conviction."; } }
+    public List<string> Synonyms { get { return new List<string> { "uncertainty", "indecision", "hesitation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 
