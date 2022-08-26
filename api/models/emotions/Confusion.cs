@@ -8,8 +8,8 @@ public class Confusion : IEmotion
 {
     public string Id { get { return "confusion"; } }
     public string Name { get { return "Confusion"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state of mental uncertainty."; } }
+    public List<string> Synonyms { get { return new List<string> { "bafflement", "discombobulation", "perplexity" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

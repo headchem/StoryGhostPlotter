@@ -8,8 +8,8 @@ public class Cheerfulness : IEmotion
 {
     public string Id { get { return "cheerfulness"; } }
     public string Name { get { return "Cheerfulness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A mood characterized by high spirits and amusement and often accompanied by laughter"; } }
+    public List<string> Synonyms { get { return new List<string> { "festivity", "gaiety", "joviality", "merriment" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

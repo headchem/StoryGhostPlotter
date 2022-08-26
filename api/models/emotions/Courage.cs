@@ -8,8 +8,8 @@ public class Courage : IEmotion
 {
     public string Id { get { return "courage"; } }
     public string Name { get { return "Courage"; } }
-    public string Description { get { return "bravery"; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Strength of mind to carry on in spite of danger."; } }
+    public List<string> Synonyms { get { return new List<string> { "bravery", "daring", "dauntless", "heroism", "moxie", "valor" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

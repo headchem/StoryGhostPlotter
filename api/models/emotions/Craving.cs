@@ -8,8 +8,8 @@ public class Craving : IEmotion
 {
     public string Id { get { return "craving"; } }
     public string Name { get { return "Craving"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A strong wish to own or enjoy something."; } }
+    public List<string> Synonyms { get { return new List<string> { "hankering", "lust", "urge", "yearning", "thirst" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

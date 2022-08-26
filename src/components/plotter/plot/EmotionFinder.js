@@ -32,6 +32,11 @@ const EmotionFinder = ({
 
     const [bestCosineEmotionMatches, setBestCosineEmotionMatches] = useState([])
     const [bestEuclideanEmotionMatches, setBestEuclideanEmotionMatches] = useState([])
+    const [bestManhattanEmotionMatches, setBestManhattanEmotionMatches] = useState([])
+    const [bestChebyshevEmotionMatches, setBestChebyshevEmotionMatches] = useState([])
+
+    const [showEmotionDistanceDetails, setShowEmotionDistanceDetails] = useState(false)
+
 
     const [emotionKindFilter, setEmotionKindFilter] = useState('')
 
@@ -136,6 +141,16 @@ const EmotionFinder = ({
         return Math.sqrt(sumsqr);
     }
 
+    // https://github.com/semibran/manhattan/blob/master/index.js
+    const manhattanSim = (a, b) => {
+        var distance = 0
+        var dimensions = Math.max(a.length, b.length)
+        for (var i = 0; i < dimensions; i++) {
+            distance += Math.abs((b[i] || 0) - (a[i] || 0))
+        }
+        return distance
+    }
+
     const cosineSim = (a, b) => {
         // for (let i = 0; i < a.length; i++) {
         //     // change scale from -1/+1 to 0/+1
@@ -161,9 +176,23 @@ const EmotionFinder = ({
             ** (1 / 2)
     }
 
+    const chebyshevSim = (a, b) => {
+        var farthest = 0
+        var dimensions = Math.max(a.length, b.length)
+        for (var i = 0; i < dimensions; i++) {
+            var distance = Math.abs((b[i] || 0) - (a[i] || 0))
+            if (distance > farthest) {
+                farthest = distance
+            }
+        }
+        return farthest
+    }
+
     const search = (searchEmotionKindFilter, searchJoyToSadness, searchTrustToDisgust, searchFearToAnger, searchSurpriseToAnticipation, searchPleasureToDispleasure, searchArousalToNonarousal, searchDominanceToSubmissiveness, searchInnerFocusToOutwardTarget, curIncludeJoyToSadness, curIncludeTrustToDisgust, curIncludeFearToAnger, curIncludeSurpriseToAnticipation, curIncludePleasureToDispleasure, curIncludeArousalToNonarousal, curIncludeDominanceToSubmissiveness, curIncludeInnerFocusToOutwardTarget) => {
         let cosineResults = {}
         let euclideanResults = {}
+        let manhattanResults = {}
+        let chebyshevResults = {}
 
         const filteredEmotions = searchEmotionKindFilter === '' ? emotions : emotions.filter(emotion => emotion.kinds.includes(searchEmotionKindFilter))
 
@@ -210,9 +239,13 @@ const EmotionFinder = ({
 
             var cosineDist = cosineSim(searchVector, curEmoVector);
             var euclideanDist = euclideanSim(searchVector, curEmoVector)
+            var manhattanDist = manhattanSim(searchVector, curEmoVector)
+            var chebyshevDist = chebyshevSim(searchVector, curEmoVector)
 
             cosineResults[emotion.id] = cosineDist
             euclideanResults[emotion.id] = euclideanDist
+            manhattanResults[emotion.id] = manhattanDist
+            chebyshevResults[emotion.id] = chebyshevDist
         });
 
         // sort dict, which needs the following in js: https://stackoverflow.com/a/25500462
@@ -230,8 +263,23 @@ const EmotionFinder = ({
             return [key, euclideanResults[key]];
         });
 
-        // Sort the array based on the second element
         eucItems.sort(function (first, second) {
+            return first[1] - second[1];
+        });
+
+        var manhattanItems = Object.keys(manhattanResults).map(function (key) {
+            return [key, manhattanResults[key]];
+        });
+
+        manhattanItems.sort(function (first, second) {
+            return first[1] - second[1];
+        });
+
+        var chebyshevItems = Object.keys(chebyshevResults).map(function (key) {
+            return [key, chebyshevResults[key]];
+        });
+
+        chebyshevItems.sort(function (first, second) {
             return first[1] - second[1];
         });
 
@@ -239,9 +287,13 @@ const EmotionFinder = ({
 
         const cosineTop = cosineItems.slice(0, top_n).map((i) => i[0])
         const eucTop = eucItems.slice(0, top_n).map((i) => i[0])
+        const manhattanTop = manhattanItems.slice(0, top_n).map((i) => i[0])
+        const chebyshevTop = chebyshevItems.slice(0, top_n).map((i) => i[0])
 
         setBestCosineEmotionMatches(cosineTop)
         setBestEuclideanEmotionMatches(eucTop)
+        setBestManhattanEmotionMatches(manhattanTop)
+        setBestChebyshevEmotionMatches(chebyshevTop)
     }
 
     const searchLabel = (includeJoyToSadness ? (joyToSadness < 0 ? 'Joy + ' : 'Sadness + ') : '')
@@ -264,12 +316,48 @@ const EmotionFinder = ({
 
     const bestCosineMatchesListItems = bestCosineEmotionMatches.map((emo) => <li key={emo}>
         {
-            getEmotion(emo, bestEuclideanEmotionMatches.includes(emo))
+            getEmotion(emo, bestEuclideanEmotionMatches.includes(emo) && bestManhattanEmotionMatches.includes(emo) && bestChebyshevEmotionMatches.includes(emo))
         }
     </li >)
     const bestEuclideanMatchesListItems = bestEuclideanEmotionMatches.map((emo) => <li key={emo}>
         {
-            getEmotion(emo, bestCosineEmotionMatches.includes(emo))
+            getEmotion(emo, bestCosineEmotionMatches.includes(emo) && bestManhattanEmotionMatches.includes(emo) && bestChebyshevEmotionMatches.includes(emo))
+        }
+    </li>)
+    const bestManhattanMatchesListItems = bestManhattanEmotionMatches.map((emo) => <li key={emo}>
+        {
+            getEmotion(emo, bestCosineEmotionMatches.includes(emo) && bestEuclideanEmotionMatches.includes(emo) && bestChebyshevEmotionMatches.includes(emo))
+        }
+    </li>)
+    const bestChebyshevMatchesListItems = bestChebyshevEmotionMatches.map((emo) => <li key={emo}>
+        {
+            getEmotion(emo, bestCosineEmotionMatches.includes(emo) && bestEuclideanEmotionMatches.includes(emo) && bestManhattanEmotionMatches.includes(emo))
+        }
+    </li>)
+
+    const allEmoMatches = [bestCosineEmotionMatches, bestEuclideanEmotionMatches, bestManhattanEmotionMatches, bestChebyshevEmotionMatches]
+    const allEmoIntersection = allEmoMatches.reduce((a, b) => a.filter(c => b.includes(c)));
+
+    const bestOverallMatchesListItems = allEmoIntersection.sort(function(first, second) {
+        // add up the index of both items, return the lowest index count (if an emotion is index 0 in 3 out of 4 lists, it should rank first)
+
+        const firstCosineIndex = bestCosineEmotionMatches.indexOf(first)
+        const firstEuclideanIndex = bestEuclideanEmotionMatches.indexOf(first)
+        const firstManhattanIndex = bestManhattanEmotionMatches.indexOf(first)
+        const firstChebyshevIndex = bestChebyshevEmotionMatches.indexOf(first)
+
+        const secondCosineIndex = bestCosineEmotionMatches.indexOf(second)
+        const secondEuclideanIndex = bestEuclideanEmotionMatches.indexOf(second)
+        const secondManhattanIndex = bestManhattanEmotionMatches.indexOf(second)
+        const secondChebyshevIndex = bestChebyshevEmotionMatches.indexOf(second)
+
+        const firstIdxSum = firstCosineIndex + firstEuclideanIndex + firstManhattanIndex + firstChebyshevIndex
+        const secondIdxSum = secondCosineIndex + secondEuclideanIndex + secondManhattanIndex + secondChebyshevIndex
+
+        return firstIdxSum - secondIdxSum
+    }).map((emo) => <li key={emo}>
+        {
+            getEmotion(emo, false)
         }
     </li>)
 
@@ -363,18 +451,58 @@ const EmotionFinder = ({
                     }
                     <div className='row'>
                         <div className='col'>
-                            <p>Cosine distance</p>
-                            <ul>
-                                {bestCosineMatchesListItems}
-                            </ul>
-                        </div>
-                        <div className='col'>
-                            <p>Euclidean distance</p>
-                            <ul>
-                                {bestEuclideanMatchesListItems}
-                            </ul>
+                            {
+                                bestOverallMatchesListItems.length === 0 &&
+                                <p>No emotion agreement</p>
+                            }
+                            {
+                                bestOverallMatchesListItems.length > 0 &&
+                                <ul>
+                                    {bestOverallMatchesListItems}
+                                </ul>
+                            }
                         </div>
                     </div>
+                    <div className='row'>
+                        {
+                            showEmotionDistanceDetails === false &&
+                            <button onClick={() => setShowEmotionDistanceDetails(true)} className='btn btn-link'>show distance details</button>
+                        }
+                        {
+                            showEmotionDistanceDetails === true &&
+                            <button onClick={() => setShowEmotionDistanceDetails(false)} className='btn btn-link'>hide distance details</button>
+                        }
+                        {
+                            showEmotionDistanceDetails === true &&
+                            <>
+                                <div className='col'>
+                                    <p>Cosine distance</p>
+                                    <ul>
+                                        {bestCosineMatchesListItems}
+                                    </ul>
+                                </div>
+                                <div className='col'>
+                                    <p>Euclidean distance</p>
+                                    <ul>
+                                        {bestEuclideanMatchesListItems}
+                                    </ul>
+                                </div>
+                                <div className='col'>
+                                    <p>Manhattan distance</p>
+                                    <ul>
+                                        {bestManhattanMatchesListItems}
+                                    </ul>
+                                </div>
+                                <div className='col'>
+                                    <p>Chebyshev distance</p>
+                                    <ul>
+                                        {bestChebyshevMatchesListItems}
+                                    </ul>
+                                </div>
+                            </>
+                        }
+                    </div>
+
 
 
                 </>

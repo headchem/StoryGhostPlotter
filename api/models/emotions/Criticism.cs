@@ -8,8 +8,8 @@ public class Criticism : IEmotion
 {
     public string Id { get { return "criticism"; } }
     public string Name { get { return "Criticism"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The expression of disapproval of someone or something based on perceived faults or mistakes."; } }
+    public List<string> Synonyms { get { return new List<string> { "censure", "condemnation", "denunciation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

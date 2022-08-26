@@ -8,8 +8,8 @@ public class Bittersweetness : IEmotion
 {
     public string Id { get { return "bittersweetness"; } }
     public string Name { get { return "Bittersweetness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Pleasure accompanied by suffering or regret"; } }
+    public List<string> Synonyms { get { return new List<string> { "wistful", "malancholy", "heartwarming", "heartbreaking" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Comfort : IEmotion
 {
     public string Id { get { return "comfort"; } }
     public string Name { get { return "Comfort"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of ease from grief or trouble"; } }
+    public List<string> Synonyms { get { return new List<string> { "solace", "relief" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

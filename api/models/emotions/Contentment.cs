@@ -8,8 +8,8 @@ public class Contentment : IEmotion
 {
     public string Id { get { return "contentment"; } }
     public string Name { get { return "Contentment"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The feeling experienced when one's wishes are met."; } }
+    public List<string> Synonyms { get { return new List<string> { "gladness", "pleasure", "satisfaction" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

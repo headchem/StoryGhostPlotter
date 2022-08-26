@@ -8,8 +8,8 @@ public class Charity : IEmotion
 {
     public string Id { get { return "charity"; } }
     public string Name { get { return "Charity"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Kind, gentle, or compassionate treatment especially towards someone who is undeserving of it. The giving of necessities and especially money to the needy"; } }
+    public List<string> Synonyms { get { return new List<string> { "philanthropy", "benevolence", "bestowal" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

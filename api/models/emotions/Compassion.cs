@@ -8,8 +8,8 @@ public class Compassion : IEmotion
 {
     public string Id { get { return "compassion"; } }
     public string Name { get { return "Compassion"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Sorrow or the capacity to feel sorrow for another's unhappiness, suffering or misfortune."; } }
+    public List<string> Synonyms { get { return new List<string> { "bigheartedness", "commiseration", "sympathy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

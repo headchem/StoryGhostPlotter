@@ -8,8 +8,8 @@ public class Curiosity : IEmotion
 {
     public string Id { get { return "curiosity"; } }
     public string Name { get { return "Curiosity"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A strong desire to know or learn something."; } }
+    public List<string> Synonyms { get { return new List<string> { "inquisitiveness", "nosiness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

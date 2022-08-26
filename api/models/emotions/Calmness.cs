@@ -8,8 +8,8 @@ public class Calmness : IEmotion
 {
     public string Id { get { return "calmness"; } }
     public string Name { get { return "Calmness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state or quality of being free from agitation, strong emotion, disturbance or violent activity. Evenness of emotions or temper"; } }
+    public List<string> Synonyms { get { return new List<string> { "casualness", "easygoingness", "laid-backness", "aplomb", "collected", "composed" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

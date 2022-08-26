@@ -8,8 +8,8 @@ public class Confident : IEmotion
 {
     public string Id { get { return "confident"; } }
     public string Name { get { return "Confident"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having or showing great faith in oneself or one's abilities"; } }
+    public List<string> Synonyms { get { return new List<string> { "assured", "secure", "self-asserting", "self-assured" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

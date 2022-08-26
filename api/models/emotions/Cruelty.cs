@@ -8,8 +8,8 @@ public class Cruelty : IEmotion
 {
     public string Id { get { return "cruelty"; } }
     public string Name { get { return "Cruelty"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Callous indifference to or pleasure in causing pain and suffering."; } }
+    public List<string> Synonyms { get { return new List<string> { "brutality", "savagery", "inhumanity" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
