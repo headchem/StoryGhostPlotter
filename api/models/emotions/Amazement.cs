@@ -8,8 +8,8 @@ public class Amazement : IEmotion
 {
     public string Id { get { return "amazement"; } }
     public string Name { get { return "Amazement"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of great surprise or wonder."; } }
+    public List<string> Synonyms { get { return new List<string> { "astonishment", "bewilderment", "stupefaction", "surprise", "shock" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

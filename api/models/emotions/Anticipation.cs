@@ -8,8 +8,8 @@ public class Anticipation : IEmotion
 {
     public string Id { get { return "anticipation"; } }
     public string Name { get { return "Anticipation"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The action of anticipating something; expectation or prediction."; } }
+    public List<string> Synonyms { get { return new List<string> { "expectation", "prediction", "expectancy" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal, EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Attentiveness : IEmotion
 {
     public string Id { get { return "attentiveness"; } }
     public string Name { get { return "Attentiveness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The action of paying close attention to something. The action of assiduously attending to the comfort or wishes of others; politeness or courtesy."; } }
+    public List<string> Synonyms { get { return new List<string> { "heedful", "absorbed", "focused", "immersed", "rapt", "observant" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

@@ -8,8 +8,8 @@ public class Ambivalence : IEmotion
 {
     public string Id { get { return "ambivalence"; } }
     public string Name { get { return "Ambivalence"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state of having mixed feelings or contradictory ideas about something or someone."; } }
+    public List<string> Synonyms { get { return new List<string> { "equivocation", "uncertainty", "unsureness", "indecision" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

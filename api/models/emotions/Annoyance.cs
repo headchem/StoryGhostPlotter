@@ -8,8 +8,8 @@ public class Annoyance : IEmotion
 {
     public string Id { get { return "annoyance"; } }
     public string Name { get { return "Annoyance"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An unpleasant mental state that is characterized by irritation and distraction from one's conscious thinking. It can lead to emotions such as frustration and anger. The property of being easily annoyed is called irritability."; } }
+    public List<string> Synonyms { get { return new List<string> { "irritation", "exasperation", "indignation" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

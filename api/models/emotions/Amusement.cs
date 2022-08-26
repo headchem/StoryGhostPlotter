@@ -8,8 +8,8 @@ public class Amusement : IEmotion
 {
     public string Id { get { return "amusement"; } }
     public string Name { get { return "Amusement"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state or experience of finding something funny."; } }
+    public List<string> Synonyms { get { return new List<string> { "mirth", "merriment", "light-heartedness", "glee" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

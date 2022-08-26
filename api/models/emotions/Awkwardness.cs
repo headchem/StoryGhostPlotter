@@ -8,8 +8,8 @@ public class Awkwardness : IEmotion
 {
     public string Id { get { return "awkwardness"; } }
     public string Name { get { return "Awkwardness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Lacking skill or dexterity. Lacking skill or dexterity. Lacking social graces or manners."; } }
+    public List<string> Synonyms { get { return new List<string> { "embarrassment", "self-consciousness", "uncoordinated", "graceless", "clumsy", "unwieldy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

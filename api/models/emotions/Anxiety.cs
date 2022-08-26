@@ -8,8 +8,8 @@ public class Anxiety : IEmotion
 {
     public string Id { get { return "anxiety"; } }
     public string Name { get { return "Anxiety"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of worry, nervousness, or unease, typically about an imminent event or something with an uncertain outcome."; } }
+    public List<string> Synonyms { get { return new List<string> { "impatience", "concern", "consternation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

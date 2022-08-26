@@ -8,8 +8,8 @@ public class Astonishment : IEmotion
 {
     public string Id { get { return "astonishment"; } }
     public string Name { get { return "Astonishment"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of great surprise and wonder"; } }
+    public List<string> Synonyms { get { return new List<string> { "amazement", "bafflement", "bewilderment", "surprise" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

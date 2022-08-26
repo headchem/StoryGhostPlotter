@@ -8,8 +8,8 @@ public class AweIntense : IEmotion
 {
     public string Id { get { return "awe-intense"; } }
     public string Name { get { return "Intense Awe"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of reverential respect mixed with fear or wonder."; } }
+    public List<string> Synonyms { get { return new List<string> { "wonder", "astonishment", "amazed" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties, EmotionKindEnum.EventRelated }; } }
 

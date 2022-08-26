@@ -8,8 +8,8 @@ public class Aversion : IEmotion
 {
     public string Id { get { return "aversion"; } }
     public string Name { get { return "Aversion"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A strong dislike or disinclination. A feeling of repugnance toward something with a desire to avoid or turn from it."; } }
+    public List<string> Synonyms { get { return new List<string> { "disinclination", "abhorrence", "dislike", "distaste" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
