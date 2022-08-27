@@ -8,8 +8,8 @@ public class Sadness : IEmotion
 {
     public string Id { get { return "sadness"; } }
     public string Name { get { return "Sadness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An emotional state characterized by feelings of unhappiness and low mood. Affected with or expressive of grief or unhappiness."; } }
+    public List<string> Synonyms { get { return new List<string> { "blue", "downcast", "depressed", "despondent", "doleful", "glum", "low-spirited", "melancholy", "miserable", "mournful", "woebegone", "wretched" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

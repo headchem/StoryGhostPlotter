@@ -8,8 +8,8 @@ public class Resignation : IEmotion
 {
     public string Id { get { return "resignation"; } }
     public string Name { get { return "Resignation"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The acceptance of something undesirable but inevitable."; } }
+    public List<string> Synonyms { get { return new List<string> { "endurance", "fortitude", "tolerance", "forbearance" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

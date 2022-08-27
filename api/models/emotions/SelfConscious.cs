@@ -8,8 +8,8 @@ public class SelfConscious : IEmotion
 {
     public string Id { get { return "self-conscious"; } }
     public string Name { get { return "SelfConscious"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Uncomfortably conscious of oneself as an object of the observation of others. Feeling undue awareness of oneself, one's appearance, or one's actions."; } }
+    public List<string> Synonyms { get { return new List<string> { "embarrassed", "uncomfortable", "tense" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

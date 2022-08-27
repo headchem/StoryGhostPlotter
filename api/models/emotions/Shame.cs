@@ -8,8 +8,8 @@ public class Shame : IEmotion
 {
     public string Id { get { return "shame"; } }
     public string Name { get { return "Shame"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A painful feeling of humiliation or distress caused by the consciousness of a shortcoming or wrong or foolish behavior. A condition of humiliating disgrace or disrepute."; } }
+    public List<string> Synonyms { get { return new List<string> { "contrition", "guilt", "degrade", "humiliate", "remorse", "moritifcation", "loss of face", "embarrassed" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

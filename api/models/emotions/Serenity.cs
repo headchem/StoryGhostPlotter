@@ -8,8 +8,8 @@ public class Serenity : IEmotion
 {
     public string Id { get { return "serenity"; } }
     public string Name { get { return "Serenity"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { "peaceful" }; } }
+    public string Description { get { return "The state of being calm, peaceful, and untroubled. Marked by or suggestive of utter calm and unruffled repose or quietude."; } }
+    public List<string> Synonyms { get { return new List<string> { "peaceful", "quietude", "calm", "placid", "restful", "tranquil", "composed" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

@@ -8,8 +8,8 @@ public class Sorrow : IEmotion
 {
     public string Id { get { return "sorrow"; } }
     public string Name { get { return "Sorrow"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of deep distress caused by loss, disappointment, or other misfortune suffered by oneself or others. Deep distress, sadness, or regret especially for the loss of someone or something loved."; } }
+    public List<string> Synonyms { get { return new List<string> { "anguish", "mourn", "suffer", "grieve", "hurt", "agonize", "sadness", "dejection", "depression", "misery" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

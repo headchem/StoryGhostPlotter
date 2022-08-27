@@ -8,8 +8,8 @@ public class Revulsion : IEmotion
 {
     public string Id { get { return "revulsion"; } }
     public string Name { get { return "Revulsion"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A sense of utter distaste, disgust, loathing or repugnance. A strong pulling or drawing away."; } }
+    public List<string> Synonyms { get { return new List<string> { "disgust", "repulsion", "abhorrence", "repugnance", "loathing", "nausea" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

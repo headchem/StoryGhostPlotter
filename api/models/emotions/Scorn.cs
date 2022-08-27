@@ -8,8 +8,8 @@ public class Scorn : IEmotion
 {
     public string Id { get { return "scorn"; } }
     public string Name { get { return "Scorn"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Open dislike and disrespect or mockery often mixed with indignation. The feeling or belief that someone or something is worthless or despicable; contempt."; } }
+    public List<string> Synonyms { get { return new List<string> { "contempt", "derision", "disdain", "derisiveness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

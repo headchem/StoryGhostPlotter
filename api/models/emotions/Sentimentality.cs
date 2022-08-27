@@ -8,8 +8,8 @@ public class Sentimentality : IEmotion
 {
     public string Id { get { return "sentimentality"; } }
     public string Name { get { return "Sentimentality"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Of or prompted by feelings of tenderness, sadness, or nostalgia. Marked or governed by feeling, sensibility, or emotional idealism."; } }
+    public List<string> Synonyms { get { return new List<string> { "corny", "mushy", "saccharine", "sappy", "nostalgic", "emotional", "misty-eyed" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

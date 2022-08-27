@@ -8,8 +8,8 @@ public class SexualDesire : IEmotion
 {
     public string Id { get { return "sexual-desire"; } }
     public string Name { get { return "Sexual Desire"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Emotional and motivational state characterized by an interest in sexual objects or activities, or by a drive to seek out sexuality."; } }
+    public List<string> Synonyms { get { return new List<string> { "lust", "eroticism", "lechery", "desire" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

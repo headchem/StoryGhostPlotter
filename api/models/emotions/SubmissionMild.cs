@@ -8,8 +8,8 @@ public class SubmissionMild : IEmotion
 {
     public string Id { get { return "submission-mild"; } }
     public string Name { get { return "Mild Submission"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { "deference" }; } }
+    public string Description { get { return "The condition of being submissive, humble, or compliant. The action or fact of accepting or yielding to a superior force or to the will or authority of another person."; } }
+    public List<string> Synonyms { get { return new List<string> { "deference", "yielding", "capitulation", "acceptance", "consent", "compliance", "obedience", "subordination", "conformity" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

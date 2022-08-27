@@ -8,8 +8,8 @@ public class Shock : IEmotion
 {
     public string Id { get { return "shock"; } }
     public string Name { get { return "Shock"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To cause someone to feel surprised and upset. A sudden or violent mental or emotional disturbance, event or experience."; } }
+    public List<string> Synonyms { get { return new List<string> { "jolt", "offended", "dismayed", "frightened", "surprised" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Restlessness : IEmotion
 {
     public string Id { get { return "restlessness"; } }
     public string Name { get { return "Restlessness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The inability to rest or relax as a result of anxiety or boredom."; } }
+    public List<string> Synonyms { get { return new List<string> { "uneasy", "unquiet", "fidgetiness", "tenseness", "nervousness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

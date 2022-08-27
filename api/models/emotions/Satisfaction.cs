@@ -8,8 +8,8 @@ public class Satisfaction : IEmotion
 {
     public string Id { get { return "satisfaction"; } }
     public string Name { get { return "Satisfaction"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Fulfillment of one's wishes, expectations, or needs, or the pleasure derived from this."; } }
+    public List<string> Synonyms { get { return new List<string> { "contentment", "fulfillment", "gratification", "pleasure" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 
