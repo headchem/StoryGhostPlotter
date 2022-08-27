@@ -8,8 +8,8 @@ public class Humility : IEmotion
 {
     public string Id { get { return "humility"; } }
     public string Name { get { return "Humility"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The absence of any feelings of being better than others"; } }
+    public List<string> Synonyms { get { return new List<string> { "demureness", "down-to-earth", "meekness", "modesty" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

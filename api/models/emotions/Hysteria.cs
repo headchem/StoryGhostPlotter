@@ -8,8 +8,8 @@ public class Hysteria : IEmotion
 {
     public string Id { get { return "hysteria"; } }
     public string Name { get { return "Hysteria"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state of wildly excited activity or emotion"; } }
+    public List<string> Synonyms { get { return new List<string> { "agitation", "deliriousness", "delirium", "frenzy", "furor", "uproar" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

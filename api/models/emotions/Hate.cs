@@ -8,8 +8,8 @@ public class Hate : IEmotion
 {
     public string Id { get { return "hate"; } }
     public string Name { get { return "Hate"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To dislike strongly"; } }
+    public List<string> Synonyms { get { return new List<string> { "abhor", "detest", "despise" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Cathected }; } }
 

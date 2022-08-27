@@ -8,8 +8,8 @@ public class Helplessness : IEmotion
 {
     public string Id { get { return "helplessness"; } }
     public string Name { get { return "Helplessness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The lack of sufficient ability, power, or means"; } }
+    public List<string> Synonyms { get { return new List<string> { "powerless", "impotence", "inadequacy", "incapacity" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

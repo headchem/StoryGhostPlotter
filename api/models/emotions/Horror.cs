@@ -8,8 +8,8 @@ public class Horror : IEmotion
 {
     public string Id { get { return "horror"; } }
     public string Name { get { return "Horror"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Filled with fear or dread"; } }
+    public List<string> Synonyms { get { return new List<string> { "aghast", "afraid", "spooked", "terrorized", "scared" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

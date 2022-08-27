@@ -8,8 +8,8 @@ public class Hurt : IEmotion
 {
     public string Id { get { return "hurt"; } }
     public string Name { get { return "Hurt"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To feel deep sadness or mental pain"; } }
+    public List<string> Synonyms { get { return new List<string> { "agonize", "anguish", "grieve", "suffer" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

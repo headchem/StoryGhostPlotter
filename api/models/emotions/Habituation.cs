@@ -9,7 +9,7 @@ public class Habituation : IEmotion
     public string Id { get { return "habituation"; } }
     public string Name { get { return "Habituation"; } }
     public string Description { get { return "The diminishing of a physiological or emotional response to a frequently repeated stimulus."; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public List<string> Synonyms { get { return new List<string> { "dependence", "addiction", "tolerance" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
