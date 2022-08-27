@@ -8,8 +8,8 @@ public class Indifference : IEmotion
 {
     public string Id { get { return "indifference"; } }
     public string Name { get { return "Indifference"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Lack of interest or concern"; } }
+    public List<string> Synonyms { get { return new List<string> { "apathy", "casualness", "complacence", "disregard", "nonchalant" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

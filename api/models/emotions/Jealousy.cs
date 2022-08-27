@@ -9,7 +9,7 @@ public class Jealousy : IEmotion
     public string Id { get { return "jealousy"; } }
     public string Name { get { return "Jealousy"; } }
     public string Description { get { return "Jealousy generally refers to the thoughts or feelings of insecurity, fear, and concern over a relative lack of possessions or safety."; } }
-    public List<string> Synonyms { get { return new List<string> { "envy" }; } }
+    public List<string> Synonyms { get { return new List<string> { "envy", "covetousness", "desire", "resentful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

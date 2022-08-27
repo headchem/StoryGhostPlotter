@@ -8,8 +8,8 @@ public class Interest : IEmotion
 {
     public string Id { get { return "interest"; } }
     public string Name { get { return "Interest"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state of wanting to know or learn about something or someone."; } }
+    public List<string> Synonyms { get { return new List<string> { "attentiveness", "absorption", "engrossment" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal, EmotionKindEnum.RelatedToObjectProperties }; } }
 

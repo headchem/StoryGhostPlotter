@@ -8,8 +8,8 @@ public class Insecurity : IEmotion
 {
     public string Id { get { return "insecurity"; } }
     public string Name { get { return "Insecurity"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state or feeling of anxiety, fear, or self-doubt"; } }
+    public List<string> Synonyms { get { return new List<string> { "doubt", "lack of self-confidence", "self-doubt" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

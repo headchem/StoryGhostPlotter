@@ -8,8 +8,8 @@ public class Jubilation : IEmotion
 {
     public string Id { get { return "jubilation"; } }
     public string Name { get { return "Jubilation"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of great happiness and triumph."; } }
+    public List<string> Synonyms { get { return new List<string> { "triumph", "rejoicing", "euphoria", "elation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

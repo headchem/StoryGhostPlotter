@@ -8,8 +8,8 @@ public class Impressed : IEmotion
 {
     public string Id { get { return "impressed"; } }
     public string Name { get { return "Impressed"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To affect especially forcibly or deeply; gain the admiration or interest of"; } }
+    public List<string> Synonyms { get { return new List<string> { "influenced", "moved", "struck", "swayed", "touched", "affected", "impacted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

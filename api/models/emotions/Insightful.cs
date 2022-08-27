@@ -8,8 +8,8 @@ public class Insightful : IEmotion
 {
     public string Id { get { return "insightful"; } }
     public string Name { get { return "Insightful"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having or showing an accurate and deep understanding; perceptive."; } }
+    public List<string> Synonyms { get { return new List<string> { "intuitive", "perceptive", "discerning", "penetrating", "astute" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

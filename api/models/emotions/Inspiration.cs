@@ -8,8 +8,8 @@ public class Inspiration : IEmotion
 {
     public string Id { get { return "inspiration"; } }
     public string Name { get { return "Inspiration"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The process of being mentally stimulated to do or feel something, especially to do something creative."; } }
+    public List<string> Synonyms { get { return new List<string> { "creativity", "inventive", "innovative", "ingenuity" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
