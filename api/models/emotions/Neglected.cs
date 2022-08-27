@@ -8,8 +8,8 @@ public class Neglected : IEmotion
 {
     public string Id { get { return "neglected"; } }
     public string Name { get { return "Neglected"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Suffering a lack of proper care. Not receiving proper attention; disregarded."; } }
+    public List<string> Synonyms { get { return new List<string> { "dilapidated", "run-down", "forgotten", "overlooked", "scorned" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social, EmotionKindEnum.EventRelated }; } }
 

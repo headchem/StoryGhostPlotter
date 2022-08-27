@@ -8,8 +8,8 @@ public class Modesty : IEmotion
 {
     public string Id { get { return "modesty"; } }
     public string Name { get { return "Modesty"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The absence of any feelings of being better than others. The quality or state of being unassuming or moderate in the estimation of one's abilities. Behavior, manner, or appearance intended to avoid impropriety or indecency."; } }
+    public List<string> Synonyms { get { return new List<string> { "self-effacement", "humility", "moderation", "unpretentious", "demure", "down-to-earth" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

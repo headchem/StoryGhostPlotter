@@ -8,8 +8,8 @@ public class Panic : IEmotion
 {
     public string Id { get { return "panic"; } }
     public string Name { get { return "Panic"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Sudden uncontrollable fear or anxiety, often causing wildly unthinking behavior. A sudden overpowering fright. A sudden unreasoning terror often accompanied by mass flight."; } }
+    public List<string> Synonyms { get { return new List<string> { "alarm", "anxiety", "fear", "fright", "scare", "shock", "startle", "terrify" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

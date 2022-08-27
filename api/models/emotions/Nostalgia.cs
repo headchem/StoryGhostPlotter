@@ -8,8 +8,8 @@ public class Nostalgia : IEmotion
 {
     public string Id { get { return "nostalgia"; } }
     public string Name { get { return "Nostalgia"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A sentimental longing or wistful affection for return to or of some past irrecoverable condition, typically for a period or place with happy personal associations."; } }
+    public List<string> Synonyms { get { return new List<string> { "wistful", "reminiscence", "rememberance" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

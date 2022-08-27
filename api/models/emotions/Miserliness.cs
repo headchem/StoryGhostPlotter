@@ -8,8 +8,8 @@ public class Miserliness : IEmotion
 {
     public string Id { get { return "miserliness"; } }
     public string Name { get { return "Miserliness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Excessive desire to save money; extreme meanness. The quality or practice of being overly sparing with money."; } }
+    public List<string> Synonyms { get { return new List<string> { "cheapness", "penny-pinching", "stinginess", "economizing", "avarice" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

@@ -8,8 +8,8 @@ public class Lonely : IEmotion
 {
     public string Id { get { return "lonely"; } }
     public string Name { get { return "Lonely"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Not being in the company of others. Sad because one has no friends or company. Without companions; solitary."; } }
+    public List<string> Synonyms { get { return new List<string> { "isolated", "solitary", "alone", "unaccompanied" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

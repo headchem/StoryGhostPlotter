@@ -8,8 +8,8 @@ public class Morbidness : IEmotion
 {
     public string Id { get { return "morbidness"; } }
     public string Name { get { return "Morbidness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Characterized by or appealing to an abnormal and unhealthy interest in disturbing and unpleasant subjects, especially death and disease. An abnormal or unhealthy state of mind; especially, one marked by excessive gloom. Causing or marked by an atmosphere lacking in cheer"; } }
+    public List<string> Synonyms { get { return new List<string> { "bleak", "comfortless", "dark", "ghoulish", "macabre" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

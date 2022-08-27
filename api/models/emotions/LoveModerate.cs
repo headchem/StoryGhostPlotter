@@ -8,8 +8,8 @@ public class LoveModerate : IEmotion
 {
     public string Id { get { return "love-moderate"; } }
     public string Name { get { return "Moderate Love"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { "caring" }; } }
+    public string Description { get { return "An intense feeling of deep affection. Like or enjoy very much. To hold dear"; } }
+    public List<string> Synonyms { get { return new List<string> { "caring", "cherish", "adore", "revere", "relish", "devotion", "romance" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Cathected }; } }
 

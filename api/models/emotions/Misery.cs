@@ -8,8 +8,8 @@ public class Misery : IEmotion
 {
     public string Id { get { return "misery"; } }
     public string Name { get { return "Misery"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state or feeling of great distress, discomfort, suffering and unhappiness of mind or body."; } }
+    public List<string> Synonyms { get { return new List<string> { "agony", "hell", "torment", "nightmare", "distress", "hardship", "suffering" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
