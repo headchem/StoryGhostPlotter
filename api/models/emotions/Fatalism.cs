@@ -8,8 +8,8 @@ public class Fatalism : IEmotion
 {
     public string Id { get { return "fatalism"; } }
     public string Name { get { return "Fatalism"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The belief that all events are predetermined and therefore inevitable. A doctrine that events are fixed in advance so that human beings are powerless to change them."; } }
+    public List<string> Synonyms { get { return new List<string> { "resignation", "defeatist", "nihilstic", "pessimistic", "grim" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

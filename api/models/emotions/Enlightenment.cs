@@ -8,8 +8,8 @@ public class Enlightenment : IEmotion
 {
     public string Id { get { return "enlightenment"; } }
     public string Name { get { return "Enlightenment"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The process by which one gains a greater understanding of something."; } }
+    public List<string> Synonyms { get { return new List<string> { "realization", "awareness", "erudition", "learning" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

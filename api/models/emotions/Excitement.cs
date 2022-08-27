@@ -8,8 +8,8 @@ public class Excitement : IEmotion
 {
     public string Id { get { return "excitement"; } }
     public string Name { get { return "Excitement"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of great enthusiasm and eagerness."; } }
+    public List<string> Synonyms { get { return new List<string> { "exhilaration", "animation", "stimulation", "titillation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

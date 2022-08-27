@@ -8,8 +8,8 @@ public class Easiness : IEmotion
 {
     public string Id { get { return "easiness"; } }
     public string Name { get { return "Easiness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having a relaxed, casual manner"; } }
+    public List<string> Synonyms { get { return new List<string> { "easygoing", "affable", "happy-go-lucky", "mellow", "laid-back" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.FutureAppraisal }; } }
 

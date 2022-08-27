@@ -8,8 +8,8 @@ public class Fury : IEmotion
 {
     public string Id { get { return "fury"; } }
     public string Name { get { return "Fury"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Wild or violent anger. Violence or energy displayed in natural phenomena or in someone's actions."; } }
+    public List<string> Synonyms { get { return new List<string> { "rage", "wrath", "outrage", "ferocity", "fierceness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

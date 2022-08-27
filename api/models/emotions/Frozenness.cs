@@ -8,8 +8,8 @@ public class Frozenness : IEmotion
 {
     public string Id { get { return "frozenness"; } }
     public string Name { get { return "Frozenness"; } }
-    public string Description { get { return "paralysis"; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An feeling of both fear and anger that leads to inaction due to being overwhelmed by conflicting emotion."; } }
+    public List<string> Synonyms { get { return new List<string> { "paralysis", "overwhelmed" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

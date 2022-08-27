@@ -8,8 +8,8 @@ public class Envy : IEmotion
 {
     public string Id { get { return "envy"; } }
     public string Name { get { return "Envy"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A painful awareness of another's possessions or advantages and a desire to have them too"; } }
+    public List<string> Synonyms { get { return new List<string> { "covetousness", "resentment", "jealousy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

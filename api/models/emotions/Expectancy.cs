@@ -8,8 +8,8 @@ public class Expectancy : IEmotion
 {
     public string Id { get { return "expectancy"; } }
     public string Name { get { return "Expectancy"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state of thinking or hoping that something, especially something pleasant, will happen or be the case."; } }
+    public List<string> Synonyms { get { return new List<string> { "anticipation", "hopefulness", "prospect" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

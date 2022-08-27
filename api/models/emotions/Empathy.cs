@@ -8,13 +8,13 @@ public class Empathy : IEmotion
 {
     public string Id { get { return "empathy"; } }
     public string Name { get { return "Empathy"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having or showing the capacity for sharing the feelings of another."; } }
+    public List<string> Synonyms { get { return new List<string> { "commiserating", "sympathizing", "soothing" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
-    public double JoyToSadness { get { return 0; } }
-    public double TrustToDisgust { get { return -.5; } }
+    public double JoyToSadness { get { return 0.5; } }
+    public double TrustToDisgust { get { return -.1; } }
     public double FearToAnger { get { return 0; } }
     public double SurpriseToAnticipation { get { return -.2; } }
 

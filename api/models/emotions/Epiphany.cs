@@ -8,8 +8,8 @@ public class Epiphany : IEmotion
 {
     public string Id { get { return "epiphany"; } }
     public string Name { get { return "Epiphany"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A sudden manifestation or perception of the essential nature or meaning of something."; } }
+    public List<string> Synonyms { get { return new List<string> { "insight", "realization" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

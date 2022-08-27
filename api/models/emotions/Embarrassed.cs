@@ -8,8 +8,8 @@ public class Embarrassed : IEmotion
 {
     public string Id { get { return "embarrassed"; } }
     public string Name { get { return "Embarrassed"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To throw into a state of self-conscious distress"; } }
+    public List<string> Synonyms { get { return new List<string> { "abashed", "self-conscious", "insecure", "uptight" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

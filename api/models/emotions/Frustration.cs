@@ -8,8 +8,8 @@ public class Frustration : IEmotion
 {
     public string Id { get { return "frustration"; } }
     public string Name { get { return "Frustration"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The feeling of being upset or annoyed, especially because of inability to change or achieve something."; } }
+    public List<string> Synonyms { get { return new List<string> { "exasperation", "irritation", "thwarted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -9,7 +9,7 @@ public class Ennui : IEmotion
     public string Id { get { return "ennui"; } }
     public string Name { get { return "Ennui"; } }
     public string Description { get { return "A feeling of listlessness and dissatisfaction arising from a lack of occupation or excitement."; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public List<string> Synonyms { get { return new List<string> { "doredom", "listlessness", "weariness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Fear : IEmotion
 {
     public string Id { get { return "fear"; } }
     public string Name { get { return "Fear"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An unpleasant emotion caused by the belief that someone or something is dangerous, likely to cause pain, or a threat."; } }
+    public List<string> Synonyms { get { return new List<string> { "fright", "terror", "panic", "horror" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

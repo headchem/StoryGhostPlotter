@@ -8,8 +8,8 @@ public class Enthusiasm : IEmotion
 {
     public string Id { get { return "enthusiasm"; } }
     public string Name { get { return "Enthusiasm"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Urgent desire or interest"; } }
+    public List<string> Synonyms { get { return new List<string> { "ardor", "avid", "eagerness", "keenness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal, EmotionKindEnum.EventRelated }; } }
 

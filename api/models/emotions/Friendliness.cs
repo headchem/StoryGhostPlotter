@@ -8,8 +8,8 @@ public class Friendliness : IEmotion
 {
     public string Id { get { return "friendliness"; } }
     public string Name { get { return "Friendliness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having or showing kindly feeling and sincere interest."; } }
+    public List<string> Synonyms { get { return new List<string> { "amicable", "collegial", "genial", "warmhearted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

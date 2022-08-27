@@ -8,8 +8,8 @@ public class Entrancement : IEmotion
 {
     public string Id { get { return "entrancement"; } }
     public string Name { get { return "Entrancement"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "To fill with overwhelming emotion (as wonder or delight)"; } }
+    public List<string> Synonyms { get { return new List<string> { "enrapture", "enthrall" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

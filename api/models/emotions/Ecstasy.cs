@@ -8,8 +8,8 @@ public class Ecstasy : IEmotion
 {
     public string Id { get { return "ecstasy"; } }
     public string Name { get { return "Ecstasy"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state of overwhelmingly pleasurable emotion."; } }
+    public List<string> Synonyms { get { return new List<string> { "cloud nine", "euphoria", "elation", "rhapsody", "rapture" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
@@ -26,8 +26,8 @@ public class Ecstasy : IEmotion
     public double HumiliationToPride { get { return .1111111; } }
 
     public double PleasureToDispleasure { get { return -0.67; } }
-    public double ArousalToNonarousal { get { return -0.69; } }
+    public double ArousalToNonarousal { get { return -0.75; } }
     public double DominanceToSubmissiveness { get { return -0.4; } }
 	
-	public double InnerFocusToOutwardTarget { get { return .5; } }
+	public double InnerFocusToOutwardTarget { get { return -.2; } }
 }
