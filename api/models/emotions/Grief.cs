@@ -8,8 +8,8 @@ public class Grief : IEmotion
 {
     public string Id { get { return "grief"; } }
     public string Name { get { return "Grief"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Deep sadness especially for the loss of someone or something loved."; } }
+    public List<string> Synonyms { get { return new List<string> { "affliction", "anguish", "heartache", "woe", "sorrow" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

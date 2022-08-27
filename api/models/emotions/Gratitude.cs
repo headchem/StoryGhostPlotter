@@ -8,8 +8,8 @@ public class Gratitude : IEmotion
 {
     public string Id { get { return "gratitude"; } }
     public string Name { get { return "Gratitude"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Acknowledgment of having received something good from another"; } }
+    public List<string> Synonyms { get { return new List<string> { "appreciation", "grateful", "thankful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

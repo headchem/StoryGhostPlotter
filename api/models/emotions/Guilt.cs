@@ -8,8 +8,8 @@ public class Guilt : IEmotion
 {
     public string Id { get { return "guilt"; } }
     public string Name { get { return "Guilt"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of responsibility for wrongdoing"; } }
+    public List<string> Synonyms { get { return new List<string> { "contrition", "penitence", "regret", "remorse", "repentance", "rue", "shame" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social, EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Grasping : IEmotion
 {
     public string Id { get { return "grasping"; } }
     public string Name { get { return "Grasping"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having or marked by an eager and often selfish desire especially for material possessions"; } }
+    public List<string> Synonyms { get { return new List<string> { "acquisitive", "covetous", "greedy", "moneygrubbing" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

@@ -8,8 +8,8 @@ public class Gloominess : IEmotion
 {
     public string Id { get { return "gloominess"; } }
     public string Name { get { return "Gloominess"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state of being unhappy or without hope; a spell of low spirits."; } }
+    public List<string> Synonyms { get { return new List<string> { "blues", "despondent", "doleful", "forlorn", "mopey" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

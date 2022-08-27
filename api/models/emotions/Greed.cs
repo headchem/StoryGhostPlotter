@@ -8,8 +8,8 @@ public class Greed : IEmotion
 {
     public string Id { get { return "greed"; } }
     public string Name { get { return "Greed"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An intense selfish desire for wealth or possessions"; } }
+    public List<string> Synonyms { get { return new List<string> { "avarice", "grasping", "materialistic", "gluttony" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
