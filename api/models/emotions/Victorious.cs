@@ -8,8 +8,8 @@ public class Victorious : IEmotion
 {
     public string Id { get { return "victorious"; } }
     public string Name { get { return "Victorious"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Having won a victory; triumphant. Evincing moral harmony or a sense of fulfillment."; } }
+    public List<string> Synonyms { get { return new List<string> { "triumphant", "conquering", "vanquishing", "winning", "successful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.Social }; } }
 

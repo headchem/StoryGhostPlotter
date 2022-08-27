@@ -8,8 +8,8 @@ public class Thrilled : IEmotion
 {
     public string Id { get { return "thrilled"; } }
     public string Name { get { return "Thrilled"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Extremely pleased and excited. Cause (someone) to have a sudden feeling of excitement and pleasure."; } }
+    public List<string> Synonyms { get { return new List<string> { "excite", "stimulate", "arouse", "inspire", "delight"}; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

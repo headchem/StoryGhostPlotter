@@ -8,8 +8,8 @@ public class Unbelief : IEmotion
 {
     public string Id { get { return "unbelief"; } }
     public string Name { get { return "Unbelief"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Incredulity or skepticism. An absence of faith."; } }
+    public List<string> Synonyms { get { return new List<string> { "incredulity", "skepticism" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Vengeance : IEmotion
 {
     public string Id { get { return "vengeance"; } }
     public string Name { get { return "Vengeance"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Punishment inflicted or retribution exacted for an injury, wrong or offense."; } }
+    public List<string> Synonyms { get { return new List<string> { "payback", "retaliation", "revenge", "retribution", "avengement" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

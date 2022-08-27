@@ -8,8 +8,8 @@ public class Vigilance : IEmotion
 {
     public string Id { get { return "vigilance"; } }
     public string Name { get { return "Vigilance"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Alertly watchful especially to avoid danger. The action or state of keeping careful watch for possible danger or difficulties."; } }
+    public List<string> Synonyms { get { return new List<string> { "watchfulness", "surveillance", "attentiveness", "attention", "observant" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal, EmotionKindEnum.RelatedToObjectProperties }; } }
 

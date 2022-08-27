@@ -8,8 +8,8 @@ public class Thankfulness : IEmotion
 {
     public string Id { get { return "thankfulness"; } }
     public string Name { get { return "Thankfulness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Conscious of benefit received; well pleased."; } }
+    public List<string> Synonyms { get { return new List<string> { "appreciative", "grateful", "obliged" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social, EmotionKindEnum.EventRelated }; } }
 

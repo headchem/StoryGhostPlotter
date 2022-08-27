@@ -8,8 +8,8 @@ public class Tolerance : IEmotion
 {
     public string Id { get { return "tolerance"; } }
     public string Name { get { return "Tolerance"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Capacity to endure pain or hardship. The ability or willingness to tolerate something, in particular the existence of opinions or behavior that one does not necessarily agree with."; } }
+    public List<string> Synonyms { get { return new List<string> { "long-suffering", "patience", "forbearance", "open-mindedness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

@@ -8,8 +8,8 @@ public class Terror : IEmotion
 {
     public string Id { get { return "terror"; } }
     public string Name { get { return "Terror"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A state of intense or overwhelming fear."; } }
+    public List<string> Synonyms { get { return new List<string> { "dread", "horror", "fright", "trepidation" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

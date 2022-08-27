@@ -8,8 +8,8 @@ public class Worry : IEmotion
 {
     public string Id { get { return "worry"; } }
     public string Name { get { return "Worry"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Give way to anxiety or unease; allow one's mind to dwell on difficulty or troubles. A state of anxiety and uncertainty over actual or potential problems. To afflict with mental distress or agitation : make anxious."; } }
+    public List<string> Synonyms { get { return new List<string> { "fret", "concerned", "anxious", "brood", "distress" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Triumph : IEmotion
 {
     public string Id { get { return "triumph"; } }
     public string Name { get { return "Triumph"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A notable success. The joy or exultation of victory or success."; } }
+    public List<string> Synonyms { get { return new List<string> { "accomplish", "achieve", "prevail", "conquer", "victorious", "successful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -8,8 +8,8 @@ public class Sullenness : IEmotion
 {
     public string Id { get { return "sullenness"; } }
     public string Name { get { return "Sullenness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Showing irritation or ill humor by a gloomy silence or reserve. Gloomily or resentfully silent or repressed."; } }
+    public List<string> Synonyms { get { return new List<string> { "dark", "forlorn", "depressing", "miserable", "morose", "sunless", "gloomy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.Social }; } }
 

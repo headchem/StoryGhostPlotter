@@ -8,8 +8,8 @@ public class Surprise : IEmotion
 {
     public string Id { get { return "surprise"; } }
     public string Name { get { return "Surprise"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The feeling caused by something unexpected or unusual. To cause astonishment."; } }
+    public List<string> Synonyms { get { return new List<string> { "astonishment", "shock", "bombshell", "revelation", "amaze", "startle", "stun", "flabbergast" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

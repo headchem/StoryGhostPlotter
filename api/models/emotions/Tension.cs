@@ -8,8 +8,8 @@ public class Tension : IEmotion
 {
     public string Id { get { return "tension"; } }
     public string Name { get { return "Tension"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Inner striving, unrest, or imbalance often with physiological indication of emotion. A state of latent hostility or opposition between individuals or groups."; } }
+    public List<string> Synonyms { get { return new List<string> { "pressure", "strain", "stress", "anxiety" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal, EmotionKindEnum.EventRelated }; } }
 

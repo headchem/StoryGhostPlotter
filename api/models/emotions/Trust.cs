@@ -8,8 +8,8 @@ public class Trust : IEmotion
 {
     public string Id { get { return "trust"; } }
     public string Name { get { return "Trust"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Believe in the reliability, truth, ability, or strength of. Assured reliance on the character, ability, strength, or truth of someone or something"; } }
+    public List<string> Synonyms { get { return new List<string> { "confidence", "faith" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
