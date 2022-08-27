@@ -8,8 +8,8 @@ public class Patience : IEmotion
 {
     public string Id { get { return "patience"; } }
     public string Name { get { return "Patience"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The capacity to accept or tolerate delay, trouble, or suffering without getting angry or upset. Not hasty or impetuous."; } }
+    public List<string> Synonyms { get { return new List<string> { "stoic", "tolerant", "uncomplaining", "restraint" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

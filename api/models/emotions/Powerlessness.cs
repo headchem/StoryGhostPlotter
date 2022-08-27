@@ -8,8 +8,8 @@ public class Powerlessness : IEmotion
 {
     public string Id { get { return "powerlessness"; } }
     public string Name { get { return "Powerlessness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Lack of ability, influence, or power. Devoid of strength or resources. Lacking the authority or capacity to act."; } }
+    public List<string> Synonyms { get { return new List<string> { "hamstrung", "helpless", "high and dry", "impotent", "paralyzed", "weak" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

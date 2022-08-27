@@ -8,8 +8,8 @@ public class Relaxation : IEmotion
 {
     public string Id { get { return "relaxation"; } }
     public string Name { get { return "Relaxation"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "The state of being free from tension and anxiety. A relaxing or recreative state, activity, or pastime."; } }
+    public List<string> Synonyms { get { return new List<string> { "recreation", "dalliance", "frolic", "calm", "tranquility", "peacefulness", "repose", "easiness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

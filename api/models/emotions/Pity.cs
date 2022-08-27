@@ -8,8 +8,8 @@ public class Pity : IEmotion
 {
     public string Id { get { return "pity"; } }
     public string Name { get { return "Pity"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Sympathetic sorrow for one suffering, distressed, or unhappy. Feel sorrow for the misfortunes of."; } }
+    public List<string> Synonyms { get { return new List<string> { "ache for", "commiserate", "condole", "sympathize", "compassion" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

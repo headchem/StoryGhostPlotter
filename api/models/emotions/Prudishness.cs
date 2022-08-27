@@ -8,8 +8,8 @@ public class Prudishness : IEmotion
 {
     public string Id { get { return "prudishness"; } }
     public string Name { get { return "Prudishness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A person who is excessively or priggishly attentive to propriety or decorum. Easily shocked by matters relating to sex or nudity."; } }
+    public List<string> Synonyms { get { return new List<string> { "puritanical", "killjoy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

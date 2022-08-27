@@ -8,8 +8,8 @@ public class Pleasure : IEmotion
 {
     public string Id { get { return "pleasure"; } }
     public string Name { get { return "Pleasure"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of happy satisfaction and enjoyment."; } }
+    public List<string> Synonyms { get { return new List<string> { "happiness", "delight", "joy", "glee", "satisfaction", "content", "enjoyment" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

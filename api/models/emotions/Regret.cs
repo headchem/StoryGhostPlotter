@@ -8,8 +8,8 @@ public class Regret : IEmotion
 {
     public string Id { get { return "regret"; } }
     public string Name { get { return "Regret"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Feel sad, repentant, or disappointed over (something that has happened or been done, especially a loss or missed opportunity). To mourn the loss or death of. To miss very much. Sorrow aroused by circumstances beyond one's control or power to repair."; } }
+    public List<string> Synonyms { get { return new List<string> { "bemoan", "contrition", "guilt", "remorse", "penitence", "rue", "repentance", "self-reproach" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

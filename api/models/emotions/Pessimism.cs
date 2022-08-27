@@ -8,8 +8,8 @@ public class Pessimism : IEmotion
 {
     public string Id { get { return "pessimism"; } }
     public string Name { get { return "Pessimism"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "An inclination to emphasize adverse aspects, conditions, and possibilities or to expect the worst possible outcome. A lack of hope or confidence in the future."; } }
+    public List<string> Synonyms { get { return new List<string> { "defeatism", "negativity" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

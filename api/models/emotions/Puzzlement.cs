@@ -8,8 +8,8 @@ public class Puzzlement : IEmotion
 {
     public string Id { get { return "puzzlement"; } }
     public string Name { get { return "Puzzlement"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "A feeling of confusion through lack of understanding."; } }
+    public List<string> Synonyms { get { return new List<string> { "baffle", "addle", "bamboozle", "befuddle", "bewilder", "confound", "confuse", "discombobulate", "disorient", "flummox", "muddle", "mystify", "perplex" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

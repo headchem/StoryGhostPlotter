@@ -8,8 +8,8 @@ public class Possessive : IEmotion
 {
     public string Id { get { return "possessive"; } }
     public string Name { get { return "Possessive"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Demanding someone's total attention and love."; } }
+    public List<string> Synonyms { get { return new List<string> { "overprotective", "clinging", "dominating", "controlling" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

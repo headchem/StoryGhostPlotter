@@ -8,8 +8,8 @@ public class Politeness : IEmotion
 {
     public string Id { get { return "politeness"; } }
     public string Name { get { return "Politeness"; } }
-    public string Description { get { return ""; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Marked by an appearance of consideration, tact, deference, or courtesy. Behavior that is respectful and considerate of other people."; } }
+    public List<string> Synonyms { get { return new List<string> { "civil", "courteous", "genteel", "mannerly", "respect" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

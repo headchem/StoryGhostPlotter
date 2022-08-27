@@ -8,7 +8,7 @@ public class Pensiveness : IEmotion
 {
     public string Id { get { return "pensiveness"; } }
     public string Name { get { return "Pensiveness"; } }
-    public string Description { get { return ""; } }
+    public string Description { get { return "Suggestive of sad thoughtfulness. Engaged in, involving, or reflecting deep or serious thought. Musingly or dreamily thoughtful."; } }
     public List<string> Synonyms { get { return new List<string> { }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }

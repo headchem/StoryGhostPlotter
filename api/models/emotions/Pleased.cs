@@ -8,8 +8,8 @@ public class Pleased : IEmotion
 {
     public string Id { get { return "pleased"; } }
     public string Name { get { return "Pleased"; } }
-    public string Description { get { return "chuffed"; } }
-    public List<string> Synonyms { get { return new List<string> { }; } }
+    public string Description { get { return "Feeling or showing pleasure and satisfaction, especially at an event or a situation."; } }
+    public List<string> Synonyms { get { return new List<string> { "chuffed", "glad", "gratified", "content", "thankful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 
