@@ -43,7 +43,7 @@ public static class LogLineOptions
             options.Add("dramaticQuestions", dramaticQuestionsOptions);
 
             var emotions = Factory.GetEmotions();
-            var emotionsOptions = emotions.Select(x => (x.Id, x.Name)).OrderBy(x => x.Name).ToList();
+            var emotionsOptions = emotions.Select(x => (x.Id, $"{x.Name} ({string.Join(", ", x.Synonyms)})")).OrderBy(x => x.Item2).ToList();
             options.Add("emotionDescriptions", emotionsOptions);
 
             return new OkObjectResult(options);

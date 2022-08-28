@@ -9,7 +9,7 @@ public class Pride : IEmotion
     public string Id { get { return "pride"; } }
     public string Name { get { return "Pride"; } }
     public string Description { get { return "Exaggerated self-esteem. Consciousness of one's own dignity. A feeling of deep pleasure or satisfaction derived from one's own achievements, the achievements of those with whom one is closely associated, or from qualities or possessions that are widely admired."; } }
-    public List<string> Synonyms { get { return new List<string> { "conceit", "ego", "fulfillment", "satisfaction", "gratification", "dignity", "self-respect", "" }; } }
+    public List<string> Synonyms { get { return new List<string> { "conceit", "ego", "fulfillment", "satisfaction", "gratification", "dignity", "self-respect", "illustrious" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 

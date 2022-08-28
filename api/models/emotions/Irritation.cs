@@ -9,7 +9,7 @@ public class Irritation : IEmotion
     public string Id { get { return "irritation"; } }
     public string Name { get { return "Irritation"; } }
     public string Description { get { return "The state of feeling annoyed, impatient, or slightly angry."; } }
-    public List<string> Synonyms { get { return new List<string> { "annoyance", "indignation", "exasperation" }; } }
+    public List<string> Synonyms { get { return new List<string> { "annoyance", "indignation", "exasperation", "aggravated" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

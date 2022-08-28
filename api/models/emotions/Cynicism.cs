@@ -9,7 +9,7 @@ public class Cynicism : IEmotion
     public string Id { get { return "cynicism"; } }
     public string Name { get { return "Cynicism"; } }
     public string Description { get { return "Deep distrust and skepticism. An inclination to believe that people are motivated purely by self-interest."; } }
-    public List<string> Synonyms { get { return new List<string> { "skepticism", "distrust", "doubt", "suspicion" }; } }
+    public List<string> Synonyms { get { return new List<string> { "skepticism", "distrust", "doubt", "suspicion", "disillusioned" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

@@ -9,7 +9,7 @@ public class Delight : IEmotion
     public string Id { get { return "delight"; } }
     public string Name { get { return "Delight"; } }
     public string Description { get { return "Great pleasure."; } }
-    public List<string> Synonyms { get { return new List<string> { "glee", "joyfulness", "gratification", "revel", "luxuriate" }; } }
+    public List<string> Synonyms { get { return new List<string> { "glee", "joyfulness", "gratification", "revel", "luxuriate", "happiness" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

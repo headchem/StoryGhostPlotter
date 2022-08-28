@@ -48,9 +48,11 @@ public static class Factory
             new Interest(),
             new Joy(),
             new Loathing(),
+            new Lonely(),
             new LoveMild(),
             new LoveModerate(),
             new LoveIntense(),
+            new Neglected(),
             new OptimismMild(),
             new OptimismModerate(),
             new OptimismIntense(),
@@ -68,7 +70,6 @@ public static class Factory
             new Terror(),
             new Trust(),
             new Vigilance(),
-
             new Jealousy(),
             new Adoration(),
             new Entrancement(),
@@ -99,7 +100,6 @@ public static class Factory
             new Enlightenment(),
             new Epiphany(),
             new Thrilled(),
-
             new Compassion(),
             new Craving(),
             new SexualDesire(),
@@ -123,7 +123,6 @@ public static class Factory
             new Docile(),
             new Deference(),
             new Pity(),
-
             new StoryGhost.Models.Emotions.Horror(),
             new Helplessness(),
             new Worry(),
@@ -139,7 +138,6 @@ public static class Factory
             new Panic(),
             new Dread(),
             new Hysteria(),
-
             new Irritation(),
             new Frustration(),
             new Envy(),
@@ -153,7 +151,6 @@ public static class Factory
             new Outrage(),
             new Dominance(),
             new Demanding(),
-
             new Indifference(),
             new Aversion(),
             new Revulsion(),
@@ -170,7 +167,6 @@ public static class Factory
             new Condescension(),
             new Discomfort(),
             new Ennui(),
-
             new Depression(),
             new Awkwardness(),
             new Powerlessness(),
@@ -194,7 +190,6 @@ public static class Factory
             new Dispirited(),
             new Dissatisfied(),
             new SelfConscious(),
-
             new Gratitude(),
             new Confusion(),
             new AestheticAppreciation(),

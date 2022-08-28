@@ -9,7 +9,7 @@ public class Romance : IEmotion
     public string Id { get { return "romance"; } }
     public string Name { get { return "Romance"; } }
     public string Description { get { return "A feeling of excitement and mystery associated with love. An emotional attraction or aura belonging to an especially heroic era, adventure, or activity"; } }
-    public List<string> Synonyms { get { return new List<string> { "love", "seduction", "courtship" }; } }
+    public List<string> Synonyms { get { return new List<string> { "love", "seduction", "courtship", "enamored" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Cathected }; } }
 

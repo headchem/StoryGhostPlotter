@@ -9,7 +9,7 @@ public class Attraction : IEmotion
     public string Id { get { return "attraction"; } }
     public string Name { get { return "Attraction"; } }
     public string Description { get { return "The action or power of evoking interest, pleasure, or liking for someone or something."; } }
-    public List<string> Synonyms { get { return new List<string> { "appeal", "desireability", "seductivenss", "allure" }; } }
+    public List<string> Synonyms { get { return new List<string> { "appeal", "desireability", "seductivenss", "allure", "infatuated" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

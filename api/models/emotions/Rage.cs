@@ -9,7 +9,7 @@ public class Rage : IEmotion
     public string Id { get { return "rage"; } }
     public string Name { get { return "Rage"; } }
     public string Description { get { return "Violent and uncontrolled anger."; } }
-    public List<string> Synonyms { get { return new List<string> { "temper", "tumult", "anger", "frenzy", "fury", "uproar", "rampage" }; } }
+    public List<string> Synonyms { get { return new List<string> { "temper", "tumult", "anger", "frenzy", "fury", "uproar", "rampage", "enraged" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
