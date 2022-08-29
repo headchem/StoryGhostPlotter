@@ -9,7 +9,7 @@ public class Acceptance : IEmotion
     public string Id { get { return "acceptance"; } }
     public string Name { get { return "Acceptance"; } }
     public string Description { get { return "The action or process of being received as adequate or suitable, typically to be admitted into a group. The action of consenting to receive or undertake something offered."; } }
-    public List<string> Synonyms { get { return new List<string> { "welcoming", "favorable reception", "embrace" }; } }
+    public List<string> Synonyms { get { return new List<string> { "welcoming", "favorable reception", "embrace", "recognition" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
@@ -23,7 +23,7 @@ public class Acceptance : IEmotion
     public double FrustrationToEuphoria { get { return .1; } }
     public double DispiritedToEncouraged { get { return .2; } }
     public double TerrorToEnchantment { get { return .5; } }
-    public double HumiliationToPride { get { return .1; } }
+    public double HumiliationToPride { get { return .3; } }
 
     public double PleasureToDispleasure { get { return -.67; } }
     public double ArousalToNonarousal { get { return .36; } }
