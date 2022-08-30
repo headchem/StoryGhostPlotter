@@ -8,7 +8,7 @@ public class Entrancement : IEmotion
 {
     public string Id { get { return "entrancement"; } }
     public string Name { get { return "Entrancement"; } }
-    public string Description { get { return "To fill with overwhelming emotion (as wonder or delight)"; } }
+    public string Description { get { return "To fill with overwhelming emotion (as wonder or delight)."; } }
     public List<string> Synonyms { get { return new List<string> { "enrapture", "enthrall", "enchanted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
@@ -18,12 +18,12 @@ public class Entrancement : IEmotion
     public double FearToAnger { get { return -.2; } }
     public double SurpriseToAnticipation { get { return -.3; } }
 
-    public double AnxietyToConfidence { get { return .1111111; } }
-    public double BoredomToFascination { get { return .1111111; } }
-    public double FrustrationToEuphoria { get { return .1111111; } }
-    public double DispiritedToEncouraged { get { return .1111111; } }
-    public double TerrorToEnchantment { get { return .1111111; } }
-    public double HumiliationToPride { get { return .1111111; } }
+    public double AnxietyToConfidence { get { return .7; } }
+    public double BoredomToFascination { get { return 1.0; } }
+    public double FrustrationToEuphoria { get { return .5; } }
+    public double DispiritedToEncouraged { get { return .3; } }
+    public double TerrorToEnchantment { get { return 1.0; } }
+    public double HumiliationToPride { get { return .3; } }
 
     public double PleasureToDispleasure { get { return -.4; } }
     public double ArousalToNonarousal { get { return .21; } }
