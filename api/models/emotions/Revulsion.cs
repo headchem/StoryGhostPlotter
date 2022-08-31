@@ -18,12 +18,12 @@ public class Revulsion : IEmotion
     public double FearToAnger { get { return .8; } }
     public double SurpriseToAnticipation { get { return -.8; } }
 
-    public double AnxietyToConfidence { get { return .1111111; } }
-    public double BoredomToFascination { get { return .1111111; } }
-    public double FrustrationToEuphoria { get { return .1111111; } }
-    public double DispiritedToEncouraged { get { return .1111111; } }
-    public double TerrorToEnchantment { get { return .1111111; } }
-    public double HumiliationToPride { get { return .1111111; } }
+    public double AnxietyToConfidence { get { return -.5; } }
+    public double BoredomToFascination { get { return .5; } }
+    public double FrustrationToEuphoria { get { return -1.0; } }
+    public double DispiritedToEncouraged { get { return -.5; } }
+    public double TerrorToEnchantment { get { return -.5; } }
+    public double HumiliationToPride { get { return 0; } }
 
     public double PleasureToDispleasure { get { return .79; } }
     public double ArousalToNonarousal { get { return -.53; } }
