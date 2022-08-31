@@ -20,7 +20,7 @@ public class Fear : IEmotion
 
     public double AnxietyToConfidence { get { return -1.0; } }
     public double BoredomToFascination { get { return 0; } }
-    public double FrustrationToEuphoria { get { return -5; } }
+    public double FrustrationToEuphoria { get { return -.5; } }
     public double DispiritedToEncouraged { get { return -.3; } }
     public double TerrorToEnchantment { get { return -1.0; } }
     public double HumiliationToPride { get { return 0; } }

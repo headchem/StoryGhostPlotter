@@ -18,12 +18,12 @@ public class Outrage : IEmotion
     public double FearToAnger { get { return 1.0; } }
     public double SurpriseToAnticipation { get { return -1.0; } }
 
-    public double AnxietyToConfidence { get { return .1111111; } }
-    public double BoredomToFascination { get { return .1111111; } }
-    public double FrustrationToEuphoria { get { return .1111111; } }
-    public double DispiritedToEncouraged { get { return .1111111; } }
-    public double TerrorToEnchantment { get { return .1111111; } }
-    public double HumiliationToPride { get { return .1111111; } }
+    public double AnxietyToConfidence { get { return -.5; } }
+    public double BoredomToFascination { get { return .5; } }
+    public double FrustrationToEuphoria { get { return -1.0; } }
+    public double DispiritedToEncouraged { get { return -1.0; } }
+    public double TerrorToEnchantment { get { return -.5; } }
+    public double HumiliationToPride { get { return .7; } }
 
     public double PleasureToDispleasure { get { return .75; } }
     public double ArousalToNonarousal { get { return -.55; } }
