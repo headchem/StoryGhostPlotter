@@ -555,9 +555,9 @@ const EmotionFinder = ({
                         <div className='col-6'>
                             <div className='form-check'>
                                 <input className='form-check-input' id={unique_id + 'includeDispiritedToEncouraged'} type="checkbox" checked={includeDispiritedToEncouraged} value={includeDispiritedToEncouraged} onChange={(e) => onIncludeDispiritedToEncouragedChange(!includeDispiritedToEncouraged)} />
-                                <label className='form-check-label' htmlFor={unique_id + 'includeDispiritedToEncouraged'}>Include anxiety-to-confident</label>
+                                <label className='form-check-label' htmlFor={unique_id + 'includeDispiritedToEncouraged'}>Include dispirited-to-enthusiastic</label>
                             </div>
-                            <label htmlFor={unique_id + 'dispiritedToEncouraged'} className='form-label'>Anxiety (dispirited) - Confident (encouraged) <span>{dispiritedToEncouraged}</span></label>
+                            <label htmlFor={unique_id + 'dispiritedToEncouraged'} className='form-label'>Dispirited - Enthusiastic <span>{dispiritedToEncouraged}</span></label>
                             <input id={unique_id + 'dispiritedToEncouraged'} className='form-range' type="range" min="-1.0" max="1.0" step="0.05" onChange={(e) => onDispiritedToEncouragedChange(parseFloat(e.target.value))} value={dispiritedToEncouraged} />
 
                             <div className='form-check'>
