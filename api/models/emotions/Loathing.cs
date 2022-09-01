@@ -8,7 +8,7 @@ public class Loathing : IEmotion
 {
     public string Id { get { return "loathing"; } }
     public string Name { get { return "Loathing"; } }
-    public string Description { get { return "A feeling of intense dislike or disgust; hatred. A dislike so strong as to cause stomach upset or queasiness"; } }
+    public string Description { get { return "A feeling of intense dislike or disgust; hatred. A dislike so strong as to cause stomach upset or queasiness."; } }
     public List<string> Synonyms { get { return new List<string> { "repulsion", "abhorrence", "hatred" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
