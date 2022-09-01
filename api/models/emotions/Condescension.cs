@@ -9,7 +9,7 @@ public class Condescension : IEmotion
     public string Id { get { return "condescension"; } }
     public string Name { get { return "Condescension"; } }
     public string Description { get { return "The attitude or behavior of people who believe they are more intelligent or better than other people."; } }
-    public List<string> Synonyms { get { return new List<string> { "disdain", "scorn" }; } }
+    public List<string> Synonyms { get { return new List<string> { "disdain", "scorn", "mocking", "ridiculing" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

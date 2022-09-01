@@ -9,7 +9,7 @@ public class Anger : IEmotion
     public string Id { get { return "anger"; } }
     public string Name { get { return "Anger"; } }
     public string Description { get { return "A strong feeling of annoyance, displeasure, or hostility."; } }
-    public List<string> Synonyms { get { return new List<string> { "vexation", "crossness", "irk" }; } }
+    public List<string> Synonyms { get { return new List<string> { "vexation", "crossness", "irk", "fuming" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

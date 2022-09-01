@@ -8,8 +8,8 @@ public class ContemptMild : IEmotion
 {
     public string Id { get { return "contempt-mild"; } }
     public string Name { get { return "Mild Contempt"; } }
-    public string Description { get { return "Open dislike for someone or something considered unworthy of one's concern or respect"; } }
-    public List<string> Synonyms { get { return new List<string> { "despisement", "disdain", "scorn" }; } }
+    public string Description { get { return "Open dislike for someone or something considered unworthy of one's concern or respect."; } }
+    public List<string> Synonyms { get { return new List<string> { "despisement", "disdain", "scorn", "insincere" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties, EmotionKindEnum.EventRelated }; } }
 

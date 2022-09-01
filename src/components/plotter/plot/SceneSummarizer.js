@@ -64,22 +64,27 @@ const SceneSummarizer = ({
     )
 
     return (
-        <div className='row w-100'>
-            <div className='col'>
-                {
-                    isCompletionLoading === true &&
-                    <p>loading...</p>
-                }
-                {
-                    isCompletionLoading === false && scene && scene.full && scene.full !== '' &&
-                    <button className="btn btn-secondary" onClick={generateSummary} title="Ask the AI to generate a summary of the full scene screenplay">generate summary</button>
-                }
+        <>
+            {
+                completionsList && completionsList.length > 0 &&
+                <div className='row w-100'>
+                    <div className='col'>
+                        {
+                            isCompletionLoading === true &&
+                            <p>loading...</p>
+                        }
+                        {
+                            isCompletionLoading === false && scene && scene.full && scene.full !== '' &&
+                            <button className="btn btn-secondary" onClick={generateSummary} title="Ask the AI to generate a summary of the full scene screenplay">generate summary</button>
+                        }
 
-                <ul>
-                    {completionsList}
-                </ul>
-            </div>
-        </div>
+                        <ul>
+                            {completionsList}
+                        </ul>
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 

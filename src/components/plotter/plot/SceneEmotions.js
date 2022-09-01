@@ -17,16 +17,16 @@ const SceneEmotions = ({
 
     return (
         <>
-            <div className='row w-100 m-0 mb-3'>
+            <div className='row w-100'>
 
                 <div className='col'>
                     {
                         showEmotionFinder === true &&
-                        <button className='btn btn-link' onClick={() => setShowEmotionFinder(false)}>hide emotion finder</button>
+                        <button className='btn btn-link mb-3' onClick={() => setShowEmotionFinder(false)}>hide emotion finder</button>
                     }
                     {
                         showEmotionFinder === false &&
-                        <button className='btn btn-link' onClick={() => setShowEmotionFinder(true)}>show emotion finder</button>
+                        <button className='btn btn-link mb-3' onClick={() => setShowEmotionFinder(true)}>show emotion finder</button>
                     }
 
                     {
@@ -36,17 +36,15 @@ const SceneEmotions = ({
                         />
                     }
                 </div>
-
-                <SceneCharacterEmotionList
-                    emotionsOptions={emotionsOptions}
-                    characters={characters}
-                    sequence={sequence}
-                    scene={scene}
-                    mode={mode}
-                    updateScene={updateScene}
-                />
-
             </div>
+            <SceneCharacterEmotionList
+                emotionsOptions={emotionsOptions}
+                characters={characters}
+                sequence={sequence}
+                scene={scene}
+                mode={mode}
+                updateScene={updateScene}
+            />
         </>
     )
 }

@@ -60,12 +60,10 @@ const SceneCharacterEmotionList = ({
 
     return (
         <>
-            <p>character-emotion list goes here</p>
-
             {
                 scene.characterEmotions && scene.characterEmotions
                     .map((characterEmotion) => (
-                        <div key={characterEmotion.id}>
+                        <div className='row mt-3 mb-3' key={characterEmotion.id}>
                             <SceneCharacterEmotion
                                 characterEmotion={characterEmotion}
                                 emotionsOptions={emotionsOptions}
@@ -78,12 +76,15 @@ const SceneCharacterEmotionList = ({
                         </div>
                     ))
             }
-
-            <button
-                type='button'
-                className='btn btn-outline-primary btn-block'
-                onClick={onInsertCharacterEmotion}
-            ><FaPlusCircle /> New Character-Emotion</button>
+            <div className='row mt-3 mb-5'>
+                <div className='col'>
+                    <button
+                        type='button'
+                        className='btn btn-outline-primary btn-block'
+                        onClick={onInsertCharacterEmotion}
+                    ><FaPlusCircle /> New Character-Emotion</button>
+                </div>
+            </div>
         </>
     )
 }
