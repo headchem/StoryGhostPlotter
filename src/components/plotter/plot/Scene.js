@@ -91,6 +91,7 @@ const Scene = ({
                                 updateScene={updateScene}
                                 emotionsOptions={emotionsOptions}
                                 emotions={emotions}
+                                characters={characters}
                             />
                             <SceneSummarizer
                                 userInfo={userInfo}
