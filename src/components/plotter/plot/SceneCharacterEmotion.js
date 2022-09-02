@@ -25,7 +25,7 @@ const SceneCharacterEmotion = ({
         <>
             <div className='col-4'>
                 <select required className='fs-5 form-select form-inline' value={!characterEmotion.characterId ? '' : characterEmotion.characterId} onChange={(e) => updateSelectedCharacter(characterEmotion.id, e.target.value)}>
-                    <option key="blank" value="">None</option>
+                    <option key="blank" value="">None/Other</option>
                     {
                         characters.map(function (c) {
                             return <option key={c.id} value={c.id}>{c.name}</option>
