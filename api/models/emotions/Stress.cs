@@ -8,8 +8,8 @@ public class Stress : IEmotion
 {
     public string Id { get { return "stress"; } }
     public string Name { get { return "Stress"; } }
-    public string Description { get { return "A feeling of emotional or physical tension. Bodily or mental tension resulting from factors that tend to alter an existent equilibrium"; } }
-    public List<string> Synonyms { get { return new List<string> { "strain", "pressure", "worry", "trouble", "tension" }; } }
+    public string Description { get { return "A feeling of emotional or physical tension. Bodily or mental tension resulting from factors that tend to alter an existent equilibrium."; } }
+    public List<string> Synonyms { get { return new List<string> { "strain", "pressure", "worry", "trouble", "tension", "hectic", "hurried", "frantic", "frazzled" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.SelfAppraisal }; } }
 
