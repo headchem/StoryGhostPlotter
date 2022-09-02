@@ -42,6 +42,7 @@ const Sequence = ({
     emotionsOptions,
 
     emotions,
+    emotionsMap,
 }) => {
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -251,6 +252,7 @@ const Sequence = ({
 
                                     emotionsOptions={emotionsOptions}
                                     emotions={emotions}
+                                    emotionsMap={emotionsMap}
                                 />
                             </div>
                         }

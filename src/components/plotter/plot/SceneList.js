@@ -23,6 +23,7 @@ const SceneList = ({
 
     emotionsOptions,
     emotions,
+    emotionsMap,
 }) => {
 
     const getNewScene = () => {
@@ -104,6 +105,7 @@ const SceneList = ({
 
                                 emotionsOptions={emotionsOptions}
                                 emotions={emotions}
+                                emotionsMap={emotionsMap}
                             />
 
                         ))

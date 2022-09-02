@@ -16,7 +16,6 @@ const SceneCharacterEmotion = ({
 }) => {
 
     const onEmotionsChange = (inputValue) => {
-        console.log(inputValue)
         const newEmotions = inputValue.value//.map(el => el.value)
         updateSelectedEmotion(characterEmotion.id, newEmotions)
     }

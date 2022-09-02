@@ -33,6 +33,8 @@ const SequenceList = ({
     emotions,
 }) => {
 
+    const emotionsMap = !emotions ? {} : Object.assign({}, ...emotions.filter(emo => emo.id !== '').map((x) => ({ [x.id]: x }))); // convert array of emotions into a dictionary
+
     // given all the existing sequences, choose the allowed next sequences. For example, if we already have [Opening Image] then the allowed next sequences can only be [Setup, Theme Stated]. If we start with [Opening Image, Setup] then the only allowed next sequences are [Theme Stated, Catalyst]
     const getAllowedNextSequenceNames = (curSequenceName, existingSequences) => {
         const existingSequenceNamesArr = existingSequences.map((seq) => seq.sequenceName)
@@ -271,6 +273,7 @@ const SequenceList = ({
 
                                     emotionsOptions={emotionsOptions}
                                     emotions={emotions}
+                                    emotionsMap={emotionsMap}
                                 />
                             }
                         </div>

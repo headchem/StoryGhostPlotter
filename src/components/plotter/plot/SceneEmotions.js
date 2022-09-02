@@ -10,6 +10,7 @@ const SceneEmotions = ({
     updateScene,
     emotionsOptions,
     emotions,
+    emotionsMap,
     characters
 }) => {
 
@@ -33,6 +34,7 @@ const SceneEmotions = ({
                         showEmotionFinder === true &&
                         <EmotionFinder
                             emotions={emotions}
+                            emotionsMap={emotionsMap}
                         />
                     }
                 </div>
@@ -44,6 +46,8 @@ const SceneEmotions = ({
                 scene={scene}
                 mode={mode}
                 updateScene={updateScene}
+                emotions={emotions}
+                emotionsMap={emotionsMap}
             />
         </>
     )

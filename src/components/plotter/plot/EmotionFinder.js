@@ -4,6 +4,7 @@ import EmotionFinderSingle from './EmotionFinderSingle'
 
 const EmotionFinder = ({
     emotions,
+    emotionsMap
 }) => {
 
     const unique_id = uuid();
@@ -53,8 +54,6 @@ const EmotionFinder = ({
 
 
     const [emotionKindFilter, setEmotionKindFilter] = useState('')
-
-    const emotionMap = Object.assign({}, ...emotions.map((x) => ({ [x.id]: x }))); // convert array of emotions into a dictionary
 
     const onJoyToSadnessChange = (val) => {
         setJoyToSadness(val)
@@ -399,7 +398,7 @@ const EmotionFinder = ({
         if (!emoName || emoName === '') return <></>
 
         return <EmotionFinderSingle
-            emotion={emotionMap[emoName]}
+            emotion={emotionsMap[emoName]}
             isInCommon={isInCommon}
         />
     }
