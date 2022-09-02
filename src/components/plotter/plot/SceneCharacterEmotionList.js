@@ -52,9 +52,6 @@ const SceneCharacterEmotionList = ({
             (characterEmotion) => characterEmotion.id === characterEmotionId ? { ...characterEmotion, emotion: selectedEmotion } : characterEmotion
         )
 
-        console.log('newCharacterEmotions')
-        console.log(newCharacterEmotions)
-
         updateScene(sequence.sequenceName, scene.id, 'characterEmotions', newCharacterEmotions)
     }
 
