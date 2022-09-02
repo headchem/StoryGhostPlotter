@@ -102,7 +102,7 @@ const SceneCharacterEmotionList = ({
         const emoObj = emotionsMap[emoName]
 
         return {
-            name: i.toString(),
+            name: emoName,
 
             joyToSadness: emoObj['joyToSadness'],
             trustToDisgust: emoObj['trustToDisgust'],

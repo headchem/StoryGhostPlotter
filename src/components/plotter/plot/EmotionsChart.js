@@ -22,7 +22,7 @@ const EmotionsChart = ({
     const areaData = data.map((emoObj, i) => {
 
         return {
-            name: i.toString(),
+            name: emoObj['name'],
 
             joy: emoObj['joyToSadness'] < 0 ? emoObj['joyToSadness'] * -1 : 0,
             sadness: emoObj['joyToSadness'] > 0 ? emoObj['joyToSadness'] : 0,
