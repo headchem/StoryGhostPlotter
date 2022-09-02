@@ -204,6 +204,8 @@ public static class Factory
             new Impressed(),
             new Inspiration(),
             
+            new Seething(),
+            new Argumentative()
         };
     }
 
