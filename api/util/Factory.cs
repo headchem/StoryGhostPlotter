@@ -207,6 +207,7 @@ public static class Factory
             new Seething(),
             new Argumentative(),
             new Urgency(),
+            new Hectic()
         };
     }
 
