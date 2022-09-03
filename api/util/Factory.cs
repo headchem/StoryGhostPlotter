@@ -213,7 +213,8 @@ public static class Factory
             new Tempting(),
             new Timid(),
             new Industrious(),
-            new Pain()
+            new Pain(),
+            new Rescuing(),
         };
     }
 
