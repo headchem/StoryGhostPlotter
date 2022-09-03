@@ -17,20 +17,8 @@ const SceneCharacterEmotionList = ({
     emotionsMap,
 }) => {
 
-    const uniqueComponentId = uuid()
-
     const [showEmotionsChart, setShowEmotionsChart] = useState(false)
-    const [chartType, setChartType] = useState('line')
-
-    const handleChartTypeChange = e => {
-        const target = e.target;
-        if (target.checked) {
-            setChartType('area');
-        } else {
-            setChartType('line');
-        }
-    };
-
+    
     const onInsertCharacterEmotion = () => {
         const newCharacterEmotion = {
             id: uuid(),
@@ -149,13 +137,9 @@ const SceneCharacterEmotionList = ({
                 showEmotionsChart === true &&
                 <div className='row'>
                     <div className='col'>
-                        <div className="form-check form-switch fs-5 mb-4 mt-4">
-                            <input className="form-check-input" type="checkbox" id={uniqueComponentId + 'ChartFlexSwitchCheckChecked'} onChange={handleChartTypeChange} checked={chartType === 'area'} />
-                            <label className="form-check-label" htmlFor={uniqueComponentId + 'ChartFlexSwitchCheckChecked'}>Area</label>
-                        </div>
+                        
                         <EmotionsChart
                             data={data}
-                            chartType={chartType}
                         />
                     </div>
                 </div>

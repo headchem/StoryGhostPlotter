@@ -5,7 +5,6 @@ import { v4 as uuid } from 'uuid';
 const EmotionsChart = ({
     data,
     mode,
-    chartType,
 }) => {
 
     const uniqueId = uuid()
@@ -58,6 +57,16 @@ const EmotionsChart = ({
 
     const [selectedCharacter, setSelectedCharacter] = useState('')
 
+    const [chartType, setChartType] = useState('line')
+
+    const handleChartTypeChange = e => {
+        const target = e.target;
+        if (target.checked) {
+            setChartType('area');
+        } else {
+            setChartType('line');
+        }
+    };
 
     // FROM: https://observablehq.com/@mbostock/turbo
     // Google's Turbo color palette (https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html)
@@ -74,7 +83,7 @@ const EmotionsChart = ({
 
     const characterFilteredData = data.filter(row => {
         if (selectedCharacter === '') return true
-        
+
         if (row['characterName'] === selectedCharacter) return true
 
         return false
@@ -236,6 +245,10 @@ const EmotionsChart = ({
 
     return (
         <>
+            <div className="form-check form-switch fs-5 mb-4 mt-4">
+                <input className="form-check-input" type="checkbox" id={uniqueId + 'ChartFlexSwitchCheckChecked'} onChange={handleChartTypeChange} checked={chartType === 'area'} />
+                <label className="form-check-label" htmlFor={uniqueId + 'ChartFlexSwitchCheckChecked'}>Area</label>
+            </div>
             <select required className='fs-5 form-select form-inline' value={selectedCharacter} onChange={(e) => setSelectedCharacter(e.target.value)}>
                 <option key="blank" value="">All</option>
                 {

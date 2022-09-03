@@ -4,6 +4,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { getText } from '../../../util/Helpers'
+//import EmotionsChart from './EmotionsChart'
 
 const PlotView = (
     {
@@ -115,6 +116,7 @@ const PlotView = (
                                 </Tab>
                                 {
                                     userInfo && userInfo.userRoles.includes('admin') &&
+
                                     <Tab eventKey="scenes" title="Scenes">
                                         {
                                             sequences.map((sequence) => (
@@ -134,6 +136,19 @@ const PlotView = (
                                                 </span>
                                             ))
                                         }
+                                    </Tab>
+                                }
+                                {
+                                    userInfo && userInfo.userRoles.includes('admin') &&
+                                    <Tab eventKey="emotions" title="Emotions">
+                                        <>
+                                        <p>Summed Sequence Emotions</p>
+                                        <p>All Scene Emotions</p>
+                                        {/* <EmotionsChart
+                                        data={data}
+                                    /> */}
+                                        </>
+                                        
                                     </Tab>
                                 }
                                 <Tab eventKey="all" title="All">
@@ -173,7 +188,7 @@ const PlotView = (
                                                                         {
                                                                             sequence.scenes && sequence.scenes.length > 0 && sequence.scenes.map((scene) => (
                                                                                 <span key={scene.id}>
-                                                                                    <p className='fs-5' style={{'whiteSpace': 'pre-line'}} title={sequence.sequenceName}>{scene.full}</p>
+                                                                                    <p className='fs-5' style={{ 'whiteSpace': 'pre-line' }} title={sequence.sequenceName}>{scene.full}</p>
                                                                                 </span>
                                                                             ))
                                                                         }
