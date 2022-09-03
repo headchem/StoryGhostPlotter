@@ -9,7 +9,7 @@ public class Urgency : IEmotion
     public string Id { get { return "urgency"; } }
     public string Name { get { return "Urgency"; } }
     public string Description { get { return "Importance requiring swift action. An earnest and persistent quality; insistence."; } }
-    public List<string> Synonyms { get { return new List<string> { "insistence", "panic", "pushy", "determination", "tenacity" }; } }
+    public List<string> Synonyms { get { return new List<string> { "insistence", "panic", "pushy", "determination", "tenacity", "pleading" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.FutureAppraisal }; } }
 

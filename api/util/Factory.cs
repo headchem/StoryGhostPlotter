@@ -209,7 +209,8 @@ public static class Factory
             new Urgency(),
             new Hectic(),
             new Tired(),
-            new Sneaky()
+            new Sneaky(),
+            new Tempting()
         };
     }
 

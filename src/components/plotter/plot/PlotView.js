@@ -254,7 +254,7 @@ const PlotView = (
             {
                 isNotFound === true &&
                 <>
-                    <p>Plot not found! This plot either doesn't exist, the author has not made it public, or your network connection is down. If you are the author, ensure you are logged in.</p>
+                    <p>Please refresh your browser! Your login probably expired. Otherwise, either this plot either doesn't exist, the author has not made it public, or your network connection is down.</p>
                 </>
             }
             {
