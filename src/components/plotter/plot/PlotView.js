@@ -4,7 +4,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { getText } from '../../../util/Helpers'
-//import EmotionsChart from './EmotionsChart'
+import EmotionsChart from './EmotionsChart'
 
 const PlotView = (
     {
@@ -14,10 +14,12 @@ const PlotView = (
 
     const [title, setTitle] = useState('')
     const [sequences, setSequences] = useState(null)
+    const [characters, setCharacters] = useState(null)
     const [isPublic, setIsPublic] = useState(false)
     const [isNotFound, setIsNotFound] = useState(false)
     const [plotLoading, setPlotLoading] = useState(false)
     const [authorUserId, setAuthorUserId] = useState('')
+    const [emotions, setEmotions] = useState(null)
 
     const [searchParams] = useSearchParams()
 
@@ -26,6 +28,181 @@ const PlotView = (
         setSequences(data['sequences'])
         setIsPublic(data['isPublic'])
         setAuthorUserId(data['userId'])
+        setCharacters(data['characters'])
+    }
+
+    const emotionsMap = !emotions ? {} : Object.assign({}, ...emotions.filter(emo => emo.id !== '').map((x) => ({ [x.id]: x }))); // convert array of emotions into a dictionary
+
+
+    const allSceneEmotionData = !sequences ? [] : sequences.map(seq => {
+        let allSceneEmotions = []
+
+        seq.scenes.forEach(scene => {
+            const sceneData = !scene.characterEmotions ? [] : scene.characterEmotions.map((emo, i) => {
+                const emoName = emo.emotion
+
+                if (!emoName || emoName === '') return { name: '' }
+
+                const emoObj = emotionsMap[emoName]
+                const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
+
+                return {
+                    name: emoName + ' (' + characterName + ')',
+                    characterName: characterName,
+
+                    joyToSadness: emoObj['joyToSadness'],
+                    trustToDisgust: emoObj['trustToDisgust'],
+                    fearToAnger: emoObj['fearToAnger'],
+                    surpriseToAnticipation: emoObj['surpriseToAnticipation'],
+
+                    anxietyToConfidence: emoObj['anxietyToConfidence'],
+                    boredomToFascination: emoObj['boredomToFascination'],
+                    frustrationToEuphoria: emoObj['frustrationToEuphoria'],
+                    dispiritedToEncouraged: emoObj['dispiritedToEncouraged'],
+                    terrorToEnchantment: emoObj['terrorToEnchantment'],
+                    humiliationToPride: emoObj['humiliationToPride'],
+
+                    pleasureToDispleasure: emoObj['pleasureToDispleasure'],
+                    arousalToNonarousal: emoObj['arousalToNonarousal'],
+                    dominanceToSubmissiveness: emoObj['dominanceToSubmissiveness'],
+
+                    innerFocusToOutwardTarget: emoObj['innerFocusToOutwardTarget'],
+                }
+            })
+
+            sceneData.forEach(el => allSceneEmotions.push(el))
+        })
+
+        return [].concat.apply([], allSceneEmotions)
+    }).flat()
+
+
+    const allSequenceEmotionDataBySeq = !sequences ? [] : sequences.map(seq => {
+        const result = {
+            name: seq.sequenceName,
+            characterEmotions: {}
+        }
+
+        characters.forEach(character => result.characterEmotions[character.name] = {
+            joyToSadness: 0,
+            trustToDisgust: 0,
+            fearToAnger: 0,
+            surpriseToAnticipation: 0,
+
+            anxietyToConfidence: 0,
+            boredomToFascination: 0,
+            frustrationToEuphoria: 0,
+            dispiritedToEncouraged: 0,
+            terrorToEnchantment: 0,
+            humiliationToPride: 0,
+
+            pleasureToDispleasure: 0,
+            arousalToNonarousal: 0,
+            dominanceToSubmissiveness: 0,
+
+            innerFocusToOutwardTarget: 0,
+        })
+
+        seq.scenes.forEach(scene => {
+            characters.forEach(character => {
+                if (scene.characterEmotions && scene.characterEmotions.length > 0) {
+                    const curCharacter = result.characterEmotions[character.name]
+
+                    scene.characterEmotions.forEach(emo => {
+                        const emoName = emo.emotion
+                        const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
+
+                        if (emoName && emoName !== '' && characterName === character.name) {
+                            const emoObj = emotionsMap[emoName]
+
+                            curCharacter.joyToSadness += emoObj['joyToSadness'] / seq.scenes.length
+                            curCharacter.trustToDisgust += emoObj['trustToDisgust'] / seq.scenes.length
+                            curCharacter.fearToAnger += emoObj['fearToAnger'] / seq.scenes.length
+                            curCharacter.surpriseToAnticipation += emoObj['surpriseToAnticipation'] / seq.scenes.length
+
+                            curCharacter.anxietyToConfidence += emoObj['anxietyToConfidence'] / seq.scenes.length
+                            curCharacter.boredomToFascination += emoObj['boredomToFascination'] / seq.scenes.length
+                            curCharacter.frustrationToEuphoria += emoObj['frustrationToEuphoria'] / seq.scenes.length
+                            curCharacter.dispiritedToEncouraged += emoObj['dispiritedToEncouraged'] / seq.scenes.length
+                            curCharacter.terrorToEnchantment += emoObj['terrorToEnchantment'] / seq.scenes.length
+                            curCharacter.humiliationToPride += emoObj['humiliationToPride'] / seq.scenes.length
+
+                            curCharacter.pleasureToDispleasure += emoObj['pleasureToDispleasure'] / seq.scenes.length
+                            curCharacter.arousalToNonarousal += emoObj['arousalToNonarousal'] / seq.scenes.length
+                            curCharacter.dominanceToSubmissiveness += emoObj['dominanceToSubmissiveness'] / seq.scenes.length
+
+                            curCharacter.innerFocusToOutwardTarget += emoObj['innerFocusToOutwardTarget'] / seq.scenes.length
+                        }
+                    })
+                }
+
+            })
+
+        })
+
+        return result
+    })
+
+    const allSequenceEmotionData = allSequenceEmotionDataBySeq.map(seq => {
+
+        const result = {
+            name: seq.name,
+            characterName: 'Ensemble',
+
+            joyToSadness: 0,
+            trustToDisgust: 0,
+            fearToAnger: 0,
+            surpriseToAnticipation: 0,
+
+            anxietyToConfidence: 0,
+            boredomToFascination: 0,
+            frustrationToEuphoria: 0,
+            dispiritedToEncouraged: 0,
+            terrorToEnchantment: 0,
+            humiliationToPride: 0,
+
+            pleasureToDispleasure: 0,
+            arousalToNonarousal: 0,
+            dominanceToSubmissiveness: 0,
+
+            innerFocusToOutwardTarget: 0,
+        }
+
+        characters.forEach(character => {
+            const curCharacter = seq.characterEmotions[character.name]
+
+            result.joyToSadness += curCharacter.joyToSadness
+            result.trustToDisgust += curCharacter.trustToDisgust
+            result.fearToAnger += curCharacter.fearToAnger
+            result.surpriseToAnticipation += curCharacter.surpriseToAnticipation
+
+            result.anxietyToConfidence += curCharacter.anxietyToConfidence
+            result.boredomToFascination += curCharacter.boredomToFascination
+            result.frustrationToEuphoria += curCharacter.frustrationToEuphoria
+            result.dispiritedToEncouraged += curCharacter.dispiritedToEncouraged
+            result.terrorToEnchantment += curCharacter.terrorToEnchantment
+            result.humiliationToPride += curCharacter.humiliationToPride
+
+            result.pleasureToDispleasure += curCharacter.pleasureToDispleasure
+            result.arousalToNonarousal += curCharacter.arousalToNonarousal
+            result.dominanceToSubmissiveness += curCharacter.dominanceToSubmissiveness
+
+            result.innerFocusToOutwardTarget += curCharacter.innerFocusToOutwardTarget
+        })
+
+        return result
+    })
+
+    const getCharacterSequenceEmotions = (characterName) => {
+        const characterEmotions = allSequenceEmotionDataBySeq.map(seq => {
+            const result = seq.characterEmotions[characterName]
+            result['name'] = seq.name
+            result['characterName'] = characterName
+
+            return result
+        })
+
+        return characterEmotions
     }
 
     // on page load, this is called, which waits for both LogLineOptions and GetPlot to complete before setting any values (LogLineOptions must populate dropdowns before we can set values)
@@ -40,7 +217,8 @@ const PlotView = (
         const authorId = searchParams.get("a")
 
         Promise.all([
-            fetch('/api/GetPlot?id=' + plotId + '&a=' + authorId)
+            fetch('/api/GetPlot?id=' + plotId + '&a=' + authorId),
+            fetch('/api/Emotions')
             // other fetches could go here
         ]).then(function (responses) {
             if (responses[0].ok === false) {
@@ -53,8 +231,10 @@ const PlotView = (
             }
         }).then(function (data) {
             const plotData = data[0]
+            const emotionsData = data[1]
 
             populatePlot(plotData)
+            setEmotions(emotionsData)
 
         }).catch(function (error) {
             // if there's an error, log it
@@ -141,14 +321,33 @@ const PlotView = (
                                 {
                                     userInfo && userInfo.userRoles.includes('admin') &&
                                     <Tab eventKey="emotions" title="Emotions">
-                                        <>
-                                        <p>Summed Sequence Emotions</p>
-                                        <p>All Scene Emotions</p>
-                                        {/* <EmotionsChart
-                                        data={data}
-                                    /> */}
-                                        </>
-                                        
+                                        <div className='row'>
+                                            <div className='col'>
+                                                <h1>All Scenes</h1>
+                                                <EmotionsChart
+                                                    data={allSceneEmotionData}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='row'>
+                                            <div className='col'>
+                                                <h1>Ensemble by Sequence</h1>
+                                                <EmotionsChart
+                                                    data={allSequenceEmotionData}
+                                                />
+                                            </div>
+                                        </div>
+                                        {
+                                            characters.map(character => <div key={character.name} className='row'>
+                                                <div className='col'>
+                                                    <h1>{character.name}</h1>
+                                                    <EmotionsChart
+                                                        data={getCharacterSequenceEmotions(character.name)}
+                                                    />
+                                                </div>
+                                            </div>)
+                                        }
+
                                     </Tab>
                                 }
                                 <Tab eventKey="all" title="All">
