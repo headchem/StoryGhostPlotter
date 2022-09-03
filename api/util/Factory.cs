@@ -212,7 +212,8 @@ public static class Factory
             new Sneaky(),
             new Tempting(),
             new Timid(),
-            new Industrious()
+            new Industrious(),
+            new Pain()
         };
     }
 
