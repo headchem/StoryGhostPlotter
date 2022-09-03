@@ -140,6 +140,7 @@ const SceneCharacterEmotionList = ({
                         
                         <EmotionsChart
                             data={data}
+                            showCharacterDropdown={true}
                         />
                     </div>
                 </div>

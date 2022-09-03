@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 const EmotionsChart = ({
     data,
     mode,
+    showCharacterDropdown,
 }) => {
 
     const uniqueId = uuid()
@@ -249,14 +250,18 @@ const EmotionsChart = ({
                 <input className="form-check-input" type="checkbox" id={uniqueId + 'ChartFlexSwitchCheckChecked'} onChange={handleChartTypeChange} checked={chartType === 'area'} />
                 <label className="form-check-label" htmlFor={uniqueId + 'ChartFlexSwitchCheckChecked'}>Area</label>
             </div>
-            <select required className='fs-5 form-select form-inline' value={selectedCharacter} onChange={(e) => setSelectedCharacter(e.target.value)}>
-                <option key="blank" value="">All</option>
-                {
-                    uniqueCharacterNames.map(function (name) {
-                        return <option key={name} value={name}>{name}</option>
-                    })
-                }
-            </select>
+            {
+                showCharacterDropdown &&
+                <select required className='fs-5 form-select form-inline' value={selectedCharacter} onChange={(e) => setSelectedCharacter(e.target.value)}>
+                    <option key="blank" value="">All</option>
+                    {
+                        uniqueCharacterNames.map(function (name) {
+                            return <option key={name} value={name}>{name}</option>
+                        })
+                    }
+                </select>
+            }
+
             {
                 chartType === 'line' &&
                 <>

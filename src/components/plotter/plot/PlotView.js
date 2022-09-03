@@ -20,6 +20,7 @@ const PlotView = (
     const [plotLoading, setPlotLoading] = useState(false)
     const [authorUserId, setAuthorUserId] = useState('')
     const [emotions, setEmotions] = useState(null)
+    const [selectedCharacter, setSelectedCharacter] = useState('')
 
     const [searchParams] = useSearchParams()
 
@@ -31,10 +32,12 @@ const PlotView = (
         setCharacters(data['characters'])
     }
 
+    const uniqueCharacterNames = !characters ? [] : [...new Set(characters.map(c => c.name))]
+
     const emotionsMap = !emotions ? {} : Object.assign({}, ...emotions.filter(emo => emo.id !== '').map((x) => ({ [x.id]: x }))); // convert array of emotions into a dictionary
 
 
-    const allSceneEmotionData = !sequences ? [] : sequences.map(seq => {
+    const allSceneEmotionData = !sequences ? [] : sequences.filter(seq => seq.sequenceName !== 'B Story').map(seq => {
         let allSceneEmotions = []
 
         seq.scenes.forEach(scene => {
@@ -77,7 +80,7 @@ const PlotView = (
     }).flat()
 
 
-    const allSequenceEmotionDataBySeq = !sequences ? [] : sequences.map(seq => {
+    const allSequenceEmotionDataBySeq = !sequences ? [] : sequences.filter(seq => seq.sequenceName !== 'B Story').map(seq => {
         const result = {
             name: seq.sequenceName,
             characterEmotions: {}
@@ -205,6 +208,14 @@ const PlotView = (
         return characterEmotions
     }
 
+    const selectedCharacterSequenceEmotions = selectedCharacter === '' ? allSequenceEmotionData : allSequenceEmotionDataBySeq.map(seq => {
+        const result = seq.characterEmotions[selectedCharacter]
+        result['name'] = seq.name
+        result['characterName'] = selectedCharacter
+
+        return result
+    })
+
     // on page load, this is called, which waits for both LogLineOptions and GetPlot to complete before setting any values (LogLineOptions must populate dropdowns before we can set values)
     useEffect(() => {
         // clean up controller. FROM: https://stackoverflow.com/a/63144665 avoids the error "To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function."
@@ -329,25 +340,23 @@ const PlotView = (
                                                 />
                                             </div>
                                         </div>
-                                        <div className='row'>
+                                        <div className='row mt-5'>
                                             <div className='col'>
-                                                <h1>Ensemble by Sequence</h1>
+                                                <h1>By Sequence</h1>
+                                                <select required className='fs-5 form-select form-inline' value={selectedCharacter} onChange={(e) => setSelectedCharacter(e.target.value)}>
+                                                    <option key="blank" value="">All</option>
+                                                    {
+                                                        uniqueCharacterNames.map(function (name) {
+                                                            return <option key={name} value={name}>{name}</option>
+                                                        })
+                                                    }
+                                                </select>
                                                 <EmotionsChart
-                                                    data={allSequenceEmotionData}
+                                                    data={selectedCharacterSequenceEmotions}
+                                                    showCharacterDropdown={false}
                                                 />
                                             </div>
                                         </div>
-                                        {
-                                            characters.map(character => <div key={character.name} className='row'>
-                                                <div className='col'>
-                                                    <h1>{character.name}</h1>
-                                                    <EmotionsChart
-                                                        data={getCharacterSequenceEmotions(character.name)}
-                                                    />
-                                                </div>
-                                            </div>)
-                                        }
-
                                     </Tab>
                                 }
                                 <Tab eventKey="all" title="All">
