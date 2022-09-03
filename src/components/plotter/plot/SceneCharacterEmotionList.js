@@ -72,37 +72,17 @@ const SceneCharacterEmotionList = ({
         updateScene(sequence.sequenceName, scene.id, 'characterEmotions', newCharacterEmotions)
     }
 
-
-
-    const dataKeys = [
-        'joyToSadness',
-        'trustToDisgust',
-        'fearToAnger',
-        'surpriseToAnticipation',
-
-        'anxietyToConfidence',
-        'boredomToFascination',
-        'frustrationToEuphoria',
-        'dispiritedToEncouraged',
-        'terrorToEnchantment',
-        'humiliationToPride',
-
-        'pleasureToDispleasure',
-        'arousalToNonarousal',
-        'dominanceToSubmissiveness',
-
-        'innerFocusToOutwardTarget',
-    ]
-
     const data = !scene.characterEmotions ? [] : scene.characterEmotions.map((emo, i) => {
         const emoName = emo.emotion
 
         if (!emoName || emoName === '') return {name: ''}
 
         const emoObj = emotionsMap[emoName]
+        const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
 
         return {
-            name: emoName,
+            name: emoName + ' (' + characterName + ')',
+            characterName: characterName,
 
             joyToSadness: emoObj['joyToSadness'],
             trustToDisgust: emoObj['trustToDisgust'],
@@ -174,7 +154,6 @@ const SceneCharacterEmotionList = ({
                             <label className="form-check-label" htmlFor={uniqueComponentId + 'ChartFlexSwitchCheckChecked'}>Area</label>
                         </div>
                         <EmotionsChart
-                            keys={dataKeys}
                             data={data}
                             chartType={chartType}
                         />

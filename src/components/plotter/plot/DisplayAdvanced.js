@@ -321,7 +321,6 @@ const DisplayAdvanced = (
                         Is Public
                     </label>
                     <input id={isPublicCheckboxId} className='form-check-input' type='checkbox' onChange={onIsPublicChange} checked={isPublic} />
-
                 </div>
                 <div className='col-2'>
                     <p className='text-muted text-end'>
