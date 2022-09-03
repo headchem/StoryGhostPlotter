@@ -196,18 +196,6 @@ const PlotView = (
         return result
     })
 
-    const getCharacterSequenceEmotions = (characterName) => {
-        const characterEmotions = allSequenceEmotionDataBySeq.map(seq => {
-            const result = seq.characterEmotions[characterName]
-            result['name'] = seq.name
-            result['characterName'] = characterName
-
-            return result
-        })
-
-        return characterEmotions
-    }
-
     const selectedCharacterSequenceEmotions = selectedCharacter === '' ? allSequenceEmotionData : allSequenceEmotionDataBySeq.map(seq => {
         const result = seq.characterEmotions[selectedCharacter]
         result['name'] = seq.name
