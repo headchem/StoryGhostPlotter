@@ -9,7 +9,7 @@ public class Outrage : IEmotion
     public string Id { get { return "outrage"; } }
     public string Name { get { return "Outrage"; } }
     public string Description { get { return "An extremely strong reaction of anger, shock, or indignation. The anger and resentment aroused by injury or insult"; } }
-    public List<string> Synonyms { get { return new List<string> { "indignation", "fury", "anger", "rage", "wrath", "incense", "infuriate" }; } }
+    public List<string> Synonyms { get { return new List<string> { "indignation", "fury", "anger", "rage", "wrath", "incense", "infuriate", "insulted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

@@ -9,7 +9,7 @@ public class Apprehension : IEmotion
     public string Id { get { return "apprehension"; } }
     public string Name { get { return "Apprehension"; } }
     public string Description { get { return "Anxiety or fear that something bad or unpleasant will happen"; } }
-    public List<string> Synonyms { get { return new List<string> { "anxiety", "angst", "uneasiness", "nervousness" }; } }
+    public List<string> Synonyms { get { return new List<string> { "anxiety", "angst", "uneasiness", "nervousness", "reluctance" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 

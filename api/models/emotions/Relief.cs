@@ -9,7 +9,7 @@ public class Relief : IEmotion
     public string Id { get { return "relief"; } }
     public string Name { get { return "Relief"; } }
     public string Description { get { return "A feeling of reassurance and relaxation following release from anxiety or distress. Removal or lightening of something oppressive, painful, or distressing."; } }
-    public List<string> Synonyms { get { return new List<string> { "comfort", "relaxation", "solace" }; } }
+    public List<string> Synonyms { get { return new List<string> { "comfort", "relaxation", "solace", "exhausted" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

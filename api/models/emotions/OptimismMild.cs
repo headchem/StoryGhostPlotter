@@ -9,7 +9,7 @@ public class OptimismMild : IEmotion
     public string Id { get { return "optimism-mild"; } }
     public string Name { get { return "Mild Optimism"; } }
     public string Description { get { return "Hopefulness, anticipation and confidence about the future or the successful outcome of something. A doctrine that this world is the best possible world."; } }
-    public List<string> Synonyms { get { return new List<string> { "hope", "confidence", "buoyancy", "sanguine", "bullishness" }; } }
+    public List<string> Synonyms { get { return new List<string> { "hope", "confidence", "buoyancy", "sanguine", "bullishness", "encouraging" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.FutureAppraisal }; } }
 
