@@ -210,7 +210,8 @@ public static class Factory
             new Hectic(),
             new Tired(),
             new Sneaky(),
-            new Tempting()
+            new Tempting(),
+            new Timid()
         };
     }
 
