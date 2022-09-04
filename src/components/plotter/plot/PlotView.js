@@ -41,6 +41,7 @@ const PlotView = (
         let allSceneEmotions = []
 
         seq.scenes.forEach(scene => {
+            
             const sceneData = !scene.characterEmotions ? [] : scene.characterEmotions.map((emo, i) => {
                 const emoName = emo.emotion
 
@@ -83,6 +84,7 @@ const PlotView = (
     const allSequenceEmotionDataBySeq = !sequences ? [] : sequences.filter(seq => seq.sequenceName !== 'B Story').map(seq => {
         const result = {
             name: seq.sequenceName,
+            sceneCount: seq.scenes.length,
             characterEmotions: {}
         }
 
@@ -111,31 +113,33 @@ const PlotView = (
                 if (scene.characterEmotions && scene.characterEmotions.length > 0) {
                     const curCharacter = result.characterEmotions[character.name]
 
+                    const uniqueCharacterIdsInScene = [...new Set(scene.characterEmotions.map(ce => ce.characterId))].length
+                    
                     scene.characterEmotions.forEach(emo => {
                         const emoName = emo.emotion
                         const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
 
                         if (emoName && emoName !== '' && characterName === character.name) {
                             const emoObj = emotionsMap[emoName]
-                            const denominator = seq.scenes.length
+                            const sceneCount = seq.scenes.length
 
-                            curCharacter.joyToSadness += emoObj['joyToSadness'] / denominator
-                            curCharacter.trustToDisgust += emoObj['trustToDisgust'] / denominator
-                            curCharacter.fearToAnger += emoObj['fearToAnger'] / denominator
-                            curCharacter.surpriseToAnticipation += emoObj['surpriseToAnticipation'] / denominator
+                            curCharacter.joyToSadness += (emoObj['joyToSadness'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.trustToDisgust += (emoObj['trustToDisgust'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.fearToAnger += (emoObj['fearToAnger'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.surpriseToAnticipation += (emoObj['surpriseToAnticipation'] / sceneCount) / uniqueCharacterIdsInScene
 
-                            curCharacter.anxietyToConfidence += emoObj['anxietyToConfidence'] / denominator
-                            curCharacter.boredomToFascination += emoObj['boredomToFascination'] / denominator
-                            curCharacter.frustrationToEuphoria += emoObj['frustrationToEuphoria'] / denominator
-                            curCharacter.dispiritedToEncouraged += emoObj['dispiritedToEncouraged'] / denominator
-                            curCharacter.terrorToEnchantment += emoObj['terrorToEnchantment'] / denominator
-                            curCharacter.humiliationToPride += emoObj['humiliationToPride'] / denominator
+                            curCharacter.anxietyToConfidence += (emoObj['anxietyToConfidence'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.boredomToFascination += (emoObj['boredomToFascination'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.frustrationToEuphoria += (emoObj['frustrationToEuphoria'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.dispiritedToEncouraged += (emoObj['dispiritedToEncouraged'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.terrorToEnchantment += (emoObj['terrorToEnchantment'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.humiliationToPride += (emoObj['humiliationToPride'] / sceneCount) / uniqueCharacterIdsInScene
 
-                            curCharacter.pleasureToDispleasure += emoObj['pleasureToDispleasure'] / denominator
-                            curCharacter.arousalToNonarousal += emoObj['arousalToNonarousal'] / denominator
-                            curCharacter.dominanceToSubmissiveness += emoObj['dominanceToSubmissiveness'] / denominator
+                            curCharacter.pleasureToDispleasure += (emoObj['pleasureToDispleasure'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.arousalToNonarousal += (emoObj['arousalToNonarousal'] / sceneCount) / uniqueCharacterIdsInScene
+                            curCharacter.dominanceToSubmissiveness += (emoObj['dominanceToSubmissiveness'] / sceneCount) / uniqueCharacterIdsInScene
 
-                            curCharacter.innerFocusToOutwardTarget += emoObj['innerFocusToOutwardTarget'] / denominator
+                            curCharacter.innerFocusToOutwardTarget += (emoObj['innerFocusToOutwardTarget'] / sceneCount) / uniqueCharacterIdsInScene
                         }
                     })
                 }
@@ -173,7 +177,8 @@ const PlotView = (
         }
 
         characters.forEach(character => {
-            const denominator = characters.length
+
+            const denominator = 1//seq.sceneCount
 
             const curCharacter = seq.characterEmotions[character.name]
 
@@ -328,6 +333,7 @@ const PlotView = (
                                                 <h1>All Scenes</h1>
                                                 <EmotionsChart
                                                     data={allSceneEmotionData}
+                                                    showCharacterDropdown={true}
                                                 />
                                             </div>
                                         </div>
