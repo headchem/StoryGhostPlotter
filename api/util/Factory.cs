@@ -217,6 +217,7 @@ public static class Factory
             new Rescuing(),
             new DarkPleasure(),
             new Smug(),
+            new Scheming()
         };
     }
 

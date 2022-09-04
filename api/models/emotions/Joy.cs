@@ -9,7 +9,7 @@ public class Joy : IEmotion
     public string Id { get { return "joy"; } }
     public string Name { get { return "Joy"; } }
     public string Description { get { return "A feeling of great pleasure and happiness."; } }
-    public List<string> Synonyms { get { return new List<string> { "happiness", "delight", "jubilation", "exultation" }; } }
+    public List<string> Synonyms { get { return new List<string> { "happiness", "delight", "jubilation", "exultation", "celebrate" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

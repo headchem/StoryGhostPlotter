@@ -121,7 +121,7 @@ const SceneCharacterEmotionList = ({
             </div>
 
             <div className='row'>
-                <div className='col'>
+                <div className='col mb-3'>
                     {
                         showEmotionsChart === false &&
                         <button className='btn btn-link' onClick={() => setShowEmotionsChart(true)}>show emotions chart</button>

@@ -9,7 +9,7 @@ public class AggressivenessIntense : IEmotion
     public string Id { get { return "aggressiveness-intense"; } }
     public string Name { get { return "Intense Aggressiveness"; } }
     public string Description { get { return "Hostile or violent behavior. Determination and forcefulness."; } }
-    public List<string> Synonyms { get { return new List<string> { "fierce", "ambitious", "in-your-face" }; } }
+    public List<string> Synonyms { get { return new List<string> { "fierce", "ambitious", "in-your-face", "threatening" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated, EmotionKindEnum.FutureAppraisal }; } }
 
