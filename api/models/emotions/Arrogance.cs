@@ -9,7 +9,7 @@ public class Arrogance : IEmotion
     public string Id { get { return "arrogance"; } }
     public string Name { get { return "Arrogance"; } }
     public string Description { get { return "An attitude of superiority manifested in an overbearing manner or in presumptuous claims or assumptions."; } }
-    public List<string> Synonyms { get { return new List<string> { "haughtiness", "conceit", "hubris", "self-importance", "egotism" }; } }
+    public List<string> Synonyms { get { return new List<string> { "haughtiness", "conceit", "hubris", "self-importance", "egotism", "pompous", "braggadocious" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

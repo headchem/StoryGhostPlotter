@@ -9,7 +9,7 @@ public class Caring : IEmotion
     public string Id { get { return "caring"; } }
     public string Name { get { return "Caring"; } }
     public string Description { get { return "Having or showing concern for the well-being of others."; } }
-    public List<string> Synonyms { get { return new List<string> { "attentive", "compassionate", "concerned", "kindhearted", "thoughtful", "adoring", "devoted", "altruistic", "hospitable", "tender", "sincere" }; } }
+    public List<string> Synonyms { get { return new List<string> { "attentive", "compassionate", "concerned", "kindhearted", "thoughtful", "adoring", "devoted", "altruistic", "hospitable", "tender", "sincere", "helpful" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
