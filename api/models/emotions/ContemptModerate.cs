@@ -9,7 +9,7 @@ public class ContemptModerate : IEmotion
     public string Id { get { return "contempt-moderate"; } }
     public string Name { get { return "Moderate Contempt"; } }
     public string Description { get { return "Open dislike for someone or something considered unworthy of one's concern or respect"; } }
-    public List<string> Synonyms { get { return new List<string> { "despisement", "disdain", "scorn" }; } }
+    public List<string> Synonyms { get { return new List<string> { "despisement", "disdain", "scorn", "glower", "scowl", "glare" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties, EmotionKindEnum.EventRelated }; } }
 
