@@ -215,6 +215,8 @@ public static class Factory
             new Industrious(),
             new Pain(),
             new Rescuing(),
+            new DarkPleasure(),
+            new Smug(),
         };
     }
 
