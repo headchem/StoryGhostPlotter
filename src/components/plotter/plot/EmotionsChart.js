@@ -244,6 +244,198 @@ const EmotionsChart = ({
     const colorMapLine = !lineKeys ? {} : Object.assign({}, ...lineKeys.map((key, i) => ({ [key]: interpolateTurbo((i + 1) / (lineKeys.length + 2)) })));
     const colorMapArea = !areaKeys ? {} : Object.assign({}, ...areaKeys.map((key, i) => ({ [key]: interpolateTurbo((i + 1) / (areaKeys.length + 2)) })));
 
+    const showNone = () => {
+        setShowJoyToSadness(false)
+        setShowTrustToDisgust(false)
+        setShowFearToAnger(false)
+        setShowSurpriseToAnticipation(false)
+
+        setShowAnxietyToConfidence(false)
+        setShowBoredomToFascination(false)
+        setShowFrustrationToEuphoria(false)
+        setShowDispiritedToEncouraged(false)
+        setShowTerrorToEnchantment(false)
+        setShowHumiliationToPride(false)
+
+        setShowPleasureToDispleasure(false)
+        setShowArousalToNonarousal(false)
+        setShowDominanceToSubmissiveness(false)
+
+        setShowInnerFocusToOutwardTarget(false)
+
+        setShowJoy(false)
+        setShowSadness(false)
+        setShowTrust(false)
+        setShowDisgust(false)
+        setShowFear(false)
+        setShowAnger(false)
+        setShowSurprise(false)
+        setShowAnticipation(false)
+        setShowAnxiety(false)
+        setShowConfidence(false)
+        setShowBoredom(false)
+        setShowFascination(false)
+        setShowFrustration(false)
+        setShowEuphoria(false)
+        setShowDispirited(false)
+        setShowEncouraged(false)
+        setShowTerror(false)
+        setShowEnchantment(false)
+        setShowHumiliation(false)
+        setShowPride(false)
+        setShowPleasure(false)
+        setShowDispleasure(false)
+        setShowArousal(false)
+        setShowNonarousal(false)
+        setShowDominance(false)
+        setShowSubmissiveness(false)
+    }
+
+    const showAll = () => {
+        setShowJoyToSadness(true)
+        setShowTrustToDisgust(true)
+        setShowFearToAnger(true)
+        setShowSurpriseToAnticipation(true)
+
+        setShowAnxietyToConfidence(true)
+        setShowBoredomToFascination(true)
+        setShowFrustrationToEuphoria(true)
+        setShowDispiritedToEncouraged(true)
+        setShowTerrorToEnchantment(true)
+        setShowHumiliationToPride(true)
+
+        setShowPleasureToDispleasure(true)
+        setShowArousalToNonarousal(true)
+        setShowDominanceToSubmissiveness(true)
+
+        setShowInnerFocusToOutwardTarget(true)
+
+        setShowJoy(true)
+        setShowSadness(true)
+        setShowTrust(true)
+        setShowDisgust(true)
+        setShowFear(true)
+        setShowAnger(true)
+        setShowSurprise(true)
+        setShowAnticipation(true)
+        setShowAnxiety(true)
+        setShowConfidence(true)
+        setShowBoredom(true)
+        setShowFascination(true)
+        setShowFrustration(true)
+        setShowEuphoria(true)
+        setShowDispirited(true)
+        setShowEncouraged(true)
+        setShowTerror(true)
+        setShowEnchantment(true)
+        setShowHumiliation(true)
+        setShowPride(true)
+        setShowPleasure(true)
+        setShowDispleasure(true)
+        setShowArousal(true)
+        setShowNonarousal(true)
+        setShowDominance(true)
+        setShowSubmissiveness(true)
+    }
+
+    const showPlutchik = () => {
+        setShowJoyToSadness(true)
+        setShowTrustToDisgust(true)
+        setShowFearToAnger(true)
+        setShowSurpriseToAnticipation(true)
+
+        setShowAnxietyToConfidence(false)
+        setShowBoredomToFascination(false)
+        setShowFrustrationToEuphoria(false)
+        setShowDispiritedToEncouraged(false)
+        setShowTerrorToEnchantment(false)
+        setShowHumiliationToPride(false)
+
+        setShowPleasureToDispleasure(false)
+        setShowArousalToNonarousal(false)
+        setShowDominanceToSubmissiveness(false)
+
+        setShowInnerFocusToOutwardTarget(false)
+
+        setShowJoy(true)
+        setShowSadness(true)
+        setShowTrust(true)
+        setShowDisgust(true)
+        setShowFear(true)
+        setShowAnger(true)
+        setShowSurprise(true)
+        setShowAnticipation(true)
+
+        setShowAnxiety(false)
+        setShowConfidence(false)
+        setShowBoredom(false)
+        setShowFascination(false)
+        setShowFrustration(false)
+        setShowEuphoria(false)
+        setShowDispirited(false)
+        setShowEncouraged(false)
+        setShowTerror(false)
+        setShowEnchantment(false)
+        setShowHumiliation(false)
+        setShowPride(false)
+
+        setShowPleasure(false)
+        setShowDispleasure(false)
+        setShowArousal(false)
+        setShowNonarousal(false)
+        setShowDominance(false)
+        setShowSubmissiveness(false)
+    }
+
+    const showVAD = () => {
+        setShowJoyToSadness(false)
+        setShowTrustToDisgust(false)
+        setShowFearToAnger(false)
+        setShowSurpriseToAnticipation(false)
+
+        setShowAnxietyToConfidence(false)
+        setShowBoredomToFascination(false)
+        setShowFrustrationToEuphoria(false)
+        setShowDispiritedToEncouraged(false)
+        setShowTerrorToEnchantment(false)
+        setShowHumiliationToPride(false)
+
+        setShowPleasureToDispleasure(true)
+        setShowArousalToNonarousal(true)
+        setShowDominanceToSubmissiveness(true)
+
+        setShowInnerFocusToOutwardTarget(false)
+
+        setShowJoy(false)
+        setShowSadness(false)
+        setShowTrust(false)
+        setShowDisgust(false)
+        setShowFear(false)
+        setShowAnger(false)
+        setShowSurprise(false)
+        setShowAnticipation(false)
+
+        setShowAnxiety(false)
+        setShowConfidence(false)
+        setShowBoredom(false)
+        setShowFascination(false)
+        setShowFrustration(false)
+        setShowEuphoria(false)
+        setShowDispirited(false)
+        setShowEncouraged(false)
+        setShowTerror(false)
+        setShowEnchantment(false)
+        setShowHumiliation(false)
+        setShowPride(false)
+
+        setShowPleasure(true)
+        setShowDispleasure(true)
+        setShowArousal(true)
+        setShowNonarousal(true)
+        setShowDominance(true)
+        setShowSubmissiveness(true)
+    }
+
     return (
         <>
             <div className="form-check form-switch fs-5 mb-4 mt-4">
@@ -261,6 +453,15 @@ const EmotionsChart = ({
                     }
                 </select>
             }
+
+            <div className='row'>
+                <div className='col'>
+                    <button className='btn btn-primary' onClick={() => showNone()}>None</button>
+                    <button className='btn btn-primary' onClick={() => showAll()}>All</button>
+                    <button className='btn btn-primary' onClick={() => showVAD()}>VAD</button>
+                    <button className='btn btn-primary' onClick={() => showPlutchik()}>Plutchik</button>
+                </div>
+            </div>
 
             {
                 chartType === 'line' &&
