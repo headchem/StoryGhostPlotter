@@ -117,24 +117,25 @@ const PlotView = (
 
                         if (emoName && emoName !== '' && characterName === character.name) {
                             const emoObj = emotionsMap[emoName]
+                            const denominator = seq.scenes.length
 
-                            curCharacter.joyToSadness += emoObj['joyToSadness'] / seq.scenes.length
-                            curCharacter.trustToDisgust += emoObj['trustToDisgust'] / seq.scenes.length
-                            curCharacter.fearToAnger += emoObj['fearToAnger'] / seq.scenes.length
-                            curCharacter.surpriseToAnticipation += emoObj['surpriseToAnticipation'] / seq.scenes.length
+                            curCharacter.joyToSadness += emoObj['joyToSadness'] / denominator
+                            curCharacter.trustToDisgust += emoObj['trustToDisgust'] / denominator
+                            curCharacter.fearToAnger += emoObj['fearToAnger'] / denominator
+                            curCharacter.surpriseToAnticipation += emoObj['surpriseToAnticipation'] / denominator
 
-                            curCharacter.anxietyToConfidence += emoObj['anxietyToConfidence'] / seq.scenes.length
-                            curCharacter.boredomToFascination += emoObj['boredomToFascination'] / seq.scenes.length
-                            curCharacter.frustrationToEuphoria += emoObj['frustrationToEuphoria'] / seq.scenes.length
-                            curCharacter.dispiritedToEncouraged += emoObj['dispiritedToEncouraged'] / seq.scenes.length
-                            curCharacter.terrorToEnchantment += emoObj['terrorToEnchantment'] / seq.scenes.length
-                            curCharacter.humiliationToPride += emoObj['humiliationToPride'] / seq.scenes.length
+                            curCharacter.anxietyToConfidence += emoObj['anxietyToConfidence'] / denominator
+                            curCharacter.boredomToFascination += emoObj['boredomToFascination'] / denominator
+                            curCharacter.frustrationToEuphoria += emoObj['frustrationToEuphoria'] / denominator
+                            curCharacter.dispiritedToEncouraged += emoObj['dispiritedToEncouraged'] / denominator
+                            curCharacter.terrorToEnchantment += emoObj['terrorToEnchantment'] / denominator
+                            curCharacter.humiliationToPride += emoObj['humiliationToPride'] / denominator
 
-                            curCharacter.pleasureToDispleasure += emoObj['pleasureToDispleasure'] / seq.scenes.length
-                            curCharacter.arousalToNonarousal += emoObj['arousalToNonarousal'] / seq.scenes.length
-                            curCharacter.dominanceToSubmissiveness += emoObj['dominanceToSubmissiveness'] / seq.scenes.length
+                            curCharacter.pleasureToDispleasure += emoObj['pleasureToDispleasure'] / denominator
+                            curCharacter.arousalToNonarousal += emoObj['arousalToNonarousal'] / denominator
+                            curCharacter.dominanceToSubmissiveness += emoObj['dominanceToSubmissiveness'] / denominator
 
-                            curCharacter.innerFocusToOutwardTarget += emoObj['innerFocusToOutwardTarget'] / seq.scenes.length
+                            curCharacter.innerFocusToOutwardTarget += emoObj['innerFocusToOutwardTarget'] / denominator
                         }
                     })
                 }
@@ -172,25 +173,27 @@ const PlotView = (
         }
 
         characters.forEach(character => {
+            const denominator = characters.length
+
             const curCharacter = seq.characterEmotions[character.name]
 
-            result.joyToSadness += curCharacter.joyToSadness
-            result.trustToDisgust += curCharacter.trustToDisgust
-            result.fearToAnger += curCharacter.fearToAnger
-            result.surpriseToAnticipation += curCharacter.surpriseToAnticipation
+            result.joyToSadness += curCharacter.joyToSadness / denominator
+            result.trustToDisgust += curCharacter.trustToDisgust / denominator
+            result.fearToAnger += curCharacter.fearToAnger / denominator
+            result.surpriseToAnticipation += curCharacter.surpriseToAnticipation / denominator
 
-            result.anxietyToConfidence += curCharacter.anxietyToConfidence
-            result.boredomToFascination += curCharacter.boredomToFascination
-            result.frustrationToEuphoria += curCharacter.frustrationToEuphoria
-            result.dispiritedToEncouraged += curCharacter.dispiritedToEncouraged
-            result.terrorToEnchantment += curCharacter.terrorToEnchantment
-            result.humiliationToPride += curCharacter.humiliationToPride
+            result.anxietyToConfidence += curCharacter.anxietyToConfidence / denominator
+            result.boredomToFascination += curCharacter.boredomToFascination / denominator
+            result.frustrationToEuphoria += curCharacter.frustrationToEuphoria / denominator
+            result.dispiritedToEncouraged += curCharacter.dispiritedToEncouraged / denominator
+            result.terrorToEnchantment += curCharacter.terrorToEnchantment / denominator
+            result.humiliationToPride += curCharacter.humiliationToPride / denominator
 
-            result.pleasureToDispleasure += curCharacter.pleasureToDispleasure
-            result.arousalToNonarousal += curCharacter.arousalToNonarousal
-            result.dominanceToSubmissiveness += curCharacter.dominanceToSubmissiveness
+            result.pleasureToDispleasure += curCharacter.pleasureToDispleasure / denominator
+            result.arousalToNonarousal += curCharacter.arousalToNonarousal / denominator
+            result.dominanceToSubmissiveness += curCharacter.dominanceToSubmissiveness / denominator
 
-            result.innerFocusToOutwardTarget += curCharacter.innerFocusToOutwardTarget
+            result.innerFocusToOutwardTarget += curCharacter.innerFocusToOutwardTarget / denominator
         })
 
         return result

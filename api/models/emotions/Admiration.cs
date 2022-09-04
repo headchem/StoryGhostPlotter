@@ -9,7 +9,7 @@ public class Admiration : IEmotion
     public string Id { get { return "admiration"; } }
     public string Name { get { return "Admiration"; } }
     public string Description { get { return "Respect and warm approval. Something regarded as impressive or worthy of respect. Pleasurable contemplation."; } }
-    public List<string> Synonyms { get { return new List<string> { "commendation", "acclaim", "approval", "appreciation", "delight", "pride and joy" }; } }
+    public List<string> Synonyms { get { return new List<string> { "commendation", "acclaim", "approval", "appreciation", "delight", "pride and joy", "congratulatory" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
