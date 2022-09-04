@@ -218,7 +218,8 @@ public static class Factory
             new DarkPleasure(),
             new Smug(),
             new Scheming(),
-            new Defensive()
+            new Defensive(),
+            new Pleading(),
         };
     }
 
