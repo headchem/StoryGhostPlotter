@@ -220,7 +220,8 @@ public static class Factory
             new Scheming(),
             new Defensive(),
             new Pleading(),
-            new Lecherous()
+            new Lecherous(),
+            new Meditative()
         };
     }
 
