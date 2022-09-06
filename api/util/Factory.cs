@@ -223,6 +223,7 @@ public static class Factory
             new Lecherous(),
             new Meditative(),
             new Learning(),
+            new Aloof(),
         };
     }
 
