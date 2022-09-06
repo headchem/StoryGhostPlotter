@@ -9,7 +9,7 @@ public class Boredom : IEmotion
     public string Id { get { return "boredom"; } }
     public string Name { get { return "Boredom"; } }
     public string Description { get { return "Feeling unsatisfied by an activity, or uninterested in it,"; } }
-    public List<string> Synonyms { get { return new List<string> { "weariness", "lack of enthusiasm" }; } }
+    public List<string> Synonyms { get { return new List<string> { "weariness", "lack of enthusiasm", "laziness" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 

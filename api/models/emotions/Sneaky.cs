@@ -9,7 +9,7 @@ public class Sneaky : IEmotion
     public string Id { get { return "sneaky"; } }
     public string Name { get { return "Sneaky"; } }
     public string Description { get { return "(of a feeling) secret; reluctant; furtive; sly"; } }
-    public List<string> Synonyms { get { return new List<string> { "clever", "tricky", "sly" }; } }
+    public List<string> Synonyms { get { return new List<string> { "clever", "tricky", "sly", "mischievous" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

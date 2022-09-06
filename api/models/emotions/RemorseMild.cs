@@ -9,7 +9,7 @@ public class RemorseMild : IEmotion
     public string Id { get { return "remorse-mild"; } }
     public string Name { get { return "Mild Remorse"; } }
     public string Description { get { return "A gnawing distress arising from a sense of guilt for past wrongs. Deep regret or guilt for a wrong committed."; } }
-    public List<string> Synonyms { get { return new List<string> { "contrition", "repentance", "guilt", "penitence" }; } }
+    public List<string> Synonyms { get { return new List<string> { "contrition", "repentance", "guilt", "penitence", "apologetic" }; } }
 	
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 
