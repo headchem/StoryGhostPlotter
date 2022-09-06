@@ -196,6 +196,8 @@ const PlotView = (
             deltaOutwardTarget: 0,
         }
 
+        if (!scene || !scene.characterEmotions) return result
+
         scene.characterEmotions.forEach(emo => {
             const emoName = emo.emotion
             const emoObj = emotionsMap[emoName]
