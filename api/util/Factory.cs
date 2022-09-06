@@ -221,7 +221,8 @@ public static class Factory
             new Defensive(),
             new Pleading(),
             new Lecherous(),
-            new Meditative()
+            new Meditative(),
+            new Learning(),
         };
     }
 

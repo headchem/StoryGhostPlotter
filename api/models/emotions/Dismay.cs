@@ -9,7 +9,7 @@ public class Dismay : IEmotion
     public string Id { get { return "dismay"; } }
     public string Name { get { return "Dismay"; } }
     public string Description { get { return "The emotion felt when one's expectations are not met."; } }
-    public List<string> Synonyms { get { return new List<string> { "letdown" }; } }
+    public List<string> Synonyms { get { return new List<string> { "letdown", "crestfallen" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

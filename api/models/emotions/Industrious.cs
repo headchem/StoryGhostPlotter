@@ -9,7 +9,7 @@ public class Industrious : IEmotion
     public string Id { get { return "industrious"; } }
     public string Name { get { return "Industrious"; } }
     public string Description { get { return "Constantly, regularly, or habitually active or occupied. Diligent and hard-working."; } }
-    public List<string> Synonyms { get { return new List<string> { "working", "diligent", "working", "focused" }; } }
+    public List<string> Synonyms { get { return new List<string> { "working", "diligent", "working", "focused", "studying" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 
