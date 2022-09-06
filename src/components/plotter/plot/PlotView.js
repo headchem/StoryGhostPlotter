@@ -263,7 +263,7 @@ const PlotView = (
             // 'maxAnticipation': sceneDeltas['maxAnticipation'],
 
             // 'minArousal': sceneDeltas['minArousal'] * -1,
-            
+
         }
 
         return result
@@ -312,41 +312,43 @@ const PlotView = (
         seq.scenes.forEach(scene => {
 
             const uniqueCharacterIdsInScene = 1 //[...new Set(scene.characterEmotions.map(ce => ce.characterId))].length
-            const sceneEmotionsCount = scene.characterEmotions.length
+            const sceneEmotionsCount = scene.characterEmotions ? scene.characterEmotions.length : 1
 
-            scene.characterEmotions.forEach(emo => {
+            if (scene.characterEmotions) {
+                scene.characterEmotions.forEach(emo => {
 
-                const emoName = emo.emotion
-                const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
+                    const emoName = emo.emotion
+                    const characterName = !emo.characterId ? 'none' : characters.filter(c => c.id === emo.characterId)[0]['name'] // TODO: make a dictionary lookup for efficiency
 
-                const curCharacter = result.characterEmotions[characterName]
+                    const curCharacter = result.characterEmotions[characterName]
 
-                if (emoName && emoName !== '') {
-                    const emoObj = emotionsMap[emoName]
-                    const sceneCount = seq.scenes.length
+                    if (emoName && emoName !== '') {
+                        const emoObj = emotionsMap[emoName]
+                        const sceneCount = seq.scenes.length
 
-                    // if a scene has many emotions, they each contribute a standardized amount via " / sceneEmotionsCount"
-                    // if a sequence has many scenes, they each contribute a standardized amount via " / sceneCount"
+                        // if a scene has many emotions, they each contribute a standardized amount via " / sceneEmotionsCount"
+                        // if a sequence has many scenes, they each contribute a standardized amount via " / sceneCount"
 
-                    curCharacter.joyToSadness += ((emoObj['joyToSadness'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.trustToDisgust += ((emoObj['trustToDisgust'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.fearToAnger += ((emoObj['fearToAnger'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.surpriseToAnticipation += ((emoObj['surpriseToAnticipation'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.joyToSadness += ((emoObj['joyToSadness'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.trustToDisgust += ((emoObj['trustToDisgust'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.fearToAnger += ((emoObj['fearToAnger'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.surpriseToAnticipation += ((emoObj['surpriseToAnticipation'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
 
-                    curCharacter.anxietyToConfidence += ((emoObj['anxietyToConfidence'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.boredomToFascination += ((emoObj['boredomToFascination'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.frustrationToEuphoria += ((emoObj['frustrationToEuphoria'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.dispiritedToEncouraged += ((emoObj['dispiritedToEncouraged'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.terrorToEnchantment += ((emoObj['terrorToEnchantment'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.humiliationToPride += ((emoObj['humiliationToPride'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.anxietyToConfidence += ((emoObj['anxietyToConfidence'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.boredomToFascination += ((emoObj['boredomToFascination'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.frustrationToEuphoria += ((emoObj['frustrationToEuphoria'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.dispiritedToEncouraged += ((emoObj['dispiritedToEncouraged'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.terrorToEnchantment += ((emoObj['terrorToEnchantment'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.humiliationToPride += ((emoObj['humiliationToPride'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
 
-                    curCharacter.pleasureToDispleasure += ((emoObj['pleasureToDispleasure'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.arousalToNonarousal += ((emoObj['arousalToNonarousal'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                    curCharacter.dominanceToSubmissiveness += ((emoObj['dominanceToSubmissiveness'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.pleasureToDispleasure += ((emoObj['pleasureToDispleasure'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.arousalToNonarousal += ((emoObj['arousalToNonarousal'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                        curCharacter.dominanceToSubmissiveness += ((emoObj['dominanceToSubmissiveness'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
 
-                    curCharacter.innerFocusToOutwardTarget += ((emoObj['innerFocusToOutwardTarget'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
-                }
-            })
+                        curCharacter.innerFocusToOutwardTarget += ((emoObj['innerFocusToOutwardTarget'] / sceneEmotionsCount) / sceneCount) / uniqueCharacterIdsInScene
+                    }
+                })
+            }
         })
 
         return result
