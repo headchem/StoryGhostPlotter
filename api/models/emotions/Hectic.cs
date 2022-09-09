@@ -9,7 +9,7 @@ public class Hectic : IEmotion
     public string Id { get { return "hectic"; } }
     public string Name { get { return "Hectic"; } }
     public string Description { get { return "Full of incessant or frantic activity. Characterized by activity, excitement, or confusion."; } }
-    public List<string> Synonyms { get { return new List<string> { "stress", "pressure", "tension", "hectic", "hurried", "frantic", "frazzled", "frenzied", "frenetic", "busy", "struggle" }; } }
+    public List<string> Synonyms { get { return new List<string> { "stress", "pressure", "tension", "hectic", "hurried", "frantic", "frazzled", "frenzied", "frenetic", "busy", "struggle", "harried" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.EventRelated }; } }
 

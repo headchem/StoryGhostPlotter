@@ -9,7 +9,7 @@ public class Empathy : IEmotion
     public string Id { get { return "empathy"; } }
     public string Name { get { return "Empathy"; } }
     public string Description { get { return "Having or showing the capacity for sharing the feelings of another."; } }
-    public List<string> Synonyms { get { return new List<string> { "commiserating", "sympathizing", "soothing", "comforting" }; } }
+    public List<string> Synonyms { get { return new List<string> { "commiserating", "sympathizing", "soothing", "comforting", "revelation" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.Social }; } }
 

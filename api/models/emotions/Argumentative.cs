@@ -9,7 +9,7 @@ public class Argumentative : IEmotion
     public string Id { get { return "argumentative"; } }
     public string Name { get { return "Argumentative"; } }
     public string Description { get { return "Given to expressing divergent or opposite views."; } }
-    public List<string> Synonyms { get { return new List<string> { "quarrelsome", "bickering", "contrary" }; } }
+    public List<string> Synonyms { get { return new List<string> { "quarrelsome", "bickering", "contrary", "sassy" }; } }
 
     public List<string> Kinds { get { return new List<string> { EmotionKindEnum.RelatedToObjectProperties }; } }
 
