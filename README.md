@@ -76,7 +76,11 @@ If a staging env already exists, this immediately kicks off the deployment pipel
 git checkout main
 git pull
 
-
+Use Microsoft for login, with this as "User's roles"
+anonymous
+authenticated
+customer
+admin
 
 "id": "43de282f30cf52c2ba73f71a4f28712a",
 "displayName": "testuser1",
