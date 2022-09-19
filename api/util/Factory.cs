@@ -224,6 +224,7 @@ public static class Factory
             new Meditative(),
             new Learning(),
             new Aloof(),
+            new MatterOfFact(),
         };
     }
 
