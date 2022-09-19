@@ -8,7 +8,7 @@ public class GoldenFleece : IProblemTemplate
 {
     public string Id { get { return "goldenFleece"; } }
     public string Name { get { return "Golden Fleece"; } }
-    public string Description { get { return "A driven hero leads allies to acquire a prize through a perilous journey that turns out wildly different from the Heros's expectations."; } }
+    public string Description { get { return "A driven hero leads allies to acquire what they desire through a perilous journey that turns out wildly different from the Heros's expectations."; } }
     public List<string> Keywords
     {
         get
@@ -29,8 +29,8 @@ public class GoldenFleece : IProblemTemplate
                 {
                     BreakIntoTwo = "The Hero goes \"on the road\" with a naive understanding of the destination they think they want to reach.",
                     FunAndGames = "Seemingly disconnected episodes each help the Hero grow, even if little progress is made on the \"road\".",
-                    DarkNightOfTheSoul = "The Hero realizes the real treasure is their own personal growth.",
-                    BreakIntoThree = "Fully leveraging how the Hero has grown, a plan is hatched to attain the physical treasure."
+                    DarkNightOfTheSoul = "The Hero realizes what they really desired was their own personal growth.",
+                    BreakIntoThree = "Fully leveraging how the Hero has grown, a plan is hatched to attain the original desire."
                 },
                 Context = new AdviceSequence
                 {
