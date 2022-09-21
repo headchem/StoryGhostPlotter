@@ -5,11 +5,11 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class AcademiesOfMagic : IAppealTerm
+public class LoveOnTheRocks : IAppealTerm
 {
-    public string Id { get { return "AcademiesOfMagic"; } }
-    public string Name { get { return "Academies of magic"; } }
-    public string Description { get { return "These are VERY special schools for the gifted."; } }
+    public string Id { get { return "LoveOnTheRocks"; } }
+    public string Name { get { return "Love on the rocks"; } }
+    public string Description { get { return "The course of love does not always run smooth."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
     public List<string> Types { get { return new List<string> { "" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

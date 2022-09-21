@@ -11,6 +11,7 @@ public interface IAppealTerm
     public string Description { get; }
     public List<string> Genres { get; }
     public List<string> Types { get; }
+    public List<string> Aliases { get; }
 
     ///<summary>Returns an example log line based on common patterns for this specific Appeal Term based on Top_10000_Movies.xlsx</summary>
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords);
