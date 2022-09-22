@@ -11,7 +11,7 @@ public class BoardingSchoolLife : IAppealTerm
     public string Name { get { return "Boarding school life"; } }
     public string Description { get { return "It can get intense when you live with your classmates."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Types { get { return new List<string> { "Experiences" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

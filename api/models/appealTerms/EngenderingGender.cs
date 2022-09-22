@@ -11,7 +11,7 @@ public class EngenderingGender : IAppealTerm
     public string Name { get { return "Engendering gender"; } }
     public string Description { get { return "These stories challenge and explore concepts of gender."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Types { get { return new List<string> { "Identity" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

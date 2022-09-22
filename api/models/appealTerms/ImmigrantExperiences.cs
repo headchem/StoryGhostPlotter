@@ -11,7 +11,7 @@ public class ImmigrantExperiences : IAppealTerm
     public string Name { get { return "Immigrant experiences"; } }
     public string Description { get { return "Moving to new countries has always been challenging."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Types { get { return new List<string> { "Experiences", "Identity" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

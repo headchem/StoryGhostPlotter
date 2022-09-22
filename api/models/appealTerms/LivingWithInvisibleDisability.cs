@@ -11,7 +11,7 @@ public class LivingWithInvisibleDisability : IAppealTerm
     public string Name { get { return "Living with invisible disability"; } }
     public string Description { get { return "Some disabilities aren't easy to see, but still can make life challenging."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Types { get { return new List<string> { "Life's Challenges" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

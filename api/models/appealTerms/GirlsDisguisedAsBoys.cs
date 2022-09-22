@@ -11,7 +11,7 @@ public class GirlsDisguisedAsBoys : IAppealTerm
     public string Name { get { return "Girls disguised as boys"; } }
     public string Description { get { return "Seeking opportunities denied to them, these girls cross-dress out of necessity."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Types { get { return new List<string> { "Historical" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {
