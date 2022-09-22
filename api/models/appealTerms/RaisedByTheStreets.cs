@@ -10,7 +10,7 @@ public class RaisedByTheStreets : IAppealTerm
     public string Id { get { return "RaisedByTheStreets"; } }
     public string Name { get { return "Raised by the streets"; } }
     public string Description { get { return "Growing up amidst gangs, drugs, and desperation."; } }
-    public List<string> Genres { get { return new List<string> { "urban" }; } }
+    public List<string> Genres { get { return new List<string> { "crime", "drama", "urban" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
