@@ -444,7 +444,6 @@ public static class Factory
             new OriginStory(),
             new RebootsAndRetcons(),
 
-            // LEFT OFF! TODO need to go through each of these and tag appropriate genres and types. Keep an eye out for opportunities to tag the other genres, like Western/Comedy/History/Music etc... Want each genre to have good representation
             // general/aficionado
             new EatDrinkAndBeMerry(),
             new Fandemonium(),
@@ -502,7 +501,6 @@ public static class Factory
             // general/identity
             new EngenderingGender(),
             new FacingRacism(),
-            new ImmigrantExperiences(),
 
             // general/life challenges
             new BouncingBack(),
