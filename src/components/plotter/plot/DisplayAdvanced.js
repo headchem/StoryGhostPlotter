@@ -17,6 +17,9 @@ const DisplayAdvanced = (
         genres,
         emotionsOptions,
         onGenresChange,
+        appealTermsOptions,
+        appealTerms,
+        onAppealTermsChange,
         onFocusChange,
         setKeywords,
         setLogLineDescription,
@@ -100,6 +103,10 @@ const DisplayAdvanced = (
                     genres={genres}
                     onGenresChange={onGenresChange}
                     onFocusChange={onFocusChange}
+
+                    appealTermsOptions={appealTermsOptions}
+                    appealTerms={appealTerms}
+                    onAppealTermsChange={onAppealTermsChange}
 
                     setKeywords={setKeywords}
                     setLogLineDescription={setLogLineDescription}

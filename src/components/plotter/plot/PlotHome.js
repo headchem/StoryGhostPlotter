@@ -40,6 +40,7 @@ const PlotHome = (
     const [title, setTitle] = useState('')
     const [AITitles, setAITitles] = useState(null)
     const [genres, setGenres] = useState('')
+    const [appealTerms, setAppealTerms] = useState('')
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
     const [dramaticQuestion, setDramaticQuestion] = useState('')
@@ -65,6 +66,7 @@ const PlotHome = (
         setTitle(data['title'])
         setAITitles(data['aiTitles'])
         setGenres(data['genres'])
+        setAppealTerms(data['appealTerms'])
         setProblemTemplate(data['problemTemplate'])
         setKeywords(data['keywords'] ?? [])
         setDramaticQuestion(data['dramaticQuestion'])
@@ -88,17 +90,19 @@ const PlotHome = (
         // convert list of string tuples from the webservice into the format expected by React-Select
         const mapToSelectOptions = (arr) => {
             return arr.map(function (x) {
-                return { value: x['item1'], label: x['item2'] }
+                return { value: x['item1'], label: x['item2'], genres: x['item3'], types: x['item4'], description: x['item5'] }
             })
         }
 
         const mappedGenreOptions = mapToSelectOptions(data['genres'])
+        const mappedAppealTermsOptions = mapToSelectOptions(data['appealTerms'])
         const mappedProblemTemplateOptions = mapToSelectOptions(data['problemTemplates'])
         const mappedArchetypeOptions = mapToSelectOptions(data['archetypes'])
         const mappedDramaticQuestionsOptions = mapToSelectOptions(data['dramaticQuestions'])
         const mappedEmotionsOptions = mapToSelectOptions(data['emotionDescriptions'])
 
         setGenreOptions(mappedGenreOptions)
+        setAppealTermsOptions(mappedAppealTermsOptions)
         setProblemTemplateOptions(mappedProblemTemplateOptions)
         setArchetypeOptions(mappedArchetypeOptions)
         setDramaticQuestionOptions(mappedDramaticQuestionsOptions)
@@ -438,6 +442,7 @@ const PlotHome = (
 
     const [emotionOptions, setEmotionOptions] = useState([])
     const [genreOptions, setGenreOptions] = useState([])
+    const [appealTermsOptions, setAppealTermsOptions] = useState([])
     const [problemTemplateOptions, setProblemTemplateOptions] = useState([])
     const [archetypeOptions, setArchetypeOptions] = useState([])
     const [dramaticQuestionOptions, setDramaticQuestionOptions] = useState([])
@@ -468,7 +473,7 @@ const PlotHome = (
         const checkLogLineIsComplete = async () => {
             // if any of the Log Line fields are still incomplete, call setLogLineIncomplete(true)
 
-            if (isNullOrEmpty(logLineDescription) || isNullOrEmpty(title) || isNullOrEmpty(genres) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(dramaticQuestion)) {
+            if (isNullOrEmpty(logLineDescription) || isNullOrEmpty(title) || isNullOrEmpty(genres) || isNullOrEmpty(appealTerms) || isNullOrEmpty(problemTemplate) || isNullOrEmpty(keywords) || isNullOrEmpty(dramaticQuestion)) {
                 setLogLineIncomplete(true)
                 return
             }
@@ -479,7 +484,7 @@ const PlotHome = (
         checkLogLineIsComplete()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
+    }, [title, genres, appealTerms, AITitles, problemTemplate, keywords, logLineDescription, dramaticQuestion]);
 
     // any time the properties we are listening to change (at the bottom of the useEffect method) we call this block
     useEffect(() => {
@@ -490,7 +495,7 @@ const PlotHome = (
         return () => clearTimeout(timeout) //clear timeout (delete function execution)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [title, genres, AITitles, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
+    }, [title, genres, appealTerms, AITitles, problemTemplate, keywords, logLineDescription, AILogLineDescriptions, dramaticQuestion, sequences, characters, isPublic]);
 
     const updateTokensRemaining = () => {
         fetch('/api/GetTokensRemaining', {
@@ -531,6 +536,7 @@ const PlotHome = (
                 'AITitles': AITitles,
                 'title': title,
                 'genres': genres,
+                'appealTerms': appealTerms,
                 'problemTemplate': problemTemplate,
                 'keywords': keywords,
                 'dramaticQuestion': dramaticQuestion,
@@ -570,6 +576,10 @@ const PlotHome = (
     const onGenresChange = (inputValue) => {
         setGenres(inputValue.map(el => el.value))
         //setGenre(event.target.value)
+    }
+
+    const onAppealTermsChange = (inputValue) => {
+        setAppealTerms(inputValue.map(el => el.value))
     }
 
     const onProblemTemplateChange = (event) => {
@@ -647,6 +657,9 @@ const PlotHome = (
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}
+                            appealTermsOptions={appealTermsOptions}
+                            appealTerms={appealTerms}
+                            onAppealTermsChange={onAppealTermsChange}
                             onFocusChange={onFocusChange}
                             setKeywords={setKeywords}
                             setLogLineDescription={setLogLineDescription}
@@ -727,6 +740,11 @@ const PlotHome = (
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}
+
+                            appealTermsOptions={appealTermsOptions}
+                            appealTerms={appealTerms}
+                            onAppealTermsChange={onAppealTermsChange}
+
                             onFocusChange={onFocusChange}
                             setKeywords={setKeywords}
                             setLogLineDescription={setLogLineDescription}

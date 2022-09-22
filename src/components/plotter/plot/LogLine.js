@@ -3,6 +3,7 @@ import LimitedTextArea from './LimitedTextArea'
 import LogLineObjDetails from './LogLineObjDetails'
 import LogLineBrainstormAll from './Brainstorm/LogLineBrainstormAll'
 import Genres from './Fields/Genres'
+import AppealTerms from './Fields/AppealTerms'
 import Keywords from './Fields/Keywords'
 
 const LogLine = (
@@ -13,6 +14,9 @@ const LogLine = (
         genreOptions,
         genres,
         onGenresChange,
+        appealTermsOptions,
+        appealTerms,
+        onAppealTermsChange,
         onFocusChange,
 
         setKeywords,
@@ -62,11 +66,28 @@ const LogLine = (
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}
-                            //onFocusChange={onFocusChange}
                             mode={mode}
                         />
                     </div>
                 </div>
+
+                {
+                    userInfo && userInfo.userRoles.includes('admin') &&
+                    <div className='row pb-3' onClick={() => onFocusChange('appealTerms')}>
+                        <div className='col-md-3'>
+                            <label htmlFor="appealTerms" className="form-label">Appeal Terms</label>
+                        </div>
+                        <div className='col-md-9'>
+                            <AppealTerms
+                                genres={genres}
+                                appealTermsOptions={appealTermsOptions}
+                                appealTerms={appealTerms}
+                                onAppealTermsChange={onAppealTermsChange}
+                                mode={mode}
+                            />
+                        </div>
+                    </div>
+                }
 
                 {
                     userInfo && userInfo.userRoles.includes('customer') &&

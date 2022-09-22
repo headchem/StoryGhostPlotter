@@ -28,6 +28,7 @@ public class Plot
     public string Title { get; set; }
     //public string CompletionType { get; set; } // orphanSummary, orphanFull, wandererSummary, wandererFull, warriorSummary, warriorFull, martyrSummary, martyrFull
     public List<string> Genres { get; set; }
+    public List<string> AppealTerms { get; set; }
     public string ProblemTemplate { get; set; }
     public List<string> Keywords { get; set; }
     // public string HeroArchetype { get; set; }

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using StoryGhost.Interfaces;
 using StoryGhost.Models.Emotions;
 using StoryGhost.Models.Genres;
+using StoryGhost.Models.AppealTerms;
 using StoryGhost.Models.ProblemTemplates;
 using StoryGhost.Models.Archetypes;
 using StoryGhost.Models.DramaticQuestions;
@@ -225,6 +226,18 @@ public static class Factory
             new Learning(),
             new Aloof(),
             new MatterOfFact(),
+        };
+    }
+
+    public static List<IAppealTerm> GetAppealTerms()
+    {
+        return new List<IAppealTerm> {
+            new AcademiesOfMagic(),
+            new AlienInvasions(),
+
+            new FishOutOfWater(),
+            new GetInTheGame(),
+            new UnreliableNarrator()
         };
     }
 

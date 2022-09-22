@@ -199,6 +199,7 @@ public class PlotService : IPlotService
         var newCharacters = plot.Characters;
         var newDramaticQuestion = plot.DramaticQuestion;
         var newGenres = plot.Genres;
+        var newAppealTerms = plot.AppealTerms;
         var newKeywords = plot.Keywords;
         var newProblemTemplate = plot.ProblemTemplate;
         var newSequences = plot.Sequences;
@@ -222,6 +223,11 @@ public class PlotService : IPlotService
         if (newGenres != null && string.Join(',', newGenres) != string.Join(',', oldPlotObj.Genres ?? new List<string>()))
         {
             plotPatchOps.Add(PatchOperation.Set("/genres", newGenres));
+        }
+
+        if (newAppealTerms != null && string.Join(',', newAppealTerms) != string.Join(',', oldPlotObj.AppealTerms ?? new List<string>()))
+        {
+            plotPatchOps.Add(PatchOperation.Set("/appealTerms", newAppealTerms));
         }
 
         if (newAITitles != null && string.Join(',', newAITitles) != string.Join(',', oldPlotObj.AITitles ?? new List<string>()))

@@ -10,8 +10,8 @@ public class UnreliableNarrator : IAppealTerm
     public string Id { get { return "UnreliableNarrator"; } }
     public string Name { get { return "Unreliable narrator"; } }
     public string Description { get { return "Don't believe everything you read."; } }
-    public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Genres { get { return new List<string> { "general", "horror", "thriller" }; } }
+    public List<string> Types { get { return new List<string> { "Narrative Devices", "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

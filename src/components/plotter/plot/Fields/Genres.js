@@ -7,7 +7,6 @@ const Genres = (
         genreOptions,
         genres,
         onGenresChange,
-        //onFocusChange,
         mode
     }
 ) => {
@@ -15,14 +14,13 @@ const Genres = (
     return (
         <div style={{ width: '100%' }}>
             <Select
-                defaultValue={genreOptions.filter(o => genres.indexOf(o.value) > -1)}
+                defaultValue={genreOptions.filter(o => genres && genres.indexOf(o.value) > -1)}
                 isMulti
                 name="genres"
                 options={genreOptions}
                 className="genres-multi-select"
                 classNamePrefix="select"
                 onChange={onGenresChange}
-                //onFocus={() => onFocusChange('genres')}
                 theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
             />
         </div>
