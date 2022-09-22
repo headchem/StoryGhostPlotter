@@ -5,10 +5,10 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class NewTheNeighborhood : IAppealTerm
+public class NewInTheNeighborhood : IAppealTerm
 {
-    public string Id { get { return "NewTheNeighborhood"; } }
-    public string Name { get { return "New the neighborhood"; } }
+    public string Id { get { return "NewInTheNeighborhood"; } }
+    public string Name { get { return "New in the neighborhood"; } }
     public string Description { get { return "It’s tough being the new kid on the block."; } }
     public List<string> Genres { get { return new List<string> { "" }; } }
     public List<string> Types { get { return new List<string> { "" }; } }

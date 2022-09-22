@@ -10,8 +10,8 @@ public class GoingStraight : IAppealTerm
     public string Id { get { return "GoingStraight"; } }
     public string Name { get { return "Going straight"; } }
     public string Description { get { return "Leaving street life for straight life isn't easy."; } }
-    public List<string> Genres { get { return new List<string> { "" }; } }
-    public List<string> Types { get { return new List<string> { "" }; } }
+    public List<string> Genres { get { return new List<string> { "urban" }; } }
+    public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

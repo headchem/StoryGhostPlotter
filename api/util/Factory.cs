@@ -232,12 +232,315 @@ public static class Factory
     public static List<IAppealTerm> GetAppealTerms()
     {
         return new List<IAppealTerm> {
-            new AcademiesOfMagic(),
-            new AlienInvasions(),
+            // romance/characters
+            new BestFriendsSibling(),
+            new EnemiesToLovers(),
+            new FallingForAFriend(),
+            new FamousFlings(),
+            new ForRicherForPoorer(),
+            new FriendsToLovers(),
+            new HatingToDating(),
+            new OppositesAttract(),
+            new SecondChanceAtRomance(),
+            new TogetherAgain(),
 
-            new FishOutOfWater(),
+            // romance/baby on board
+            new GettingTogetherForTheKids(),
+            new SecretBaby(),
+            new SuddenBaby(),
+
+            // romance/setting
+            new HomeAgain(),
+            new LoveAbroad(),
+            new LoveInASmallTown(),
+            new NewInTown(),
+            new SnowboundAndStranded(),
+            new WorkplaceRomance(),
+
+            // romance/plot
+            new CaptiveHearts(),
+            new FakeRelationship(),
+            new LoveInDisguise(),
+            new MarriageOfConvenience(),
+            new NoStringsAttached(),
+            new OnceUponATime(),
+            new OneNightToForever(),
+            new UnforgettableLove(),
+
+            // science fiction/aliens and robots
+            new AlienInvasions(),
+            new FirstContact(),
+            new RiseOfTheMachines(),
+            new RobotsWithEmotions(),
+
+            // science fiction/apocalyptic and dystopian
+            new BandOfSurvivors(),
+            new BattleRoyale(),
+            new ClimateChangeApocalypse(),
+            new EvilCorporations(),
+            new ForTheResistance(),
+            new PandemicApocalypse(),
+
+            // science fiction/concepts and characters
+            new AlteredMemories(),
+            new Human20(),
+            new PlayingGod(),
+            new PressPlayToStart(),
+            new ScienceFictionBootCamp(),
+            new SendInTheClones(),
+            new VengeanceIsMine(),
+            new WeirdScience(),
+            new WomenOfSteel(),
+            new ZeroToHero(),
+
+            // science fiction/space and time
+            new BoldlyGo(),
+            new FixingHistory(),
+            new GenerationShips(),
+            new LostInSpace(),
+            new SpaceColonization(),
+            new TimeLoop(),
+            new TimeSlip(),
+
+            // fantasy/characters
+            new ChosenOne(),
+            new DarkLord(),
+            new HiddenHeritage(),
+            new LastOfTheirKind(),
+            new PrincessPower(),
+            new RightfulHeir(),
+            new ScumAndVillainy(),
+            
+            // fantasy/plot
+            new BadReligion(),
+            new BeCarefulWhatYouWishFor(),
+            new CourtIntrigue(),
+            new DefendTheRealm(),
+            new MagicGoesAway(),
+            new MetaphoricalRacism(),
+            new QuestForMagicalItems(),
+            new ReluctantAllies(),
+            new ReturnOfMagic(),
+            new SeekingLostParents(),
+            new SlayingTheDragon(),
+            new ToTheRescue(),
+            new TooPowerfulToContain(),
+            
+            // fantasy/setting
+            new AcademiesOfMagic(),
+            new FaerieRealm(),
+            new HiddenAmongUs(),
+            new LawsOfMagic(),
+            new RealmOfTheDead(),
+
+            // horror/characters
+            new ChildhoodTrauma(),
+            new FinalGirls(),
+            new UnreliableNarrator(),
+
+            // horror/plot
+            new Cursed(),
+            new Possessed(),
+            new Trapped(),
+
+            // horror/monsters
+            new CreatureFeature(),
+            new CreepyClownsAndBadSeeds(),
+            new EvilAnimals(),
+            new EvilTransformations(),
+            new MonsterMayhem(),
+            new RealLifeMonsters(),
+            new VampireMenace(),
+            new WerewolvesAmongUs(),
+            new WitchcraftAndTheOccult(),
+            new ZombieApocalypse(),
+
+            // horror/setting
+            new DontGoInThere(),
+            new SmallTownHorror(),
+            new MovingToAHauntedHouse(),
+
+            // horror/style
+            new BodyHorror(),
+            new FoundFootage(),
+            new CosmicHorror(),
+            new MonsterMashups(),
+
+            // mystery/characters
+            new MissingMemories(),
+            new RookieOnTheBeat(),
+            new SherlockPaws(),
+            new StarringFamousFigures(),
+
+            // mystery/plot
+            new BeyondTheGrave(),
+            new EerieMysteries(),
+            new LockedRoomMysteries(),
+            new ProvingOnesInnocence(),
+            new SolveThePuzzle(),
+
+            // mystery/setting
+            new TheButlerDidIt(),
+            new CriminalMasterpieces(),
+            new InspiredByRealEvents(),
+            new RuralPolice(),
+            new SleuthsInSchool(),
+            new SmallTownPolice(),
+            new UrbanPolice(),
+            new VacationInterrupted(),
+            new WartimeCrime(),
+
+            // thriller/characters
+            new Framed(),
+            new TooGoodToBeTrue(),
+
+            // thriller/plot
+            new AncientEnigmas(),
+            new OnTheRun(),
+            new RaceAgainstTime(),
+            new ShadowOrganizations(),
+
+            // thriller/setting
+            new BehindTheIronCurtain(),
+
+            // urban/characters
+            new Backstabbers(),
+            new Cheaters(),
+            new CrazyInLove(),
+            new FamilyBusiness(),
+            new ImASurvivor(),
+            new LadiesFirst(),
+            new MySquad(),
+            new Rivals(),
+
+            // urban/plot
+            new BabyDrama(),
+            new CautionaryTales(),
+            new GetMoney(),
+            new GoingStraight(),
+            new GoodGoneBad(),
+            new JustGotOut(),
+            new OnTheDownLow(),
+            new SexWork(),
+            new SinnerRedeemed(),
+            
+            // urban/setting
+            new ChurchDrama(),
+            new LifeOnTheInside(),
+            new RaisedByTheStreets(),
+
+            // comics/characters
+            new BornThisWay(),
+            new CosmicAndMysticalBeginnings(),
+            new NoPowerStillSuper(),
+            new SidekickSpotlight(),
+            new SuperFamilies(),
+            new SuperSubversive(),
+            new WomenOfSteel(),
+
+            // comics/plot
+            new Assemble(),
+            new MultiverseEncounters(),
+            new OriginStory(),
+            new RebootsAndRetcons(),
+
+            // LEFT OFF! TODO need to go through each of these and tag appropriate genres and types. Keep an eye out for opportunities to tag the other genres, like Western/Comedy/History/Music etc... Want each genre to have good representation
+            // general/aficionado
+            new EatDrinkAndBeMerry(),
+            new Fandemonium(),
             new GetInTheGame(),
-            new UnreliableNarrator()
+            new LifeInArt(),
+            new MusicalReads(),
+
+            // general/concepts and characters
+            new BrandNewYou(),
+            new ComedyOfManners(),
+            new EnsembleCasts(),
+            new FishOutOfWater(),
+            new GreenReads(),
+            new HumanAndAnimalBonds(),
+            new LifeDuringWartime(),
+            new RagsToRiches(),
+            new ReturnFromWar(),
+            new RichAndFamous(),
+            new TechnicalDifficulties(),
+            new ThrownTogether(),
+            new BoysVsGirls(),
+            new MeAndMyPet(),
+            new UnderdogAthletes(),
+
+            // general/experiences
+            new BoardingSchoolLife(),
+            new ComingOutExperiences(),
+            new ImmigrantExperiences(),
+            new LifeAfterHighSchool(),
+            new LifeInSmallTowns(),
+            new RoadTripping(),
+
+            // general/family and relationships
+            new MeetTheFamily(),
+            new TroubleAtHome(),
+            new MisfitsUnited(),
+            new DealingWithBullies(),
+            new ChosenFamily(),
+            new FamilyGatherings(),
+            new LoveOnTheRocks(),
+            new MaybeBaby(),
+            new SecondAct(),
+            new ToxicRelationships(),
+            new UnhappyFamilies(),
+            new UnlikelyFriendships(),
+            new WeUsedToBeFriends(),
+
+            // general/historical
+            new GirlsDisguisedAsBoys(),
+            new LifeInSlavery(),
+            new LoveInWartime(),
+            new RoyalReads(),
+            new SurvivingTheHolocaust(),
+
+            // general/identity
+            new EngenderingGender(),
+            new FacingRacism(),
+            new ImmigrantExperiences(),
+
+            // general/life challenges
+            new BouncingBack(),
+            new ConfrontingMortality(),
+            new LivingWhileDying(),
+            new CopingWithDeath(),
+            new DealingWithIllness(),
+            new DealingWithMentalIllness(),
+            new ForbiddenLove(),
+            new GoYourOwnWay(),
+            new LivingWithVisibleDisability(),
+            new LivingWithInvisibleDisability(),
+            new SurvivingAbuse(),
+            new SurvivingSexualViolence(),
+            new TeenPregnancyAndParenting(),
+            new NewInTheNeighborhood(),
+            new RunningAway(),
+
+            // general/narrative devices
+            new JustOneDay(),
+            new ChildNarrator(),
+            new TimeAndAgain(),
+            new UnnamedNarrator(),
+            new WebOfConnections(),
+
+            // general/personal development
+            new ExploringFaith(),
+            new LetsDance(),
+            new MusicMakers(),
+            new SetTheStage(),
+            new WriteItOut(),
+
+            // general/setting
+            new NovelsOfPlace(),
+            new OfficeLife(),
+            new SadSmallTowns(),
+            new SuburbanMalaise()
+
         };
     }
 
@@ -261,6 +564,7 @@ public static class Factory
             new Music(),
             new Western(),
             new Sports(),
+            new Urban(),
         };
     }
 
