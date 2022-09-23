@@ -13,23 +13,25 @@ const AppealTerms = (
 ) => {
 
     const filteredAppealTermsOptions = appealTermsOptions.filter(opt => opt.genres.indexOf('general') > -1 || genres.some(g => opt.genres.includes(g)))
-    .map(function (x) {
-        return { value: x.value, label: '(' + x.genres.sort().join(', ') + ') ' + x.label + ' - ' + x.description, genres: x.genres, types: x.types }
-    }).sort((a, b) => (a.label > b.label) ? 1 : -1)
+        .map(function (x) {
+            return { value: x.value, label: '(' + x.genres.sort().join(', ') + ') ' + x.label + ' - ' + x.description, genres: x.genres, types: x.types }
+        }).sort((a, b) => (a.label > b.label) ? 1 : -1)
 
     return (
-        <div style={{ width: '100%' }}>
-            <Select
-                defaultValue={appealTermsOptions.filter(o => appealTerms && appealTerms.indexOf(o.value) > -1)}
-                isMulti
-                name="appealTerms"
-                options={filteredAppealTermsOptions}
-                className="appeal-terms-multi-select"
-                classNamePrefix="select"
-                onChange={onAppealTermsChange}
-                theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
-            />
-        </div>
+        <>
+            <div style={{ width: '100%' }}>
+                <Select
+                    defaultValue={appealTermsOptions.filter(o => appealTerms && appealTerms.indexOf(o.value) > -1)}
+                    isMulti
+                    name="appealTerms"
+                    options={filteredAppealTermsOptions}
+                    className="appeal-terms-multi-select"
+                    classNamePrefix="select"
+                    onChange={onAppealTermsChange}
+                    theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
+                />
+            </div>
+        </>
     )
 }
 

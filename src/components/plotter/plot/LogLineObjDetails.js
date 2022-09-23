@@ -1,10 +1,12 @@
 import React from 'react'
+import AppealTermsBrainstorm from './Brainstorm/AppealTermsBrainstorm'
 import KeywordsBrainstorm from './Brainstorm/KeywordsBrainstorm'
 import TitleBrainstorm from './Brainstorm/TitleBrainstorm';
 import LogLineDescriptionBrainstorm from './Brainstorm/LogLineDescriptionBrainstorm'
-import GenresAdvice from './Advice/GenresAdvice';
-import ProblemTemplateAdvice from './Advice/ProblemTemplateAdvice';
-import DramaticQuestionAdvice from './Advice/DramaticQuestionAdvice';
+import GenresAdvice from './Advice/GenresAdvice'
+import AppealTermsAdvice from './Advice/AppealTermsAdvice'
+import ProblemTemplateAdvice from './Advice/ProblemTemplateAdvice'
+import DramaticQuestionAdvice from './Advice/DramaticQuestionAdvice'
 
 const LogLineObjDetails = (
     {
@@ -19,6 +21,7 @@ const LogLineObjDetails = (
         setTitle,
         curFocusElName,
         genres,
+        appealTerms,
         problemTemplate,
         dramaticQuestion,
         keywords,
@@ -34,6 +37,18 @@ const LogLineObjDetails = (
                 <GenresAdvice
                     genres={genres}
                 />
+            }
+            {
+                curFocusElName === 'appealTerms' &&
+                <>
+                    <AppealTermsAdvice
+                        appealTerms={appealTerms}
+                    />
+                    <hr />
+                    <AppealTermsBrainstorm
+                        genres={genres}
+                    />
+                </>
             }
             {
                 curFocusElName === 'keywords' &&

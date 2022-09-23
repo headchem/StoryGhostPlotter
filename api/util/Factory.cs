@@ -204,7 +204,7 @@ public static class Factory
             new Unbelief(),
             new Impressed(),
             new Inspiration(),
-            
+
             new Seething(),
             new Argumentative(),
             new Urgency(),
@@ -540,6 +540,37 @@ public static class Factory
             new SuburbanMalaise()
 
         };
+    }
+
+    public static List<IAppealTerm> GetRandomAppealTerms(List<string> genres, int numResults)
+    {
+        var results = GetAppealTerms();
+
+        results = results.Where(a => a.Genres.Any(g => genres.Contains(g))).OrderBy(a => Guid.NewGuid()).ToList().Take(numResults).ToList();
+
+        return results;
+    }
+
+    /// <summary><c>appealTerm</c> may be either Id or Name and is not case sensitive.</summary>
+    public static List<IAppealTerm> GetAppealTerms(List<string> appealTerms)
+    {
+        var results = new List<IAppealTerm>();
+
+        foreach (var curAppealTerm in appealTerms)
+        {
+            var appealTerm = curAppealTerm.ToLower().Trim();
+
+            IAppealTerm appealTermObj = GetAppealTerms().Where(g => g.Id.ToLower() == appealTerm || g.Id.ToLower() == appealTerm.Replace(" ", "")).FirstOrDefault();
+
+            if (appealTermObj == null)
+            {
+                appealTermObj = GetAppealTerms().Where(g => g.Name.ToLower() == appealTerm).FirstOrDefault();
+            }
+
+            results.Add(appealTermObj);
+        }
+
+        return results;
     }
 
     public static List<IGenre> GetGenres()

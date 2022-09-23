@@ -227,6 +227,7 @@ const LogLine = (
                     setAITitles={setAITitles}
                     curFocusElName={curFocusElName}
                     genres={genres}
+                    appealTerms={appealTerms}
                     problemTemplate={problemTemplate}
                     dramaticQuestion={dramaticQuestion}
                     keywords={keywords}
