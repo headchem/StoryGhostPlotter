@@ -544,9 +544,11 @@ public static class Factory
 
     public static List<IAppealTerm> GetRandomAppealTerms(List<string> genres, int numResults)
     {
+        genres = genres.Select(g => g.ToLower()).ToList();
+
         var results = GetAppealTerms();
 
-        results = results.Where(a => a.Genres.Any(g => genres.Contains(g))).OrderBy(a => Guid.NewGuid()).ToList().Take(numResults).ToList();
+        results = results.Where(a => a.Genres.Select(g => g.ToLower()).Any(g => genres.Contains(g))).OrderBy(a => Guid.NewGuid()).Take(numResults).ToList();
 
         return results;
     }
