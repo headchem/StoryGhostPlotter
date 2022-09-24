@@ -378,6 +378,16 @@ public static class Factory
             new RookieOnTheBeat(),
             new SherlockPaws(),
             new StarringFamousFigures(),
+            new EccentricDetectiveAndSidekick(),
+            new HiddenInPlainSight(),
+            new PrivateEye(),
+            new PoliceProcedural(),
+            new HardenedProfessional(),
+            new UnusualSleuths(),
+            new InLoveWithSuspect(),
+            new BuffoonDetective(),
+            new RichDetective(),
+            new HadIButKnown(),
 
             // mystery/plot
             new BeyondTheGrave(),
@@ -387,7 +397,7 @@ public static class Factory
             new SolveThePuzzle(),
 
             // mystery/setting
-            new TheButlerDidIt(),
+            new ClosedSocieties(),
             new CriminalMasterpieces(),
             new InspiredByRealEvents(),
             new RuralPolice(),
@@ -396,6 +406,10 @@ public static class Factory
             new UrbanPolice(),
             new VacationInterrupted(),
             new WartimeCrime(),
+            new ArmchairDetection(),
+            new CorruptionPermeates(),
+            new OrderInTheCourt(),
+            new MysteryHistory(),
 
             // thriller/characters
             new Framed(),
