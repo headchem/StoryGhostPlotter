@@ -5,13 +5,13 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class TimeSlip : IAppealTerm
+public class HiddenAlienPockets : IAppealTerm
 {
-    public string Id { get { return "TimeSlip"; } }
-    public string Name { get { return "Time slip"; } }
-    public string Description { get { return "Characters emerge somewhere else - past or future, with philosophical implications."; } }
+    public string Id { get { return "HiddenAlienPockets"; } }
+    public string Name { get { return "Hidden Alien Pockets"; } }
+    public string Description { get { return "They were watching and manipulating us from the shadows."; } }
     public List<string> Genres { get { return new List<string> { "science fiction" }; } }
-    public List<string> Types { get { return new List<string> { "Space and Time" }; } }
+    public List<string> Types { get { return new List<string> { "Concepts and Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

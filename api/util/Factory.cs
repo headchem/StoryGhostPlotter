@@ -292,6 +292,13 @@ public static class Factory
             new WeirdScience(),
             new WomenOfSteel(),
             new ZeroToHero(),
+            new HiddenAlienPockets(),
+            new HighTechLowLife(),
+            new HistoryRedux(),
+            new SciencePowered(),
+            new SpaceMilitary(),
+            new SpaceOpera(),
+            new Steampunk(),
 
             // science fiction/space and time
             new BoldlyGo(),
