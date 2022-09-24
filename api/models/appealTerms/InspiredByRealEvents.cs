@@ -9,7 +9,7 @@ public class InspiredByRealEvents : IAppealTerm
 {
     public string Id { get { return "InspiredByRealEvents"; } }
     public string Name { get { return "Inspired by real events"; } }
-    public string Description { get { return "Sometimes truth is stranger than fiction."; } }
+    public string Description { get { return "Sometimes truth is stranger than fiction. Ripped from the headlines, deadly danger awaits in our everyday lives."; } }
     public List<string> Genres { get { return new List<string> { "mystery", "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

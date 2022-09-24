@@ -9,7 +9,7 @@ public class ShadowOrganizations : IAppealTerm
 {
     public string Id { get { return "ShadowOrganizations"; } }
     public string Name { get { return "Shadow organizations"; } }
-    public string Description { get { return "Who's in control? Good question."; } }
+    public string Description { get { return "Who's in control? These secret societies wield power from the shadows."; } }
     public List<string> Genres { get { return new List<string> { "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
