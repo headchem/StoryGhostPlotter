@@ -556,6 +556,7 @@ public static class Factory
             new TeenPregnancyAndParenting(),
             new NewInTheNeighborhood(),
             new RunningAway(),
+            new AboveTheirCaste(),
 
             // general/narrative devices
             new JustOneDay(),
