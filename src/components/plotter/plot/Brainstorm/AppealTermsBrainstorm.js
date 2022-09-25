@@ -27,7 +27,7 @@ const AppealTermsBrainstorm = (
 
     const fetchAppealTerms = async () => {
 
-        const randNum = getRandomInt(1,4)
+        const randNum = getRandomInt(2,4)
 
         const url = '/api/LogLine/AppealTermsRandom?genres=' + genres.join(',') + '&numAppealTerms=' + randNum
 
@@ -36,7 +36,7 @@ const AppealTermsBrainstorm = (
 
     const appealTermsListItems = (brainstormedAppealTerms ?? []).map((appealTerm, idx) =>
         <li key={idx}>
-            {appealTerm['name']} - {appealTerm['description']}
+            <strong>{appealTerm['name']}</strong> - {appealTerm['description']}
         </li>
     )
 
