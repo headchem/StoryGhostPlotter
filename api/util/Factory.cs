@@ -349,6 +349,7 @@ public static class Factory
             new Cursed(),
             new Possessed(),
             new Trapped(),
+            new Infected(),
 
             // horror/monsters
             new CreatureFeature(),
@@ -361,11 +362,14 @@ public static class Factory
             new WerewolvesAmongUs(),
             new WitchcraftAndTheOccult(),
             new ZombieApocalypse(),
+            new Spirits(),
 
             // horror/setting
             new DontGoInThere(),
             new SmallTownHorror(),
             new MovingToAHauntedHouse(),
+            new GothicCastle(),
+            new ScienceGoneTooFar(),
 
             // horror/style
             new BodyHorror(),
