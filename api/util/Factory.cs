@@ -414,15 +414,28 @@ public static class Factory
             // thriller/characters
             new Framed(),
             new TooGoodToBeTrue(),
+            new SpyLifeBravado(),
+            new SpyLifeInfiltrators(),
+            new CatAndMouse(),
+            new HeroOnAMission(),
+            new FlawedSwashbuckler(),
+            new WhyMe(),
+            new Psychopaths(),
 
             // thriller/plot
             new AncientEnigmas(),
             new OnTheRun(),
             new RaceAgainstTime(),
             new ShadowOrganizations(),
+            new TreasureHunt(),
+            new FabeledTreasure(),
+            new CorporateGames(),
+            new Terrorists(),
+            new BigPlan(),
 
             // thriller/setting
             new BehindTheIronCurtain(),
+            new JustPolitics(),
 
             // urban/characters
             new Backstabbers(),
