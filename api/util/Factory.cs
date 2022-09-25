@@ -575,7 +575,19 @@ public static class Factory
             new NovelsOfPlace(),
             new OfficeLife(),
             new SadSmallTowns(),
-            new SuburbanMalaise()
+            new SuburbanMalaise(),
+
+            // western/setting
+            new PioneerSpirit(),
+            new Anarchy(),
+            new IdillicTreachery(),
+
+            // western/characters
+            new Gunslinger(),
+            new RestoreOrder(),
+
+            // western/plot
+            new TimesAreChanging(),
 
         };
     }
