@@ -317,6 +317,10 @@ public static class Factory
             new PrincessPower(),
             new RightfulHeir(),
             new ScumAndVillainy(),
+            new ProtectFromTheUnseen(),
+            new TelepathicHero(),
+            new MonsterKiller(),
+            new Immortal(),
             
             // fantasy/plot
             new BadReligion(),
@@ -339,6 +343,10 @@ public static class Factory
             new HiddenAmongUs(),
             new LawsOfMagic(),
             new RealmOfTheDead(),
+            new MagicalTechnology(),
+            new MythicRetelling(),
+            new AngelsAndDemons(),
+            new EveryoneHasAGift(),
 
             // horror/characters
             new ChildhoodTrauma(),
@@ -557,6 +565,7 @@ public static class Factory
             new NewInTheNeighborhood(),
             new RunningAway(),
             new AboveTheirCaste(),
+            new SwappedAtBirth(),
 
             // general/narrative devices
             new JustOneDay(),
