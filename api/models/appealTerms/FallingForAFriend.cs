@@ -9,7 +9,7 @@ public class FallingForAFriend : IAppealTerm
 {
     public string Id { get { return "FallingForAFriend"; } }
     public string Name { get { return "Falling for a friend"; } }
-    public string Description { get { return "Discovering that friendship has more to offer."; } }
+    public string Description { get { return "Discovering that platonic friendship has more to offer."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

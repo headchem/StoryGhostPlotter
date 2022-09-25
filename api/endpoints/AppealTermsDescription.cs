@@ -40,6 +40,12 @@ public static class AppealTermsDescription
             var user = StaticWebAppsAuth.Parse(req);
             if (!user.IsInRole("authenticated")) return new UnauthorizedResult();
 
+            // TEMP
+            var all = Factory.GetAppealTerms();
+            var allPairs = all.Select(a => (a.Id, a.Description)).ToList();
+            var allIDsStr = string.Join("\n", allPairs.Select(a => a.Id));
+            var allDescsStr = string.Join("\n", allPairs.Select(a => a.Description));
+
             string genresStr = req.Query["genres"];
             string numAppealTermsStr = req.Query["numAppealTerms"];
             int numAppealTerms = int.Parse(numAppealTermsStr);
@@ -55,7 +61,8 @@ public static class AppealTermsDescription
             }
 
             // if no genres were passed in, select all genres, and use that to generate keywords across the entire list
-            if (genres.Count == 0) {
+            if (genres.Count == 0)
+            {
                 genres = Factory.GetGenres().Select(g => g.Name).ToList();
             }
 

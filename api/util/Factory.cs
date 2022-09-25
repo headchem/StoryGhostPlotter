@@ -238,8 +238,6 @@ public static class Factory
             new FallingForAFriend(),
             new FamousFlings(),
             new ForRicherForPoorer(),
-            new FriendsToLovers(),
-            new HatingToDating(),
             new OppositesAttract(),
             new SecondChanceAtRomance(),
             new TogetherAgain(),
@@ -266,6 +264,7 @@ public static class Factory
             new OnceUponATime(),
             new OneNightToForever(),
             new UnforgettableLove(),
+            new JealousLove(),
 
             // science fiction/aliens and robots
             new AlienInvasions(),
