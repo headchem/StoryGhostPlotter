@@ -8,6 +8,7 @@ const LogLineDescriptionBrainstorm = (
         userInfo,
         plotId,
         genres,
+        appealTermsIDs,
         keywords,
         completions,
         updateLogLineDescription,
@@ -33,6 +34,7 @@ const LogLineDescriptionBrainstorm = (
             body: JSON.stringify({
                 id: plotId,
                 genres: genres,
+                appealTerms: appealTermsIDs,
                 keywords: keywords,
             })
         }).then(function (response) {

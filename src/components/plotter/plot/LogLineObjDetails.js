@@ -67,6 +67,7 @@ const LogLineObjDetails = (
                     updateLogLineDescription={updateLogLineDescription}
                     updateLogLineDescriptionCompletions={updateLogLineDescriptionCompletions}
                     genres={genres}
+                    appealTermsIDs={appealTerms}
                     keywords={keywords}
                     tokensRemaining={tokensRemaining}
                 />
