@@ -218,17 +218,33 @@ public class OpenAICompletionService : ICompletionService
         // return results;
     }
 
+    private IAppealTerm getAppealTermIfExists(string appealTermID)
+    {
+        if (!string.IsNullOrWhiteSpace(appealTermID))
+        {
+            var appealTerm = Factory.GetAppealTerms(new List<string> { appealTermID }).First();
+            return appealTerm;
+        }
+        return null;
+    }
+
     private async Task<CompletionResponse> getFinetunedLogLineCompletion(string userId, Plot plot, double temperature, int keywordsLogitBias)
     {
         //var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
 
-        var prompt = Factory.GetLogLinePrompt(plot.Genres, plot.Keywords) + CreateFinetuningDataset.PromptSuffix;
+        var appealTerms = new List<IAppealTerm>();
+        foreach(var appealTermsID in plot.AppealTerms) {
+            appealTerms.Add(getAppealTermIfExists(appealTermsID));
+        }
+        appealTerms = appealTerms.Where(a => a != null).ToList();
+
+        var prompt = Factory.GetLogLinePrompt(plot.Genres, appealTerms, plot.Keywords) + CreateFinetuningDataset.PromptSuffix;
 
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
             // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-            Model = "curie:ft-personal-2022-06-07-05-37-00",
+            Model = "davinci:ft-personal-2022-09-26-00-31-13", //"curie:ft-personal-2022-06-07-05-37-00",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
             NumCompletions = 1,
@@ -239,13 +255,14 @@ public class OpenAICompletionService : ICompletionService
             LogitBias = new Dictionary<string, int>()
         };
 
-        if (plot.Keywords != null && plot.Keywords.Count > 0)
-        {
-            foreach (var keyword in plot.Keywords.Where(k => k.Contains("-")).ToList())
-            {
-                addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
-            }
-        }
+        // I really shouldn't need to force inclusion of keywords if the finetuning data is robust enough
+        // if (plot.Keywords != null && plot.Keywords.Count > 0)
+        // {
+        //     foreach (var keyword in plot.Keywords.Where(k => k.Contains("-")).ToList())
+        //     {
+        //         addTokenVariationsIfFound(openAIRequest.LogitBias, keyword, keywordsLogitBias);
+        //     }
+        // }
 
         var results = await getResponse(userId, plot.Id, "completions", openAIRequest);
         var result = results[0];

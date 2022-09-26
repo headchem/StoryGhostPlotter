@@ -851,7 +851,7 @@ public static class Factory
         return mentioned;
     }
 
-    public static string GetLogLinePrompt(List<string> Genres, List<string> Keywords)
+    public static string GetLogLinePrompt(List<string> Genres, List<IAppealTerm> AppealTerms, List<string> Keywords)
     {
         var genresPrompt = "";
 
@@ -864,6 +864,19 @@ public static class Factory
             genresPrompt += "GENRES: " + string.Join(", ", Genres);
         }
 
+        var appealTermsPrompt = "";
+
+        if (AppealTerms.Count == 1) {
+            appealTermsPrompt += "THEME: " + AppealTerms.First().Name + ": " + AppealTerms.First().Description;
+        }
+        else {
+            for(var i = 0; i < AppealTerms.Count; i++) {
+                appealTermsPrompt += $"THEME {i+1}: " + AppealTerms[i].Name + ": " + AppealTerms[i].Description + "\n";
+            }
+        }
+
+        appealTermsPrompt = appealTermsPrompt.Trim();
+
         var keywordsPrompt = "";
 
         if (Keywords.Count == 1)
@@ -875,7 +888,7 @@ public static class Factory
             keywordsPrompt += "KEYWORDS: " + string.Join(", ", Keywords);
         }
 
-        var prompt = $"{genresPrompt}. {keywordsPrompt}";
+        var prompt = $"{genresPrompt}\n{appealTermsPrompt}\n{keywordsPrompt}";
 
         return prompt;
     }
