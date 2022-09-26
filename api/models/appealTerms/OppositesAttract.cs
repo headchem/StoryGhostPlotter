@@ -9,7 +9,7 @@ public class OppositesAttract : IAppealTerm
 {
     public string Id { get { return "OppositesAttract"; } }
     public string Name { get { return "Opposites attract"; } }
-    public string Description { get { return "They disagree about everything... except each other."; } }
+    public string Description { get { return "These odd couples disagree about everything... except each other."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

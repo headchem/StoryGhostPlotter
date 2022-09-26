@@ -8,7 +8,7 @@ namespace StoryGhost.Models.AppealTerms;
 public class BestFriendsSibling : IAppealTerm
 {
     public string Id { get { return "BestFriendsSibling"; } }
-    public string Name { get { return "Best friends sibling"; } }
+    public string Name { get { return "Best friend's sibling"; } }
     public string Description { get { return "Off limits… but so tempting."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
