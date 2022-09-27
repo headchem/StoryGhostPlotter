@@ -565,6 +565,7 @@ public static class Factory
             new RunningAway(),
             new AboveTheirCaste(),
             new SwappedAtBirth(),
+            new RunningFromYourPast(),
 
             // general/narrative devices
             new JustOneDay(),
