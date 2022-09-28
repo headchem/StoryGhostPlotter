@@ -230,8 +230,6 @@ public class OpenAICompletionService : ICompletionService
 
     private async Task<CompletionResponse> getFinetunedLogLineCompletion(string userId, Plot plot, double temperature, int keywordsLogitBias)
     {
-        //var prompt = string.Join(", ", plot.Genres.OrderBy(a => Guid.NewGuid()).ToList()) + CreateFinetuningDataset.PromptSuffix;
-
         var appealTerms = new List<IAppealTerm>();
         foreach(var appealTermsID in plot.AppealTerms) {
             appealTerms.Add(getAppealTermIfExists(appealTermsID));
