@@ -244,7 +244,7 @@ public class OpenAICompletionService : ICompletionService
         {
             Prompt = prompt,
             // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-            Model = "davinci:ft-personal-2022-09-26-00-31-13", //"curie:ft-personal-2022-06-07-05-37-00",
+            Model = "davinci:ft-personal-2022-09-28-06-10-42", //"curie:ft-personal-2022-06-07-05-37-00",
             MaxTokens = 150, // longest log line prompt was 167 tokens,
             Temperature = 0.95,
             NumCompletions = 1,
