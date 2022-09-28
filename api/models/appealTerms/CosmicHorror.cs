@@ -9,7 +9,7 @@ public class CosmicHorror : IAppealTerm
 {
     public string Id { get { return "CosmicHorror"; } }
     public string Name { get { return "Cosmic horror"; } }
-    public string Description { get { return "Look here for horror beyond human understanding."; } }
+    public string Description { get { return "Horror beyond human understanding."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Style" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

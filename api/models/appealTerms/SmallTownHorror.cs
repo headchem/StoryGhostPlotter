@@ -9,7 +9,7 @@ public class SmallTownHorror : IAppealTerm
 {
     public string Id { get { return "SmallTownHorror"; } }
     public string Name { get { return "Small town horror"; } }
-    public string Description { get { return "Small towns have problems, too."; } }
+    public string Description { get { return "Small towns get creepy."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

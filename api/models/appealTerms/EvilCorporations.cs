@@ -9,7 +9,7 @@ public class EvilCorporations : IAppealTerm
 {
     public string Id { get { return "EvilCorporations"; } }
     public string Name { get { return "Evil corporations"; } }
-    public string Description { get { return "Soylent Green, Skynet, SPECTRE — well, we all gotta do something that pays the rent."; } }
+    public string Description { get { return "These companies care more about profits than ethics."; } }
     public List<string> Genres { get { return new List<string> { "science fiction" }; } }
     public List<string> Types { get { return new List<string> { "Apocalyptic and Dystopian" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

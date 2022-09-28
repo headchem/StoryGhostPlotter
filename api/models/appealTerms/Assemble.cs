@@ -9,7 +9,7 @@ public class Assemble : IAppealTerm
 {
     public string Id { get { return "Assemble"; } }
     public string Name { get { return "Assemble"; } }
-    public string Description { get { return "TEAM Together Everyone Achieves More."; } }
+    public string Description { get { return "To defeat the problem, everyone on the team will be needed."; } }
     public List<string> Genres { get { return new List<string> { "action", "adventure" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

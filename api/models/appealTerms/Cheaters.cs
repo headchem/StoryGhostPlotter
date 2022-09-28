@@ -9,7 +9,7 @@ public class Cheaters : IAppealTerm
 {
     public string Id { get { return "Cheaters"; } }
     public string Name { get { return "Cheaters"; } }
-    public string Description { get { return "Outrageous act of infidelity keep the pages turning."; } }
+    public string Description { get { return "Outrageous acts of infidelity."; } }
     public List<string> Genres { get { return new List<string> { "urban" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

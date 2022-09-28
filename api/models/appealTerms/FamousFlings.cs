@@ -9,7 +9,7 @@ public class FamousFlings : IAppealTerm
 {
     public string Id { get { return "FamousFlings"; } }
     public string Name { get { return "Famous flings"; } }
-    public string Description { get { return "Sparks fly when one of you is caught in the limelight."; } }
+    public string Description { get { return "Sparks fly when these couples get caught in the limelight."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

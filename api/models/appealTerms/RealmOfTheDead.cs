@@ -9,7 +9,7 @@ public class RealmOfTheDead : IAppealTerm
 {
     public string Id { get { return "RealmOfTheDead"; } }
     public string Name { get { return "Realm of the dead"; } }
-    public string Description { get { return "The afterlife has an address."; } }
+    public string Description { get { return "The afterlife is a lively place."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

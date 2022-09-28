@@ -9,7 +9,7 @@ public class LostInSpace : IAppealTerm
 {
     public string Id { get { return "LostInSpace"; } }
     public string Name { get { return "Lost in space"; } }
-    public string Description { get { return "First priority"; } }
+    public string Description { get { return "First priority: survival. Next on the agenda: getting home."; } }
     public List<string> Genres { get { return new List<string> { "science fiction" }; } }
     public List<string> Types { get { return new List<string> { "Space and Time" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

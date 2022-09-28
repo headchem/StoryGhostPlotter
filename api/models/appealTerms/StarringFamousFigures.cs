@@ -9,7 +9,7 @@ public class StarringFamousFigures : IAppealTerm
 {
     public string Id { get { return "StarringFamousFigures"; } }
     public string Name { get { return "Starring famous figures"; } }
-    public string Description { get { return "What would Jane Austen do? Real people solve mysteries."; } }
+    public string Description { get { return "Famous figures from history get involved in solving mysteries."; } }
     public List<string> Genres { get { return new List<string> { "mystery" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
