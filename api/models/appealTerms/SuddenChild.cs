@@ -5,10 +5,10 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class SuddenBaby : IAppealTerm
+public class SuddenChild : IAppealTerm
 {
-    public string Id { get { return "SuddenBaby"; } }
-    public string Name { get { return "Sudden baby"; } }
+    public string Id { get { return "SuddenChild"; } }
+    public string Name { get { return "Sudden child"; } }
     public string Description { get { return "Becoming the guardian of a child gives purpose to these unexpected caretakers."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
     public List<string> Types { get { return new List<string> { "Baby On Board" }; } }

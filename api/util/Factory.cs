@@ -245,7 +245,7 @@ public static class Factory
             // romance/baby on board
             new GettingTogetherForTheKids(),
             new SecretBaby(),
-            new SuddenBaby(),
+            new SuddenChild(),
 
             // romance/setting
             new HomeAgain(),
@@ -313,7 +313,6 @@ public static class Factory
             new DarkLord(),
             new HiddenHeritage(),
             new LastOfTheirKind(),
-            new PrincessPower(),
             new RightfulHeir(),
             new ScumAndVillainy(),
             new ProtectFromTheUnseen(),
