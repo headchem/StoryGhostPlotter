@@ -586,7 +586,26 @@ public static class Factory
             new SadSmallTowns(),
             new SuburbanMalaise(),
 
-            // western/setting
+            // westerns
+            new WesternsAfricanAmericansInTheWest(),
+            new WesternsArmyInTheWest(),
+            new WesternsBadMenAndGood(),
+            new WesternsComingOfAgeInAHarshFrontier(),
+            new WesternsHiredManOnHorseback(),
+            new WesternsIndianCaptives(),
+            new WesternsInModernTimes(),
+            new WesternsLawAndLawmen(),
+            new WesternsLivestockKingdoms(),
+            new WesternsMerchantsAndTeamsters(),
+            new WesternsMinesAndMining(),
+            new WesternsMountainMen(),
+            new WesternsNativeAmericans(),
+            new WesternsRailroads(),
+            new WesternsRomanceInTheWest(),
+            new WesternsSingularWomen(),
+            new WesternsTexasAndMexico(),
+            new WesternsUnromanticized(),
+            new WesternsWagonsWestAndEarlySettlement(),
 
             // western/characters
             new Gunslinger(),
