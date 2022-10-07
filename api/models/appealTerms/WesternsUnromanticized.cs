@@ -9,7 +9,7 @@ public class WesternsUnromanticized : IAppealTerm
 {
     public string Id { get { return "WesternsUnromanticized"; } }
     public string Name { get { return "Unromanticized"; } }
-    public string Description { get { return ""; } }
+    public string Description { get { return "These Westerns reveal the ugly underbelly of the West, with the patina of a glamorized frontier rubbed away to give a grim, uncompromising view of the area and times."; } }
     public List<string> Genres { get { return new List<string> { "western" }; } }
     public List<string> Types { get { return new List<string> { "setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

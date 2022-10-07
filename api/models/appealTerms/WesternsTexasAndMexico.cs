@@ -9,7 +9,7 @@ public class WesternsTexasAndMexico : IAppealTerm
 {
     public string Id { get { return "WesternsTexasAndMexico"; } }
     public string Name { get { return "Texas And Mexico"; } }
-    public string Description { get { return ""; } }
+    public string Description { get { return "The border country and the American settlement of Mexican lands provide an arena for heroics where honor meant more than the law."; } }
     public List<string> Genres { get { return new List<string> { "western" }; } }
     public List<string> Types { get { return new List<string> { "setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
