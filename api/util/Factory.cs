@@ -594,6 +594,15 @@ public static class Factory
             // western/plot
             new TimesAreChanging(),
 
+            // historical
+            new HistoricalPrehistoric(),
+            new HistoricalAncientCivilizations(),
+            new HistoricalMiddleAges(),
+            new HistoricalExplorationRenaissance(),
+            new HistoricalExoticLocales(),
+            new HistoricalAmericas(),
+            new Historical20thCentury(),
+
         };
     }
 
