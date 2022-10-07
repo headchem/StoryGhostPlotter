@@ -587,13 +587,9 @@ public static class Factory
             new SuburbanMalaise(),
 
             // western/setting
-            new PioneerSpirit(),
-            new Anarchy(),
-            new IdillicTreachery(),
 
             // western/characters
             new Gunslinger(),
-            new RestoreOrder(),
 
             // western/plot
             new TimesAreChanging(),
