@@ -5,10 +5,10 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class VampireMenace : IAppealTerm
+public class VampiresAmongUs : IAppealTerm
 {
-    public string Id { get { return "VampireMenace"; } }
-    public string Name { get { return "Vampire menace"; } }
+    public string Id { get { return "VampiresAmongUs"; } }
+    public string Name { get { return "Vampires Among Us"; } }
     public string Description { get { return "Garlic-challenged bloodsuckers."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Monsters" }; } }

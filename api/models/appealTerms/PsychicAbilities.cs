@@ -7,9 +7,9 @@ namespace StoryGhost.Models.AppealTerms;
 
 public class TelepathicHero : IAppealTerm
 {
-    public string Id { get { return "TelepathicHero"; } }
-    public string Name { get { return "Telepathic Hero"; } }
-    public string Description { get { return "The protagonist has telepathy, which brings a sense of responsibility to prevent evil-doers from carrying out their plans, but also strains the hero's relationships as they hear everyone's secret thoughts."; } }
+    public string Id { get { return "PsychicAbilities"; } }
+    public string Name { get { return "Psychic Abilities"; } }
+    public string Description { get { return "These characters possess psychic abilities like telepathy, telekinesis, and mystic mental links to other minds."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

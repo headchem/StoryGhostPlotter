@@ -9,7 +9,7 @@ public class UnusualSleuths : IAppealTerm
 {
     public string Id { get { return "UnusualSleuths"; } }
     public string Name { get { return "Unusual Sleuths"; } }
-    public string Description { get { return "These amateurs are told to stay out of it by the police, but they leverage their unique backgrounds and professions to solve the case and embarrass the pros."; } }
+    public string Description { get { return "These amateurs leverage their unique backgrounds and professions to solve the case."; } }
     public List<string> Genres { get { return new List<string> { "mystery" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

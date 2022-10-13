@@ -9,8 +9,8 @@ public class CorruptionPermeates : IAppealTerm
 {
     public string Id { get { return "CorruptionPermeates"; } }
     public string Name { get { return "Corruption Permeates"; } }
-    public string Description { get { return "What hope does a White Knight detective have when all of society seems in on the crime?"; } }
-    public List<string> Genres { get { return new List<string> { "mystery" }; } }
+    public string Description { get { return "What hope does a White Knight when surrounded by corruption?"; } }
+    public List<string> Genres { get { return new List<string> { "action", "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)

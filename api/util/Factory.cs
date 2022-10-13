@@ -364,7 +364,7 @@ public static class Factory
             new EvilTransformations(),
             new MonsterMayhem(),
             new RealLifeMonsters(),
-            new VampireMenace(),
+            new VampiresAmongUs(),
             new WerewolvesAmongUs(),
             new WitchcraftAndTheOccult(),
             new ZombieApocalypse(),
