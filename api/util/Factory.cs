@@ -560,7 +560,7 @@ public static class Factory
             new SurvivingAbuse(),
             new SurvivingSexualViolence(),
             new TeenPregnancyAndParenting(),
-            new NewInTheNeighborhood(),
+            new SocialIntegration(),
             new RunningAway(),
             new AboveTheirCaste(),
             new SwappedAtBirth(),
@@ -572,6 +572,7 @@ public static class Factory
             new TimeAndAgain(),
             new UnnamedNarrator(),
             new WebOfConnections(),
+            new Manhunt(),
 
             // general/personal development
             new ExploringFaith(),

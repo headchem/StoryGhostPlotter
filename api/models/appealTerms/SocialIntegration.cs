@@ -5,11 +5,11 @@ using StoryGhost.Interfaces;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class NewInTheNeighborhood : IAppealTerm
+public class SocialIntegration : IAppealTerm
 {
-    public string Id { get { return "NewInTheNeighborhood"; } }
-    public string Name { get { return "New in the neighborhood"; } }
-    public string Description { get { return "It's tough being the new kid on the block."; } }
+    public string Id { get { return "SocialIntegration"; } }
+    public string Name { get { return "Social Integration"; } }
+    public string Description { get { return "Stories involving reintegrating with society, or being out of place in an unfamiliar culture."; } }
     public List<string> Genres { get { return new List<string> { "adventure", "comedy", "urban" }; } }
     public List<string> Types { get { return new List<string> { "Life's Challenges" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

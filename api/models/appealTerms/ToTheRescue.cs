@@ -7,7 +7,7 @@ namespace StoryGhost.Models.AppealTerms;
 
 public class ToTheRescue : IAppealTerm
 {
-    public string Id { get { return "ToTheRescue"; } }
+    public string Id { get { return "ToTheRescue"; } } // different from Manhunt
     public string Name { get { return "To the rescue"; } }
     public string Description { get { return "Someone always needs saving."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
