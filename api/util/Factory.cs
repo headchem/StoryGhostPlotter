@@ -233,7 +233,7 @@ public static class Factory
     {
         return new List<IAppealTerm> {
             // romance/characters
-            new BestFriendsSibling(),
+            new OffLimitsLove(),
             new EnemiesToLovers(),
             new FallingForAFriend(),
             new FamousFlings(),
@@ -549,7 +549,6 @@ public static class Factory
             // general/life challenges
             new BouncingBack(),
             new ConfrontingMortality(),
-            new LivingWhileDying(),
             new CopingWithDeath(),
             new DealingWithIllness(),
             new DealingWithMentalIllness(),
@@ -577,7 +576,6 @@ public static class Factory
             // general/personal development
             new ExploringFaith(),
             new LetsDance(),
-            new MusicMakers(),
             new SetTheStage(),
             new WriteItOut(),
 
