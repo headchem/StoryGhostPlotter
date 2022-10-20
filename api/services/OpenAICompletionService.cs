@@ -241,8 +241,8 @@ public class OpenAICompletionService : ICompletionService
         var openAIRequest = new OpenAICompletionsRequest
         {
             Prompt = prompt,
-            // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.08
-            Model = "davinci:ft-personal-2022-09-30-06-37-32",
+            // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.07
+            Model = "davinci:ft-personal-2022-10-20-04-31-15",
             MaxTokens = 180, // longest log line prompt was 167 tokens,
             Temperature = temperature,
             NumCompletions = 1,
