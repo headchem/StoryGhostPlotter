@@ -9,7 +9,7 @@ public class FamilyGatherings : IAppealTerm
 {
     public string Id { get { return "FamilyGatherings"; } }
     public string Name { get { return "Family gatherings"; } }
-    public string Description { get { return "When families get together, personal histories collide."; } }
+    public string Description { get { return "When families get together, personal histories and grudges collide."; } }
     public List<string> Genres { get { return new List<string> { "comedy", "drama", "family", "urban" }; } }
     public List<string> Types { get { return new List<string> { "Family and Relationships" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

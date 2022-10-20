@@ -9,7 +9,7 @@ public class TooGoodToBeTrue : IAppealTerm
 {
     public string Id { get { return "TooGoodToBeTrue"; } }
     public string Name { get { return "Too good to be true"; } }
-    public string Description { get { return "Something's not quite right, with dangerous implications."; } }
+    public string Description { get { return "Something's not quite right, and these characters will tease it out, with dangerous implications."; } }
     public List<string> Genres { get { return new List<string> { "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

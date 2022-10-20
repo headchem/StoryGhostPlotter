@@ -49,6 +49,7 @@ public class CreateFinetuningDataset
         rows = rows.Where(r => r.IsGoodLogLineBool == true);
         rows = rows.Where(r => !string.IsNullOrWhiteSpace(r.AppealTerms1));
         rows = rows.Where(r => r.SemiColonSpaceKeywordsList.Count > 0);
+        rows = rows.Where(r => r.GenreList.Count > 0);
 
         // randomize row order just in case
         rows = rows.OrderBy(a => Guid.NewGuid()).ToList();

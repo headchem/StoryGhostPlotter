@@ -9,7 +9,7 @@ public class DealingWithMentalIllness : IAppealTerm
 {
     public string Id { get { return "DealingWithMentalIllness"; } }
     public string Name { get { return "Dealing with mental illness"; } }
-    public string Description { get { return "The mind can be the source of our greatest challenges."; } }
+    public string Description { get { return "Maladies of the mind can be the source of our greatest challenges."; } }
     public List<string> Genres { get { return new List<string> { "drama" }; } }
     public List<string> Types { get { return new List<string> { "Life's Challenges" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

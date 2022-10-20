@@ -9,7 +9,7 @@ public class EerieMysteries : IAppealTerm
 {
     public string Id { get { return "EerieMysteries"; } }
     public string Name { get { return "Eerie mysteries"; } }
-    public string Description { get { return "Is there REALLY something supernatural going on?"; } }
+    public string Description { get { return "These capers seem supernatural until the mystery is revealed to be grounded in reality."; } }
     public List<string> Genres { get { return new List<string> { "mystery" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

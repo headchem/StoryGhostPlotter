@@ -9,7 +9,7 @@ public class GoodGoneBad : IAppealTerm
 {
     public string Id { get { return "GoodGoneBad"; } }
     public string Name { get { return "Good gone bad"; } }
-    public string Description { get { return "Life on the streets can be irresistible."; } }
+    public string Description { get { return "These characters struggle to stay out of trouble as the criminal life on the streets can be irresistible."; } }
     public List<string> Genres { get { return new List<string> { "urban", "action" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

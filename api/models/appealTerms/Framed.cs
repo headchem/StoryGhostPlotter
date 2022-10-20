@@ -9,7 +9,7 @@ public class Framed : IAppealTerm
 {
     public string Id { get { return "Framed"; } }
     public string Name { get { return "Framed"; } }
-    public string Description { get { return "Proof of innocence comes before proof of guilt."; } }
+    public string Description { get { return "These characters have been unjustly accused and must prove their innocence."; } }
     public List<string> Genres { get { return new List<string> { "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

@@ -9,7 +9,7 @@ public class VampiresAmongUs : IAppealTerm
 {
     public string Id { get { return "VampiresAmongUs"; } }
     public string Name { get { return "Vampires Among Us"; } }
-    public string Description { get { return "Garlic-challenged bloodsuckers."; } }
+    public string Description { get { return "These bloodsuckers are living amongst us."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Monsters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

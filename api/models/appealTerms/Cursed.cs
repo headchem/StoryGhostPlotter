@@ -9,7 +9,7 @@ public class Cursed : IAppealTerm
 {
     public string Id { get { return "Cursed"; } }
     public string Name { get { return "Cursed"; } }
-    public string Description { get { return "Some objects should be left untouched."; } }
+    public string Description { get { return "Malevolent forces have cursed these characters."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

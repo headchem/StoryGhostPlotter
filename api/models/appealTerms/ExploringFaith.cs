@@ -9,7 +9,7 @@ public class ExploringFaith : IAppealTerm
 {
     public string Id { get { return "ExploringFaith"; } }
     public string Name { get { return "Exploring faith"; } }
-    public string Description { get { return "Characters strive to balance faith with living their lives."; } }
+    public string Description { get { return "Characters strive to balance religious faith with living their lives."; } }
     public List<string> Genres { get { return new List<string> { "drama" }; } }
     public List<string> Types { get { return new List<string> { "Personal Development" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

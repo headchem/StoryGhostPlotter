@@ -9,7 +9,7 @@ public class WebOfConnections : IAppealTerm
 {
     public string Id { get { return "WebOfConnections"; } }
     public string Name { get { return "Web of connections"; } }
-    public string Description { get { return "Inanimate objects are given a unique voice."; } }
+    public string Description { get { return "Inanimate objects are given a unique voice having witnessed much."; } }
     public List<string> Genres { get { return new List<string> { "adventure", "family" }; } }
     public List<string> Types { get { return new List<string> { "Narrative Devices" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

@@ -9,7 +9,7 @@ public class HardenedProfessional : IAppealTerm
 {
     public string Id { get { return "HardenedProfessional"; } }
     public string Name { get { return "HardenedProfessional"; } }
-    public string Description { get { return "They've seen it all - but this time is different."; } }
+    public string Description { get { return "They've seen it all - but the crime this time is different and more shocking than usual."; } }
     public List<string> Genres { get { return new List<string> { "mystery" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

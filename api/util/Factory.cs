@@ -491,7 +491,6 @@ public static class Factory
             // general/aficionado
             new EatDrinkAndBeMerry(),
             new Fandemonium(),
-            new GetInTheGame(),
             new LifeInArt(),
             new MusicalReads(),
 

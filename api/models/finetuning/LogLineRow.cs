@@ -68,7 +68,7 @@ public class LogLineRow
             {
                 return new List<string>();
             }
-            var words = SemiColonSpaceKeywords.Split(';').Select(w => w.Trim()).ToList();
+            var words = SemiColonSpaceKeywords.TrimEnd(';').Trim().Split(';').Select(w => w.Trim()).ToList();
 
             return words;
         }

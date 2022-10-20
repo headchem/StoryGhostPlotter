@@ -9,7 +9,7 @@ public class HiddenHeritage : IAppealTerm
 {
     public string Id { get { return "HiddenHeritage"; } }
     public string Name { get { return "Hidden heritage"; } }
-    public string Description { get { return "There's more to these characters than meets the eye."; } }
+    public string Description { get { return "These characters have impactful secret family backgrounds."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

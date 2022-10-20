@@ -9,7 +9,7 @@ public class CorruptionPermeates : IAppealTerm
 {
     public string Id { get { return "CorruptionPermeates"; } }
     public string Name { get { return "Corruption Permeates"; } }
-    public string Description { get { return "What hope does a White Knight when surrounded by corruption?"; } }
+    public string Description { get { return "What hope does a honest person have when surrounded by corruption?"; } }
     public List<string> Genres { get { return new List<string> { "action", "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

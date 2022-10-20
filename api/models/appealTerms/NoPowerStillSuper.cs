@@ -8,7 +8,7 @@ namespace StoryGhost.Models.AppealTerms;
 public class NoPowerStillSuper : IAppealTerm
 {
     public string Id { get { return "NoPowerStillSuper"; } }
-    public string Name { get { return "No power still super"; } }
+    public string Name { get { return "No power, still super"; } }
     public string Description { get { return "It takes hard work to get to be this good."; } }
     public List<string> Genres { get { return new List<string> { "action", "adventure" }; } }
     public List<string> Types { get { return new List<string> { "Characters" }; } }

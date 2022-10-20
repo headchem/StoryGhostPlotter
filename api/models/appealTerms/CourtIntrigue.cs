@@ -9,7 +9,7 @@ public class CourtIntrigue : IAppealTerm
 {
     public string Id { get { return "CourtIntrigue"; } }
     public string Name { get { return "Court intrigue"; } }
-    public string Description { get { return "What's better than power? More power."; } }
+    public string Description { get { return "Politics, alliances and betrayals in the royal court."; } }
     public List<string> Genres { get { return new List<string> { "fantasy", "history" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

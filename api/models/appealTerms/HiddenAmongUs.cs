@@ -9,7 +9,7 @@ public class HiddenAmongUs : IAppealTerm
 {
     public string Id { get { return "HiddenAmongUs"; } }
     public string Name { get { return "Hidden among us"; } }
-    public string Description { get { return "There's a whole world within the world as we know it."; } }
+    public string Description { get { return "There's a whole different world coexisting and hiding in plain sight."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
     public List<string> Types { get { return new List<string> { "Setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

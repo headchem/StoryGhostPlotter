@@ -9,7 +9,7 @@ public class ThrownTogether : IAppealTerm
 {
     public string Id { get { return "ThrownTogether"; } }
     public string Name { get { return "Thrown together"; } }
-    public string Description { get { return "Forging connections in unexpected ways."; } }
+    public string Description { get { return "Forging connections in unexpected ways when people of very different backgrounds are forced to interact."; } }
     public List<string> Genres { get { return new List<string> { "adventure", "comedy", "drama", "romance", "sports", "thriller", "urban", "war", "western" }; } }
     public List<string> Types { get { return new List<string> { "Concepts and Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

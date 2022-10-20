@@ -9,7 +9,7 @@ public class CorporateGames : IAppealTerm
 {
     public string Id { get { return "CorporateGames"; } }
     public string Name { get { return "Corporate Games"; } }
-    public string Description { get { return "The legal and finance departments have more than money at stake."; } }
+    public string Description { get { return "The legal and finance departments have more than money at stake, with dramatic consequences."; } }
     public List<string> Genres { get { return new List<string> { "thriller" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

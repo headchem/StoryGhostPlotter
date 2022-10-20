@@ -9,7 +9,7 @@ public class ConfrontingMortality : IAppealTerm
 {
     public string Id { get { return "ConfrontingMortality"; } }
     public string Name { get { return "Confronting mortality"; } }
-    public string Description { get { return "All things must pass."; } }
+    public string Description { get { return "These characters are faced with the inevitability of death."; } }
     public List<string> Genres { get { return new List<string> { "drama", "romance", "thriller", "war" }; } }
     public List<string> Types { get { return new List<string> { "Life's Challenges" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

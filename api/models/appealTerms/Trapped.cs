@@ -9,7 +9,7 @@ public class Trapped : IAppealTerm
 {
     public string Id { get { return "Trapped"; } }
     public string Name { get { return "Trapped"; } }
-    public string Description { get { return "Think isolated cabins, Arctic research bases, submarines, graves, or elevators..."; } }
+    public string Description { get { return "These characters get stuck in isolated cabins, Arctic research bases, submarines, graves, elevators, or any other confined space."; } }
     public List<string> Genres { get { return new List<string> { "horror" }; } }
     public List<string> Types { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
