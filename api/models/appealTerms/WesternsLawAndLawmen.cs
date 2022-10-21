@@ -13,7 +13,7 @@ public class WesternsLawAndLawmen : IAppealTerm
     public string Name { get { return "Law and Lawmen"; } }
     public string Description { get { return "The frontier was a haven for the lawless, so tales of those who oppose them, trying to impose order on the chaos, take on a great significance."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.PowerStructures, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

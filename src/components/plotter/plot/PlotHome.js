@@ -90,7 +90,7 @@ const PlotHome = (
         // convert list of string tuples from the webservice into the format expected by React-Select
         const mapToSelectOptions = (arr) => {
             return arr.map(function (x) {
-                return { value: x['item1'], label: x['item2'], genres: x['item3'], types: x['item4'], description: x['item5'] }
+                return { value: x['item1'], label: x['item2'], genres: x['item3'], categories: x['item4'], description: x['item5'] }
             })
         }
 

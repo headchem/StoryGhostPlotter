@@ -14,7 +14,7 @@ const AppealTerms = (
 
     const filteredAppealTermsOptions = appealTermsOptions.filter(opt => opt.genres.indexOf('general') > -1 || genres.some(g => opt.genres.includes(g)))
         .map(function (x) {
-            return { value: x.value, label: '(' + x.genres.sort().join(', ') + ') ' + x.label + ' - ' + x.description, genres: x.genres, types: x.types }
+            return { value: x.value, label: '(' + x.genres.sort().join(', ') + ') ' + x.label + ' - ' + x.description, genres: x.genres, categories: x.categories }
         }).sort((a, b) => (a.label > b.label) ? 1 : -1)
 
     return (

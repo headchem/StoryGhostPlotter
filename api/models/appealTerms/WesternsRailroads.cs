@@ -13,7 +13,7 @@ public class WesternsRailroads : IAppealTerm
     public string Name { get { return "Railroads"; } }
     public string Description { get { return "Ribbons of steel opened up the West to new waves of settlers and opportunists."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

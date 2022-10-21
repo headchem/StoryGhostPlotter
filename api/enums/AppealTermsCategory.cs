@@ -10,7 +10,8 @@ public static class AppealTermsCategoryEnum
     public static readonly string Settings = "settings";
     public static readonly string Animals = "animals";
     public static readonly string Secrets = "secrets";
-    public static readonly string Occupations = "occupations";
-    
+    public static readonly string OccupationsAndEnterprise = "occupations and enterprise";
+    public static readonly string PowerStructures = "power structures";
+    public static readonly string Situations = "situations";
 
 }
