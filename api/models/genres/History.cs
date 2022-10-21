@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class History : IGenre
 {
-    public string Id { get { return "history"; } }
+    public string Id { get { return GenresEnum.History; } }
     public string Name { get { return "History"; } }
     public string Description { get { return "An essential element of historical fiction is that it is set in the past and pays attention to the manners, social conditions and other details of the depicted period. Authors also frequently choose to explore notable historical figures in these settings, allowing readers to better understand how these individuals might have responded to their environments."; } }
     public List<string> Keywords

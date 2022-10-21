@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class GreenReads : IAppealTerm
@@ -11,7 +13,7 @@ public class GreenReads : IAppealTerm
     public string Name { get { return "Green reads"; } }
     public string Description { get { return "Explore our relationship with the natural world."; } }
     public List<string> Genres { get { return new List<string> { "adventure", "family", "history", "western" }; } }
-    public List<string> Types { get { return new List<string> { "Concepts and Characters" }; } }
+    public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

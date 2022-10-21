@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Romance : IGenre
 {
-    public string Id { get { return "romance"; } }
+    public string Id { get { return GenresEnum.Romance; } }
     public string Name { get { return "Romance"; } }
     public string Description { get { return "Romance focuses on the relationship and courtship between two people."; } }
     public List<string> Keywords

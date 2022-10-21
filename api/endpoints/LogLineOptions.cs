@@ -31,7 +31,7 @@ public static class LogLineOptions
             options.Add("genres", genresOptions);
 
             var appealTerms = Factory.GetAppealTerms();
-            var appealTermsOptions = appealTerms.Select(x => (x.Id, x.Name, x.Genres, x.Types, x.Description)).OrderBy(x => x.Name).ToList();
+            var appealTermsOptions = appealTerms.Select(x => (x.Id, x.Name, x.Genres, x.Categories, x.Description)).OrderBy(x => x.Name).ToList();
             options.Add("appealTerms", appealTermsOptions);
 
             var problemTemplates = Factory.GetProblemTemplates();

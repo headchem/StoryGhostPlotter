@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class JealousLove : IAppealTerm
@@ -11,7 +13,7 @@ public class JealousLove : IAppealTerm
     public string Name { get { return "Jealous Love"; } }
     public string Description { get { return "In love with someone who is already taken, or jealously guarding one's lover from competition."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
-    public List<string> Types { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

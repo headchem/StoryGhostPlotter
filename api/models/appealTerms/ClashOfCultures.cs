@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class ClashOfCultures : IAppealTerm
@@ -11,7 +13,7 @@ public class ClashOfCultures : IAppealTerm
     public string Name { get { return "Clash of Cultures"; } }
     public string Description { get { return "Disagreements, misunderstandings, and challenges abound when cultures collide."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
-    public List<string> Types { get { return new List<string> { "setting" }; } }
+    public List<string> Categories { get { return new List<string> { "setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Sports : IGenre
 {
-    public string Id { get { return "sports"; } }
+    public string Id { get { return GenresEnum.Sports; } }
     public string Name { get { return "Sports"; } }
     public string Description { get { return "The Sports genre focuses on a game that dominates the Hero's life. The game is a backdrop for the Hero's struggles to overcome adversity."; } }
     public List<string> Keywords

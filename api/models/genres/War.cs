@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class War : IGenre
 {
-    public string Id { get { return "war"; } }
+    public string Id { get { return GenresEnum.War; } }
     public string Name { get { return "War"; } }
     public string Description { get { return "The War genre is concerned with warfare, typically about naval, air, or land battles, with combat scenes central to the drama. It has been strongly associated with the 20th century. The fateful nature of battle scenes means that war stories often end with them. Themes explored include combat, survival and escape, camaraderie between soldiers, sacrifice, the futility and inhumanity of battle, the effects of war on society, and the moral and human issues raised by war."; } }
     public List<string> Keywords

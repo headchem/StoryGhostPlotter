@@ -243,7 +243,7 @@ public class OpenAICompletionService : ICompletionService
             Prompt = prompt,
             // openai api fine_tunes.create -t "logline.jsonl" -m curie --n_epochs 2 --batch_size 64 --learning_rate_multiplier 0.07
             Model = "davinci:ft-personal-2022-10-20-04-31-15",
-            MaxTokens = 180, // longest log line prompt was 167 tokens,
+            MaxTokens = 250, // 
             Temperature = temperature,
             NumCompletions = 1,
             TopP = 0.99,//1.0, to avoid nonsense words, set to just below 1.0 according to https://www.reddit.com/r/GPT3/comments/tiz7tp/comment/i1hb32a/?utm_source=share&utm_medium=web2x&context=3 I'm not sure we have this problem, but seems like a good idea just in case.

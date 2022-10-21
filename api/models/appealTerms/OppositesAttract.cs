@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class OppositesAttract : IAppealTerm
@@ -11,7 +13,7 @@ public class OppositesAttract : IAppealTerm
     public string Name { get { return "Opposites attract"; } }
     public string Description { get { return "These odd couples disagree about everything... except each other."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
-    public List<string> Types { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

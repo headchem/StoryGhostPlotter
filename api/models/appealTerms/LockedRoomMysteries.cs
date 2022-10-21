@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class LockedRoomMysteries : IAppealTerm
@@ -11,7 +13,7 @@ public class LockedRoomMysteries : IAppealTerm
     public string Name { get { return "Locked room mysteries"; } }
     public string Description { get { return "The crime scene is isolated, and the suspect list is small."; } }
     public List<string> Genres { get { return new List<string> { "mystery" }; } }
-    public List<string> Types { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

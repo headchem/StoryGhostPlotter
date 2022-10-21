@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Western : IGenre
 {
-    public string Id { get { return "western"; } }
+    public string Id { get { return GenresEnum.Western; } }
     public string Name { get { return "Western"; } }
     public string Description { get { return "Western is a genre of fiction set primarily in the latter half of the 19th century and the early 20th century in the Western United States, known as the \"Old West\" or the \"Wild West\". The Western genre sometimes portrays the conquest of the wilderness and the subordination of nature in the name of civilization or the confiscation of the territorial rights of the original, Native American, inhabitants of the frontier. The Western depicts a society organized around codes of honor and personal, direct or private justice-\"frontier justice\"-dispensed by gunfights."; } }
     public List<string> Keywords

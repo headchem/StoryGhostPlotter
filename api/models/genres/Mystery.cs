@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Mystery : IGenre
 {
-    public string Id { get { return "mystery"; } }
+    public string Id { get { return GenresEnum.Mystery; } }
     public string Name { get { return "Mystery"; } }
     public string Description { get { return "Mystery explores a shocking event, usually a murder or crime. A small cast of suspects all have plausible motives. The big reveal of the true culprit is always a surprise."; } }
     public List<string> Keywords

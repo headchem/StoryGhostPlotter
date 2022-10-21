@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class SecretBaby : IAppealTerm
@@ -11,7 +13,7 @@ public class SecretBaby : IAppealTerm
     public string Name { get { return "Secret baby"; } }
     public string Description { get { return "Revealing a secret love child complicates life for these couples."; } }
     public List<string> Genres { get { return new List<string> { "romance" }; } }
-    public List<string> Types { get { return new List<string> { "Baby On Board" }; } }
+    public List<string> Categories { get { return new List<string> { "Baby On Board" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

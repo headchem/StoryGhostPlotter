@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class MisfitsUnited : IAppealTerm
@@ -11,7 +13,7 @@ public class MisfitsUnited : IAppealTerm
     public string Name { get { return "Misfits united"; } }
     public string Description { get { return "The characters in these stories feel like they don't fit in except with each other."; } }
     public List<string> Genres { get { return new List<string> { "adventure", "comedy" }; } }
-    public List<string> Types { get { return new List<string> { "Family and Relationships" }; } }
+    public List<string> Categories { get { return new List<string> { "Family and Relationships" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Action : IGenre
 {
-    public string Id { get { return "action"; } }
+    public string Id { get { return GenresEnum.Action; } }
     public string Name { get { return "Action"; } }
     public string Description { get { return "In the Action genre, the protagonist is thrust into a series of events that typically involve violence and physical feats. Action tends to feature a mostly resourceful hero struggling against incredible odds, which include life-threatening situations, a dangerous villain, or a pursuit which usually concludes in victory for the hero."; } }
     public List<string> Keywords

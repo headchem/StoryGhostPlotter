@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Family : IGenre
 {
-    public string Id { get { return "family"; } }
+    public string Id { get { return GenresEnum.Family; } }
     public string Name { get { return "Family"; } }
     public string Description { get { return "The Family genre contains children or relates to them in the context of home and family. Often covering topics of fear, authority, and reciprocal relationships."; } }
     public List<string> Keywords

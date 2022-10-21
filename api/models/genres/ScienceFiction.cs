@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Scifi : IGenre
 {
-    public string Id { get { return "science fiction"; } }
+    public string Id { get { return GenresEnum.ScienceFiction; } }
     public string Name { get { return "Science Fiction"; } }
     public string Description { get { return "Science Fiction is packed full of futuristic ideas, extrapolating from what's possible today into advanced science and technology. It examines the consequences of these innovations, and seeks to inspire a sense of forward-thinking wonder."; } }
     public List<string> Keywords

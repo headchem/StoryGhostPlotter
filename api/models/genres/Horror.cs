@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Horror : IGenre
 {
-    public string Id { get { return "horror"; } }
+    public string Id { get { return GenresEnum.Horror; } }
     public string Name { get { return "Horror"; } }
     public string Description { get { return "Horror is intended to shock, frighten, or induce a feeling of disgust, repulsion, or loathing. It intends to create an eerie atmosphere, focusing on either psychological or supernatural aspects."; } }
     public List<string> Keywords

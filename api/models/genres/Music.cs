@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Music : IGenre
 {
-    public string Id { get { return "music"; } }
+    public string Id { get { return GenresEnum.Music; } }
     public string Name { get { return "Music"; } }
     public string Description { get { return "Stories in the Music genre focus on some aspect of music itself, while also involving music in the telling of the story."; } }
     public List<string> Keywords

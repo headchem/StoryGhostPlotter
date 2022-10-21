@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Drama : IGenre
 {
-    public string Id { get { return "drama"; } }
+    public string Id { get { return GenresEnum.Drama; } }
     public string Name { get { return "Drama"; } }
     public string Description { get { return "Drama is the tension created between extreme forces that oppose one another. It focuses on some aspect of humanity and tests it to the extreme, revealing intense emotions and challenging the relationships of the characters involved."; } }
     public List<string> Keywords

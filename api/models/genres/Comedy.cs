@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Comedy : IGenre
 {
-    public string Id { get { return "comedy"; } }
+    public string Id { get { return GenresEnum.Comedy; } }
     public string Name { get { return "Comedy"; } }
     public string Description { get { return "Comedy is intended to be humorous or amusing by inducing laughter. Stories in this style traditionally have a happy ending. The genre focuses on individual character personalities and interactions."; } }
     public List<string> Keywords

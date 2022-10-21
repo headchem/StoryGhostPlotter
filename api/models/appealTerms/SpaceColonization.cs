@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class SpaceColonization : IAppealTerm
@@ -11,7 +13,7 @@ public class SpaceColonization : IAppealTerm
     public string Name { get { return "Space colonization"; } }
     public string Description { get { return "Humanity puts down roots of civilization on other planets."; } }
     public List<string> Genres { get { return new List<string> { "science fiction" }; } }
-    public List<string> Types { get { return new List<string> { "Space and Time" }; } }
+    public List<string> Categories { get { return new List<string> { "Space and Time" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

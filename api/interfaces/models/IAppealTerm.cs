@@ -10,7 +10,7 @@ public interface IAppealTerm
     public string Name { get; }
     public string Description { get; }
     public List<string> Genres { get; }
-    public List<string> Types { get; }
+    public List<string> Categories { get; }
     public List<string> Aliases { get; }
 
     ///<summary>Returns an example log line based on common patterns for this specific Appeal Term based on Top_10000_Movies.xlsx</summary>

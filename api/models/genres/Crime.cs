@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Crime : IGenre
 {
-    public string Id { get { return "crime"; } }
+    public string Id { get { return GenresEnum.Crime; } }
     public string Name { get { return "Crime"; } }
     public string Description { get { return "The Crime genre centers on criminal acts and especially on the investigation, either by an amateur or a professional detective, of a serious crime, often a murder. The investigator puts themselves in harm's way as they obsess about the criminal's motives, caring more about the \"why\" than the \"what\". Most crime drama focuses on crime investigation and does not feature the courtroom."; } }
     public List<string> Keywords

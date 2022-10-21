@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
 
+using StoryGhost.Enums;
+
 namespace StoryGhost.Models.AppealTerms;
 
 public class HiddenHeritage : IAppealTerm
@@ -11,7 +13,7 @@ public class HiddenHeritage : IAppealTerm
     public string Name { get { return "Hidden heritage"; } }
     public string Description { get { return "These characters have impactful secret family backgrounds."; } }
     public List<string> Genres { get { return new List<string> { "fantasy" }; } }
-    public List<string> Types { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { "Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StoryGhost.Interfaces;
+using StoryGhost.Enums;
 
 namespace StoryGhost.Models.Genres;
 
 public class Thriller : IGenre
 {
-    public string Id { get { return "thriller"; } }
+    public string Id { get { return GenresEnum.Thriller; } }
     public string Name { get { return "Thriller"; } }
     public string Description { get { return "Thrillers are characterized and defined by the moods they elicit, giving viewers heightened feelings of suspense, excitement, surprise, anticipation and anxiety. Thrillers generally keep the audience on the \"edge of their seats\" as the plot builds towards a climax. The cover-up of important information is a common element. Literary devices such as red herrings, plot twists, unreliable narrators, and cliffhangers are used extensively. A thriller is often a villain-driven plot, whereby they present obstacles that the protagonist must overcome."; } }
     public List<string> Keywords
