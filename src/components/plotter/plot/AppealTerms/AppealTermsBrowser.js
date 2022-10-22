@@ -41,7 +41,6 @@ const AppealTermsBrowser = (
         <span onClick={() => onSelectCategory(c)}>{c}</span>
     </li>)
 
-    //const allGenreCategoriesAppealTerms = ['Historical20thCentury', 'BuffoonDetective'] // TODO: filter based on all appeal terms within the current selected genre category
     const appealTermsOptionsForGenreAndCategory = appealTermsOptionsForGenre.filter(a => a['categories'].includes(selectedCategory))
     const allGenreCategoriesAppealTerms = appealTermsOptionsForGenreAndCategory.map(a => a['value']).sort()
 
