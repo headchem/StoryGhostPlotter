@@ -7,6 +7,7 @@ import SequenceList from './SequenceList'
 import CharacterList from './CharacterList'
 import CharacterBrainstormAll from './Brainstorm/CharacterBrainstormAll';
 import SceneImport from './SceneImport'
+import AppealTermsBrowser from './AppealTerms/AppealTermsBrowser'
 
 const DisplayAdvanced = (
     {
@@ -94,6 +95,20 @@ const DisplayAdvanced = (
     return (
 
         <>
+            {
+                userInfo && userInfo.userRoles.includes('admin') &&
+
+                <div className='row pb-5'>
+                    <AppealTermsBrowser
+                        genres={genres}
+                        setGenres={onGenresChange}
+                        appealTermsOptions={appealTermsOptions}
+                        appealTerms={appealTerms}
+                        onAppealTermsChange={onAppealTermsChange}
+                    />
+                </div>
+            }
+
             <div className='row pb-5'>
                 <LogLine
                     userInfo={userInfo}
