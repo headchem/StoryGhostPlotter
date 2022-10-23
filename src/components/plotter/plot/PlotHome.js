@@ -39,8 +39,8 @@ const PlotHome = (
     const [AILogLineDescriptions, setAILogLineDescriptions] = useState(null)
     const [title, setTitle] = useState('')
     const [AITitles, setAITitles] = useState(null)
-    const [genres, setGenres] = useState('')
-    const [appealTerms, setAppealTerms] = useState('')
+    const [genres, setGenres] = useState([])
+    const [appealTerms, setAppealTerms] = useState([])
     const [problemTemplate, setProblemTemplate] = useState('')
     const [keywords, setKeywords] = useState([])
     const [dramaticQuestion, setDramaticQuestion] = useState('')
@@ -573,6 +573,7 @@ const PlotHome = (
             });
     }
 
+    
     const onGenresChange = (inputValue) => {
         setGenres(inputValue.map(el => el.value))
         //setGenre(event.target.value)
@@ -581,6 +582,7 @@ const PlotHome = (
     const onAppealTermsChange = (inputValue) => {
         setAppealTerms(inputValue.map(el => el.value))
     }
+    
 
     const onProblemTemplateChange = (event) => {
         setProblemTemplate(event.target.value)
@@ -739,11 +741,11 @@ const PlotHome = (
                             emotionsOptions={emotionOptions}
                             genreOptions={genreOptions}
                             genres={genres}
-                            onGenresChange={onGenresChange}
+                            setGenres={setGenres}
 
                             appealTermsOptions={appealTermsOptions}
                             appealTerms={appealTerms}
-                            onAppealTermsChange={onAppealTermsChange}
+                            setAppealTerms={setAppealTerms}
 
                             onFocusChange={onFocusChange}
                             setKeywords={setKeywords}

@@ -6,7 +6,7 @@ const AppealTermsBrowser = (
         setGenres,
         appealTermsOptions,
         appealTerms,
-        onAppealTermsChange,
+        setAppealTerms,
     }
 ) => {
 
@@ -50,6 +50,32 @@ const AppealTermsBrowser = (
 
     const selectedAppealTermObj = appealTermsOptions.filter(a => a['value'] === selectedAppealTerm)[0]
 
+    const selectedAppealTermGenres = !selectedAppealTermObj ? [] : selectedAppealTermObj['genres']
+
+    const onAddAppealTerm = () => {
+        const newAppealTermsWithDupes = [...appealTerms, selectedAppealTermObj['value']]
+        const newAppealTerms = [...new Set(newAppealTermsWithDupes)]
+
+        setAppealTerms(newAppealTerms)
+    }
+
+    const onAddGenre = (curGenre) => {
+        const newGenresWithDupes = genres.concat(curGenre)
+        const newGenres = [...new Set(newGenresWithDupes)]
+
+        setGenres(newGenres)
+    }
+
+    const onRemoveGenre = (curGenre) => {
+        const newGenres = genres.filter(g => g !== curGenre)
+        setGenres(newGenres)
+    }
+
+    const onRemoveAppealTerm = (curAppealTerm) => {
+        const newAppealTerms = appealTerms.filter(a => a !== curAppealTerm)
+        setAppealTerms(newAppealTerms)
+    }
+
     return (
         <>
             <div className='row'>
@@ -75,8 +101,31 @@ const AppealTermsBrowser = (
                     {
                         selectedAppealTermObj &&
                         <>
-                        {selectedAppealTermObj['description']}
+                            {selectedAppealTermObj['description']}
+                            <button className='btn btn-primary' onClick={onAddAppealTerm}>Add Appeal Term</button>
+                            {
+                                selectedAppealTermGenres.map(g =>
+                                    <button key={'add_genre_' + g} className='btn btn-primary' onClick={() => onAddGenre(g)}>Add Genre "{g}"</button>
+                                )
+                            }
+
                         </>
+                    }
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col'>
+                    <h4>Selected Genres</h4>
+
+                    {
+                        genres.map(g => <button key={g} onClick={() => onRemoveGenre(g)}>Remove {g}</button>)
+                    }
+                </div>
+                <div className='col'>
+                    <h4>Selected Appeal Terms</h4>
+
+                    {
+                        appealTerms.map(a => <button key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
                     }
                 </div>
             </div>

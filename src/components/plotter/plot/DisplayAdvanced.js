@@ -18,8 +18,10 @@ const DisplayAdvanced = (
         genres,
         emotionsOptions,
         onGenresChange,
+        setGenres,
         appealTermsOptions,
         appealTerms,
+        setAppealTerms,
         onAppealTermsChange,
         onFocusChange,
         setKeywords,
@@ -101,10 +103,10 @@ const DisplayAdvanced = (
                 <div className='row pb-5'>
                     <AppealTermsBrowser
                         genres={genres}
-                        setGenres={onGenresChange}
+                        setGenres={setGenres}
                         appealTermsOptions={appealTermsOptions}
                         appealTerms={appealTerms}
-                        onAppealTermsChange={onAppealTermsChange}
+                        setAppealTerms={setAppealTerms}
                     />
                 </div>
             }
