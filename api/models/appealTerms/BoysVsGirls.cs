@@ -12,7 +12,7 @@ public class BoysVsGirls : IAppealTerm
     public string Id { get { return "BoysVsGirls"; } }
     public string Name { get { return "Boys vs Girls"; } }
     public string Description { get { return "It's a battle of the sexes as characters divide along gender lines."; } }
-    public List<string> Genres { get { return new List<string> { "adventure", "comedy", "family" }; } }
+    public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)

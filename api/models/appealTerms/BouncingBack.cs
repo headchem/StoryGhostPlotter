@@ -12,7 +12,7 @@ public class BouncingBack : IAppealTerm
     public string Id { get { return "BouncingBack"; } }
     public string Name { get { return "Bouncing back"; } }
     public string Description { get { return "Bouncing back after a major setback."; } }
-    public List<string> Genres { get { return new List<string> { "action", "crime", "drama", "music", "sports", "thriller", "urban" }; } }
+    public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { "Life's Challenges" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
