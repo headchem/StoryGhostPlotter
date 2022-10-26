@@ -289,7 +289,6 @@ public static class Factory
             new SendInTheClones(),
             new VengeanceIsMine(),
             new WeirdScience(),
-            new WomenOfSteel(),
             new ZeroToHero(),
             new HiddenAlienPockets(),
             new HighTechLowLife(),

@@ -23,7 +23,7 @@ const AppealTermsBrowser = (
         setSelectedAppealTerm('')
     }
 
-    const allGenresListItems = allGenres.map((g) => <li key={g}>
+    const allGenresListItems = allGenres.map((g) => <li key={g} className={g === selectedGenre ? 'fw-bold' : ''}>
         <span onClick={() => onSelectGenre(g)}>{g}</span>
     </li>)
 
@@ -33,20 +33,28 @@ const AppealTermsBrowser = (
     const allGenreCategories = [...new Set(allGenreCategoriesWithDupes)].filter(c => c !== '').sort()
 
     const onSelectCategory = (c) => {
-        setSelectedCategory(c)
+        if (c === selectedCategory) {
+            setSelectedCategory('')
+        } else {
+            setSelectedCategory(c)
+        }
         setSelectedAppealTerm('')
     }
 
-    const allGenreCategoriesListItems = allGenreCategories.map((c) => <li key={c}>
+    const allGenreCategoriesListItems = allGenreCategories.map((c) => <li key={c} className={c === selectedCategory ? 'fw-bold' : ''}>
         <span onClick={() => onSelectCategory(c)}>{c}</span>
     </li>)
 
-    const appealTermsOptionsForGenreAndCategory = appealTermsOptionsForGenre.filter(a => a['categories'].includes(selectedCategory))
+    const appealTermsOptionsForGenreAndCategory = selectedCategory === '' ? appealTermsOptionsForGenre : appealTermsOptionsForGenre.filter(a => a['categories'].includes(selectedCategory))
     const allGenreCategoriesAppealTerms = appealTermsOptionsForGenreAndCategory.map(a => a['value']).sort()
 
-    const allGenreCategoryAppealTermsListItems = allGenreCategoriesAppealTerms.map((a) => <li key={a}>
-        <span onClick={() => setSelectedAppealTerm(a)}>{a}</span>
-    </li>)
+    const getAppealTermListItem = (a) => {
+        return <li key={a} className={a === selectedAppealTerm ? 'fw-bold' : ''}>
+            <span onClick={() => setSelectedAppealTerm(a)}>{a}</span>
+        </li>
+    }
+
+    const allGenreCategoryAppealTermsListItems = allGenreCategoriesAppealTerms.map(getAppealTermListItem)
 
     const selectedAppealTermObj = appealTermsOptions.filter(a => a['value'] === selectedAppealTerm)[0]
 
