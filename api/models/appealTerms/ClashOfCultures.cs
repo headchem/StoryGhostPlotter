@@ -12,7 +12,7 @@ public class ClashOfCultures : IAppealTerm
     public string Id { get { return "ClashOfCultures"; } }
     public string Name { get { return "Clash of Cultures"; } }
     public string Description { get { return "Disagreements, misunderstandings, and challenges abound when cultures collide."; } }
-    public List<string> Genres { get { return new List<string> { "fantasy" }; } }
+    public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Fantasy, GenresEnum.History, GenresEnum.Romance, GenresEnum.ScienceFiction, GenresEnum.Urban, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { "setting" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
