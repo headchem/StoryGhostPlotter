@@ -283,7 +283,6 @@ public static class Factory
             // science fiction/concepts and characters
             new AlteredMemories(),
             new Human20(),
-            new PlayingGod(),
             new PressPlayToStart(),
             new ScienceFictionBootCamp(),
             new SendInTheClones(),

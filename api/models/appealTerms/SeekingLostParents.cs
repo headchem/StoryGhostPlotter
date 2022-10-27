@@ -12,7 +12,7 @@ public class SeekingLostParents : IAppealTerm
     public string Id { get { return "SeekingLostParents"; } }
     public string Name { get { return "Seeking lost parents"; } }
     public string Description { get { return "Young characters must find their missing guardians."; } }
-    public List<string> Genres { get { return new List<string> { "fantasy" }; } }
+    public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Drama, GenresEnum.Family, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { "Plot" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
