@@ -12,7 +12,7 @@ public class FirstContact : IAppealTerm
     public string Id { get { return "FirstContact"; } }
     public string Name { get { return "First contact"; } }
     public string Description { get { return "We're not alone in the universe after all as aliens make contact with humanity."; } }
-    public List<string> Genres { get { return new List<string> { "science fiction" }; } }
+    public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { "Aliens and Robots" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)

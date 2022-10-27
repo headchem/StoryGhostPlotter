@@ -12,7 +12,7 @@ public class JustOneDay : IAppealTerm
     public string Id { get { return "JustOneDay"; } }
     public string Name { get { return "Just one day"; } }
     public string Description { get { return "A lot can happen in just 24 hours!"; } }
-    public List<string> Genres { get { return new List<string> { "action", "adventure", "comedy", "crime", "drama", "horror", "thriller", "urban" }; } }
+    public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { "Narrative Devices" }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
