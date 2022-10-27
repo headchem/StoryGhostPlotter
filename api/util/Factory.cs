@@ -485,7 +485,6 @@ public static class Factory
             new Assemble(),
             new MultiverseEncounters(),
             new OriginStory(),
-            new RebootsAndRetcons(),
 
             // general/aficionado
             new EatDrinkAndBeMerry(),
