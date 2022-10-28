@@ -19,4 +19,7 @@ public static class AppealTermsCategoryEnum
     public static readonly string ApocalypticAndDystopian = "apocalyptic and dystopian";
     public static readonly string Style = "style";
     public static readonly string SpaceAndTime = "space and time";
+    public static readonly string NarrativeDevices = "narrative devices";
+    public static readonly string Relationships = "relationships";
+    public static readonly string Monsters = "monsters";
 }

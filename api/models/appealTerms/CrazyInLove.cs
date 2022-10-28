@@ -13,7 +13,7 @@ public class CrazyInLove : IAppealTerm
     public string Name { get { return "Crazy in love"; } }
     public string Description { get { return "These couples remain devoted through every predicament."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance, GenresEnum.Drama }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -13,7 +13,7 @@ public class CautionaryTales : IAppealTerm
     public string Name { get { return "Cautionary tales"; } }
     public string Description { get { return "Consequences can be harsh."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Urban }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

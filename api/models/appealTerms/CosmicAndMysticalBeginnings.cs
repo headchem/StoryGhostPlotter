@@ -13,7 +13,7 @@ public class CosmicAndMysticalBeginnings : IAppealTerm
     public string Name { get { return "Cosmic and mystical beginnings"; } }
     public string Description { get { return "Part superhero, part wizard or god."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Fantasy }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {
