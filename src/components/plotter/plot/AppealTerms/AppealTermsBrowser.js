@@ -19,7 +19,7 @@ const AppealTermsBrowser = (
     const multiGenreThreshold = 4
     const appealTermsOptionsModified = appealTermsOptions.map((a) => {
         if (a['genres'].length >= multiGenreThreshold) {
-            a['genres'] = [catchAllGenreName]
+            a['genres'] = [catchAllGenreName].concat(a['genres'])
         }
 
         return a
@@ -38,7 +38,7 @@ const AppealTermsBrowser = (
         <span onClick={() => onSelectGenre(g)}>{g}</span>
     </li>)
 
-    const appealTermsOptionsForGenre = appealTermsOptionsModified.filter(a => a['genres'].includes(selectedGenre))
+    const appealTermsOptionsForGenre = appealTermsOptionsModified.filter(a => a['genres'].includes(selectedGenre) && (selectedGenre !== catchAllGenreName ? !a['genres'].includes(catchAllGenreName) : true))
 
     const allGenreCategoriesWithDupes = appealTermsOptionsForGenre.map(a => a['categories']).flat()
     const allGenreCategories = [...new Set(allGenreCategoriesWithDupes)].filter(c => c !== '').sort()
@@ -69,7 +69,7 @@ const AppealTermsBrowser = (
 
     const selectedAppealTermObj = appealTermsOptionsModified.filter(a => a['value'] === selectedAppealTerm)[0]
 
-    const selectedAppealTermGenres = !selectedAppealTermObj ? [] : selectedAppealTermObj['genres']
+    const selectedAppealTermGenres = !selectedAppealTermObj ? [] : selectedAppealTermObj['genres'].filter(g => g !== catchAllGenreName)
 
     const onAddAppealTerm = () => {
         const newAppealTermsWithDupes = [...appealTerms, selectedAppealTermObj['value']]
