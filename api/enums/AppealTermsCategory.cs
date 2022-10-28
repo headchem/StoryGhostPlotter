@@ -14,5 +14,5 @@ public static class AppealTermsCategoryEnum
     public static readonly string PowerStructures = "power structures";
     public static readonly string Situations = "situations";
     public static readonly string LifeChallenges = "life challenges";
-
+    public static readonly string AliensAndRobots = "aliens and robots";
 }
