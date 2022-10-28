@@ -13,7 +13,7 @@ public class BodyHorror : IAppealTerm
     public string Name { get { return "Body horror"; } }
     public string Description { get { return "Horrible things can happen to the human body."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
-    public List<string> Categories { get { return new List<string> { "Style" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Style }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

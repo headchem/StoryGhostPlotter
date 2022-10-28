@@ -15,4 +15,8 @@ public static class AppealTermsCategoryEnum
     public static readonly string Situations = "situations";
     public static readonly string LifeChallenges = "life challenges";
     public static readonly string AliensAndRobots = "aliens and robots";
+    public static readonly string Concepts = "concepts";
+    public static readonly string ApocalypticAndDystopian = "apocalyptic and dystopian";
+    public static readonly string Style = "style";
+    public static readonly string SpaceAndTime = "space and time";
 }

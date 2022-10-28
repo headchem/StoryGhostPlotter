@@ -13,7 +13,7 @@ public class BeyondTheGrave : IAppealTerm
     public string Name { get { return "Beyond the grave"; } }
     public string Description { get { return "Crime victims investigate their own murders."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.Secrets }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {
