@@ -26,7 +26,7 @@ const AppealTermsBrowser = (
     })
 
     const allGenresWithDupes = appealTermsOptionsModified.map(a => a['genres']).flat()
-    const allGenres = [...new Set(allGenresWithDupes)].filter(g => g !== '').sort((a, b) => (b === catchAllGenreName ? 1 : (a > b ? 1 : -1))) // return 1 if b should be first, return -1 if a should be first
+    const allGenres = [...new Set(allGenresWithDupes)].filter(g => g !== '').sort().sort((a, b) => (a === catchAllGenreName ? -1 : 1)) // make sure catchAllGenreName is sorted at the top, followed by alphabetical order
 
     const onSelectGenre = (g) => {
         setSelectedGenre(g)
