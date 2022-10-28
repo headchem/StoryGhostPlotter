@@ -14,8 +14,19 @@ const AppealTermsBrowser = (
     const [selectedCategory, setSelectedCategory] = useState('')
     const [selectedAppealTerm, setSelectedAppealTerm] = useState('')
 
-    const allGenresWithDupes = appealTermsOptions.map(a => a['genres']).flat()
-    const allGenres = [...new Set(allGenresWithDupes)].filter(g => g !== '').sort()
+    // any appeal term with more than x genres will be put into a special catch-all genre
+    const catchAllGenreName = 'common and multi-genre'
+    const multiGenreThreshold = 4
+    const appealTermsOptionsModified = appealTermsOptions.map((a) => {
+        if (a['genres'].length >= multiGenreThreshold) {
+            a['genres'] = [catchAllGenreName]
+        }
+
+        return a
+    })
+
+    const allGenresWithDupes = appealTermsOptionsModified.map(a => a['genres']).flat()
+    const allGenres = [...new Set(allGenresWithDupes)].filter(g => g !== '').sort((a, b) => (b === catchAllGenreName ? 1 : (a > b ? 1 : -1))) // return 1 if b should be first, return -1 if a should be first
 
     const onSelectGenre = (g) => {
         setSelectedGenre(g)
@@ -27,7 +38,7 @@ const AppealTermsBrowser = (
         <span onClick={() => onSelectGenre(g)}>{g}</span>
     </li>)
 
-    const appealTermsOptionsForGenre = appealTermsOptions.filter(a => a['genres'].includes(selectedGenre))
+    const appealTermsOptionsForGenre = appealTermsOptionsModified.filter(a => a['genres'].includes(selectedGenre))
 
     const allGenreCategoriesWithDupes = appealTermsOptionsForGenre.map(a => a['categories']).flat()
     const allGenreCategories = [...new Set(allGenreCategoriesWithDupes)].filter(c => c !== '').sort()
@@ -56,7 +67,7 @@ const AppealTermsBrowser = (
 
     const allGenreCategoryAppealTermsListItems = allGenreCategoriesAppealTerms.map(getAppealTermListItem)
 
-    const selectedAppealTermObj = appealTermsOptions.filter(a => a['value'] === selectedAppealTerm)[0]
+    const selectedAppealTermObj = appealTermsOptionsModified.filter(a => a['value'] === selectedAppealTerm)[0]
 
     const selectedAppealTermGenres = !selectedAppealTermObj ? [] : selectedAppealTermObj['genres']
 
