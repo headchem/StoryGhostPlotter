@@ -13,7 +13,7 @@ public class SecondAct : IAppealTerm
     public string Name { get { return "Second act"; } }
     public string Description { get { return "These older characters show that life's second half has stories worth telling, too."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Adventure, GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Fantasy, GenresEnum.Family, GenresEnum.History, GenresEnum.Music, GenresEnum.Mystery, GenresEnum.ScienceFiction, GenresEnum.Sports, GenresEnum.Thriller, GenresEnum.Urban, GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

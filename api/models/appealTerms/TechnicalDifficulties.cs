@@ -13,7 +13,7 @@ public class TechnicalDifficulties : IAppealTerm
     public string Name { get { return "Technical difficulties"; } }
     public string Description { get { return "For better or worse, technology impacts our lives."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
-    public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

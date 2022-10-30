@@ -13,7 +13,7 @@ public class SolveThePuzzle : IAppealTerm
     public string Name { get { return "Solve the puzzle"; } }
     public string Description { get { return "Readers solve these crimes along with the characters."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

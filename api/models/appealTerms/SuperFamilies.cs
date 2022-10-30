@@ -13,7 +13,7 @@ public class SuperFamilies : IAppealTerm
     public string Name { get { return "Super families"; } }
     public string Description { get { return "Families that fight together, stay together."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Adventure, GenresEnum.Fantasy, GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Thriller, GenresEnum.Urban, GenresEnum.War, GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

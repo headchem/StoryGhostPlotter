@@ -13,7 +13,7 @@ public class UnlikelyFriendships : IAppealTerm
     public string Name { get { return "Unlikely friendships"; } }
     public string Description { get { return "Despite differences, unexpected friendships form."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
-    public List<string> Categories { get { return new List<string> { "Family and Relationships" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

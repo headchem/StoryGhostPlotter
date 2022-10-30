@@ -13,7 +13,7 @@ public class RiseOfTheMachines : IAppealTerm
     public string Name { get { return "Rise of the machines"; } }
     public string Description { get { return "Robots and computers turn on their creators."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction, GenresEnum.Horror, GenresEnum.Thriller }; } }
-    public List<string> Categories { get { return new List<string> { "Aliens and Robots" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.AliensAndRobots, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

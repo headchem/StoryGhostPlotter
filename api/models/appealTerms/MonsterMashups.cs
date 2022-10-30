@@ -13,7 +13,7 @@ public class MonsterMashups : IAppealTerm
     public string Name { get { return "Monster mashups"; } }
     public string Description { get { return "Classic literature or history with an injection of horror."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
-    public List<string> Categories { get { return new List<string> { "Style" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Style }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

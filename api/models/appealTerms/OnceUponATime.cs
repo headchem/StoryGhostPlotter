@@ -13,7 +13,7 @@ public class OnceUponATime : IAppealTerm
     public string Name { get { return "Once upon a time romance"; } }
     public string Description { get { return "These fairy tales end in happily-ever-after."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance, GenresEnum.Fantasy }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

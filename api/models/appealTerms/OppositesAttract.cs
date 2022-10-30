@@ -13,7 +13,7 @@ public class OppositesAttract : IAppealTerm
     public string Name { get { return "Opposites attract"; } }
     public string Description { get { return "These odd couples disagree about everything... except each other."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

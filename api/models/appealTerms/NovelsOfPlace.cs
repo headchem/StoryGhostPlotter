@@ -13,7 +13,7 @@ public class NovelsOfPlace : IAppealTerm
     public string Name { get { return "Novels of place"; } }
     public string Description { get { return "As much about the setting as the characters."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.History, GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

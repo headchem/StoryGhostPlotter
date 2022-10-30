@@ -13,7 +13,7 @@ public class SleuthsInSchool : IAppealTerm
     public string Name { get { return "Sleuths in school"; } }
     public string Description { get { return "Kid-size crimes get sent to the principal's office."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

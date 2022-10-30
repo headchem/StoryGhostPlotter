@@ -13,7 +13,7 @@ public class MonsterMayhem : IAppealTerm
     public string Name { get { return "Monster mayhem"; } }
     public string Description { get { return "Smart kids find monsters in disguise in these paranormal stories."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
-    public List<string> Categories { get { return new List<string> { "Monsters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

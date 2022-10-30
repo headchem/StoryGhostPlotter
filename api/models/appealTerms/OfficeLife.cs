@@ -13,7 +13,7 @@ public class OfficeLife : IAppealTerm
     public string Name { get { return "Office life"; } }
     public string Description { get { return "Life around the water cooler and amongst the cubicles."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

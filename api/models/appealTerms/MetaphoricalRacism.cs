@@ -13,7 +13,7 @@ public class MetaphoricalRacism : IAppealTerm
     public string Name { get { return "Metaphorical racism"; } }
     public string Description { get { return "Think elves who hate dwarves, or magic users who must hide their powers."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.PowerStructures, AppealTermsCategoryEnum.LifeChallenges }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

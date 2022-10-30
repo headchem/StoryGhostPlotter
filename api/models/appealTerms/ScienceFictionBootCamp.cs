@@ -13,7 +13,7 @@ public class ScienceFictionBootCamp : IAppealTerm
     public string Name { get { return "Science fiction boot camp"; } }
     public string Description { get { return "Ten-hut! Boot camp meets space camp."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction, GenresEnum.War }; } }
-    public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Settings }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

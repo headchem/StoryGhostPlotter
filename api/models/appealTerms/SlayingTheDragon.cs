@@ -13,7 +13,7 @@ public class SlayingTheDragon : IAppealTerm
     public string Name { get { return "Slaying the dragon"; } }
     public string Description { get { return "An epic quest to defeat the mightiest of creatures."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

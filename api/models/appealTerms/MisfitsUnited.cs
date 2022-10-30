@@ -13,7 +13,7 @@ public class MisfitsUnited : IAppealTerm
     public string Name { get { return "Misfits united"; } }
     public string Description { get { return "The characters in these stories feel like they don't fit in except with each other."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
-    public List<string> Categories { get { return new List<string> { "Family and Relationships" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

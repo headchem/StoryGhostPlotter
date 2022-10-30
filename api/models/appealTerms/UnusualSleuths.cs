@@ -13,7 +13,7 @@ public class UnusualSleuths : IAppealTerm
     public string Name { get { return "Unusual Sleuths"; } }
     public string Description { get { return "These amateurs leverage their unique backgrounds and professions to solve the case."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

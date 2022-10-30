@@ -13,7 +13,7 @@ public class OffLimitsLove : IAppealTerm
     public string Name { get { return "Off Limits Love"; } }
     public string Description { get { return "Off limits… but so tempting."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Secrets, AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

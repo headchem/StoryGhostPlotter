@@ -13,7 +13,7 @@ public class OrderInTheCourt : IAppealTerm
     public string Name { get { return "Order In The Court"; } }
     public string Description { get { return "These stories revolve around the court of law."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.PowerStructures }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

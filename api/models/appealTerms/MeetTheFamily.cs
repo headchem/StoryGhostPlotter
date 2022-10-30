@@ -13,7 +13,7 @@ public class MeetTheFamily : IAppealTerm
     public string Name { get { return "Meet the family"; } }
     public string Description { get { return "These stories are a family affair, starring a cast of parents, siblings, and other relatives."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Family }; } }
-    public List<string> Categories { get { return new List<string> { "Family and Relationships" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

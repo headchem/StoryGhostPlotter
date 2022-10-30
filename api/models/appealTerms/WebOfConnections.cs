@@ -13,7 +13,7 @@ public class WebOfConnections : IAppealTerm
     public string Name { get { return "Web of connections"; } }
     public string Description { get { return "Inanimate objects are given a unique voice having witnessed much."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Fantasy, GenresEnum.Family }; } }
-    public List<string> Categories { get { return new List<string> { "Narrative Devices" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.NarrativeDevices }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {
