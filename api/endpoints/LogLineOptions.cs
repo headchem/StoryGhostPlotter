@@ -27,7 +27,7 @@ public static class LogLineOptions
             var options = new Dictionary<string, List<(string, string, List<string>, List<string>, string)>>();
 
             var genres = Factory.GetGenres();
-            var genresOptions = genres.Select(x => (x.Id, x.Name, new List<string>(), new List<string>(), "")).OrderBy(x => x.Name).ToList();
+            var genresOptions = genres.Select(x => (x.Id, x.Name, new List<string>(), new List<string>(), x.Description)).OrderBy(x => x.Name).ToList();
             options.Add("genres", genresOptions);
 
             var appealTerms = Factory.GetAppealTerms();

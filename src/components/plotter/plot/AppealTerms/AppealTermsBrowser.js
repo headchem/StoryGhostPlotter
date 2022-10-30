@@ -4,6 +4,7 @@ const AppealTermsBrowser = (
     {
         genres,
         setGenres,
+        genreOptions,
         appealTermsOptions,
         appealTerms,
         setAppealTerms,
@@ -95,6 +96,55 @@ const AppealTermsBrowser = (
         setAppealTerms(newAppealTerms)
     }
 
+    const getRandomInt = (min, max) => {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    }
+
+    const shuffleArray = (array) => {
+        const cloned = structuredClone(array)
+
+        for (let i = cloned.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+        }
+
+        return cloned
+    }
+
+    const selectRandomAppealTerms = () => {
+        // select 2-3 appeal terms across all genres
+        // create list of genres present in selected appeal terms
+        // select 2-3 genres to add from list
+
+        const numAppealTerms = getRandomInt(2, 4)
+
+        const shuffledArray = shuffleArray(appealTermsOptions)
+
+        const randomAppealTerms = shuffledArray.slice(0, numAppealTerms);
+
+        const genresWithDupes = randomAppealTerms.map(a => {
+            return a['genres']
+        }).flat().filter(g => g !== catchAllGenreName)
+
+        const genresPresent = [...new Set(genresWithDupes)]
+
+        const shuffledGenres = shuffleArray(genresPresent)
+
+        const numGenres = getRandomInt(2, 4)
+
+        const randomGenres = shuffledGenres.slice(0, numGenres)
+
+        const newAppealTerms = randomAppealTerms.map(a => a['value'])
+
+        setAppealTerms(newAppealTerms)
+        setGenres(randomGenres)
+    }
+
+    console.log(genreOptions)
+    console.log(appealTermsOptions)
+
     return (
         <>
             <div className='row'>
@@ -127,18 +177,26 @@ const AppealTermsBrowser = (
                                     <button key={'add_genre_' + g} className='btn btn-primary' onClick={() => onAddGenre(g)}>Add Genre "{g}"</button>
                                 )
                             }
-
                         </>
                     }
                 </div>
             </div>
             <div className='row'>
                 <div className='col'>
+                    <button className='btn btn-primary' onClick={() => selectRandomAppealTerms()}>Randomize</button>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col'>
                     <h4>Selected Genres</h4>
-
                     {
                         genres.map(g => <button key={g} onClick={() => onRemoveGenre(g)}>Remove {g}</button>)
                     }
+                    {/* <ul>
+                        {
+                            genres.map(g => <li key={g}>{genreOptions.filter(curGenre => curGenre['value'] === g)[0]['description']}</li>)
+                        }
+                    </ul> */}
                 </div>
                 <div className='col'>
                     <h4>Selected Appeal Terms</h4>
@@ -146,6 +204,12 @@ const AppealTermsBrowser = (
                     {
                         appealTerms.map(a => <button key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
                     }
+
+                    <ul>
+                        {
+                            appealTerms.map(a => <li key={a}>{appealTermsOptions.filter(curAppealTerm => curAppealTerm['value'] === a)[0]['description']}</li>)
+                        }
+                    </ul>
                 </div>
             </div>
         </>

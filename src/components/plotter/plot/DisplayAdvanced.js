@@ -104,6 +104,7 @@ const DisplayAdvanced = (
                     <AppealTermsBrowser
                         genres={genres}
                         setGenres={setGenres}
+                        genreOptions={genreOptions}
                         appealTermsOptions={appealTermsOptions}
                         appealTerms={appealTerms}
                         setAppealTerms={setAppealTerms}
