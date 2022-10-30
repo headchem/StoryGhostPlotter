@@ -13,7 +13,7 @@ public class FaerieRealm : IAppealTerm
     public string Name { get { return "Faerie realm"; } }
     public string Description { get { return "Welcome to the land of the immortal fae."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

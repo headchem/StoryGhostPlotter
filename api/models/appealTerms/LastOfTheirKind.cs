@@ -13,7 +13,7 @@ public class LastOfTheirKind : IAppealTerm
     public string Name { get { return "Last of their kind"; } }
     public string Description { get { return "They are all that remain of their people, or so they think."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy, GenresEnum.History }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.ApocalypticAndDystopian }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

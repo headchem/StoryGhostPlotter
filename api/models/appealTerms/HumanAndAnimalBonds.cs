@@ -13,7 +13,7 @@ public class HumanAndAnimalBonds : IAppealTerm
     public string Name { get { return "Human and animal bonds"; } }
     public string Description { get { return "These stories explore our relationships with animals."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Family, GenresEnum.Western }; } }
-    public List<string> Categories { get { return new List<string> { "Concepts and Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Animals, AppealTermsCategoryEnum.Concepts }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

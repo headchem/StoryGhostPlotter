@@ -13,7 +13,7 @@ public class LifeInSmallTowns : IAppealTerm
     public string Name { get { return "Life in small towns"; } }
     public string Description { get { return "Everyone knows everyone else in these communities."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Mystery, GenresEnum.Romance }; } }
-    public List<string> Categories { get { return new List<string> { "Experiences" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

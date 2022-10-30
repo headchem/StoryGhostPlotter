@@ -13,7 +13,7 @@ public class LifeOnTheInside : IAppealTerm
     public string Name { get { return "Life on the inside"; } }
     public string Description { get { return "Raw views of prison life."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Urban }; } }
-    public List<string> Categories { get { return new List<string> { "Setting" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.PowerStructures }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

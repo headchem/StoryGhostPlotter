@@ -13,7 +13,7 @@ public class LockedRoomMysteries : IAppealTerm
     public string Name { get { return "Locked room mysteries"; } }
     public string Description { get { return "The crime scene is isolated, and the suspect list is small."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.Secrets, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -13,7 +13,7 @@ public class FallingForAFriend : IAppealTerm
     public string Name { get { return "Falling for a friend"; } }
     public string Description { get { return "Discovering that platonic friendship can lead to love."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
-    public List<string> Categories { get { return new List<string> { "Characters" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

@@ -13,7 +13,7 @@ public class Infected : IAppealTerm
     public string Name { get { return "Infected"; } }
     public string Description { get { return "A mysterious disease is sweeping the land, turning everyday living into a nightmare."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
-    public List<string> Categories { get { return new List<string> { "Plot" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {

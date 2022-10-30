@@ -13,7 +13,7 @@ public class LoveOnTheRocks : IAppealTerm
     public string Name { get { return "Love on the rocks"; } }
     public string Description { get { return "The course of love does not always run smooth."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Romance, GenresEnum.Urban }; } }
-    public List<string> Categories { get { return new List<string> { "Family and Relationships" }; } }
+    public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)
     {
