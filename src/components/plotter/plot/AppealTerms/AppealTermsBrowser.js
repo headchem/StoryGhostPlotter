@@ -73,14 +73,14 @@ const AppealTermsBrowser = (
     const selectedAppealTermGenres = !selectedAppealTermObj ? [] : selectedAppealTermObj['genres'].filter(g => g !== catchAllGenreName)
 
     const onAddAppealTerm = () => {
-        const newAppealTermsWithDupes = [...appealTerms, selectedAppealTermObj['value']]
+        const newAppealTermsWithDupes = !appealTerms ? [selectedAppealTermObj['value']] : [...appealTerms, selectedAppealTermObj['value']]
         const newAppealTerms = [...new Set(newAppealTermsWithDupes)]
 
         setAppealTerms(newAppealTerms)
     }
 
     const onAddGenre = (curGenre) => {
-        const newGenresWithDupes = genres.concat(curGenre)
+        const newGenresWithDupes = !genres ? [curGenre] : genres.concat(curGenre)
         const newGenres = [...new Set(newGenresWithDupes)]
 
         setGenres(newGenres)
@@ -141,9 +141,6 @@ const AppealTermsBrowser = (
         setAppealTerms(newAppealTerms)
         setGenres(randomGenres)
     }
-
-    console.log(genreOptions)
-    console.log(appealTermsOptions)
 
     return (
         <>
