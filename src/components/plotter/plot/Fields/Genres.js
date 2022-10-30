@@ -27,7 +27,7 @@ const Genres = (
             //     />
             // </div>
         }
-        <p>Genres: {genres.join(', ')}</p>
+        <p>{genres.join(', ')}</p>
         </>
     )
 }

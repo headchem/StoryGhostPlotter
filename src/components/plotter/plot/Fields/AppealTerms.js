@@ -30,7 +30,7 @@ const AppealTerms = (
                     onChange={onAppealTermsChange}
                     theme={mode === 'dark' ? selectDarkTheme : selectLightTheme}
                 /> */}
-                <p>Appeal Terms: {appealTerms.join(', ')}</p>
+                <p>{appealTerms && appealTerms.join(', ')}</p>
             </div>
         </>
     )

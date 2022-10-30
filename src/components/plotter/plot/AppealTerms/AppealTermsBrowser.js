@@ -202,12 +202,12 @@ const AppealTermsBrowser = (
                     <h4>Selected Appeal Terms</h4>
 
                     {
-                        appealTerms.map(a => <button key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
+                        appealTerms && appealTerms.map(a => <button key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
                     }
 
                     <ul>
                         {
-                            appealTerms.map(a => <li key={a}>{appealTermsOptions.filter(curAppealTerm => curAppealTerm['value'] === a)[0]['description']}</li>)
+                            appealTerms && appealTerms.map(a => <li key={a}>{appealTermsOptions.filter(curAppealTerm => curAppealTerm['value'] === a)[0]['description']}</li>)
                         }
                     </ul>
                 </div>
