@@ -26,7 +26,7 @@ const AppealTermsBrowser = (
     })
 
     const allGenresWithDupes = appealTermsOptionsModified.map(a => a['genres']).flat()
-    const allGenres = [...new Set(allGenresWithDupes)].filter(g => g !== '').sort().sort((a, b) => (a === catchAllGenreName ? -1 : 1)) // make sure catchAllGenreName is sorted at the top, followed by alphabetical order
+    const allGenres = [catchAllGenreName].concat([...new Set([...allGenresWithDupes.filter(g => g !== catchAllGenreName).filter(g => g !== '')].sort())])
 
     const onSelectGenre = (g) => {
         setSelectedGenre(g)
@@ -99,19 +99,19 @@ const AppealTermsBrowser = (
         <>
             <div className='row'>
                 <div className='col'>
-                    <p>selected genre: {selectedGenre}</p>
+                    {/* <p>selected genre: {selectedGenre}</p> */}
                     <ul>
                         {allGenresListItems}
                     </ul>
                 </div>
                 <div className='col'>
-                    <p>selected category: {selectedCategory}</p>
+                    {/* <p>selected category: {selectedCategory}</p> */}
                     <ul>
                         {allGenreCategoriesListItems}
                     </ul>
                 </div>
                 <div className='col'>
-                    <p>selected appeal term: {selectedAppealTerm}</p>
+                    {/* <p>selected appeal term: {selectedAppealTerm}</p> */}
                     <ul>
                         {allGenreCategoryAppealTermsListItems}
                     </ul>

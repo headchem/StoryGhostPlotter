@@ -11,11 +11,11 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-select": "^5.3.1",
-    "react-toastify": "^9.0.0",
-    "sass": "^1.51.0",
-    "uuidv4": "^6.2.13",
     "react-textarea-autosize": "^8.3.4",
-    "recharts": "^2.1.13"
+    "react-toastify": "^9.0.0",
+    "recharts": "^2.1.13",
+    "sass": "^1.51.0",
+    "uuidv4": "^6.2.13"
   },
   "scripts": {
     "start": "react-scripts start",
