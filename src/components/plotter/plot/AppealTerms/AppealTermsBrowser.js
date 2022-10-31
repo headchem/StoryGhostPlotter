@@ -11,6 +11,8 @@ const AppealTermsBrowser = (
     }
 ) => {
 
+    const [showBrowser, setShowBrowser] = useState(false)
+
     const [selectedGenre, setSelectedGenre] = useState('')
     const [selectedCategory, setSelectedCategory] = useState('')
     const [selectedAppealTerm, setSelectedAppealTerm] = useState('')
@@ -146,48 +148,24 @@ const AppealTermsBrowser = (
         <>
             <div className='row'>
                 <div className='col'>
-                    {/* <p>selected genre: {selectedGenre}</p> */}
-                    <ul>
-                        {allGenresListItems}
-                    </ul>
-                </div>
-                <div className='col'>
-                    {/* <p>selected category: {selectedCategory}</p> */}
-                    <ul>
-                        {allGenreCategoriesListItems}
-                    </ul>
-                </div>
-                <div className='col'>
-                    {/* <p>selected appeal term: {selectedAppealTerm}</p> */}
-                    <ul>
-                        {allGenreCategoryAppealTermsListItems}
-                    </ul>
-                </div>
-                <div className='col'>
-                    {
-                        selectedAppealTermObj &&
-                        <>
-                            {selectedAppealTermObj['description']}
-                            <button className='btn btn-primary' onClick={onAddAppealTerm}>Add Appeal Term</button>
-                            {
-                                selectedAppealTermGenres.map(g =>
-                                    <button key={'add_genre_' + g} className='btn btn-primary' onClick={() => onAddGenre(g)}>Add Genre "{g}"</button>
-                                )
-                            }
-                        </>
-                    }
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col'>
                     <button className='btn btn-primary' onClick={() => selectRandomAppealTerms()}>Randomize</button>
+                    <button className='btn btn-link' onClick={() => setShowBrowser(!showBrowser)}>
+                        {
+                            showBrowser === true &&
+                            <span>hide appeal terms browser</span>
+                        }
+                        {
+                            showBrowser === false &&
+                            <span>show appeal terms browser</span>
+                        }
+                    </button>
                 </div>
             </div>
             <div className='row'>
                 <div className='col'>
                     <h4>Selected Genres</h4>
                     {
-                        genres.map(g => <button key={g} onClick={() => onRemoveGenre(g)}>Remove {g}</button>)
+                        genres.map(g => <button className='btn btn-secondary m-2' key={g} onClick={() => onRemoveGenre(g)}>Remove {g}</button>)
                     }
                     {/* <ul>
                         {
@@ -199,7 +177,7 @@ const AppealTermsBrowser = (
                     <h4>Selected Appeal Terms</h4>
 
                     {
-                        appealTerms && appealTerms.map(a => <button key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
+                        appealTerms && appealTerms.map(a => <button className='btn btn-secondary m-2' key={a} onClick={() => onRemoveAppealTerm(a)}>Remove {a}</button>)
                     }
 
                     <ul>
@@ -209,6 +187,46 @@ const AppealTermsBrowser = (
                     </ul>
                 </div>
             </div>
+            {
+                showBrowser === true &&
+                <div className='row'>
+                    <div className='col'>
+                        {/* <p>selected genre: {selectedGenre}</p> */}
+                        <ul>
+                            {allGenresListItems}
+                        </ul>
+                    </div>
+                    <div className='col'>
+                        {/* <p>selected category: {selectedCategory}</p> */}
+                        <ul>
+                            {allGenreCategoriesListItems}
+                        </ul>
+                    </div>
+                    <div className='col'>
+                        {/* <p>selected appeal term: {selectedAppealTerm}</p> */}
+                        <ul>
+                            {allGenreCategoryAppealTermsListItems}
+                        </ul>
+                    </div>
+                    <div className='col'>
+                        {
+                            selectedAppealTermObj &&
+                            <>
+                                {selectedAppealTermObj['description']}
+                                <button className='btn btn-primary m-3' onClick={onAddAppealTerm}>Add Appeal Term "{selectedAppealTermObj['value']}"</button>
+                                <hr />
+                                {
+                                    selectedAppealTermGenres.map(g =>
+                                        <button key={'add_genre_' + g} className='btn btn-primary m-3' onClick={() => onAddGenre(g)}>Add Genre "{g}"</button>
+                                    )
+                                }
+                            </>
+                        }
+                    </div>
+                </div>
+            }
+
+
         </>
     )
 }

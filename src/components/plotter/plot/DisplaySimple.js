@@ -17,6 +17,12 @@ const DisplaySimple = (
         genreOptions,
         genres,
         onGenresChange,
+
+        setGenres,
+        appealTermsOptions,
+        appealTerms,
+        setAppealTerms,
+
         onFocusChange,
         setKeywords,
         setLogLineDescription,
@@ -147,6 +153,11 @@ const DisplaySimple = (
                             onFocusChange={onFocusChange}
                             mode={mode}
 
+                            setGenres={setGenres}
+                            appealTermsOptions={appealTermsOptions}
+                            appealTerms={appealTerms}
+                            setAppealTerms={setAppealTerms}
+
                             keywords={keywords}
                             onKeywordsChange={onKeywordsChange}
                         />
@@ -157,6 +168,7 @@ const DisplaySimple = (
                             userInfo={userInfo}
 
                             genres={genres}
+                            appealTermsIDs={appealTerms}
                             keywords={keywords}
 
                             logLineDescription={logLineDescription}

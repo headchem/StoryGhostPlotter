@@ -579,9 +579,9 @@ const PlotHome = (
         //setGenre(event.target.value)
     }
 
-    const onAppealTermsChange = (inputValue) => {
-        setAppealTerms(inputValue.map(el => el.value))
-    }
+    // const onAppealTermsChange = (inputValue) => {
+    //     setAppealTerms(inputValue.map(el => el.value))
+    // }
     
 
     const onProblemTemplateChange = (event) => {
@@ -659,9 +659,12 @@ const PlotHome = (
                             genreOptions={genreOptions}
                             genres={genres}
                             onGenresChange={onGenresChange}
+                            
+                            setGenres={setGenres}
                             appealTermsOptions={appealTermsOptions}
                             appealTerms={appealTerms}
-                            onAppealTermsChange={onAppealTermsChange}
+                            setAppealTerms={setAppealTerms}
+
                             onFocusChange={onFocusChange}
                             setKeywords={setKeywords}
                             setLogLineDescription={setLogLineDescription}
@@ -741,8 +744,8 @@ const PlotHome = (
                             emotionsOptions={emotionOptions}
                             genreOptions={genreOptions}
                             genres={genres}
-                            setGenres={setGenres}
 
+                            setGenres={setGenres}
                             appealTermsOptions={appealTermsOptions}
                             appealTerms={appealTerms}
                             setAppealTerms={setAppealTerms}

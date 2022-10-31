@@ -11,6 +11,7 @@ const Page1 = (
 
         genres,
         keywords,
+        appealTermsIDs,
         logLineDescription,
         onLogLineDescriptionChange,
         onFocusChange,
@@ -43,6 +44,7 @@ const Page1 = (
                 id: plotId,
                 genres: genres,
                 keywords: keywords,
+                appealTerms: appealTermsIDs
             })
         }).then(function (response) {
             if (response.status === 401 || response.status === 403) {
