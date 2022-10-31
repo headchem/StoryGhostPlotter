@@ -55,9 +55,9 @@ const ProblemTemplateAdvice = (
                             }
                         </ul>
                     </figure>
-                    <p>Hero's initial attitude is <strong>{data.wandererAdjectives.heroAdjective}</strong> while the enemy is <strong>{data.wandererAdjectives.enemyAdjective}</strong>.</p>
-                    <p>Although faltering, Hero moves toward <strong>{data.warriorAdjectives.heroAdjective}</strong> while the enemy becomes <strong>{data.warriorAdjectives.enemyAdjective}</strong>.</p>
-                    <p>At the end, Hero is consistently <strong>{data.martyrAdjectives.heroAdjective}</strong> while the enemy reverts to <strong>{data.martyrAdjectives.enemyAdjective}</strong>.</p>
+                    <p>Hero's initial attitude is <strong>{data.wandererAdjectives.heroAdjective}</strong> while the enemy/problem is <strong>{data.wandererAdjectives.enemyAdjective}</strong>.</p>
+                    <p>Although faltering, Hero moves toward <strong>{data.warriorAdjectives.heroAdjective}</strong> while the enemy/problem becomes <strong>{data.warriorAdjectives.enemyAdjective}</strong>.</p>
+                    <p>At the end, Hero is consistently <strong>{data.martyrAdjectives.heroAdjective}</strong> while the enemy/problem reverts to <strong>{data.martyrAdjectives.enemyAdjective}</strong>.</p>
                 </>
             }
         </div >

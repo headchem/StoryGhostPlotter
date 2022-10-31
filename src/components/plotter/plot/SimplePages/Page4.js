@@ -10,6 +10,7 @@ const Page4 = (
         title,
         logLineDescription,
         genres,
+        appealTermsIDs,
         keywords,
         problemTemplate,
         dramaticQuestion,
@@ -62,6 +63,7 @@ const Page4 = (
             </div>
             <div className="col-md-3">
                 <p><strong>Genres: </strong>{genres.join(', ')}</p>
+                <p><strong>Appeal Terms:</strong> {appealTermsIDs.join(', ')}</p>
                 <p><strong>Keywords: </strong>{keywords.join(', ')}</p>
                 {
                     isHeroArchetypeLoading === false &&

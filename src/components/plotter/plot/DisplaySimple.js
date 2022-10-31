@@ -223,6 +223,7 @@ const DisplaySimple = (
                             title={title}
                             logLineDescription={logLineDescription}
                             genres={genres}
+                            appealTermsIDs={appealTerms}
                             keywords={keywords}
                             problemTemplate={problemTemplate}
                             dramaticQuestion={dramaticQuestion}
