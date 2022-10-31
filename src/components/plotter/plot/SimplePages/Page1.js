@@ -117,6 +117,7 @@ const Page1 = (
                         <div className='row'>
                         <div className='col-md-4 order-md-2'>
                                 <p><strong>Genres:</strong> {genres.join(', ')}.</p>
+                                <p><strong>Appeal Terms:</strong> {appealTermsIDs.join(', ')}.</p>
                                 <p><strong>Keywords:</strong> {keywords.join(', ')}</p>
                             </div>
                             <div className='col-md-8 order-md-1'>

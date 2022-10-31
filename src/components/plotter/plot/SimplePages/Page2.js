@@ -11,12 +11,40 @@ const Page2 = (
         problemTemplateOptions,
         dramaticQuestion,
         onDramaticQuestionChange,
-        dramaticQuestionOptions
+        dramaticQuestionOptions,
+
+        genres,
+        keywords,
+        appealTermsIDs,
+        logLineDescription,
     }
 ) => {
 
     return (
         <>
+            <div className="card-group">
+                <div className="card">
+                    <div className="card-body">
+                        <div className='row'>
+                            <div className='col'>
+                                <p><strong>Genres:</strong> {genres.join(', ')}</p>
+                            </div>
+                            <div className='col'>
+                                <p><strong>Appeal Terms:</strong> {appealTermsIDs.join(', ')}</p>
+                            </div>
+                            <div className='col'>
+                                <p><strong>Keywords:</strong> {keywords.join(', ')}</p>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col'>
+                                <p>{logLineDescription}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="card-group">
                 <div className="card">
 

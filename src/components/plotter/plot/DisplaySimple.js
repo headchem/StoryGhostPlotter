@@ -195,6 +195,11 @@ const DisplaySimple = (
                             dramaticQuestion={dramaticQuestion}
                             onDramaticQuestionChange={onDramaticQuestionChange}
                             dramaticQuestionOptions={dramaticQuestionOptions}
+
+                            genres={genres}
+                            keywords={keywords}
+                            appealTermsIDs={appealTerms}
+                            logLineDescription={logLineDescription}
                         />
                     }
                     {
