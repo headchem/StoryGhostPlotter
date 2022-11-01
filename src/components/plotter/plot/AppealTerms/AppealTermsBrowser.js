@@ -192,6 +192,7 @@ const AppealTermsBrowser = (
                 <div className='row'>
                     <div className='col'>
                         {/* <p>selected genre: {selectedGenre}</p> */}
+                        <p className='text-muted'>TODO: search appeal terms by keywords/alias</p>
                         <ul>
                             {allGenresListItems}
                         </ul>
@@ -212,7 +213,9 @@ const AppealTermsBrowser = (
                         {
                             selectedAppealTermObj &&
                             <>
+                                <h3>{selectedAppealTermObj['value']}</h3>
                                 {selectedAppealTermObj['description']}
+                                <p className='text-muted'>TODO: similar appeal terms (by vector) to currently selected.</p>
                                 <button className='btn btn-primary m-3' onClick={onAddAppealTerm}>Add Appeal Term "{selectedAppealTermObj['value']}"</button>
                                 <hr />
                                 {

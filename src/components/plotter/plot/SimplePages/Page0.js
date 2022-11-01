@@ -53,6 +53,7 @@ const Page0 = (
             <div className='card-group'>
                 <div className='card'>
                     <div className='card-body'>
+                        <h2>Genres</h2>
                         <GenresAdvice
                             genres={genres}
                         />
@@ -60,6 +61,7 @@ const Page0 = (
                 </div>
                 <div className='card'>
                     <div className='card-body'>
+                        <h2>Appeal Terms</h2>
                         <AppealTermsAdvice
                             appealTerms={appealTerms}
                         />
@@ -67,6 +69,7 @@ const Page0 = (
                 </div>
                 <div className="card">
                     <div className="card-body">
+                        <h2>Keywords</h2>
                         <div className='fs-5 mb-3'>
                             <Keywords
                                 keywords={keywords}
