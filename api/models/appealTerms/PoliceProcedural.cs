@@ -11,7 +11,7 @@ public class PoliceProcedural : IAppealTerm
 {
     public string Id { get { return "PoliceProcedural"; } }
     public string Name { get { return "Police Procedural"; } }
-    public string Description { get { return "A team of professionals use every tool available to tease out clues, while navigating their own interpersonal drama."; } }
+    public string Description { get { return "A detective and their team use every tool available to tease out clues, while navigating their own interpersonal drama."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery, GenresEnum.Crime }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
