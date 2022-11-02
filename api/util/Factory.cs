@@ -281,7 +281,7 @@ public static class Factory
             new PandemicApocalypse(),
 
             // science fiction/concepts and characters
-            new AlteredMemories(),
+            new UntrustedMind(),
             new Human20(),
             new PressPlayToStart(),
             new ScienceFictionBootCamp(),

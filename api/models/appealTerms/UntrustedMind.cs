@@ -7,10 +7,10 @@ using StoryGhost.Enums;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class AlteredMemories : IAppealTerm
+public class UntrustedMind : IAppealTerm
 {
-    public string Id { get { return "AlteredMemories"; } }
-    public string Name { get { return "Altered memories"; } }
+    public string Id { get { return "UntrustedMind"; } }
+    public string Name { get { return "Untrusted Mind"; } }
     public string Description { get { return "These characters can't trust their own minds."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Concepts }; } }
