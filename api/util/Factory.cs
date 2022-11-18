@@ -518,7 +518,7 @@ public static class Factory
 
             // general/family and relationships
             new MeetTheFamily(),
-            new TroubleAtHome(),
+            new TroubleInTheFamily(),
             new MisfitsUnited(),
             new DealingWithBullies(),
             new ChosenFamily(),
