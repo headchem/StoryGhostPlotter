@@ -11,7 +11,7 @@ public class TeenPregnancyAndParenting : IAppealTerm
 {
     public string Id { get { return "TeenPregnancyAndParenting"; } }
     public string Name { get { return "Teen pregnancy and parenting"; } }
-    public string Description { get { return "Teens confront the choices, changes, and challenges of pregnancy or becoming a parent."; } }
+    public string Description { get { return "Teens confront the changes, stigmas and challenges of pregnancy or parenthood."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Secrets }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
