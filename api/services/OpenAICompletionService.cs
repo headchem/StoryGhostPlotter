@@ -242,7 +242,7 @@ public class OpenAICompletionService : ICompletionService
         {
             Prompt = prompt,
             // openai api fine_tunes.create -t "/Users/jd/Dropbox/Mac/Desktop/loglines.jsonl" -m davinci --n_epochs 2 --learning_rate_multiplier 0.07
-            Model = "davinci:ft-personal-2022-11-03-05-03-50",
+            Model = "davinci:ft-personal-2022-11-23-07-07-45",
             MaxTokens = 250, // 
             Temperature = temperature,
             NumCompletions = 1,
