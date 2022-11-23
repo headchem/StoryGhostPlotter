@@ -7,11 +7,11 @@ using StoryGhost.Enums;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class BehindTheIronCurtain : IAppealTerm
+public class IronCurtain : IAppealTerm
 {
-    public string Id { get { return "BehindTheIronCurtain"; } }
-    public string Name { get { return "Behind the Iron Curtain"; } }
-    public string Description { get { return "The Cold War heats up in these spy stories."; } }
+    public string Id { get { return "IronCurtain"; } }
+    public string Name { get { return "Iron Curtain"; } }
+    public string Description { get { return "The Cold War heats up in these stories about the world on the brink of nuclear annihilation."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Thriller, GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

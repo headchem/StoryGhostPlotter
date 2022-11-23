@@ -11,7 +11,7 @@ public class MagicGoesAway : IAppealTerm
 {
     public string Id { get { return "MagicGoesAway"; } }
     public string Name { get { return "Magic goes away"; } }
-    public string Description { get { return "A world accustomed to magic suddenly finds itself without."; } }
+    public string Description { get { return "Those accustomed to magic suddenly find themselves without."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

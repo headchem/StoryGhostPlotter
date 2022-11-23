@@ -11,7 +11,7 @@ public class JealousLove : IAppealTerm
 {
     public string Id { get { return "JealousLove"; } }
     public string Name { get { return "Jealous Love"; } }
-    public string Description { get { return "In love with someone who is already taken, or jealously guarding one's lover from competition."; } }
+    public string Description { get { return "In love with someone who is already taken, or jealously guarding someone from emotional competition."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

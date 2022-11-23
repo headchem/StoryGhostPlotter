@@ -11,7 +11,7 @@ public class WesternsHiredManOnHorseback : IAppealTerm
 {
     public string Id { get { return "WesternsHiredManOnHorseback"; } }
     public string Name { get { return "Hired Man On Horseback"; } }
-    public string Description { get { return "Cowboys are the quintessential understated Western heroes, but if they had spent their real lives like the cowboys in fiction do, ranching could never have survived."; } }
+    public string Description { get { return "Cowboys are the quintessential hard-working understated Western heroes who helped ranching survive."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

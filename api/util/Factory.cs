@@ -442,7 +442,7 @@ public static class Factory
             new BigPlan(),
 
             // thriller/setting
-            new BehindTheIronCurtain(),
+            new IronCurtain(),
             new JustPolitics(),
 
             // urban/characters
@@ -558,7 +558,7 @@ public static class Factory
             new SocialIntegration(),
             new RunningAway(),
             new AboveTheirCaste(),
-            new SwappedAtBirth(),
+            new Swapped(),
             new RunningFromYourPast(),
 
             // general/narrative devices

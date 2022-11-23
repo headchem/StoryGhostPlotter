@@ -11,7 +11,7 @@ public class CaptiveHearts : IAppealTerm
 {
     public string Id { get { return "CaptiveHearts"; } }
     public string Name { get { return "Captive hearts"; } }
-    public string Description { get { return "Romance blossoms despite the heroine's situation being forced upon her."; } }
+    public string Description { get { return "Romance blossoms despite the circumstances of being held against one's will."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

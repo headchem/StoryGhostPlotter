@@ -11,7 +11,7 @@ public class SciencePowered : IAppealTerm
 {
     public string Id { get { return "SciencePowered"; } }
     public string Name { get { return "Science-Powered"; } }
-    public string Description { get { return "Narratives based on scientific reasoning which can be actual or at least rationalized."; } }
+    public string Description { get { return "Narratives based on scientific reasoning and plausible technology."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Style }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

@@ -11,7 +11,8 @@ public class WesternsIndianCaptives : IAppealTerm
 {
     public string Id { get { return "WesternsIndianCaptives"; } }
     public string Name { get { return "Indian Captives"; } }
-    public string Description { get { return "Popular since colonial times, these tales about individuals captured by Indians who are often adopted into the tribes and about those who search for them have a great appeal. The idea of living inside another culture shows readers a view from an angle that cannot be seen by those completely outside a specific culture or by those on the outside, looking in but able only to experience the culture as an outsider. A captive's view often provides a way of seeing the daily routines of a culture."; } }
+    //public string Description { get { return "Popular since colonial times, these tales about individuals captured by Indians who are often adopted into the tribes and about those who search for them have a great appeal. The idea of living inside another culture shows readers a view from an angle that cannot be seen by those completely outside a specific culture or by those on the outside, looking in but able only to experience the culture as an outsider. A captive's view often provides a way of seeing the daily routines of a culture."; } }
+    public string Description { get { return "These stories involve colonists and settlers captured by Native Americans who are adopted into the tribes and cultures, but whose families still fight for their return."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
