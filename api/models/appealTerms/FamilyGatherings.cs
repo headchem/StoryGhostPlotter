@@ -11,6 +11,7 @@ public class FamilyGatherings : IAppealTerm
 {
     public string Id { get { return "FamilyGatherings"; } }
     public string Name { get { return "Family gatherings"; } }
+    public string PromptLabel { get { return "conflicts at a family gathering"; } }
     public string Description { get { return "When families get together, personal histories and grudges collide."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships }; } }

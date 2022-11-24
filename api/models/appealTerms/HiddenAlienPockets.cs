@@ -11,6 +11,7 @@ public class HiddenAlienPockets : IAppealTerm
 {
     public string Id { get { return "HiddenAlienPockets"; } }
     public string Name { get { return "Hidden Alien Pockets"; } }
+    public string PromptLabel { get { return "aliens hidden amongst us"; } }
     public string Description { get { return "Extraterrestrials were watching us from the shadows."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.AliensAndRobots, AppealTermsCategoryEnum.Secrets }; } }

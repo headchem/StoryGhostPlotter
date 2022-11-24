@@ -11,6 +11,7 @@ public class GreenReads : IAppealTerm
 {
     public string Id { get { return "GreenReads"; } }
     public string Name { get { return "Green reads"; } }
+    public string PromptLabel { get { return "humanity's relationship with nature"; } }
     public string Description { get { return "Explore our relationship with the natural world."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Family, GenresEnum.History, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.Concepts }; } }

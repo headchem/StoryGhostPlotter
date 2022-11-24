@@ -11,6 +11,7 @@ public class FamilyBusiness : IAppealTerm
 {
     public string Id { get { return "FamilyBusiness"; } }
     public string Name { get { return "Family business"; } }
+    public string PromptLabel { get { return "being part of a criminal family"; } }
     public string Description { get { return "When you're born into the criminal life, blood is thicker than water."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Mystery, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise, AppealTermsCategoryEnum.PowerStructures }; } }

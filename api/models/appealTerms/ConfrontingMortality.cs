@@ -11,6 +11,7 @@ public class ConfrontingMortality : IAppealTerm
 {
     public string Id { get { return "ConfrontingMortality"; } }
     public string Name { get { return "Confronting mortality"; } }
+    public string PromptLabel { get { return "coming to terms with mortality"; } }
     public string Description { get { return "These characters are faced with the inevitability of death."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }

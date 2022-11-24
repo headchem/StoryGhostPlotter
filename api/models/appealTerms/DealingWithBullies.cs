@@ -11,6 +11,7 @@ public class DealingWithBullies : IAppealTerm
 {
     public string Id { get { return "DealingWithBullies"; } }
     public string Name { get { return "Dealing with bullies"; } }
+    public string PromptLabel { get { return "bullies"; } }
     public string Description { get { return "It's a vicious cycle, affecting both the targets and instigators."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.LifeChallenges }; } }

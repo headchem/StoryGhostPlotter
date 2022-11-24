@@ -11,6 +11,7 @@ public class CosmicHorror : IAppealTerm
 {
     public string Id { get { return "CosmicHorror"; } }
     public string Name { get { return "Cosmic horror"; } }
+    public string PromptLabel { get { return "horror beyond human comprehension"; } }
     public string Description { get { return "Horror beyond human understanding."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Style }; } }

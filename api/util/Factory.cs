@@ -299,7 +299,6 @@ public static class Factory
 
             // science fiction/space and time
             new BoldlyGo(),
-            new FixingHistory(),
             new GenerationShips(),
             new LostInSpace(),
             new SpaceColonization(),
@@ -545,10 +544,8 @@ public static class Factory
             // general/life challenges
             new BouncingBack(),
             new ConfrontingMortality(),
-            new CopingWithDeath(),
-            new DealingWithIllness(),
+            new DealingWithPhysicalIllness(),
             new DealingWithMentalIllness(),
-            new ForbiddenLove(),
             new GoYourOwnWay(),
             new LivingWithVisibleDisability(),
             new LivingWithInvisibleDisability(),

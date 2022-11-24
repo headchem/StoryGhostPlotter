@@ -11,6 +11,7 @@ public class BeyondTheGrave : IAppealTerm
 {
     public string Id { get { return "BeyondTheGrave"; } }
     public string Name { get { return "Beyond the grave"; } }
+    public string PromptLabel { get { return "victims who investigate their own murders from the afterlife"; } }
     public string Description { get { return "Crime victims investigate their own murders."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.Secrets }; } }

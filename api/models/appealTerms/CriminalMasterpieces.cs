@@ -11,6 +11,7 @@ public class CriminalMasterpieces : IAppealTerm
 {
     public string Id { get { return "CriminalMasterpieces"; } }
     public string Name { get { return "Criminal masterpieces"; } }
+    public string PromptLabel { get { return "crime involving art and cultural artifacts"; } }
     public string Description { get { return "Art heists, forgeries, and other crimes against culture."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery, GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.Concepts }; } }

@@ -11,6 +11,7 @@ public class CautionaryTales : IAppealTerm
 {
     public string Id { get { return "CautionaryTales"; } }
     public string Name { get { return "Cautionary tales"; } }
+    public string PromptLabel { get { return "negative consequences of an action"; } }
     public string Description { get { return "Consequences can be harsh."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

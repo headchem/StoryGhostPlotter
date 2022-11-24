@@ -11,6 +11,7 @@ public class HiddenHeritage : IAppealTerm
 {
     public string Id { get { return "HiddenHeritage"; } }
     public string Name { get { return "Hidden heritage"; } }
+    public string PromptLabel { get { return "a character with hidden family heritage"; } }
     public string Description { get { return "These characters have impactful secret family backgrounds."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Secrets, AppealTermsCategoryEnum.Characters }; } }

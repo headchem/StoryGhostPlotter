@@ -11,6 +11,7 @@ public class EnsembleCasts : IAppealTerm
 {
     public string Id { get { return "EnsembleCasts"; } }
     public string Name { get { return "Ensemble casts"; } }
+    public string PromptLabel { get { return "numerous characters and perspectives"; } }
     public string Description { get { return "Many characters and multiple perspectives."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Style, AppealTermsCategoryEnum.Concepts }; } }

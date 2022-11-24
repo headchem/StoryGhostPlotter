@@ -11,6 +11,7 @@ public class EvilCorporations : IAppealTerm
 {
     public string Id { get { return "EvilCorporations"; } }
     public string Name { get { return "Evil corporations"; } }
+    public string PromptLabel { get { return "unethical corporations"; } }
     public string Description { get { return "These companies care more about profits than ethics."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Crime, GenresEnum.Drama, GenresEnum.ScienceFiction, GenresEnum.Thriller, GenresEnum.Urban, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian, AppealTermsCategoryEnum.PowerStructures }; } }

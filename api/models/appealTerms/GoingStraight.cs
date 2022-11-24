@@ -11,6 +11,7 @@ public class GoingStraight : IAppealTerm
 {
     public string Id { get { return "GoingStraight"; } }
     public string Name { get { return "Going straight"; } }
+    public string PromptLabel { get { return "leaving criminal life"; } }
     public string Description { get { return "Leaving criminal street life for law-abiding straight life isn't easy."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Urban}; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.OccupationsAndEnterprise, AppealTermsCategoryEnum.PowerStructures }; } }

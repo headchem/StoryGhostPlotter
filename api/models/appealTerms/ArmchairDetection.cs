@@ -11,6 +11,7 @@ public class ArmchairDetection : IAppealTerm
 {
     public string Id { get { return "ArmchairDetection"; } }
     public string Name { get { return "Armchair Detection"; } }
+    public string PromptLabel { get { return "using pure intellect to solve a mystery"; } }
     public string Description { get { return "Solving the case from afar with pure intellect."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

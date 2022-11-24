@@ -11,6 +11,7 @@ public class ImASurvivor : IAppealTerm
 {
     public string Id { get { return "ImASurvivor"; } }
     public string Name { get { return "I'm a survivor"; } }
+    public string PromptLabel { get { return "surviving and healing following a traumatic event"; } }
     public string Description { get { return "Characters emerge from tough situations and seek power and healing."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Drama, GenresEnum.History, GenresEnum.Urban, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.LifeChallenges }; } }

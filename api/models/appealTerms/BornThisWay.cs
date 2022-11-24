@@ -11,6 +11,7 @@ public class BornThisWay : IAppealTerm
 {
     public string Id { get { return "BornThisWay"; } }
     public string Name { get { return "Born this way"; } }
+    public string PromptLabel { get { return "innately possessing incredible skill or power"; } }
     public string Description { get { return "These characters are born with super powers."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

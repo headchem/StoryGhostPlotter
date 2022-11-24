@@ -11,6 +11,7 @@ public class BouncingBack : IAppealTerm
 {
     public string Id { get { return "BouncingBack"; } }
     public string Name { get { return "Bouncing back"; } }
+    public string PromptLabel { get { return "recovering from an intensely negative event"; } }
     public string Description { get { return "Bouncing back after a major setback."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }

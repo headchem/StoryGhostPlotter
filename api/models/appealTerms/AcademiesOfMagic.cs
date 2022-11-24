@@ -11,6 +11,7 @@ public class AcademiesOfMagic : IAppealTerm
 {
     public string Id { get { return "AcademiesOfMagic"; } }
     public string Name { get { return "Academies of magic"; } }
+    public string PromptLabel { get { return "characters learn to wield magic"; } }
     public string Description { get { return "Special schools and apprenticeships for the magically gifted."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

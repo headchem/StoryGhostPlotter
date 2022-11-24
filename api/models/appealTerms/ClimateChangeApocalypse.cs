@@ -11,6 +11,7 @@ public class ClimateChangeApocalypse : IAppealTerm
 {
     public string Id { get { return "ClimateChangeApocalypse"; } }
     public string Name { get { return "Climate change apocalypse"; } }
+    public string PromptLabel { get { return "apocalyptic changes to the climate and natural environment"; } }
     public string Description { get { return "Weathering devastating environmental change."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.History, GenresEnum.Urban, GenresEnum.Western, GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian }; } }

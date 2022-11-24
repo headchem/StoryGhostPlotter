@@ -11,6 +11,7 @@ public class AngelsAndDemons : IAppealTerm
 {
     public string Id { get { return "AngelsAndDemons"; } }
     public string Name { get { return "Angels And Demons"; } }
+    public string PromptLabel { get { return "Heaven and Hell interacting with the mortal realm"; } }
     public string Description { get { return "The story dips in and out of Heaven and Hell as real places, with the mortal realm as the halfway point battleground."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

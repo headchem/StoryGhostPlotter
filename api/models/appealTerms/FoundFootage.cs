@@ -11,6 +11,7 @@ public class FoundFootage : IAppealTerm
 {
     public string Id { get { return "FoundFootage"; } }
     public string Name { get { return "Found footage"; } }
+    public string PromptLabel { get { return "horrific events experienced through letters or recordings"; } }
     public string Description { get { return "Framing devices (such as letters or diaries) highlight horrific events in real time."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.NarrativeDevices }; } }

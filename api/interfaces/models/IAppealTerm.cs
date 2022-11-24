@@ -8,6 +8,9 @@ public interface IAppealTerm
 {
     public string Id { get; }
     public string Name { get; }
+
+    ///<summary>A short descriptor to succintly communicate the concept to GPT-3. Answers "this is a story about: "</summary>
+    public string PromptLabel { get; }
     public string Description { get; }
     public List<string> Genres { get; }
     public List<string> Categories { get; }

@@ -11,6 +11,7 @@ public class FirstContact : IAppealTerm
 {
     public string Id { get { return "FirstContact"; } }
     public string Name { get { return "First contact"; } }
+    public string PromptLabel { get { return "aliens making first contact with humanity"; } }
     public string Description { get { return "We're not alone in the universe after all as aliens make contact with humanity."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.AliensAndRobots }; } }

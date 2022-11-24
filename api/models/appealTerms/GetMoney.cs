@@ -11,6 +11,7 @@ public class GetMoney : IAppealTerm
 {
     public string Id { get { return "GetMoney"; } }
     public string Name { get { return "Get money"; } }
+    public string PromptLabel { get { return "pursuing wealth"; } }
     public string Description { get { return "These characters are willing to sacrifice everything in the pursuit of riches."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

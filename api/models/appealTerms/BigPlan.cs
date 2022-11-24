@@ -11,6 +11,7 @@ public class BigPlan : IAppealTerm
 {
     public string Id { get { return "BigPlan"; } }
     public string Name { get { return "Big Plan"; } }
+    public string PromptLabel { get { return "executing a risky plan with a big payoff"; } }
     public string Description { get { return "A resourceful leader brainstorms and executes a complicated and risky plan - with huge potential payoffs."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Thriller, GenresEnum.Crime }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

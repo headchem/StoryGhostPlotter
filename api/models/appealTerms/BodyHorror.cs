@@ -11,6 +11,7 @@ public class BodyHorror : IAppealTerm
 {
     public string Id { get { return "BodyHorror"; } }
     public string Name { get { return "Body horror"; } }
+    public string PromptLabel { get { return "grotesque things happening to the body"; } }
     public string Description { get { return "Horrible things can happen to the human body."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Style }; } }

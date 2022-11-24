@@ -7,12 +7,13 @@ using StoryGhost.Enums;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class CopingWithDeath : IAppealTerm
+public class DealingWithPhysicalIllness : IAppealTerm
 {
-    public string Id { get { return "CopingWithDeath"; } }
-    public string Name { get { return "Coping with death"; } }
-    public string Description { get { return "Characters navigate grief following the loss of a loved one."; } }
-    public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Family, GenresEnum.Urban, GenresEnum.War, GenresEnum.Western }; } }
+    public string Id { get { return "DealingWithPhysicalIllness"; } }
+    public string Name { get { return "Dealing with physical illness"; } }
+    public string PromptLabel { get { return "coping with sickness"; } }
+    public string Description { get { return "Characters cope with physical sickness."; } }
+    public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }
     public List<string> Aliases { get { return new List<string> { }; } }
     public string GetExampleLogLine(List<string> eras, List<string> locations, List<string> keywords)

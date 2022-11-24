@@ -11,6 +11,7 @@ public class EngenderingGender : IAppealTerm
 {
     public string Id { get { return "EngenderingGender"; } }
     public string Name { get { return "Engendering gender"; } }
+    public string PromptLabel { get { return "challenging the concepts of gender"; } }
     public string Description { get { return "These stories challenge and explore concepts of gender."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.History, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }

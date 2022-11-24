@@ -11,6 +11,7 @@ public class FacingRacism : IAppealTerm
 {
     public string Id { get { return "FacingRacism"; } }
     public string Name { get { return "Facing racism"; } }
+    public string PromptLabel { get { return "facing racism"; } }
     public string Description { get { return "Individual or systemic, racism is a lived experience."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.LifeChallenges }; } }

@@ -11,6 +11,7 @@ public class FallingForAFriend : IAppealTerm
 {
     public string Id { get { return "FallingForAFriend"; } }
     public string Name { get { return "Falling for a friend"; } }
+    public string PromptLabel { get { return "falling in love with a friend"; } }
     public string Description { get { return "Discovering that platonic friendship can lead to love."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }

@@ -11,6 +11,7 @@ public class DontGoInThere : IAppealTerm
 {
     public string Id { get { return "DontGoInThere"; } }
     public string Name { get { return "Dont go in there"; } }
+    public string PromptLabel { get { return "entering an obviously creepy and dangerous place"; } }
     public string Description { get { return "It takes more guts than brains to visit these creepy spots."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

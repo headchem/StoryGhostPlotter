@@ -11,6 +11,7 @@ public class EvilAnimals : IAppealTerm
 {
     public string Id { get { return "EvilAnimals"; } }
     public string Name { get { return "Evil animals"; } }
+    public string PromptLabel { get { return "animals that relentlessly hunt humans"; } }
     public string Description { get { return "Animals develop a taste for human blood."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

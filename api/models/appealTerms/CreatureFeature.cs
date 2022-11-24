@@ -11,6 +11,7 @@ public class CreatureFeature : IAppealTerm
 {
     public string Id { get { return "CreatureFeature"; } }
     public string Name { get { return "Creature feature"; } }
+    public string PromptLabel { get { return "indescribable and unfamiliar monsters"; } }
     public string Description { get { return "Scary monsters that are unlike anything you can describe."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

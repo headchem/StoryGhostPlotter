@@ -11,6 +11,7 @@ public class HistoricalExoticLocales : IAppealTerm
 {
     public string Id { get { return "HistoricalExoticLocales"; } }
     public string Name { get { return "Exotic Locales"; } }
+    public string PromptLabel { get { return "exotic locales during the Renaissance"; } }
     //public string Description { get { return "Exploration resulted in awareness of and experiences in many new lands. Although set in the same time period as The Renaissance, the locales in this section are exotic from a Western perspective, which is the point of view generally taken by the authors."; } }
     public string Description { get { return "Exploration resulted in awareness of and experiences in many new lands. Although set in the same time period as The Renaissance, the locales in this section are exotic from a Western perspective."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History }; } }

@@ -11,6 +11,7 @@ public class Framed : IAppealTerm
 {
     public string Id { get { return "Framed"; } }
     public string Name { get { return "Framed"; } }
+    public string PromptLabel { get { return "being unjustly accused and proving one's innocence"; } }
     public string Description { get { return "These characters have been unjustly accused and must prove their innocence."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.PowerStructures }; } }

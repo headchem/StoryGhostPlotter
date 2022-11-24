@@ -11,6 +11,7 @@ public class BandOfSurvivors : IAppealTerm
 {
     public string Id { get { return "BandOfSurvivors"; } }
     public string Name { get { return "Band of survivors"; } }
+    public string PromptLabel { get { return "a group must work together to survive"; } }
     public string Description { get { return "Teamwork means survival."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Adventure, GenresEnum.Fantasy, GenresEnum.Horror, GenresEnum.ScienceFiction, GenresEnum.Thriller, GenresEnum.Urban, GenresEnum.War, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian, AppealTermsCategoryEnum.Characters }; } }

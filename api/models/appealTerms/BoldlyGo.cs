@@ -11,6 +11,7 @@ public class BoldlyGo : IAppealTerm
 {
     public string Id { get { return "BoldlyGo"; } }
     public string Name { get { return "Boldly go"; } }
+    public string PromptLabel { get { return "exploring the cosmos"; } }
     public string Description { get { return "Humans explore the cosmos."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.SpaceAndTime }; } }

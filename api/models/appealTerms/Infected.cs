@@ -11,6 +11,7 @@ public class Infected : IAppealTerm
 {
     public string Id { get { return "Infected"; } }
     public string Name { get { return "Infected"; } }
+    public string PromptLabel { get { return "a mysterious disease sweeping the land"; } }
     public string Description { get { return "A mysterious disease is sweeping the land, turning everyday living into a nightmare."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian, AppealTermsCategoryEnum.Situations }; } }

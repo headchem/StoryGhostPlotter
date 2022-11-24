@@ -11,6 +11,7 @@ public class ChosenOne : IAppealTerm
 {
     public string Id { get { return "ChosenOne"; } }
     public string Name { get { return "Chosen one"; } }
+    public string PromptLabel { get { return "a foretold hero"; } }
     public string Description { get { return "Prophets foretold of these heroes."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

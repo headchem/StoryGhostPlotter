@@ -11,6 +11,7 @@ public class CaptiveHearts : IAppealTerm
 {
     public string Id { get { return "CaptiveHearts"; } }
     public string Name { get { return "Captive hearts"; } }
+    public string PromptLabel { get { return "love blossoming while held as an unwilling captive"; } }
     public string Description { get { return "Romance blossoms despite the circumstances of being held against one's will."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

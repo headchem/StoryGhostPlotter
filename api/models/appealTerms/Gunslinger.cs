@@ -11,6 +11,7 @@ public class Gunslinger : IAppealTerm
 {
     public string Id { get { return "Gunslinger"; } }
     public string Name { get { return "Gunslinger"; } }
+    public string PromptLabel { get { return "a skilled gunslinger"; } }
     public string Description { get { return "What's the point of being the fastest gun in town if you don't use it?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

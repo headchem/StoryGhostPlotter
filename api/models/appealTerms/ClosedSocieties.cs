@@ -11,6 +11,7 @@ public class ClosedSocieties : IAppealTerm
 {
     public string Id { get { return "ClosedSocieties"; } }
     public string Name { get { return "Closed Societies"; } }
+    public string PromptLabel { get { return "secretive and insular societies"; } }
     public string Description { get { return "Murder in insular societies or cultures, like a small village that doesn't welcome outsiders, or an opulent manor (and its locked rooms)."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.PowerStructures }; } }

@@ -11,6 +11,7 @@ public class Cursed : IAppealTerm
 {
     public string Id { get { return "Cursed"; } }
     public string Name { get { return "Cursed"; } }
+    public string PromptLabel { get { return "a curse"; } }
     public string Description { get { return "Malevolent forces have cursed these characters."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

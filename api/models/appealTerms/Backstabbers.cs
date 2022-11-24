@@ -11,6 +11,7 @@ public class Backstabbers : IAppealTerm
 {
     public string Id { get { return "Backstabbers"; } }
     public string Name { get { return "Backstabbers"; } }
+    public string PromptLabel { get { return "betrayal"; } }
     public string Description { get { return "You just can't trust some people... These stories involve betrayal."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

@@ -11,6 +11,7 @@ public class CosmicAndMysticalBeginnings : IAppealTerm
 {
     public string Id { get { return "CosmicAndMysticalBeginnings"; } }
     public string Name { get { return "Cosmic and mystical beginnings"; } }
+    public string PromptLabel { get { return "a character of supernatural origin"; } }
     public string Description { get { return "Part superhero, part wizard or god."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

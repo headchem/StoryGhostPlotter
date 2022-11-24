@@ -10,6 +10,7 @@ public class Historical20thCentury : IAppealTerm
 {
     public string Id { get { return "Historical20thCentury"; } }
     public string Name { get { return "20th Century"; } }
+    public string PromptLabel { get { return "the 1900s"; } }
     public string Description { get { return "The first half of the twentieth century was filled with notable points in history: the two world wars, the Great Depression, Prohibition, and women's suffrage."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

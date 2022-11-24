@@ -11,6 +11,7 @@ public class FishOutOfWater : IAppealTerm
 {
     public string Id { get { return "FishOutOfWater"; } }
     public string Name { get { return "Fish out of water"; } }
+    public string PromptLabel { get { return "leaving one's comfort zone"; } }
     public string Description { get { return "Characters leave comfort zones behind and must adapt to a new wildly unfamiliar way of life."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

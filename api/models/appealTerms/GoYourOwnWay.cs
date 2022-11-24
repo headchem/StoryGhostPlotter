@@ -11,6 +11,7 @@ public class GoYourOwnWay : IAppealTerm
 {
     public string Id { get { return "GoYourOwnWay"; } }
     public string Name { get { return "Go your own way"; } }
+    public string PromptLabel { get { return "finding one's own path in life"; } }
     public string Description { get { return "Sometimes you have to blaze your own trail and go out on your own."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }

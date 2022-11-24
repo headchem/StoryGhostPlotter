@@ -11,6 +11,7 @@ public class ComedyOfManners : IAppealTerm
 {
     public string Id { get { return "ComedyOfManners"; } }
     public string Name { get { return "Comedy of manners"; } }
+    public string PromptLabel { get { return "poking fun at social standards"; } }
     public string Description { get { return "Poking fun at social standards."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

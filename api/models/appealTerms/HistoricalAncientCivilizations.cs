@@ -11,6 +11,7 @@ public class HistoricalAncientCivilizations : IAppealTerm
 {
     public string Id { get { return "HistoricalAncientCivilizations"; } }
     public string Name { get { return "Ancient Civilizations"; } }
+    public string PromptLabel { get { return "ancient civilization"; } }
     public string Description { get { return "Tales set in ancient civilizations provide a sense of lost wonders and settings that seem more exotic than those in eras with well-documented history."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

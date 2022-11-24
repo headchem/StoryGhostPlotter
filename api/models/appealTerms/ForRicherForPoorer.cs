@@ -11,6 +11,7 @@ public class ForRicherForPoorer : IAppealTerm
 {
     public string Id { get { return "ForRicherForPoorer"; } }
     public string Name { get { return "For richer for poorer"; } }
+    public string PromptLabel { get { return "romance amongst in upper class"; } }
     public string Description { get { return "Romance amongst society's wealthy upper crust."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Settings }; } }

@@ -11,6 +11,7 @@ public class ChurchDrama : IAppealTerm
 {
     public string Id { get { return "ChurchDrama"; } }
     public string Name { get { return "Church drama"; } }
+    public string PromptLabel { get { return "a religious scandal"; } }
     public string Description { get { return "There's nothing holy about the scandals happening here."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.History, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

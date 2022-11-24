@@ -11,6 +11,7 @@ public class GoodLifeMalaise : IAppealTerm
 {
     public string Id { get { return "GoodLifeMalaise"; } }
     public string Name { get { return "Good life malaise"; } }
+    public string PromptLabel { get { return "feeling malaise despite having a comfortable life"; } }
     public string Description { get { return "What went wrong in the quest for the good life?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

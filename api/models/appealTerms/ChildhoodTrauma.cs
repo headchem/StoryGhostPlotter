@@ -11,6 +11,7 @@ public class ChildhoodTrauma : IAppealTerm
 {
     public string Id { get { return "ChildhoodTrauma"; } }
     public string Name { get { return "Childhood trauma"; } }
+    public string PromptLabel { get { return "childhood trauma"; } }
     public string Description { get { return "Innocence is lost through a confrontation with evil."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror, GenresEnum.Drama }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.LifeChallenges }; } }

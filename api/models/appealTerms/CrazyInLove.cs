@@ -11,6 +11,7 @@ public class CrazyInLove : IAppealTerm
 {
     public string Id { get { return "CrazyInLove"; } }
     public string Name { get { return "Crazy in love"; } }
+    public string PromptLabel { get { return "lovers who remain devoted in the face of adversity"; } }
     public string Description { get { return "These couples remain devoted through every predicament."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance, GenresEnum.Drama }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }

@@ -11,6 +11,7 @@ public class CreepyClownsAndBadSeeds : IAppealTerm
 {
     public string Id { get { return "CreepyClownsAndBadSeeds"; } }
     public string Name { get { return "Creepy clowns and bad seeds"; } }
+    public string PromptLabel { get { return "creepy clowns"; } }
     public string Description { get { return "Menace lurks behind things that seem innocent."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }
