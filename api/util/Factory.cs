@@ -579,7 +579,7 @@ public static class Factory
             new NovelsOfPlace(),
             new OfficeLife(),
             new SadSmallTowns(),
-            new SuburbanMalaise(),
+            new GoodLifeMalaise(),
 
             // westerns
             new WesternsAfricanAmericansInTheWest(),
