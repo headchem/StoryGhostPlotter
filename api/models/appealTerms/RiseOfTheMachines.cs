@@ -11,6 +11,7 @@ public class RiseOfTheMachines : IAppealTerm
 {
     public string Id { get { return "RiseOfTheMachines"; } }
     public string Name { get { return "Rise of the machines"; } }
+    public string PromptLabel { get { return "robots turning against humanity"; } }
     public string Description { get { return "Robots and computers turn on their creators."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction, GenresEnum.Horror, GenresEnum.Thriller }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.AliensAndRobots, AppealTermsCategoryEnum.Situations }; } }

@@ -11,6 +11,7 @@ public class RagsToRiches : IAppealTerm
 {
     public string Id { get { return "RagsToRiches"; } }
     public string Name { get { return "Rags to riches"; } }
+    public string PromptLabel { get { return "going from rags to riches"; } }
     public string Description { get { return "Wealth and fame await characters from humble beginnings."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.LifeChallenges }; } }

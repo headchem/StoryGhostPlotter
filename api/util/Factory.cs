@@ -523,7 +523,6 @@ public static class Factory
             new LoveOnTheRocks(),
             new SecondAct(),
             new ToxicRelationships(),
-            new UnhappyFamilies(),
             new UnlikelyFriendships(),
             new WeUsedToBeFriends(),
 
@@ -876,29 +875,13 @@ public static class Factory
             genresPrompt += "GENRES: " + string.Join(", ", Genres);
         }
 
-        var appealTermsPrompt = "";
-
-        if (AppealTerms.Count == 1) {
-            appealTermsPrompt += "THEME: " + AppealTerms.First().Name + ": " + AppealTerms.First().Description;
-        }
-        else {
-            for(var i = 0; i < AppealTerms.Count; i++) {
-                appealTermsPrompt += $"THEME {i+1}: " + AppealTerms[i].Name + ": " + AppealTerms[i].Description + "\n";
-            }
-        }
+        var appealTermsPrompt = "CONCEPTS: " + string.Join(", ", AppealTerms.Select(a => a.PromptLabel));
 
         appealTermsPrompt = appealTermsPrompt.Trim();
 
         var keywordsPrompt = "";
 
-        if (Keywords.Count == 1)
-        {
-            keywordsPrompt += "KEYWORD: " + Keywords.First();
-        }
-        else if (Keywords.Count > 1)
-        {
-            keywordsPrompt += "KEYWORDS: " + string.Join(", ", Keywords);
-        }
+        keywordsPrompt += "KEYWORDS: " + string.Join(", ", Keywords);
 
         var prompt = $"{genresPrompt}\n{appealTermsPrompt}\n{keywordsPrompt}";
 

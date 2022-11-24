@@ -11,6 +11,7 @@ public class UnusualSleuths : IAppealTerm
 {
     public string Id { get { return "UnusualSleuths"; } }
     public string Name { get { return "Unusual Sleuths"; } }
+    public string PromptLabel { get { return "an amateur detective"; } }
     public string Description { get { return "These amateurs leverage their unique backgrounds and professions to solve the case."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

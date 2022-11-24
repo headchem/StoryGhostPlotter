@@ -11,6 +11,7 @@ public class Trapped : IAppealTerm
 {
     public string Id { get { return "Trapped"; } }
     public string Name { get { return "Trapped"; } }
+    public string PromptLabel { get { return "being trapped in a dangerous place"; } }
     public string Description { get { return "These characters get stuck in isolated cabins, Arctic research bases, submarines, graves, elevators, or any other confined space."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.Settings }; } }

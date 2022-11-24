@@ -11,6 +11,7 @@ public class SlayingTheDragon : IAppealTerm
 {
     public string Id { get { return "SlayingTheDragon"; } }
     public string Name { get { return "Slaying the dragon"; } }
+    public string PromptLabel { get { return "slaying a dragon"; } }
     public string Description { get { return "An epic quest to defeat the mightiest of creatures."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

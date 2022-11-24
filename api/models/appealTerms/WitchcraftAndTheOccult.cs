@@ -11,6 +11,7 @@ public class WitchcraftAndTheOccult : IAppealTerm
 {
     public string Id { get { return "WitchcraftAndTheOccult"; } }
     public string Name { get { return "Witchcraft and the occult"; } }
+    public string PromptLabel { get { return "witchcraft and the occult"; } }
     public string Description { get { return "Sinister spell-casting begets supernatural horror."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

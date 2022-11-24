@@ -11,6 +11,7 @@ public class SexWork : IAppealTerm
 {
     public string Id { get { return "SexWork"; } }
     public string Name { get { return "Sex work"; } }
+    public string PromptLabel { get { return "sex workers"; } }
     public string Description { get { return "Sometimes work in the sex industry is by choice, sometimes by necessity."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Drama, GenresEnum.History, GenresEnum.Urban, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.OccupationsAndEnterprise, AppealTermsCategoryEnum.LifeChallenges }; } }

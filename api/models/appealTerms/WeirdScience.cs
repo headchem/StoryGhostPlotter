@@ -11,6 +11,7 @@ public class WeirdScience : IAppealTerm
 {
     public string Id { get { return "WeirdScience"; } }
     public string Name { get { return "Weird science"; } }
+    public string PromptLabel { get { return "brilliant kids doing science"; } }
     public string Description { get { return "Brilliant kids + science. What could go wrong?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

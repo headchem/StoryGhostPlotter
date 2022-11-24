@@ -11,6 +11,7 @@ public class SpyLifeInfiltrators : IAppealTerm
 {
     public string Id { get { return "SpyLifeInfiltrators"; } }
     public string Name { get { return "Spy Life Infiltrators"; } }
+    public string PromptLabel { get { return "a spy who must remain undetected"; } }
     public string Description { get { return "These spies must stay hidden, blend in, and win trust, while staying just one step ahead of being found out."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.History, GenresEnum.War, GenresEnum.Thriller }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Secrets, AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

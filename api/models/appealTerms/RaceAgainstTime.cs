@@ -11,6 +11,7 @@ public class RaceAgainstTime : IAppealTerm
 {
     public string Id { get { return "RaceAgainstTime"; } }
     public string Name { get { return "Race against time"; } }
+    public string PromptLabel { get { return "a race against time"; } }
     public string Description { get { return "The clock is ticking!"; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

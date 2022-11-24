@@ -11,6 +11,7 @@ public class WerewolvesAmongUs : IAppealTerm
 {
     public string Id { get { return "WerewolvesAmongUs"; } }
     public string Name { get { return "Werewolves among us"; } }
+    public string PromptLabel { get { return "werewolves"; } }
     public string Description { get { return "Beware the full moon!"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

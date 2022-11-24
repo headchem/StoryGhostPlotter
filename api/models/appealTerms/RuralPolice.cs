@@ -11,6 +11,7 @@ public class RuralPolice : IAppealTerm
 {
     public string Id { get { return "RuralPolice"; } }
     public string Name { get { return "Rural police"; } }
+    public string PromptLabel { get { return "crime in rural areas"; } }
     public string Description { get { return "Crime is not absent in rural areas... it's just more spread out."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

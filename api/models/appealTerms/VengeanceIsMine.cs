@@ -11,6 +11,7 @@ public class VengeanceIsMine : IAppealTerm
 {
     public string Id { get { return "VengeanceIsMine"; } }
     public string Name { get { return "Vengeance is mine"; } }
+    public string PromptLabel { get { return "revenge"; } }
     public string Description { get { return "Hell hath no fury like a character scorned."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Situations }; } }

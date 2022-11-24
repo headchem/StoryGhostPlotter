@@ -11,6 +11,7 @@ public class TechnicalDifficulties : IAppealTerm
 {
     public string Id { get { return "TechnicalDifficulties"; } }
     public string Name { get { return "Technical difficulties"; } }
+    public string PromptLabel { get { return "technology impacting lives"; } }
     public string Description { get { return "For better or worse, technology impacts our lives."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

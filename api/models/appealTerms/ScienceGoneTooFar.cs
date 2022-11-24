@@ -11,6 +11,7 @@ public class ScienceGoneTooFar : IAppealTerm
 {
     public string Id { get { return "ScienceGoneTooFar"; } }
     public string Name { get { return "Science Gone Too Far"; } }
+    public string PromptLabel { get { return "science pushed beyond ethical boundaries"; } }
     public string Description { get { return "Science and technology pushed far beyond ethical boundaries, and humankind's overreach results in conflict with nature."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction, GenresEnum.History, GenresEnum.Thriller, GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.ApocalypticAndDystopian }; } }

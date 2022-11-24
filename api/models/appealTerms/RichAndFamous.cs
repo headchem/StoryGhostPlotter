@@ -11,6 +11,7 @@ public class RichAndFamous : IAppealTerm
 {
     public string Id { get { return "RichAndFamous"; } }
     public string Name { get { return "Rich and famous"; } }
+    public string PromptLabel { get { return "the rich and famous"; } }
     public string Description { get { return "Saturated with celebrity culture."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Comedy, GenresEnum.Crime, GenresEnum.Drama, GenresEnum.History, GenresEnum.Music, GenresEnum.Mystery, GenresEnum.Romance, GenresEnum.Sports }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

@@ -11,6 +11,7 @@ public class RichDetective : IAppealTerm
 {
     public string Id { get { return "RichDetective"; } }
     public string Name { get { return "Rich Detective"; } }
+    public string PromptLabel { get { return "a rich detective"; } }
     public string Description { get { return "These detectives come from upper society and use their free time, wealth and privileged connections to solve crime."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.PowerStructures }; } }

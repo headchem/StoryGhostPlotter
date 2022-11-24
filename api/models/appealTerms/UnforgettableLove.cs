@@ -11,6 +11,7 @@ public class UnforgettableLove : IAppealTerm
 {
     public string Id { get { return "UnforgettableLove"; } }
     public string Name { get { return "Unforgettable love"; } }
+    public string PromptLabel { get { return "rediscovering love after memory loss"; } }
     public string Description { get { return "Memory loss can provide a chance to start over."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.Relationships }; } }

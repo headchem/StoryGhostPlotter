@@ -11,6 +11,7 @@ public class SmallTownHorror : IAppealTerm
 {
     public string Id { get { return "SmallTownHorror"; } }
     public string Name { get { return "Small town horror"; } }
+    public string PromptLabel { get { return "horror in a small town"; } }
     public string Description { get { return "Small towns get creepy."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

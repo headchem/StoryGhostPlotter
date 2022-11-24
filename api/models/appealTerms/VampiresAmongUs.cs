@@ -11,6 +11,7 @@ public class VampiresAmongUs : IAppealTerm
 {
     public string Id { get { return "VampiresAmongUs"; } }
     public string Name { get { return "Vampires Among Us"; } }
+    public string PromptLabel { get { return "vampires"; } }
     public string Description { get { return "These bloodsuckers are living amongst us."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror, GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

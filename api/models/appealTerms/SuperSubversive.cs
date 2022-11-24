@@ -11,6 +11,7 @@ public class SuperSubversive : IAppealTerm
 {
     public string Id { get { return "SuperSubversive"; } }
     public string Name { get { return "Super subversive"; } }
+    public string PromptLabel { get { return "a superhero who undergoes a major change"; } }
     public string Description { get { return "Watch these superheroes undergo a major change."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

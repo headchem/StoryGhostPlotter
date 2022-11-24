@@ -11,6 +11,7 @@ public class ShadowOrganizations : IAppealTerm
 {
     public string Id { get { return "ShadowOrganizations"; } }
     public string Name { get { return "Shadow organizations"; } }
+    public string PromptLabel { get { return "secret organizations that wield power from the shadows"; } }
     public string Description { get { return "Who's in control? These secret societies wield power from the shadows."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Fantasy, GenresEnum.History, GenresEnum.ScienceFiction, GenresEnum.Thriller }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Secrets }; } }

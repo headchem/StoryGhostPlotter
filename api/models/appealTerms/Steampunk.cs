@@ -11,6 +11,7 @@ public class Steampunk : IAppealTerm
 {
     public string Id { get { return "Steampunk"; } }
     public string Name { get { return "Steampunk"; } }
+    public string PromptLabel { get { return "a steampunk setting"; } }
     public string Description { get { return "Combining Victorian and Western time frames."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

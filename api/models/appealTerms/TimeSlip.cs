@@ -11,6 +11,7 @@ public class TimeSlip : IAppealTerm
 {
     public string Id { get { return "TimeSlip"; } }
     public string Name { get { return "Time slip"; } }
+    public string PromptLabel { get { return "time travel"; } }
     public string Description { get { return "Characters emerge somewhere else - past or future, with philosophical implications."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.SpaceAndTime, AppealTermsCategoryEnum.Concepts }; } }

@@ -11,6 +11,7 @@ public class WomenOfSteel : IAppealTerm
 {
     public string Id { get { return "WomenOfSteel"; } }
     public string Name { get { return "Women of steel"; } }
+    public string PromptLabel { get { return "strong women"; } }
     public string Description { get { return "These women overcome all odds."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

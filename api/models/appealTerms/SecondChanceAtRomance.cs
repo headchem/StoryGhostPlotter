@@ -11,6 +11,7 @@ public class SecondChanceAtRomance : IAppealTerm
 {
     public string Id { get { return "SecondChanceAtRomance"; } }
     public string Name { get { return "Second chance at romance"; } }
+    public string PromptLabel { get { return "getting a second chance at romance"; } }
     public string Description { get { return "'Tis better to have loved and lost... and loved again."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }

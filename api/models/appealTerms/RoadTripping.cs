@@ -11,6 +11,7 @@ public class RoadTripping : IAppealTerm
 {
     public string Id { get { return "RoadTripping"; } }
     public string Name { get { return "Road tripping"; } }
+    public string PromptLabel { get { return "a road trip"; } }
     public string Description { get { return "Long-distance travel, pit stops, getting lost... and self-discovery?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Comedy, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Characters }; } }

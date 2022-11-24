@@ -11,6 +11,7 @@ public class ScienceFictionBootCamp : IAppealTerm
 {
     public string Id { get { return "ScienceFictionBootCamp"; } }
     public string Name { get { return "Science fiction boot camp"; } }
+    public string PromptLabel { get { return "a space-age military boot camp"; } }
     public string Description { get { return "Ten-hut! Boot camp meets space camp."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Settings }; } }

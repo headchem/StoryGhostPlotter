@@ -11,6 +11,7 @@ public class TimeAndAgain : IAppealTerm
 {
     public string Id { get { return "TimeAndAgain"; } }
     public string Name { get { return "Time and again"; } }
+    public string PromptLabel { get { return "seeing how one small decision has dramatic impacts on the future"; } }
     public string Description { get { return "If you'd made a different choice, what might have been? How one small change can have drastic impacts on the sequences of events that follow."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.NarrativeDevices, AppealTermsCategoryEnum.SpaceAndTime, AppealTermsCategoryEnum.Concepts }; } }

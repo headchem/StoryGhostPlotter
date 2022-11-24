@@ -11,6 +11,7 @@ public class RoyalReads : IAppealTerm
 {
     public string Id { get { return "RoyalReads"; } }
     public string Name { get { return "Royal reads"; } }
+    public string PromptLabel { get { return "a reluctant royal"; } }
     public string Description { get { return "It's good to be the king... or is it? Reluctant Royals throughout history have wrestled with this question."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.PowerStructures, AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

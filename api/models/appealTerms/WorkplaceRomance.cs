@@ -11,6 +11,7 @@ public class WorkplaceRomance : IAppealTerm
 {
     public string Id { get { return "WorkplaceRomance"; } }
     public string Name { get { return "Workplace romance"; } }
+    public string PromptLabel { get { return "workplace romance"; } }
     public string Description { get { return "Mixing business with pleasure."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

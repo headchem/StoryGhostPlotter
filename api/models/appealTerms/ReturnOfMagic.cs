@@ -11,6 +11,7 @@ public class ReturnOfMagic : IAppealTerm
 {
     public string Id { get { return "ReturnOfMagic"; } }
     public string Name { get { return "Return of magic"; } }
+    public string PromptLabel { get { return "magic reentering the world"; } }
     public string Description { get { return "Legend becomes reality as magic reenters the world."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

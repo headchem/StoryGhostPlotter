@@ -11,6 +11,7 @@ public class RunningAway : IAppealTerm
 {
     public string Id { get { return "RunningAway"; } }
     public string Name { get { return "Running away"; } }
+    public string PromptLabel { get { return "running away"; } }
     public string Description { get { return "Escape, adventure, a personal mission - these stories all feature runaways."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Family, GenresEnum.Drama, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges }; } }

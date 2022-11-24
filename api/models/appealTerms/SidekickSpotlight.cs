@@ -11,6 +11,7 @@ public class SidekickSpotlight : IAppealTerm
 {
     public string Id { get { return "SidekickSpotlight"; } }
     public string Name { get { return "Sidekick spotlight"; } }
+    public string PromptLabel { get { return "a sidekick"; } }
     public string Description { get { return "Sidekicks get a chance to be in the spotlight."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Adventure, GenresEnum.Fantasy, GenresEnum.Sports, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

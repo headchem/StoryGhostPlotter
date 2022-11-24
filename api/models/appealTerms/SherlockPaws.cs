@@ -11,6 +11,7 @@ public class SherlockPaws : IAppealTerm
 {
     public string Id { get { return "SherlockPaws"; } }
     public string Name { get { return "Sherlock Paws"; } }
+    public string PromptLabel { get { return "an animal detective"; } }
     public string Description { get { return "Animal detectives keeping their noses to the ground."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Animals, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

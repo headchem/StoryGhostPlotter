@@ -11,6 +11,7 @@ public class WartimeCrime : IAppealTerm
 {
     public string Id { get { return "WartimeCrime"; } }
     public string Name { get { return "Wartime crime"; } }
+    public string PromptLabel { get { return "crime during wartime"; } }
     public string Description { get { return "The investigators in these stories must contend with criminals in a wartime setting."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Mystery, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

@@ -11,6 +11,7 @@ public class SecretBaby : IAppealTerm
 {
     public string Id { get { return "SecretBaby"; } }
     public string Name { get { return "Secret baby"; } }
+    public string PromptLabel { get { return "revealing a secret love child"; } }
     public string Description { get { return "Revealing a secret love child complicates life for these couples."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Secrets }; } }

@@ -11,6 +11,7 @@ public class ZombieApocalypse : IAppealTerm
 {
     public string Id { get { return "ZombieApocalypse"; } }
     public string Name { get { return "Zombie apocalypse"; } }
+    public string PromptLabel { get { return "zombies"; } }
     public string Description { get { return "The dead are reanimated and roaming, looking for a meal."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Monsters }; } }

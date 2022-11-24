@@ -11,6 +11,7 @@ public class RobotsWithEmotions : IAppealTerm
 {
     public string Id { get { return "RobotsWithEmotions"; } }
     public string Name { get { return "Robots with emotions"; } }
+    public string PromptLabel { get { return "sentient robots with emotions"; } }
     public string Description { get { return "These robots definitely pass the Turing test, easily convincing us of their humanity."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.AliensAndRobots, AppealTermsCategoryEnum.Relationships }; } }

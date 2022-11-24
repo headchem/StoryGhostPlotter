@@ -11,6 +11,7 @@ public class RaisedByTheStreets : IAppealTerm
 {
     public string Id { get { return "RaisedByTheStreets"; } }
     public string Name { get { return "Raised by the streets"; } }
+    public string PromptLabel { get { return "being raised by the streets"; } }
     public string Description { get { return "Growing up amidst gangs, drugs, and desperation."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Crime, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.LifeChallenges }; } }

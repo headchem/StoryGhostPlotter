@@ -11,6 +11,7 @@ public class RealmOfTheDead : IAppealTerm
 {
     public string Id { get { return "RealmOfTheDead"; } }
     public string Name { get { return "Realm of the dead"; } }
+    public string PromptLabel { get { return "the realm of the dead being a real place"; } }
     public string Description { get { return "The afterlife is a lively place."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

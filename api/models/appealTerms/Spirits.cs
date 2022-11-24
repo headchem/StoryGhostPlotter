@@ -11,6 +11,7 @@ public class Spirits : IAppealTerm
 {
     public string Id { get { return "Spirits"; } }
     public string Name { get { return "Spirits"; } }
+    public string PromptLabel { get { return "ghosts"; } }
     public string Description { get { return "These ghosts have unfinished business."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

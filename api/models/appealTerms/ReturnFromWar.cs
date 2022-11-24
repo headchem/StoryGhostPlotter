@@ -11,6 +11,7 @@ public class ReturnFromWar : IAppealTerm
 {
     public string Id { get { return "ReturnFromWar"; } }
     public string Name { get { return "Return from war"; } }
+    public string PromptLabel { get { return "returning to civilian life after war"; } }
     public string Description { get { return "Civilian life after war can be haunted by trauma."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.History, GenresEnum.Urban, GenresEnum.War, GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Settings }; } }

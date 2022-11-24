@@ -11,6 +11,7 @@ public class UntrustedMind : IAppealTerm
 {
     public string Id { get { return "UntrustedMind"; } }
     public string Name { get { return "Untrusted Mind"; } }
+    public string PromptLabel { get { return "being unable to trust one's own mind"; } }
     public string Description { get { return "These characters can't trust their own minds."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Concepts }; } }

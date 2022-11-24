@@ -11,6 +11,7 @@ public class SpaceColonization : IAppealTerm
 {
     public string Id { get { return "SpaceColonization"; } }
     public string Name { get { return "Space colonization"; } }
+    public string PromptLabel { get { return "colonizing the galaxy"; } }
     public string Description { get { return "Humanity puts down roots of civilization on other planets."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.SpaceAndTime, AppealTermsCategoryEnum.Settings }; } }

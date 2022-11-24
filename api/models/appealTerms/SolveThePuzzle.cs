@@ -11,6 +11,7 @@ public class SolveThePuzzle : IAppealTerm
 {
     public string Id { get { return "SolveThePuzzle"; } }
     public string Name { get { return "Solve the puzzle"; } }
+    public string PromptLabel { get { return "solving a crime puzzle"; } }
     public string Description { get { return "Readers solve these crimes along with the characters."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

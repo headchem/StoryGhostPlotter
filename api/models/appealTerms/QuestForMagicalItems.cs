@@ -11,6 +11,7 @@ public class QuestForMagicalItems : IAppealTerm
 {
     public string Id { get { return "QuestForMagicalItems"; } }
     public string Name { get { return "Quest for magical items"; } }
+    public string PromptLabel { get { return "a quest for magical items"; } }
     public string Description { get { return "The objects of power are scattered - let the hunt begin!"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

@@ -11,6 +11,7 @@ public class SinnerRedeemed : IAppealTerm
 {
     public string Id { get { return "SinnerRedeemed"; } }
     public string Name { get { return "Sinner redeemed"; } }
+    public string PromptLabel { get { return "seeking forgiveness"; } }
     public string Description { get { return "Can all be forgiven with these characters who are seeking redemption?"; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.LifeChallenges }; } }

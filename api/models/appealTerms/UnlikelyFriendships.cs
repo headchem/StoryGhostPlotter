@@ -11,6 +11,7 @@ public class UnlikelyFriendships : IAppealTerm
 {
     public string Id { get { return "UnlikelyFriendships"; } }
     public string Name { get { return "Unlikely friendships"; } }
+    public string PromptLabel { get { return "an unlikely friendship"; } }
     public string Description { get { return "Despite differences, unexpected friendships form."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Characters }; } }

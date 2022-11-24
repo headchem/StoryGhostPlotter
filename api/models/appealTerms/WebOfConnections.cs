@@ -11,6 +11,7 @@ public class WebOfConnections : IAppealTerm
 {
     public string Id { get { return "WebOfConnections"; } }
     public string Name { get { return "Web of connections"; } }
+    public string PromptLabel { get { return "inanimate objects given voice to what they've witnessed"; } }
     public string Description { get { return "Inanimate objects are given a unique voice having witnessed much."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Fantasy, GenresEnum.Family }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.NarrativeDevices }; } }

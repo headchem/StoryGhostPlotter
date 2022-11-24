@@ -11,6 +11,7 @@ public class ToxicRelationships : IAppealTerm
 {
     public string Id { get { return "ToxicRelationships"; } }
     public string Name { get { return "Toxic relationships"; } }
+    public string PromptLabel { get { return "a toxic relationship"; } }
     public string Description { get { return "Intense characters interact in unhealthy ways."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.LifeChallenges }; } }

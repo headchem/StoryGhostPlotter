@@ -11,6 +11,7 @@ public class SurvivingTheHolocaust : IAppealTerm
 {
     public string Id { get { return "SurvivingTheHolocaust"; } }
     public string Name { get { return "Surviving the Holocaust"; } }
+    public string PromptLabel { get { return "surviving the Holocaust"; } }
     public string Description { get { return "Read about Jewish characters and other targeted groups as they try to survive during the Nazi regime."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History, GenresEnum.War }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Settings }; } }

@@ -11,6 +11,7 @@ public class WesternsComingOfAgeInAHarshFrontier : IAppealTerm
 {
     public string Id { get { return "WesternsComingOfAgeInAHarshFrontier"; } }
     public string Name { get { return "Coming Of Age In A Harsh Frontier"; } }
+    public string PromptLabel { get { return "coming of age in Wild West"; } }
     //public string Description { get { return "Traditionally in this genre, coming of age could be described as \"boy becomes man,\" but now protagonists of both genders are experiencing the trials and travails of the journey from childhood to adulthood on a harsh frontier."; } }
     public string Description { get { return "Experiencing the trials and travails of the journey from childhood to adulthood on a harsh frontier."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }

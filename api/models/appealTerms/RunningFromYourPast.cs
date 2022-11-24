@@ -11,6 +11,7 @@ public class RunningFromYourPast : IAppealTerm
 {
     public string Id { get { return "RunningFromYourPast"; } }
     public string Name { get { return "Running from your past"; } }
+    public string PromptLabel { get { return "running from one's past"; } }
     public string Description { get { return "These characters have secrets from their past, and they're desperate to start over."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Secrets }; } }

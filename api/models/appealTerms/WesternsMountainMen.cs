@@ -11,6 +11,7 @@ public class WesternsMountainMen : IAppealTerm
 {
     public string Id { get { return "WesternsMountainMen"; } }
     public string Name { get { return "Mountain Men"; } }
+    public string PromptLabel { get { return "mountain men in the American West"; } }
     public string Description { get { return "The earliest non-native people to travel the West were the mountain men and trappers, who often took on Indian ways."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

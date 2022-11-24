@@ -11,6 +11,7 @@ public class StarringFamousFigures : IAppealTerm
 {
     public string Id { get { return "StarringFamousFigures"; } }
     public string Name { get { return "Starring famous figures"; } }
+    public string PromptLabel { get { return "famous figures from history"; } }
     public string Description { get { return "Famous figures from history play leading roles."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

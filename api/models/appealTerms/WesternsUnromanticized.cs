@@ -11,6 +11,7 @@ public class WesternsUnromanticized : IAppealTerm
 {
     public string Id { get { return "WesternsUnromanticized"; } }
     public string Name { get { return "Unromanticized"; } }
+    public string PromptLabel { get { return "the ugly underbelly of real life in the Wild West"; } }
     public string Description { get { return "These Westerns reveal the ugly underbelly of the West, with the patina of a glamorized frontier rubbed away to give a grim, uncompromising view of the area and times."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Western, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

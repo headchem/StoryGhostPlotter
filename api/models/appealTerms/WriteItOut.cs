@@ -11,6 +11,7 @@ public class WriteItOut : IAppealTerm
 {
     public string Id { get { return "WriteItOut"; } }
     public string Name { get { return "Write it out"; } }
+    public string PromptLabel { get { return "writers"; } }
     public string Description { get { return "Characters find their voice in the written word."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

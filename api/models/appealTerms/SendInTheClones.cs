@@ -11,6 +11,7 @@ public class SendInTheClones : IAppealTerm
 {
     public string Id { get { return "SendInTheClones"; } }
     public string Name { get { return "Send in the clones"; } }
+    public string PromptLabel { get { return "cloning and transferring consciousness"; } }
     public string Description { get { return "Cloning humans or transferring consciousness into machines has deep ethical implications."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.ApocalypticAndDystopian, AppealTermsCategoryEnum.Concepts }; } }
