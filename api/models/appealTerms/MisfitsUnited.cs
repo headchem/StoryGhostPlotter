@@ -11,6 +11,7 @@ public class MisfitsUnited : IAppealTerm
 {
     public string Id { get { return "MisfitsUnited"; } }
     public string Name { get { return "Misfits united"; } }
+    public string PromptLabel { get { return "misfits united against society"; } }
     public string Description { get { return "The characters in these stories feel like they don't fit in except with each other."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.Characters }; } }

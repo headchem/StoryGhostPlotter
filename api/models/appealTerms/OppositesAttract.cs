@@ -11,6 +11,7 @@ public class OppositesAttract : IAppealTerm
 {
     public string Id { get { return "OppositesAttract"; } }
     public string Name { get { return "Opposites attract"; } }
+    public string PromptLabel { get { return "extremely different people falling in love"; } }
     public string Description { get { return "These odd couples disagree about everything... except each other."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }

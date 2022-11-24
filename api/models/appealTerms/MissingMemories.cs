@@ -11,6 +11,7 @@ public class MissingMemories : IAppealTerm
 {
     public string Id { get { return "MissingMemories"; } }
     public string Name { get { return "Missing memories"; } }
+    public string PromptLabel { get { return "missing memories"; } }
     public string Description { get { return "A gap in memory conceals vital information."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Crime, GenresEnum.Mystery, GenresEnum.Thriller }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Secrets }; } }

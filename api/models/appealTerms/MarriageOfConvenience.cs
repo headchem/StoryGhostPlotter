@@ -11,6 +11,7 @@ public class MarriageOfConvenience : IAppealTerm
 {
     public string Id { get { return "MarriageOfConvenience"; } }
     public string Name { get { return "Marriage of convenience"; } }
+    public string PromptLabel { get { return "a couple marrying for reasons other than love"; } }
     public string Description { get { return "Expedient arrangements deepen into true love."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Relationships }; } }

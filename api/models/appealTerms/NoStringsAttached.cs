@@ -11,6 +11,7 @@ public class NoStringsAttached : IAppealTerm
 {
     public string Id { get { return "NoStringsAttached"; } }
     public string Name { get { return "No strings attached"; } }
+    public string PromptLabel { get { return "trying to have romantic fun while remaining free of commitment"; } }
     public string Description { get { return "Not \"dating,\" just... having fun - at least until deeper feelings develop and everything gets complicated."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Situations }; } }

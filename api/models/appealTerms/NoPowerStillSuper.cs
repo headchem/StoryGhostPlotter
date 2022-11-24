@@ -11,6 +11,7 @@ public class NoPowerStillSuper : IAppealTerm
 {
     public string Id { get { return "NoPowerStillSuper"; } }
     public string Name { get { return "No power, still super"; } }
+    public string PromptLabel { get { return "a character with incredible skill they worked hard to master"; } }
     public string Description { get { return "It takes hard work to get to be this good."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Action, GenresEnum.Adventure, GenresEnum.Western, GenresEnum.Music, GenresEnum.Sports }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }

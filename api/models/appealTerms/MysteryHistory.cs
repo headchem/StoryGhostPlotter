@@ -11,6 +11,7 @@ public class MysteryHistory : IAppealTerm
 {
     public string Id { get { return "MysteryHistory"; } }
     public string Name { get { return "Mystery History"; } }
+    public string PromptLabel { get { return "solving historical crimes with modern methods"; } }
     public string Description { get { return "Solving old crimes from the past using new methods and discoveries."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery, GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.Secrets }; } }

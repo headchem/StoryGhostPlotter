@@ -11,6 +11,7 @@ public class SuddenChild : IAppealTerm
 {
     public string Id { get { return "SuddenChild"; } }
     public string Name { get { return "Sudden child"; } }
+    public string PromptLabel { get { return "caring for a child that is not one's own"; } }
     public string Description { get { return "Becoming the guardian of a child or children gives purpose to these unexpected caretakers."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships, AppealTermsCategoryEnum.LifeChallenges }; } }

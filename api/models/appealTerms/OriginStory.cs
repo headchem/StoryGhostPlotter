@@ -11,6 +11,7 @@ public class OriginStory : IAppealTerm
 {
     public string Id { get { return "OriginStory"; } }
     public string Name { get { return "Origin story"; } }
+    public string PromptLabel { get { return "a character's origin"; } }
     public string Description { get { return "Gather round and learn how it all began."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Adventure, GenresEnum.Family, GenresEnum.Fantasy, GenresEnum.History, GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Characters }; } }

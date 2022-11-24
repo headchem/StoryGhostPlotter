@@ -11,6 +11,7 @@ public class LoveInDisguise : IAppealTerm
 {
     public string Id { get { return "LoveInDisguise"; } }
     public string Name { get { return "Love in disguise"; } }
+    public string PromptLabel { get { return "love blossoming between those who are hiding their true identity"; } }
     public string Description { get { return "Can love blossom between those who are not what they seem?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Secrets }; } }

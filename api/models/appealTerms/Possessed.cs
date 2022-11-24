@@ -11,6 +11,7 @@ public class Possessed : IAppealTerm
 {
     public string Id { get { return "Possessed"; } }
     public string Name { get { return "Possessed"; } }
+    public string PromptLabel { get { return "a spirit inhabiting one's body"; } }
     public string Description { get { return "These characters are in need of an exorcism as spirits have taken up residence within them."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Situations }; } }

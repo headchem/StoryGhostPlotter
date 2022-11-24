@@ -11,6 +11,7 @@ public class OnceUponATime : IAppealTerm
 {
     public string Id { get { return "OnceUponATime"; } }
     public string Name { get { return "Once upon a time romance"; } }
+    public string PromptLabel { get { return "a happily-ever-after romance"; } }
     public string Description { get { return "These fairy tales end in happily-ever-after."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance, GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

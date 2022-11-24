@@ -11,6 +11,7 @@ public class LastOfTheirKind : IAppealTerm
 {
     public string Id { get { return "LastOfTheirKind"; } }
     public string Name { get { return "Last of their kind"; } }
+    public string PromptLabel { get { return "the last of their kind"; } }
     public string Description { get { return "They are all that remain of their people, or so they think."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy, GenresEnum.History }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.ApocalypticAndDystopian }; } }

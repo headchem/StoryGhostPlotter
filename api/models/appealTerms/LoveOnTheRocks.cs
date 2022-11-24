@@ -11,6 +11,7 @@ public class LoveOnTheRocks : IAppealTerm
 {
     public string Id { get { return "LoveOnTheRocks"; } }
     public string Name { get { return "Love on the rocks"; } }
+    public string PromptLabel { get { return "a romantic relationship falling apart"; } }
     public string Description { get { return "The course of love does not always run smooth."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Romance, GenresEnum.Urban }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Relationships }; } }

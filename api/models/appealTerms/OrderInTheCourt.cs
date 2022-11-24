@@ -11,6 +11,7 @@ public class OrderInTheCourt : IAppealTerm
 {
     public string Id { get { return "OrderInTheCourt"; } }
     public string Name { get { return "Order In The Court"; } }
+    public string PromptLabel { get { return "the legal system"; } }
     public string Description { get { return "These stories revolve around the court of law."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Drama, GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.PowerStructures }; } }

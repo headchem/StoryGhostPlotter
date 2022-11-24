@@ -11,6 +11,7 @@ public class LifeInSmallTowns : IAppealTerm
 {
     public string Id { get { return "LifeInSmallTowns"; } }
     public string Name { get { return "Life in small towns"; } }
+    public string PromptLabel { get { return "life in small towns"; } }
     public string Description { get { return "Everyone knows everyone else in these communities."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Comedy, GenresEnum.Drama, GenresEnum.Mystery, GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings }; } }

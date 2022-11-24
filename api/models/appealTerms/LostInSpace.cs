@@ -11,6 +11,7 @@ public class LostInSpace : IAppealTerm
 {
     public string Id { get { return "LostInSpace"; } }
     public string Name { get { return "Lost in space"; } }
+    public string PromptLabel { get { return "being surviving while lost in space"; } }
     public string Description { get { return "First priority: survival. Next on the agenda: getting home."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.SpaceAndTime }; } }

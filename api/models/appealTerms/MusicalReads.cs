@@ -11,6 +11,7 @@ public class MusicalReads : IAppealTerm
 {
     public string Id { get { return "MusicalReads"; } }
     public string Name { get { return "Musical reads"; } }
+    public string PromptLabel { get { return "music"; } }
     public string Description { get { return "Featuring performances from musicians, composers, and music lovers."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History, GenresEnum.Music }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

@@ -11,6 +11,7 @@ public class MythicRetelling : IAppealTerm
 {
     public string Id { get { return "MythicRetelling"; } }
     public string Name { get { return "Mythic Retelling"; } }
+    public string PromptLabel { get { return "a classic fairytale retold in a non-traditional setting"; } }
     public string Description { get { return "Classic fairytales retold in a non-traditional setting, with new twists on familiar legends."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy, GenresEnum.Adventure }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts }; } }

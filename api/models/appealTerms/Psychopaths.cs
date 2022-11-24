@@ -11,6 +11,7 @@ public class Psychopaths : IAppealTerm
 {
     public string Id { get { return "Psychopaths"; } }
     public string Name { get { return "Psychopaths"; } }
+    public string PromptLabel { get { return "psychopaths"; } }
     public string Description { get { return "Deranged villains can't be reasoned with - can their twisted personal code of conduct be decoded before they do more damage?"; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Thriller, GenresEnum.Crime, GenresEnum.Mystery, GenresEnum.Horror }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters }; } }

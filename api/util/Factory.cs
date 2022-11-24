@@ -278,7 +278,6 @@ public static class Factory
             new ClimateChangeApocalypse(),
             new EvilCorporations(),
             new ForTheResistance(),
-            new PandemicApocalypse(),
 
             // science fiction/concepts and characters
             new UntrustedMind(),
@@ -504,7 +503,6 @@ public static class Factory
             new TechnicalDifficulties(),
             new ThrownTogether(),
             new BoysVsGirls(),
-            new MeAndMyPet(),
             new UnderdogAthletes(),
 
             // general/experiences
@@ -523,7 +521,6 @@ public static class Factory
             new ChosenFamily(),
             new FamilyGatherings(),
             new LoveOnTheRocks(),
-            new MaybeBaby(),
             new SecondAct(),
             new ToxicRelationships(),
             new UnhappyFamilies(),
@@ -573,7 +570,6 @@ public static class Factory
             new WriteItOut(),
 
             // general/setting
-            new NovelsOfPlace(),
             new OfficeLife(),
             new SadSmallTowns(),
             new GoodLifeMalaise(),

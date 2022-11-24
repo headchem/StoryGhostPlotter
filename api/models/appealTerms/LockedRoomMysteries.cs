@@ -11,6 +11,7 @@ public class LockedRoomMysteries : IAppealTerm
 {
     public string Id { get { return "LockedRoomMysteries"; } }
     public string Name { get { return "Locked room mysteries"; } }
+    public string PromptLabel { get { return "an isolated crime scene with a small suspect list"; } }
     public string Description { get { return "The crime scene is isolated, and the suspect list is small."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Settings, AppealTermsCategoryEnum.Secrets, AppealTermsCategoryEnum.Situations }; } }

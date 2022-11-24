@@ -11,6 +11,7 @@ public class MetaphoricalRacism : IAppealTerm
 {
     public string Id { get { return "MetaphoricalRacism"; } }
     public string Name { get { return "Metaphorical racism"; } }
+    public string PromptLabel { get { return "racism in a fantasy setting"; } }
     public string Description { get { return "Think elves who hate dwarves, or magic users who must hide their powers."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.PowerStructures, AppealTermsCategoryEnum.LifeChallenges }; } }

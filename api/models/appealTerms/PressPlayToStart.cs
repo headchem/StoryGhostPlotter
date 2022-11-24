@@ -11,6 +11,7 @@ public class PressPlayToStart : IAppealTerm
 {
     public string Id { get { return "PressPlayToStart"; } }
     public string Name { get { return "Press play to start"; } }
+    public string PromptLabel { get { return "using advanced technology to plug one's mind into an alternate reality simulation"; } }
     public string Description { get { return "Advanced technology allows these characters to plug in to a hyper-immersive world where there can be real-world consequences to actions in the simulation."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.Settings }; } }

@@ -11,6 +11,7 @@ public class LifeInArt : IAppealTerm
 {
     public string Id { get { return "LifeInArt"; } }
     public string Name { get { return "Life in art"; } }
+    public string PromptLabel { get { return "art"; } }
     public string Description { get { return "These art-focused stories feature both broad strokes and delicate portraits."; } }
     public List<string> Genres { get { return GenresEnum.All; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Concepts, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
