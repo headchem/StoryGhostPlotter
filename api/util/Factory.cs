@@ -278,6 +278,7 @@ public static class Factory
             new ClimateChangeApocalypse(),
             new EvilCorporations(),
             new ForTheResistance(),
+            new DystopiaUtopia(),
 
             // science fiction/concepts and characters
             new UntrustedMind(),
