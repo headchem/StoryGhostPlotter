@@ -578,7 +578,7 @@ public static class Factory
             new WesternsAfricanAmericansInTheWest(),
             new WesternsArmyInTheWest(),
             new WesternsBadMenAndGood(),
-            new WesternsComingOfAgeInAHarshFrontier(),
+            new ComingOfAgeInAHarshWorld(),
             new WesternsHiredManOnHorseback(),
             new WesternsIndianCaptives(),
             new WesternsInModernTimes(),
