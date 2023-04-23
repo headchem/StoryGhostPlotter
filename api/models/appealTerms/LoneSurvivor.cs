@@ -7,12 +7,12 @@ using StoryGhost.Enums;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class FinalGirls : IAppealTerm
+public class LoneSurvivor : IAppealTerm
 {
-    public string Id { get { return "FinalGirls"; } }
-    public string Name { get { return "Final girls"; } }
-    public string PromptLabel { get { return "a lone female survivor of a horrific event"; } }
-    public string Description { get { return "The lone female survivors of a horrific event."; } }
+    public string Id { get { return "LoneSurvivor"; } }
+    public string Name { get { return "Lone Survivor"; } }
+    public string PromptLabel { get { return "lone survivor of a horrific event"; } }
+    public string Description { get { return "The lone survivor of a horrific event must fight to survive."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Horror, GenresEnum.Fantasy, GenresEnum.ScienceFiction }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.Situations }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

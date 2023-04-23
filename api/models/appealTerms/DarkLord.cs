@@ -12,7 +12,7 @@ public class DarkLord : IAppealTerm
     public string Id { get { return "DarkLord"; } }
     public string Name { get { return "Dark lord"; } }
     public string PromptLabel { get { return "a dark lord leading a nefarious army"; } }
-    public string Description { get { return "These lords and ladies are assembling armies of darkness."; } }
+    public string Description { get { return "These evil lords and ladies are assembling armies of darkness to conquer the world."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Fantasy }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.PowerStructures }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

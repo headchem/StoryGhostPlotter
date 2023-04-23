@@ -237,7 +237,7 @@ public static class Factory
             new EnemiesToLovers(),
             new FallingForAFriend(),
             new FamousFlings(),
-            new ForRicherForPoorer(),
+            new UpperClassRomance(),
             new OppositesAttract(),
             new SecondChanceAtRomance(),
             new TogetherAgain(),
@@ -341,11 +341,10 @@ public static class Factory
             new MagicalTechnology(),
             new MythicRetelling(),
             new AngelsAndDemons(),
-            new EveryoneHasAGift(),
 
             // horror/characters
             new ChildhoodTrauma(),
-            new FinalGirls(),
+            new LoneSurvivor(),
             new UnreliableNarrator(),
 
             // horror/plot
@@ -466,7 +465,6 @@ public static class Factory
             new SinnerRedeemed(),
             
             // urban/setting
-            new ChurchDrama(),
             new LifeOnTheInside(),
             new RaisedByTheStreets(),
 
@@ -485,14 +483,12 @@ public static class Factory
             new OriginStory(),
 
             // general/aficionado
-            new EatDrinkAndBeMerry(),
             new Fandemonium(),
             new LifeInArt(),
             new MusicalReads(),
 
             // general/concepts and characters
             new BrandNewYou(),
-            new ComedyOfManners(),
             new EnsembleCasts(),
             new FishOutOfWater(),
             new GreenReads(),
@@ -535,7 +531,6 @@ public static class Factory
             new SurvivingTheHolocaust(),
 
             // general/identity
-            new EngenderingGender(),
             new FacingRacism(),
 
             // general/life challenges

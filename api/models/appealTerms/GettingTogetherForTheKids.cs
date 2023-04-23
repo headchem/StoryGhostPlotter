@@ -11,7 +11,7 @@ public class GettingTogetherForTheKids : IAppealTerm
 {
     public string Id { get { return "GettingTogetherForTheKids"; } }
     public string Name { get { return "Getting together for the kids"; } }
-    public string PromptLabel { get { return "an unplanned pregnancy leading to a committed relationship"; } }
+    public string PromptLabel { get { return "an unplanned pregnancy leads to a committed relationship"; } }
     public string Description { get { return "An unplanned pregnancy leads to a committed relationship."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.LifeChallenges, AppealTermsCategoryEnum.Situations, AppealTermsCategoryEnum.Relationships }; } }

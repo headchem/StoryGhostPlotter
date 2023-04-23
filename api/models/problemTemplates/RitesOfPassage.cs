@@ -27,7 +27,7 @@ public class RitesOfPassage : IProblemTemplate
             {
                 Events = new AdviceSequence
                 {
-                    ThemeStated = "A vague outside force will bring pain and torment the Hero.",
+                    ThemeStated = "It is hinted that a vague outside force will bring pain and torment the Hero.",
                     IncitingIncident = "The outside force brings misery and misfortune upon the Hero, and the Hero struggles to name it.",
                     FunAndGames = "The unseen force continues to sneak up on the Hero, while the beleaguered Hero is distracted with shallower problems.",
                     Midpoint = "The Hero temporarily contains the invisible force, and falsely believes they are in control.",

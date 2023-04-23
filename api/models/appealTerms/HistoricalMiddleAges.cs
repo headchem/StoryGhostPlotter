@@ -10,7 +10,7 @@ namespace StoryGhost.Models.AppealTerms;
 public class HistoricalMiddleAges : IAppealTerm
 {
     public string Id { get { return "HistoricalMiddleAges"; } }
-    public string Name { get { return "Middle Ages"; } }
+    public string Name { get { return "The Middle Ages"; } }
     public string PromptLabel { get { return "the Middle Ages"; } }
     public string Description { get { return "Very roughly, the years from A.D. 500 to 1500 may be called the Middle Ages. Knights, castles, and fiefdoms abound."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.History }; } }

@@ -12,7 +12,7 @@ public class PrivateEye : IAppealTerm
     public string Id { get { return "PrivateEye"; } }
     public string Name { get { return "Private Eye"; } }
     public string PromptLabel { get { return "a private eye investigator"; } }
-    public string Description { get { return "These private investigators take the cases rejected by the establishment - and they work alone."; } }
+    public string Description { get { return "These lonesome private investigators take the cases rejected by the establishment."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery, GenresEnum.Crime }; } }
     public List<string> Categories { get { return new List<string> { AppealTermsCategoryEnum.Characters, AppealTermsCategoryEnum.OccupationsAndEnterprise }; } }
     public List<string> Aliases { get { return new List<string> { }; } }

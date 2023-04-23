@@ -10,7 +10,7 @@ namespace StoryGhost.Models.AppealTerms;
 public class HardenedProfessional : IAppealTerm
 {
     public string Id { get { return "HardenedProfessional"; } }
-    public string Name { get { return "HardenedProfessional"; } }
+    public string Name { get { return "Hardened Professional"; } }
     public string PromptLabel { get { return "a hardened and experienced criminal investigator"; } }
     public string Description { get { return "They've seen it all - but the crime this time is different and more shocking than usual."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Mystery, GenresEnum.Crime }; } }

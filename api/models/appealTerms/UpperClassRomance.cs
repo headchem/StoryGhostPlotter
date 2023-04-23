@@ -7,10 +7,10 @@ using StoryGhost.Enums;
 
 namespace StoryGhost.Models.AppealTerms;
 
-public class ForRicherForPoorer : IAppealTerm
+public class UpperClassRomance : IAppealTerm
 {
-    public string Id { get { return "ForRicherForPoorer"; } }
-    public string Name { get { return "For richer for poorer"; } }
+    public string Id { get { return "UpperClassRomance"; } }
+    public string Name { get { return "Upper Class Romance"; } }
     public string PromptLabel { get { return "romance amongst in upper class"; } }
     public string Description { get { return "Romance amongst society's wealthy upper crust."; } }
     public List<string> Genres { get { return new List<string> { GenresEnum.Romance }; } }
